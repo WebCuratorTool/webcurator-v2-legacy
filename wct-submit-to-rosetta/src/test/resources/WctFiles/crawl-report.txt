@@ -1,0 +1,10 @@
+Crawl Name: 
+Crawl Status: Finished
+Duration Time: 9m35s709ms
+Total Seeds Crawled: 1
+Total Seeds not Crawled: 0
+Total Hosts Crawled: 3
+Total Documents Crawled: 322
+Processed docs/sec: 0.56
+Bandwidth in Kbytes/sec: 149
+Total Raw Data Size in Bytes: 88026233 (83 MB) 

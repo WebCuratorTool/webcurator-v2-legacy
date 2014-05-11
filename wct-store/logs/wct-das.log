@@ -1,0 +1,10 @@
+2014-05-09 11:12:07,258 ERROR [main] dps.DPSArchive (DPSArchive.java:295) - Could not get any material flows from Rosetta for producer 1234 using URL null
+2014-05-09 11:12:07,258 ERROR [main] dps.DPSArchive (DPSArchive.java:319) - DC Type someOtherDcType of the target instance is not of an HTML serial type
+2014-05-09 11:29:14,869 ERROR [main] dps.DPSArchive (DPSArchive.java:295) - Could not get any material flows from Rosetta for producer 1234 using URL null
+2014-05-09 11:29:14,869 ERROR [main] dps.DPSArchive (DPSArchive.java:319) - DC Type someOtherDcType of the target instance is not of an HTML serial type
+2014-05-09 11:52:24,388 ERROR [main] dps.DPSArchive (DPSArchive.java:295) - Could not get any material flows from Rosetta for producer 1234 using URL null
+2014-05-09 11:52:24,388 ERROR [main] dps.DPSArchive (DPSArchive.java:319) - DC Type someOtherDcType of the target instance is not of an HTML serial type
+2014-05-09 13:12:45,590 ERROR [main] dps.DPSArchive (DPSArchive.java:295) - Could not get any material flows from Rosetta for producer 1234 using URL null
+2014-05-09 13:12:45,590 ERROR [main] dps.DPSArchive (DPSArchive.java:319) - DC Type someOtherDcType of the target instance is not of an HTML serial type
+2014-05-09 13:20:34,247 ERROR [main] dps.DPSArchive (DPSArchive.java:295) - Could not get any material flows from Rosetta for producer 1234 using URL null
+2014-05-09 13:20:34,247 ERROR [main] dps.DPSArchive (DPSArchive.java:319) - DC Type someOtherDcType of the target instance is not of an HTML serial type

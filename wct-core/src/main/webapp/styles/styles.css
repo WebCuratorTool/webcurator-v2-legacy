@@ -1,0 +1,987 @@
+body { 
+	background-color:#ffffff;
+	margin:0px 0px 0px 0px;
+	font-family:arial, sans-serif;
+	font-size:12px;
+	height:100%;
+	padding:0px;
+	margin:0px;
+
+}  
+
+	/* Change this color if you want  give various environments a uniquely colored 
+		indicator border */
+body, #pageBody, #homeContentLeft, #homeContentRight {
+	border: solid green;
+}
+
+/* Removes padding from the form */
+form {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0px;
+}
+
+a { font-family:arial,sans-serif;font-size:12px;color:#a50000; font-weight:normal; text-decoration:none;}
+a:active { color:#0000ff; font-weight:normal; text-decoration:none;}
+a:visited { color:#4461a3; font-weight:normal; text-decoration:none;}
+a:hover { color:#007bff; font-weight:normal; text-decoration:underline;}
+
+.clear {
+	clear:both;
+}
+
+
+#topBar {
+	width:100%;
+	margin:0px;
+	min-width: 535px;
+}
+
+#logo {
+	left: 0px;
+	width: 320px;
+	position:absolute;
+	float: left;
+	z-index:10;
+}
+
+
+#secondaryNav {
+	position: static;
+	z-index: 3;	
+	float: right;
+	margin-top: 18px;
+	margin-right: 30px;
+	text-align:right;
+	font-family:arial,sans-serif;
+	font-size:11px;
+	color:#b7b7b7;
+	font-weight:normal;
+}
+
+#secondaryNav a { font-family:arial,sans-serif;font-size:11px;color:#a50000; font-weight:normal; text-decoration:none;}
+#secondaryNav a:active { color:#0000ff; font-weight:normal; text-decoration:none;}
+#secondaryNav a:visited { color:#e65f5f; font-weight:normal; text-decoration:none;}
+#secondaryNav a:hover { color:#007bff; font-weight:normal; text-decoration:underline;}
+
+#primaryNavBar {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/primary-nav-bg.gif);
+	height:38px;
+	background-repeat:repeat-x;
+	
+}
+
+#iconColumn {
+	left: 0px;
+	width: 114px;
+	position:absolute;
+	float: left;
+	padding-left:8px;
+	z-index:10;
+}
+
+
+#pageBody {
+	position: absolute;
+	left: 0px; 
+	width: 100%;
+	margin-right: 0px;
+	z-index: 0;
+	-webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+#pageContent {
+	margin-left: 115px;
+	padding-right: 30px;
+	padding-top:13px;
+}
+
+#plainPageContent {
+	padding: 13px 30px 0px 30px;
+}
+
+#treePanel {
+	border: 1px solid black;
+	height: 300px;
+        width: 900px;
+	overflow: scroll;
+	padding: 3px;
+}
+
+#pageTitleRed {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-red.gif);
+	background-repeat:repeat-x;
+}
+
+#titleRed {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #a50000;
+	margin-left: 8px;
+}
+
+#pageTitleBrown {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-brown.gif);
+	background-repeat:repeat-x;
+}
+
+#titleBrown {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #a97e0f;
+	margin-left: 8px;
+}
+
+#pageTitleGreen {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-green.gif);
+	background-repeat:repeat-x;
+}
+
+#titleGreen {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #007906;
+	margin-left: 8px;
+}
+
+#crumbGreen {
+	font-family: verdana, arial, sans-serif;
+	font-size: 10px;
+	color: #007906;
+	margin-left: 8px;
+}
+
+#pageTitlePurple {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-purple.gif);
+	background-repeat:repeat-x;
+}
+
+#titlePurple {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #4c007d;
+	margin-left: 8px;
+}
+
+#pageTitleDrkBlue {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-drkblue.gif);
+	background-repeat:repeat-x;
+}
+
+#titleDrkBlue {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #00067d;
+	margin-left: 8px;
+}
+
+#pageTitleOrange {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-orange.gif);
+	background-repeat:repeat-x;
+}
+
+#titleOrange {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #fe6000;
+	margin-left: 8px;
+}
+
+#pageTitleLtBlue {
+	width:100%;
+	margin:0px;
+	background-image:url(../images/header-back-ltblue.gif);
+	background-repeat:repeat-x;
+}
+
+#titleLtBlue {
+	font-family: georgia, arial, sans-serif;
+	font-size: 22px;
+	font-weight: bold;
+	color: #007efe;
+	margin-left: 8px;
+}
+
+
+
+#searchBox {
+	width:900px;
+	margin-top:15px;
+	margin-bottom:15px;
+	background-image:url(../images/search-box-bg.gif);
+	background-repeat:repeat-y;
+}
+
+#searchBoxContent {
+	padding-left:36px;
+	padding-right:10px;
+}
+
+.searchBoxLabel {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #6b6b6b;
+}
+
+.groupBoxLabel {
+	font-family: arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #6b6b6b;
+}
+
+.midtitleGrey {
+	font-family: georgia, arial, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	color: #6b6b6b;
+}
+
+.smalltitleGrey {
+	font-family: georgia, arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #6b6b6b;
+	line-height: 26px;
+}
+
+#resultsTable, .resultsTable {
+	margin-left: 8px;
+}
+
+.tableHead {
+	background-image:url(../images/table-header-bg.gif);
+	background-repeat:repeat-x;
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	color: #727272;
+	font-weight: bold;
+}
+
+.sortTableHead {
+	background-image:url(../images/table-header-bg.gif);
+	background-repeat:repeat-x;
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	color: #727272;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.noteImage {
+	cursor: pointer;
+}
+
+.restrictedLength {
+	max-width: 300px;
+	white-space: normal;
+}
+
+.tableHeadLite {
+	background-image:url(../images/table-header-lite-bg.gif);
+	background-repeat:repeat-x;
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	color: #727272;
+	font-weight: bold;
+}
+
+.tableHeadDark {
+	background-image:url(../images/table-header-dark-bg.gif);
+	background-repeat:repeat-x;
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	color: #727272;
+	font-weight: bold;
+}
+
+.subHeadLite {
+	background-color:#ebebeb;
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #727272;
+}
+
+.subHeadDark {
+	background-color:#dbdbdb;
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #727272;
+}
+
+.tableRowNewTI a {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #007906;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowNewTI a {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #007906;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowNewTI a:active {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #007906;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowNewTI a:visited {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #007906;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowNewTI a:hover{
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #007906;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowLite {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tableRowLiteTargetName {
+	padding:0px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+
+.tableRowLiteTargetName a {
+	padding:0px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowLiteTargetName a:active {
+	padding:0px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowLiteTargetName a:visited {
+	padding:0px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowLiteTargetName a:hover {
+	padding:0px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: break-word;
+}
+
+.tableRowLiteBold {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: bold;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tableRowTotalBold {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: bold;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	border-top-style: solid;
+	border-left-style: none;
+	border-right-style: none;
+	border-bottom-style: solid;
+}
+
+.tableRowLite a {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tableRowLite a:active {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tableRowLite a:visited {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tableRowLite a:hover {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	font-weight: normal;
+	background-color: #ffffff;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tableRowGreyedOut {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #6b6b6b;
+	background-color: #ffffff;
+}
+
+
+.tableRowLiteHdr {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #000000;
+	background-color: #ffffff;
+	text-decoration: none;
+}
+
+.tableRowSep {
+	background-image:url(../images/table-dotted-sep.gif);
+}
+
+.tableRowDark {
+	padding:5px;
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	color: #000000;
+	background-color: #f1f1f1;
+}
+
+#footer {
+	margin-top: 25px;
+	min-width: 535px;
+}
+
+#footerleft {
+	float: left;
+}
+#footerright {
+	float: right;
+}
+
+#footercontent {
+	background-image:url(../images/footer-bg.gif);
+	background-repeat:repeat-x;
+	padding-top: 8px;
+	padding-bottom: 12px;
+	text-align:center;
+	font-family: tahoma, arial, sans-serif;
+	font-size: 10px;
+	color: #b7b7b7;
+}
+
+#footercontent a { font-family:arial,sans-serif;font-size:11px;color:#434343; font-weight:normal; text-decoration:none;}
+#footercontent a:active { color:#0000ff; font-weight:normal; text-decoration:none;}
+#footercontent a:visited { color:#434343; font-weight:normal; text-decoration:none;}
+#footercontent a:hover { color:#007bff; font-weight:normal; text-decoration:underline;}
+
+* html .homeMinWidth {border-left:715px solid #ffffff; position:relative; float:left; z-index:1;}
+* html .homeContainer {margin-left:-715px; position:relative; float:left; z-index:2;}
+
+#homeContentLeft {
+	float: left;
+	width: 50%; 
+	position:absolute;
+	z-index:10;
+}
+#homeContentRight {
+	float: right;
+	width: 50%;
+}
+#homeLeftBoxTop {
+	margin-left: 30px;	
+	background-image:url(../images/home-box-top.gif);
+	background-repeat:repeat-x;
+}
+#homeLeftBoxBottom {
+	margin-left: 30px;	
+	background-image:url(../images/home-box-btm.gif);
+	background-repeat:repeat-x;
+}
+#homeLeftBoxContent {
+	margin-left: 30px;	
+	background-image:url(../images/home-box-mid-bg.gif); 
+	background-repeat:repeat-x;
+}
+
+#homeRightBoxTop {
+	margin-left: 6px;	
+	margin-right: 30px;	
+	background-image:url(../images/home-box-top.gif);
+	background-repeat:repeat-x;
+}
+#homeRightBoxBottom {
+	margin-left: 6px;	
+	margin-right: 30px;	
+	background-image:url(../images/home-box-btm.gif);
+	background-repeat:repeat-x;
+}
+#homeRightBoxContent {
+	margin-left: 6px;	
+	margin-right: 30px;	
+	background-image:url(../images/home-box-mid-bg.gif); 
+	background-repeat:repeat-x;
+}
+
+#homeBoxTitle {
+	font-family: georgia, arial, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color: #6b6b6b;
+	margin-right: 10px;
+}
+
+#homeBoxLine {
+	background-image:url(../images/table-dotted-sep.gif);
+	margin-right: 10px;
+
+}
+
+#homeBoxText {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #000000;
+	margin-right: 10px;
+	margin-top: 3px;
+}
+
+#subBoxTop, .subBoxTop {
+	margin: 0px;	
+	background-image:url(../images/subtabs-bg.gif);
+	background-repeat:repeat-x;
+}
+
+#subBoxBtm {
+	margin: 0px;	
+	background-image:url(../images/subbtm-bg.gif);
+	background-repeat:repeat-x;
+}
+
+.subBoxText {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #664d00;
+}
+
+.subBoxTextHdr {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #664d00;
+}
+
+#annotationsBox {
+	background-color:#f4f0e7;
+	padding:8px;
+	margin-top: 10px;
+}
+
+.annotationsHeaderRow {
+	background-image:url(../images/fawn-table-header.gif);
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #634607;
+}
+
+.annotationsFooterRow {
+	background-image:url(../images/fawn-table-footer.gif);
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #634607;
+}
+
+.profileMainHeading {
+	background-image:url(../images/fawn-table-header.gif);
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #634607;
+    padding: 3px;
+}
+
+
+.profileMapHeading {
+	background-image:url(../images/fawn-table-header.gif);
+	margin-top: 1em;
+    font-family: arial, sans-serif;
+	font-size: 12px;
+	color: #634607;
+	font-weight: bold;
+    padding: 3px;
+}
+
+.profileSublevel {
+	padding: 20px 0px 20px 20px;
+}
+
+.profile .profileSublevel td {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #664d00;
+}
+
+
+.annotationsLiteRow {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #664d00;
+	background-color:#f7f4ee;
+}
+.annotationsDarkRow {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+	color: #664d00;
+	background-color:#ede9d7;
+}
+
+.subBoxTitle {
+	font-family: georgia, arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #876600;
+}
+
+
+#loginBox {
+	width:430px;
+	margin-left:100px;
+}
+
+#messageBox {
+	background-color:#f4f0e7;
+	padding:8px;
+	margin-top: 10px;
+}
+
+input, textarea, select {
+	font-family: arial, sans-serif;
+	font-size: 11px;
+}
+
+.inputWide {
+	width: 225px;
+}
+
+.hidden {
+	display: none;
+}
+
+/* multiselect radio buttons on the target instances screen */
+.multiselectradio {
+    horizontal-align: right;
+    vertical-align: middle;
+	font-family: arial, sans-serif;
+	font-size: 13px;
+	color: #6b6b6b;
+}
+
+.panel {
+	margin-left: auto;
+	margin-right: auto;
+	background-color: white;
+	text-decoration: none; 
+	border-style: solid;
+	border-top-style: none;
+	border-left-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-width: thin 1px;
+	vertical-align: middle;
+}
+
+.harvestHistoryPanelHeader {
+	border-style: solid 0px;
+	width: 710px;
+	overflow-x: none; 
+	overflow-y: auto;
+	cell-spacing: 0;
+	cell-padding: 0;
+	align: left;
+}
+
+.harvestHistoryPanelBody {
+	border-style: solid 0px;
+	width: 710px;
+	height: 100px;
+	resize: both;
+	overflow-x: none; 
+	overflow-y: auto;
+	cell-spacing: 0;
+	cell-padding: 0;
+	vertical-align: middle;
+	align: left;
+}
+
+.panel_dotted_row {
+	border-style: solid;
+	border-top-style: none;
+	border-left-style: none;
+	border-right-style: none;
+	border-bottom-style: dotted;
+	border-width: thin 1px;
+	width: 100%;
+}
+
+.panel_header_row {
+	border-style: solid;
+	border-top-style: none;
+	border-left-style: none;
+	border-right-style: none;
+	border-bottom-style: solid; 
+	border-width: thin 1px;
+	border-color: rgb(190, 0, 0);
+	font-weight: bold;
+	width: 100%;
+}
+
+.panel_header_title {
+	font-size: 15px;
+}
+
+.history_header_row {
+	background-color: rgb(193, 193, 193);
+	color: white;
+	font-weight: normal;
+}
+
+.hhist_header_row {
+	width: 100%;
+	background-color: rgb(193, 193, 193);
+	color: white;
+	font-weight: normal;
+}
+
+.filter_header_row {
+	background-color: orange;
+	color: black;
+	font-weight: bold;
+	width: 100%;
+}
+
+.crawl_row_Endorsed {
+	background-color: rgb(237, 253, 254);
+}
+
+.crawl_row_Unendorsed {
+	background-color: rgb(237, 253, 254);
+}
+.crawl_row_Latest {
+	background-color: blue; 
+	color: white; 
+	font-weight:bold
+}
+
+.crawl_row_Reference {
+	background-color: rgb(255, 0, 0);
+	color: white;
+	font-weight: bold;
+}
+
+.crawl_row_Rejected {
+	background-color: rgb(237, 253, 254);
+}
+
+.panel_links { 
+	color: #148cc8;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.indicatorArchive {
+	color: green;
+	font-weight: bold;
+	vertical-align: top;
+	horizontal-align: left;
+}
+
+.indicatorInvestigate {
+	color: orange;
+	font-weight: bold;
+	vertical-align: top;
+	horizontal-align: left;
+}
+
+.indicatorReject {
+	color: red;
+	font-weight: bold;
+	vertical-align: top;
+	horizontal-align: left;
+}
+
+.indicatorDelist {
+	color: green;
+	font-weight: bold;
+	vertical-align: top;
+	horizontal-align: left;
+}
+
+.indicatorNone {
+	color: gray;
+	font-weight: bold;
+	vertical-align: top;
+	horizontal-align: left;
+}
+
+.indicatorRunning {
+	color: blue;
+	font-weight: bold;
+	vertical-align: top;
+	horizontal-align: left;
+}
+
+/* the annotation date on the harvest QA summary screen */
+.hs_annotationdate {
+	color: white; 
+	background-color: #148cc8;
+}
+
+/* the annotation text on the harvest QA summary screen */
+.hs_annotationtext {
+    background-color: white;
+    color: #148cc8;
+    vertical-align: top;
+    horizontal-align: left;
+}
+
+.optimizeNotAllowed {
+    background-color: #d0d0d0;
+}
+
+.optimizeAllowed {
+    background-color: #ffffff;
+}
+
+.bandwidthLegend {
+    border:solid 1px #000; 
+    width:10px;
+    height:10px;   
+    float:left;
+    margin-right:5px;
+}
+
+.subGroupParent, .subGroupChild {
+	display:inline;
+}
+
+.subGroupChild{
+	font-weight:bold;
+}

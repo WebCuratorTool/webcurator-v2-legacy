@@ -1,0 +1,15 @@
+To preserve the current WCT settings:
+zip -g ~/wctConfig.zip wct/META-INF/context.xml
+zip -g ~/wctConfig.zip wct/WEB-INF/classes/wct-core.properties
+zip -g ~/wctConfig.zip wct/WEB-INF/classes/*.xml
+zip -g ~/wctConfig.zip wct-harvest-agent/WEB-INF/classes/wct-agent.properties
+zip -g ~/wctConfig.zip wct-store/WEB-INF/classes/wct-das.properties
+
+
+To restore:
+unzip ~/wctConfig.zip -d .
+
+
+You may need to add any new configuration items to the configuration files after this
+procedure.  WCT 1.6.1 in particular introduces new configuration parameters that should
+be specified.  These are listed in the documentation.

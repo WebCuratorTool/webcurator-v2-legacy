@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="WCTDASConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:wct-das.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="order" value="150"/>
+    </bean>
+
+	<bean name="wctCoreWsEndpoint" class="org.webcurator.core.util.WebServiceEndPoint">
+		<property name="host" value="${wctCoreWsEndpoint.host}"/>
+		<property name="port" value="${wctCoreWsEndpoint.port}"/>
+		<property name="service" value="${wctCoreWsEndpoint.service}"/>		
+	</bean>
+
+	<bean name="arcDigitalAssetStoreService"
+		class="org.webcurator.core.store.arc.ArcDigitalAssetStoreService"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<!-- the base directory for the arc store -->
+		<property name="baseDir">
+			<value>${arcDigitalAssetStoreService.baseDir}</value>
+		</property>
+		<property name="archive">
+			<ref bean="${arcDigitalAssetStoreService.archive}" />
+		</property>
+		
+		<property name="indexer">
+		  <bean class="org.webcurator.core.store.Indexer">
+			<property name="indexers" ref="runnableIndexers"/>
+		  </bean>
+		</property>
+		
+		<property name="wsEndPoint" ref="wctCoreWsEndpoint"/>
+		<property name="dasFileMover" ref="${arcDigitalAssetStoreService.dasFileMover}"/>
+		<property name="pageImagePrefix" value="${arcDigitalAssetStoreService.pageImagePrefix}"/>
+		<property name="aqaReportPrefix" value="${arcDigitalAssetStoreService.aqaReportPrefix}"/>
+		<property name="fileArchive" ref="fileArchive" />
+	</bean>
+	
+	<bean id="runnableIndexers" class="org.springframework.beans.factory.config.ListFactoryBean">
+  	<property name="sourceList">
+        <list>
+		    <bean id="WCTIndexer" class="org.webcurator.core.store.WCTIndexer">
+				<property name="wsEndPoint" ref="wctCoreWsEndpoint"/>
+		    </bean>
+		    <bean id="WaybackIndexer" class="org.webcurator.core.store.WaybackIndexer">
+		    		<property name="enabled" value="${waybackIndexer.enabled}"/>
+				<property name="wsEndPoint" ref="wctCoreWsEndpoint"/>
+				<!-- Frequency of checks on the merged folder (milliseconds) -->
+				<property name="waittime" value="${waybackIndexer.waittime}"/>
+				<!-- Time to wait for the file to be indexed before giving up (milliseconds) -->
+				<property name="timeout" value="${waybackIndexer.timeout}"/>
+				<!-- Location of the folder Wayback is watching for auto indexing -->
+				<property name="waybackInputFolder" value="${waybackIndexer.waybackInputFolder}"/>
+				<!-- Location of the folder where Wayback places merged indexes -->
+				<property name="waybackMergedFolder" value="${waybackIndexer.waybackMergedFolder}"/>
+				<!-- Location of the folder where Wayback places failed indexes -->
+				<property name="waybackFailedFolder" value="${waybackIndexer.waybackFailedFolder}"/>
+		    </bean>
+		    <bean id="CrawlLogIndexer" class="org.webcurator.core.store.CrawlLogIndexer">
+		    		<property name="enabled" value="${crawlLogIndexer.enabled}"/>
+				<property name="wsEndPoint" ref="wctCoreWsEndpoint"/>
+				<!-- Logs sub-folder name -->
+				<property name="logsSubFolder" value="${crawlLogIndexer.logsSubFolder}"/>
+				<!-- name of the crawl.log file -->
+				<property name="crawlLogFileName" value="${crawlLogIndexer.crawlLogFileName}"/>
+				<!-- name of the stripped crawl.log file -->
+				<property name="strippedLogFileName" value="${crawlLogIndexer.strippedLogFileName}"/>
+				<!-- name of the sorted crawl.log file -->
+				<property name="sortedLogFileName" value="${crawlLogIndexer.sortedLogFileName}"/>
+		    </bean>
+		    <bean id="CDXIndexer" class="org.archive.io.CDXIndexer">
+		    		<property name="enabled" value="${cdxIndexer.enabled}"/>
+				<property name="wsEndPoint" ref="wctCoreWsEndpoint"/>
+		    </bean>
+        </list>
+  	</property>
+    </bean>
+	
+	
+	<!--  A File Mover that uses InputStreams to copy files in chunks. Will work successfully
+	      across different filesystems. -->
+	<bean id="inputStreamDasFileMover" class="org.webcurator.core.store.arc.InputStreamDasFileMover"/>
+	
+	<!--  A File Mover that simply renames the file. This will be fast but is NOT guaranteed to
+	      move files between file systems. -->
+	<bean id="renameDasFileMover" class="org.webcurator.core.store.arc.RenameDasFileMover"/>
+
+	<bean id="logReader"
+		class="org.webcurator.core.reader.LogReaderImpl" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="logProvider">
+			<ref bean="arcDigitalAssetStoreService" />
+		</property>
+	</bean>	
+	<bean id="fileArchive"
+		class="org.webcurator.core.archive.file.FileArchive" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="archiveRepository">
+			<value>${fileArchive.archiveRepository}</value>
+		</property>
+		<property name="archiveLogReportFiles">
+			<value>${fileArchive.archiveLogReportFiles}</value>
+		</property>
+		<property name="archiveLogDirectory">
+			<value>${fileArchive.archiveLogDirectory}</value>
+		</property>
+		<property name="archiveReportDirectory">
+			<value>${fileArchive.archiveReportDirectory}</value>
+		</property>
+		<property name="archiveArcDirectory">
+			<value>${fileArchive.archiveArcDirectory}</value>
+		</property>
+	</bean>
+ 	<bean id="omsArchive"
+		class="org.webcurator.core.archive.oms.OMSArchive" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="archiveLogReportFiles">
+			<value>${omsArchive.archiveLogReportFiles}</value>
+		</property>
+		<property name="url">
+			<value>${omsArchive.url}</value>
+		</property>
+		<property name="partSize">
+			<value>${omsArchive.partSize}</value>
+		</property>
+		<property name="ilsTapuhiFlag">
+			<value>${omsArchive.ilsTapuhiFlag}</value>
+		</property>
+		<property name="collectionType">
+			<value>${omsArchive.collectionType}</value>
+		</property>
+		<property name="objectType">
+			<value>${omsArchive.objectType}</value>
+		</property>
+		<property name="agencyResponsible">
+			<value>${omsArchive.agencyResponsible}</value>
+		</property>
+		<property name="instanceRole">
+			<value>${omsArchive.instanceRole}</value>
+		</property>
+		<property name="instanceCaptureSystem">
+			<value>${omsArchive.instanceCaptureSystem}</value>
+		</property>
+		<property name="instanceType">
+			<value>${omsArchive.instanceType}</value>
+		</property>
+		<property name="user_group">
+			<value>${omsArchive.user_group}</value>
+		</property>
+		<property name="user" value="${omsArchive.user}"/>
+		<property name="password" value="${omsArchive.password}"/>
+	</bean>
+
+	<!--
+		Configuration parameters for the Submit-To-Rosetta module which
+		submits a harvest into Ex Libris Rosetta System (a.k.a. DPS, 
+		the Digital Preservation System)
+	-->
+	<bean id="dpsArchive"
+ 		class="org.webcurator.core.archive.dps.DPSArchive" abstract="false"
+ 		singleton="true" lazy-init="default" autowire="default"
+ 		dependency-check="default">
+
+ 		<property name="pdsUrl">
+ 			<value>${dpsArchive.pdsUrl}</value>
+ 		</property>
+
+ 		<property name="ftpHost">
+ 			<value>${dpsArchive.ftpHost}</value>
+ 		</property>
+
+ 		<property name="ftpUserName">
+ 			<value>${dpsArchive.ftpUserName}</value>
+ 		</property>
+
+ 		<property name="ftpPassword">
+ 			<value>${dpsArchive.ftpPassword}</value>
+ 		</property>
+
+		<!--
+			"ftpDirectory" is an optional parameter. If not provided, the harvest files
+			will be FTPed to the home directory of the FTP user. If this parameter
+			is provided, the files will be FTPed to this directory instead. However, 
+			it is your responsibility to ensure that the FTP user has the write permission
+			to this directory.
+
+			Uncomment the XML element below if this parameter needs to be used in 
+			your installation.
+		-->
+		
+ 		<property name="ftpDirectory">
+ 			<value>${dpsArchive.ftpDirectory}</value>
+ 		</property>
+		
+
+ 		<property name="dpsUserInstitution">
+ 			<value>${dpsArchive.dpsUserInstitution}</value>
+ 		</property>
+
+ 		<property name="dpsUserName">
+ 			<value>${dpsArchive.dpsUserName}</value>
+ 		</property>
+
+ 		<property name="dpsUserPassword">
+ 			<value>${dpsArchive.dpsUserPassword}</value>
+ 		</property>
+
+ 		<property name="materialFlowId">
+ 			<value>${dpsArchive.materialFlowId}</value>
+ 		</property>
+
+ 		<property name="producerId">
+ 			<value>${dpsArchive.producerId}</value>
+ 		</property>
+
+ 		<property name="depositServerBaseUrl">
+ 			<value>${dpsArchive.depositServerBaseUrl}</value>
+ 		</property>
+
+ 		<property name="producerWsdlRelativePath">
+ 			<value>${dpsArchive.producerWsdlRelativePath}</value>
+ 		</property>
+
+ 		<property name="depositWsdlRelativePath">
+ 			<value>${dpsArchive.depositWsdlRelativePath}</value>
+ 		</property>
+
+ 		<property name="agenciesResponsibleForHtmlSerials">
+ 			<value>${dpsArchive.htmlSerials.agencyNames}</value>
+ 		</property>
+
+ 		<property name="targetDCTypesOfHtmlSerials">
+ 			<value>${dpsArchive.htmlSerials.targetDCTypes}</value>
+ 		</property>
+ 
+ 		<property name="materialFlowsOfHtmlSerials">
+ 			<value>${dpsArchive.htmlSerials.materialFlowIds}</value>
+ 		</property>
+ 
+ 		<property name="ieEntityTypesOfHtmlSerials">
+ 			<value>${dpsArchive.htmlSerials.ieEntityTypes}</value>
+ 		</property>
+ 
+ 		<property name="customDepositFormURLsForHtmlSerialIngest">
+ 			<value>${dpsArchive.htmlSerials.customDepositFormURLs}</value>
+ 		</property>
+ 	</bean>
+
+</beans>

@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
+
+    <bean id="WCTCoreConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:wct-core.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="order" value="150"/>
+        <property name="properties">  
+		   <props>  
+		   		<!-- Defaults for values not specified in properties file -->
+      			<prop key="qualityReviewToolController.archiveName"/>  
+      			<prop key="qualityReviewToolController.archive.alternative"/>
+      			<prop key="qualityReviewToolController.archive.alternative.name"/>
+      			<prop key="harvestCoordinator.harvestOptimizationEnabled">false</prop>
+      			<prop key="harvestCoordinator.harvestOptimizationLookaheadHours">24</prop>
+      			<prop key="harvestCoordinator.numHarvestersExcludedFromOptimisation">0</prop>
+   			</props>  
+  		</property>  
+    </bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages"/>
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+		
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>classpath:/org/webcurator/domain</value>
+				<value>classpath:/org/webcurator/core/permissionmapping</value>
+			</list>
+		</property>		
+		
+		<property name="hibernateProperties">
+      		<props>
+        		<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+        		<prop key="hibernate.show_sql">false</prop>
+        		<prop key="hibernate.default_schema">${hibernate.default_schema}</prop>
+        		<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+      		</props>
+    	</property>		
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/wctDatasource</value>
+		</property>
+	</bean>
+
+	<bean id="digitalAssetStore"
+		class="org.webcurator.core.store.DigitalAssetStoreSOAPClient"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="host" value="${digitalAssetStore.host}" />
+		<property name="port" value="${digitalAssetStore.port}" />
+	</bean>
+
+	<bean id="digitalAssetStoreFactory"
+		class="org.webcurator.core.store.DigitalAssetStoreFactoryImpl"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="digitalAssetStoreConfig">
+	 		<ref bean="digitalAssetStore"/>
+		</property>
+	</bean>
+
+	<bean id="qaRecommendationService"
+		class="org.webcurator.core.rules.QaRecommendationServiceImpl"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		
+		<!--
+			the state that will be used to denote a failure within the Rules Engine (eg: an unexpected exception).
+			this state will be returned to the user as the state of the failed indicator along with the exception 
+		 -->
+		<property name="stateFailed" value="Failed" />
+		
+		<!--
+			the advice priority is the QA recommendation in rank order,
+			the value of each Map entry being the rank 
+		 -->
+		<property name="advicePriority">
+			<map>
+				<entry key="None"><value type="java.lang.Integer">0</value></entry>
+				<entry key="Running"><value type="java.lang.Integer">1</value></entry>
+				<entry key="Archive"><value type="java.lang.Integer">2</value></entry>
+				<entry key="Investigate"><value type="java.lang.Integer">3</value></entry>
+				<!-- 
+					de-list has highest priority for a valid indicator since we know that nothing has changed (precluding any other advice)
+				 -->
+				<entry key="Delist"><value type="java.lang.Integer">4</value></entry>
+				<entry key="Reject"><value type="java.lang.Integer">5</value></entry>
+				<!--
+					failed has the highest priority overall since any failures are unexpected 
+				 -->
+				<entry key="Failed"><value type="java.lang.Integer">6</value></entry>
+			</map>
+		</property>
+		
+		<!--
+			globals objects used by the rules engine 
+		 -->
+		<property name="globals">
+			<map>
+				<!-- formatted messages that will be returned on an indicator -->
+				<entry key="MSG_WITHIN_TOLERANCE" value="The {0} indicator value of {1} is within {2}% and {3}% of reference crawl tolerance ({4} &lt;= {5} &lt;= {6})"></entry>
+				<entry key="MSG_OUTSIDE_TOLERANCE" value="The {0} indicator value of {1} is outside {2}% and {3}% of reference crawl tolerance ({5} &lt; {4} or {5} &gt; {6})"></entry>
+				<entry key="MSG_EXCEEDED_UPPER_LIMIT" value="The {0} indicator value of {1} has exceeded its upper limit of {2}"></entry>
+				<entry key="MSG_FALLEN_BELOW_LOWER_LIMIT" value="The {0} indicator value of {1} has fallen below its lower limit of {2}"></entry>
+				<!-- advice that will be returned on an indicator -->
+				<entry key="REJECT" value="Reject"></entry>
+				<entry key="INVESTIGATE" value="Investigate"></entry>
+				<entry key="ARCHIVE" value="Archive"></entry>
+			</map>
+		</property>
+		
+		<!-- name of the drools rules file to load into the rules engine -->
+		<property name="rulesFileName" value="rules.drl" />
+		
+		<property name="qualityReviewFacade">
+			<ref bean="qualityReviewFacade" />
+		</property>
+		
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator" />
+		</property>
+		
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager" />
+		</property>
+	</bean>
+
+	<bean id="qualityReviewFacade" class="org.webcurator.core.store.tools.QualityReviewFacade">
+	 	<property name="digialAssetStore">
+	 		<ref bean="digitalAssetStore"/>
+	 	</property>
+	 	<property name="targetInstanceDao">
+	 		<ref bean="targetInstanceDao"/>
+	 	</property>
+	 	<property name="auditor">
+	 		<ref bean="audit"/>
+	 	</property>
+	 </bean>
+	<bean id="targetInstanceDao" class="org.webcurator.domain.TargetInstanceDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+		<property name="auditor" ref="audit"/>
+	</bean>
+
+	<bean id="userRoleDAO" class="org.webcurator.domain.UserRoleDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="rejReasonDAO" class="org.webcurator.domain.RejReasonDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="indicatorDAO" class="org.webcurator.domain.IndicatorDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="indicatorCriteriaDAO" class="org.webcurator.domain.IndicatorCriteriaDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="indicatorReportLineDAO" class="org.webcurator.domain.IndicatorReportLineDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="flagDAO" class="org.webcurator.domain.FlagDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+
+	<bean id="targetDao" class="org.webcurator.domain.TargetDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="siteDao" class="org.webcurator.domain.SiteDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>	
+	
+	<bean id="profileDao" class="org.webcurator.domain.ProfileDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>	
+	</bean>
+	
+	<bean id="inTrayDao" class="org.webcurator.domain.InTrayDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>	
+	</bean>
+
+	<bean id="harvestCoordinatorDao" class="org.webcurator.domain.HarvestCoordinatorDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>	
+
+	<bean id="heatmapConfigDao" class="org.webcurator.domain.HeatmapDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>	
+	
+	<bean id="permissionTemplateDao" class="org.webcurator.domain.PermissionTemplateDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>	
+	
+	<bean id="sipBuilder" class="org.webcurator.core.archive.SipBuilder">
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="targetManager" ref="targetManager"/>
+	</bean>
+
+	
+	<bean id="harvestCoordinator" class="org.webcurator.core.harvester.coordinator.HarvestCoordinatorImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceDao" ref="targetInstanceDao"/>
+		<property name="harvestAgentManager" ref="harvestAgentManager"/>
+		<property name="harvestLogManager" ref="harvestLogManager"/>
+		<property name="harvestBandwidthManager" ref="harvestBandwidthManager"/>
+		<property name="harvestQaManager" ref="harvestQaManager"/>
+		<property name="digitalAssetStoreFactory" ref="digitalAssetStoreFactory"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="targetManager" ref="targetManager"/>
+		<property name="inTrayManager" ref="inTrayManager"/>
+		<property name="sipBuilder" ref="sipBuilder"/>
+		<property name="harvestOptimizationEnabled" value="${harvestCoordinator.harvestOptimizationEnabled}"/>
+		<property name="harvestOptimizationLookAheadHours" value="${harvestCoordinator.harvestOptimizationLookaheadHours}"/>
+		<property name="numHarvestersExcludedFromOptimisation" value="${harvestCoordinator.numHarvestersExcludedFromOptimisation}"/>
+		<property name="daysBeforeDASPurge" value="${harvestCoordinator.daysBeforeDASPurge}" />
+		<property name="daysBeforeAbortedTargetInstancePurge" value="${harvestCoordinator.daysBeforeAbortedTargetInstancePurge}" />
+	</bean>	
+	
+	<bean id="harvestAgentManager" class="org.webcurator.core.harvester.coordinator.HarvestAgentManagerImpl">
+		<property name="harvestAgentFactory" ref="harvestAgentFactory"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="targetInstanceDao" ref="targetInstanceDao"/>
+	</bean>
+
+	<bean id="harvestLogManager" class="org.webcurator.core.harvester.coordinator.HarvestLogManagerImpl">
+		<property name="harvestAgentManager" ref="harvestAgentManager"/>
+		<property name="digitalAssetStoreFactory" ref="digitalAssetStoreFactory"/>
+	</bean>
+
+	<bean id="harvestBandwidthManager"
+		class="org.webcurator.core.harvester.coordinator.HarvestBandwidthManagerImpl">
+		<property name="harvestAgentManager" ref="harvestAgentManager" />
+		<property name="targetInstanceDao" ref="targetInstanceDao" />
+		<property name="harvestCoordinatorDao" ref="harvestCoordinatorDao" />
+		<property name="minimumBandwidth" value="${harvestCoordinator.minimumBandwidth}" />
+		<property name="maxBandwidthPercent" value="${harvestCoordinator.maxBandwidthPercent}" />
+		<property name="auditor" ref="audit"/>
+	</bean>
+
+	<bean id="harvestQaManager"
+		class="org.webcurator.core.harvester.coordinator.HarvestQaManagerImpl">
+		<property name="targetInstanceManager" ref="targetInstanceManager" />
+		<property name="targetInstanceDao" ref="targetInstanceDao" />
+		<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
+		<property name="qaRecommendationService" ref="qaRecommendationService" />
+		<property name="qualityReviewFacade" ref="qualityReviewFacade" />
+		<property name="enableQaModule">
+			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
+		</property>
+		<property name="autoPrunedNote" value="${queueController.autoPrunedNote}" />
+	</bean>
+	
+	<bean id="targetInstanceManager" class="org.webcurator.core.scheduler.TargetInstanceManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceDao">
+			<ref bean="targetInstanceDao"></ref>
+		</property>
+		<property name="auditor">
+			<ref bean="audit"></ref>
+		</property>
+		<property name="annotationDAO">
+			<ref bean="annotationDao"></ref>
+		</property>
+		<property name="indicatorDAO">
+			<ref bean="indicatorDAO"></ref>
+		</property>
+		<property name="indicatorCriteriaDAO">
+			<ref bean="indicatorCriteriaDAO"></ref>
+		</property>
+		<property name="indicatorReportLineDAO">
+			<ref bean="indicatorReportLineDAO" />
+		</property>
+		<property name="profileDAO">
+			<ref bean="profileDao"></ref>
+		</property>
+		<property name="inTrayManager">
+			<ref bean="inTrayManager"></ref>
+		</property>
+		<property name="storeSeedHistory" value="${targetInstanceManager.storeSeedHistory}"/>
+	</bean>
+
+	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
+
+	<bean id="siteManager" class="org.webcurator.core.sites.SiteManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="siteDao" ref="siteDao"/>
+		<property name="annotationDAO" ref="annotationDao"/>
+		<property name="listeners">
+			<bean class="org.webcurator.core.permissionmapping.PermMappingSiteListener">
+				<property name="strategy" ref="permissionMappingStrategy"/>
+			</bean>
+		</property>
+		<property name="intrayManager" ref="inTrayManager"/>
+		<property name="auditor" ref="audit"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+	</bean>
+
+
+	<bean id="targetManager" class="org.webcurator.core.targets.TargetManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetDao" ref="targetDao"/>
+		<property name="siteDao" ref="siteDao"/>
+		<property name="annotationDAO" ref="annotationDao"/>
+		<property name="authMgr" ref="authorityManager"/>
+		<property name="targetInstanceDao" ref="targetInstanceDao"/>
+		<property name="instanceManager" ref="targetInstanceManager"/>
+		<property name="intrayManager" ref="inTrayManager"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="auditor" ref="audit"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="allowMultiplePrimarySeeds" value="${targetManager.allowMultiplePrimarySeeds}"/>
+		<property name="subGroupParentTypesList" ref="subGroupParentTypesList"/>
+		<property name="subGroupTypeName" value="${groupTypes.subgroup}"/>
+	</bean>
+	
+	<bean id="profileManager" class="org.webcurator.core.profiles.ProfileManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="profileDao" ref="profileDao"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="auditor" ref="audit"/>
+	</bean>
+
+	<bean id="audit" class="org.webcurator.core.util.AuditDAOUtil">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+
+	<bean id="logonDuration" class="org.webcurator.core.report.LogonDurationDAOImpl">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
+
+	
+	<bean id="harvestAgentFactory" class="org.webcurator.core.harvester.agent.HarvestAgentFactoryImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	<bean id="environment" class="org.webcurator.core.common.EnvironmentImpl">	
+		<property name="daysToSchedule" value="${harvestAgentFactory.daysToSchedule}"/>
+		<property name="schedulesPerBatch" value="${createNewTargetInstancesTrigger.schedulesPerBatch}"/>
+		<property name="applicationVersion" value="${wct.application.version}"/>
+		<property name="heritrixVersion" value="Heritrix ${heritrix.version}"/>
+	</bean>
+	
+	<bean id="schedulePatternFactory" class="org.webcurator.domain.SpringSchedulePatternFactory">
+		<property name="patterns">
+			<list>
+				<bean class="org.webcurator.domain.model.core.SchedulePattern">
+					<property name="scheduleType" value="1"/>
+					<property name="description" value="Every Monday at 9:00pm"/>
+					<property name="cronPattern" value="00 00 21 ? * MON *"/>
+				</bean>			
+			</list>
+		</property>
+	</bean>
+
+	<bean id="permissionMappingStrategy" class="org.webcurator.core.permissionmapping.HierarchicalPermissionMappingStrategy" singleton="true">
+		<property name="dao" ref="permMappingDao"/>
+	</bean>
+
+	<bean id="permMappingDao" class="org.webcurator.core.permissionmapping.HierPermMappingDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>	
+	</bean>
+
+	<bean id="processScheduleJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="group" value="ProcessScheduleGroup"/>
+		<property name="name" value="ProcessSchedule"/>
+		<property name="jobClass" value="org.webcurator.core.scheduler.ScheduleJob"/>
+		<property name="jobDataAsMap">
+    		<map>
+      			<entry key="harvestCoordinator" value-ref="harvestCoordinator"/>
+    		</map>
+	  	</property>
+	</bean>
+	
+    <bean id="processScheduleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="ProcessScheduleTriggerGroup"/>
+		<property name="name" value="ProcessScheduleTrigger"/>
+		<property name="jobDetail" ref="processScheduleJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+  		<property name="startDelay" value="${processScheduleTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds -->
+  		<property name="repeatInterval" value="${processScheduleTrigger.repeatInterval}"/>
+	</bean>	
+	
+	<bean id="checkBandwidthTransitionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="harvestCoordinator"/>
+		</property>
+		<property name="targetMethod" value="checkForBandwidthTransition"/>
+	</bean>
+	
+	<bean id="bandwidthCheckTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="BandwidthCheckTriggerGroup"/>
+		<property name="name" value="BandwidthCheckTrigger"/>
+		<property name="jobDetail" ref="checkBandwidthTransitionsJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+  		<property name="startDelay" value="${bandwidthCheckTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds -->
+  		<property name="repeatInterval" value="${bandwidthCheckTrigger.repeatInterval}"/>
+	</bean>		
+	
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="triggers">
+			<list>
+ 		    	<ref bean="processScheduleTrigger"/>
+		    	<ref bean="bandwidthCheckTrigger"/>
+		    	<ref bean="purgeDigitalAssetsTrigger"/>
+		    	<ref bean="purgeAbortedTargetInstancesTrigger"/>
+		    	<ref bean="groupExpiryJobTrigger"/>	   
+		    	<ref bean="createNewTargetInstancesTrigger"/> 	
+		    </list>
+		</property>
+	</bean>	
+
+	<bean id="agencyUserManager" class="org.webcurator.core.agency.AgencyUserManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="userRoleDAO">
+			<ref bean="userRoleDAO"/>
+		</property>
+		<property name="rejReasonDAO">
+			<ref bean="rejReasonDAO"/>
+		</property>
+		<property name="indicatorCriteriaDAO">
+			<ref bean="indicatorCriteriaDAO"/>
+		</property>
+		<property name="flagDAO">
+			<ref bean="flagDAO"/>
+		</property>
+		<property name="auditor">
+			<ref bean="audit"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="profileManager" ref="profileManager"/>
+	</bean>
+	
+	<bean id="authorityManager" class="org.webcurator.auth.AuthorityManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	
+	<bean id="businessObjectFactory" class="org.webcurator.domain.model.core.BusinessObjectFactory">
+		<property name="profileManager" ref="profileManager"/>
+	</bean>
+		
+	<bean id="annotationDao"
+		class="org.webcurator.domain.AnnotationDAOImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>	
+	</bean>
+	
+	<bean id="mailServer" class="org.webcurator.core.notification.MailServerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	  <constructor-arg>
+		<props>
+		  <prop key="mail.transport.protocol">${mail.protocol}</prop>
+		  <prop key="mail.smtp.host">${mailServer.smtp.host}</prop>
+		  <prop key="mail.smtp.port">${mail.smtp.port}</prop>
+		</props>
+      </constructor-arg>
+	</bean>
+
+	<bean id="bandwidthChecker"
+		class="org.webcurator.core.check.BandwidthChecker" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="warnThreshold" value="${bandwidthChecker.warnThreshold}"/>
+		<property name="errorThreshold" value="${bandwidthChecker.errorThreshold}"/>
+		<property name="notificationSubject" value="Core"/>
+		<property name="checkType" value="Bandwidth"/>
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator" />
+		</property>
+		<property name="notifier">
+			<ref bean="checkNotifier" />
+		</property>	
+	</bean>
+	<bean id="checkNotifier"
+		class="org.webcurator.core.check.CoreCheckNotifier" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="inTrayManager" ref="inTrayManager" />
+	</bean>
+	<bean id="checkProcessor"
+		class="org.webcurator.core.check.CheckProcessor" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="checks">
+			<list>
+				<ref bean="bandwidthChecker"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="checkProcessorJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="checkProcessor"/>
+		</property>
+		<property name="targetMethod" value="check"/>
+	</bean>
+	<bean id="checkProcessorTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="CheckProcessorTriggerGroup"/>
+		<property name="name" value="CheckProcessorTrigger"/>
+		<property name="jobDetail" ref="checkProcessorJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+  		<property name="startDelay" value="${checkProcessorTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds -->
+  		<property name="repeatInterval" value="${checkProcessorTrigger.repeatInterval}"/>
+	</bean>
+	
+	<bean id="purgeDigitalAssetsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="harvestCoordinator"/>
+		</property>
+		<property name="targetMethod" value="purgeDigitalAssets"/>
+	</bean>
+	<bean id="purgeDigitalAssetsTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="PurgeDigitalAssetsTriggerGroup"/>
+		<property name="name" value="PurgeDigitalAssetsTrigger"/>
+		<property name="jobDetail" ref="purgeDigitalAssetsJob"/>
+		<!-- interval in milliseconds.  trigger should run every x days -->
+  		<property name="repeatInterval" value="${purgeDigitalAssetsTrigger.repeatInterval}"/>
+	</bean>
+	
+	<bean id="purgeAbortedTargetInstancesJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="harvestCoordinator"/>
+		</property>
+		<property name="targetMethod" value="purgeAbortedTargetInstances"/>
+	</bean>
+	<bean id="purgeAbortedTargetInstancesTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="PurgeAbortedTargetInstancesTriggerGroup"/>
+		<property name="name" value="PurgeAbortedTargetInstancesTrigger"/>
+		<property name="jobDetail" ref="purgeAbortedTargetInstancesJob"/>
+		<!-- interval in milliseconds.  trigger should run every day (86400000 msecs) -->
+  		<property name="repeatInterval" value="${purgeAbortedTargetInstancesTrigger.repeatInterval}"/>
+	</bean>
+
+	<bean id="inTrayManager" class="org.webcurator.core.notification.InTrayManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	  <property name="inTrayDAO"><ref bean="inTrayDao"/></property>
+	  <property name="userRoleDAO"><ref bean="userRoleDAO"/></property>
+	  <property name="agencyUserManager"><ref bean="agencyUserManager"/></property>
+	  <property name="mailServer"><ref bean="mailServer"/></property>
+	  <property name="audit"><ref bean="audit"/></property>
+	  <property name="sender" value="${inTrayManager.sender}"/>
+	  <property name="messageSource"><ref bean="messageSource"/></property>
+	  <property name="wctBaseUrl" value="${inTrayManager.wctBaseUrl}"/>
+	</bean>
+	
+	<bean id="permissionTemplateManager" class="org.webcurator.core.admin.PermissionTemplateManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	  <property name="permissionTemplateDAO"><ref bean="permissionTemplateDao"/></property>
+	  <property name="authorityManager"><ref bean="authorityManager"/></property>
+	</bean>
+	
+	
+	<bean id="groupExpiryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="targetManager"/>
+		</property>
+		<property name="targetMethod" value="endDateGroups"/>
+	</bean>
+	
+	<bean id="groupExpiryJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="GroupExpiryJobGroup"/>
+		<property name="name" value="GroupExpiryJobTrigger"/>
+		<property name="jobDetail" ref="groupExpiryJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+  		<property name="startDelay" value="${groupExpiryJobTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds: this should run at most once a day (86,400,000 millseconds) -->
+  		<property name="repeatInterval" value="${groupExpiryJobTrigger.repeatInterval}"/>
+	</bean>		
+
+
+	<bean id="createNewTargetInstancesJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="targetManager"/>
+		<property name="targetMethod" value="processSchedulesJob"/>
+	</bean>
+	
+	<bean id="createNewTargetInstancesTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="createNewTargetInstancesJobGroup"/>
+		<property name="name" value="createNewTargetInstancesTrigger"/>
+		<property name="jobDetail" ref="createNewTargetInstancesJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+  		<property name="startDelay" value="${createNewTargetInstancesTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds: this job should be run once a day (86,400,000 millseconds) -->
+  		<property name="repeatInterval" value="${createNewTargetInstancesTrigger.repeatInterval}"/>
+	</bean>		
+
+	<bean id="archiveAdapter" class="org.webcurator.core.archive.ArchiveAdapterImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="digitalAssetStore">
+			<ref bean="digitalAssetStore"></ref>
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"></ref>
+		</property>
+		<property name="targetManager">
+			<ref bean="targetManager"></ref>
+		</property>
+		
+		<property name="accessStatusMap" ref="accessStatusMap"/>
+		<property name="targetReferenceMandatory" value="${archiveAdapter.targetReferenceMandatory}"/>
+	</bean>
+	
+	
+	<bean id="dateUtils" class="org.webcurator.ui.util.DateUtils" factory-method="get"/>
+
+	<bean id="groupSearchController" class="org.webcurator.ui.groups.controller.GroupSearchController">
+	  <property name="targetManager" ref="targetManager"/>
+	  <property name="agencyUserManager" ref="agencyUserManager"/>
+	  <property name="messageSource" ref="messageSource"/>
+	  <property name="defaultSearchOnAgencyOnly" value="${groupSearchController.defaultSearchOnAgencyOnly}"/>
+	  <property name="groupTypesList" ref="groupTypesList"/>
+	  <property name="subGroupType" value="${groupTypes.subgroup}"/>
+	  <property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
+	</bean>
+	
+	 
+	<!--  	
+	HarvestResourceUrlMapper example urlMap with everything: 
+			http://www.wctTest.com?name={$HarvestResource.Name}&lenght={$HarvestResource.Length}&Oid={$HarvestResource.Oid}&Sc={$HarvestResource.StatusCode}&CreationDate={$HarvestResult.CreationDate,yyyyMMdd}&DerivedFrom={$HarvestResult.DerivedFrom}&HarvestNumber={$HarvestResult.HarvestNumber}&RsltOid={$HarvestResult.Oid}&ProvenanceNote={$HarvestResult.ProvenanceNote}&State={$HarvestResult.State}
+	-->
+	
+	<bean id="harvestResourceUrlMapper" class="org.webcurator.ui.tools.controller.HarvestResourceUrlMapper">
+		<property name="urlMap" value = "${harvestResourceUrlMapper.urlMap}"/>
+	</bean>
+	
+	
+	<bean id="treeToolController" class="org.webcurator.ui.tools.controller.TreeToolController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="qualityReviewFacade">
+			<ref bean="qualityReviewFacade"/>
+		</property>
+		<property name="validator">
+			<bean class="org.webcurator.ui.tools.validator.TreeToolValidator"/>
+		</property>
+		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
+		<property name="enableAccessTool" value="${qualityReviewToolController.enableAccessTool}"/>
+		<property name="uploadedFilesDir" value="${digitalAssetStoreServer.uploadedFilesDir}"/>
+		<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
+		<property name="harvestLogManager">
+			<ref bean="harvestLogManager" />
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+	</bean>	
+	
+	<bean id="treeToolControllerAJAX" class="org.webcurator.ui.tools.controller.TreeToolControllerAJAX" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="qualityReviewFacade">
+			<ref bean="qualityReviewFacade"/>
+		</property>
+		<property name="validator">
+			<bean class="org.webcurator.ui.tools.validator.TreeToolValidator"/>
+		</property>
+		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
+		
+	</bean>	
+
+	<bean id="qualityReviewToolController" class="org.webcurator.ui.tools.controller.QualityReviewToolController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET</value>
+		</property>
+		<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+		<property name="targetManager" ref="targetManager"/>
+		<property name="archiveUrl" value="${qualityReviewToolController.archiveUrl}"/>
+		<property name="archiveName" value="${qualityReviewToolController.archiveName}"/>
+		<property name="archiveUrlAlternative" value="${qualityReviewToolController.archive.alternative}"/>
+		<property name="archiveUrlAlternativeName" value="${qualityReviewToolController.archive.alternative.name}"/>
+		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
+		<property name="targetInstanceDao" ref="targetInstanceDao"/>
+		<property name="enableBrowseTool" value="${qualityReviewToolController.enableBrowseTool}"/>
+		<property name="enableAccessTool" value="${qualityReviewToolController.enableAccessTool}"/>
+		<property name="webArchiveTarget" value="${qualityReviewToolController.webArchiveTarget}"/>
+		
+	</bean>	
+	<bean id="showHopPathController" class="org.webcurator.ui.target.controller.ShowHopPathController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET</value>
+		</property>
+		<property name="harvestLogManager">
+			<ref bean="harvestLogManager"/>
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+	</bean>
+</beans>

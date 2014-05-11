@@ -1,0 +1,4 @@
+[code] [status] [seed] [redirect]
+301 CRAWLED http://freespace.virgin.net/kev.urwin http://freespace.virgin.net/kev.urwin/
+301 CRAWLED http://www.bugsquat.co.uk/ http://freespace.virgin.net/kev.urwin
+200 CRAWLED http://freespace.virgin.net/kev.urwin/

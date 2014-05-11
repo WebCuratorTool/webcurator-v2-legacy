@@ -1,0 +1,238 @@
+Sections
+-----------------
+* Introduction
+* Getting started with development
+* Build configuration files
+* Building the project
+* Running without an external web application container
+* Running WCT Core without an external database and web application container
+* Oracle database + Jetty
+* Changes to build process for previous developers
+* New to Maven?
+
+-----------------
+Introduction
+-----------------
+This project is now built using Maven.  The primary reasons for converting the project to use
+Maven were:
+
+* Only the maven tool is required for the build (as opposed to specific outdated versions of 
+		libraries (circa 2005) stored in separate tomcat folders)  
+* Smaller project size, faster checkout (sourceforge CVS is slow)
+* Setting up a new development environment was more complicated than necessary
+* Development documentation needs to be maintained
+* Unit tests are built into the build process
+* No tomcat installation required for development (using Maven jetty plugin)
+* No database installation required for development (using H2 in memory database)
+
+A maven command line installation is required to build the project.  Alternatively, eclipse 
+(m2e)and other popular Java IDEs support maven either natively or via plugins.
+
+
+A drawback of using Maven is that knowledge of Maven is required to modify the build, but
+no more so than Ant, and less so when working on standard projects.  Also, WCT being a 
+fairly normal, medium sized webapp, it does not need the high level of customisation 
+available when using Ant. 
+
+If you are not familiar with Maven, please check the "New to Maven?" section.
+
+
+-----------------
+Getting started with development
+-----------------
+
+Before starting, run the file "install_maven_dependencies.bat" in wct-parent to install the required 
+dependencies. These could not be located in central repositories at the time of writing.
+
+
+WCT Core requires a web application server and a database.  Both of these may be externally 
+provided (e.g. tomcat, mysql) or built-in versions provided by Maven plugins can be used to support those 
+features for development.
+
+See the section "Running without an external web application container" for further details.
+
+
+
+To use a standalone webapp container and database, follow the installation instructions for 
+the database of choice.  Refer to the system admin guide .pdf file in the docs folder. 
+See also the "Building the project" section of this document.
+
+
+-----------------
+Build configuration files
+-----------------
+
+There are several build configuration files - these are located in the "build" folders of each sub-project.  
+You may need to change various configuration settings in one of these files to make them work for your 
+specific environment.  The MySQL configuration should require minimal/no changes if using the 
+default installations.  The H2 configuration should require no changes to start.
+
+
+-----------------
+Building the project
+-----------------
+
+Run the command "mvn clean install -P<databaseType>" from the project folder, where <databaseType>
+is one of "mysql","oracle","postgres", as applicable.  The "h2" option is only intended for use with
+Jetty, and cannot be used to create the .war file with the current version of Hibernate.
+
+See Oracle section below if using the oracle profile.
+ 
+The war files are located in the "target" folder on completion.  These can be copied to the tomcat/webapps 
+folder if desired, please follow the installation instructions for completing the configuration.
+
+
+-----------------
+Running without an external web application container
+-----------------
+
+The Jetty plugin allows this project to be run without the need for tomcat.  This should
+of course only be used for development.
+
+Specify the following command line when starting all of the projects (note below for WCT Core):
+	mvn jetty:run -Dcore.port=8080 -Dagent.port=8081 -Ddas.port=8082 -P<databaseType>
+	
+Note that for wct-harvest-agent and wct-store, you will see a warning that a profile couldn't be activated.
+This is not important.  
+
+See the Oracle section below if using the oracle profile.
+
+The port values may be changed if necessary, however be sure to use the same port values when starting the
+projects.
+
+
+-----------------
+Running WCT Core without an external database and web application container
+-----------------
+
+To start WCT for the *first time* with no existing webapp container or database, the following 
+command will create the database and start WCT:
+
+	mvn jetty:run -Ph2 -Dcore.port=8080 -Dagent.port=8081 -Ddas.port=8082 -Dhbm2ddl.auto=create
+
+The bootstrap user will be created as part of this process.  Note that the tables are cleared using this 
+command.  If you need to start WCT again, use the following command to keep the existing
+database:
+
+	mvn jetty:run -Ph2 -Dcore.port=8080 -Dagent.port=8081 -Ddas.port=8082
+
+Note that the digital asset store and harvest agent do not need a database, so the -P option should not be 
+specified.
+
+  
+-----------------
+Oracle database + Jetty
+-----------------
+If using the Oracle database profile, the Oracle driver is required to run Jetty.  This driver is 
+not availabe via Maven repositories for licensing reasons - it needs to be downloaded and 
+manually installed.
+
+In general the steps are:
+1) Obtain the appropriate driver for your installation (see Oracle documentation)
+2) Install it into your maven repository
+3) Add a dependency in the pom.xml for the jetty plugin (refer to the mysql profile as a reference)
+
+More detailed instructions can be found via internet search engines.
+
+
+Note also that if you are installing a new database, you will need to create a tablespace called 
+"WCT_DATA" in order for database creation scripts to function as expected.  Since this is a database 
+specific configuration, it cannot be defaulted easily.
+
+
+-----------------
+Changes to build process for previous developers
+-----------------
+
+The project files have been moved to maven folders - src/main/java and src/test/java.  The 
+src-api and src-app folders have been merged into src/main/java.  This is part of the standard
+maven structure, see "New to Maven?" for more information.
+
+The cfg folder is now src/main/resources as per maven standard project structure.  The effort
+of moving the test resources in this way makes it not worth doing at this stage, so they are 
+intact.
+
+Because of the somewhat complicated configuration structure used in WCT, there are some 
+non-standard build files which are "filtered" to replace the property values 
+(e.g. @@SOME_THING@@).  These now use the standard Maven replacement style ${property}, 
+which also happens to be the way Spring configures properties.  This has the potential for
+confusion - please take care when making changes to filtering.
+The style of this filtering has not been changed to date as it is uncertain how the 
+configurations are used in live systems.  The changes however should be compatible with any 
+customisations to the configurations within installations. 
+
+Old and non-useful (to the general development community) build files are located in the 
+build/legacy project.
+
+XDoclet is, at the time of writing, still used to generate hibernate.cfg.xml and the .hbm.xml files.
+This is configured via the xdoclet-maven-plugin and the antrun plugin.  An external specific version
+of xdoclet is no longer required.
+
+The SQL is now generated as part of the standard build, instead of running a separate ant task.  It
+is located in the target/ folder after build. 
+
+The jar file versions have not changed, but the filenames have changed to contain the version number
+as per maven repositories.
+
+
+
+-----------------
+New to Maven?
+-----------------
+There are a lot of resources available on the internet for Maven - if the information you need
+isn't here, a quick internet search should help.  If you are familiar with Maven this section 
+may not be useful.
+
+Maven is supported by most recent IDEs - Eclipse/STS and IntelliJ IDEA either support it 
+natively or have plugins to enable support.
+
+Maven uses a particular project structure convention to alleviate the need to specify some 
+configuration.  This layout can be found here:
+http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html
+
+The rest of the configuration can be found in the pom.xml of the project.  WCT is a 
+"multi-module" project, and there is a pom.xml for each of the sub-projects as well as 
+the parent.  The parent (for the most part) defines resources etc which are common to all 
+of the sub-modules, as well as the which modules are children (and their build order).
+
+The two most relevant sections to read in the pom.xml are plugins and dependencies:  
+
+Dependencies are simply versioned libraries required either for compiling, running or 
+distributing the projects, and are downloaded from (and managed by) a central server, 
+rather than being distributed with the projects.  Maven alleviates some aspects of "jar hell" 
+by employing explicit versions of jars.
+
+Plugins allow customized features to be added to a project.  WCT uses several plugins to 
+build the .jar, .war and .zip files as well as extra development tools .  When a plugin 
+is part of a build, it has an "execution" which tells it which "phase" to execute in.  
+
+These phases can be found here:
+http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference
+
+Plugins which do not have an execution specified can only be run using the command line, for 
+example, Jetty (mvn jetty:run).
+
+Finally, maven has a feature called "filtering" where it tries to replace placeholders like 
+${core.port} with a property value that has been configured.  This is an optional feature 
+which is off by default, however WCT makes use of it for some of the build resources.  Any
+<resource> with a <filtering> value of "true" is filtered, and the properties are supplied 
+in two places:  the <properties> tag, and via the "properties-maven-plugin".  These 
+properties are also used to resolve these placeholders inside the pom.xml itself, e.g. 
+${databaseType}.
+
+
+Here are some useful maven commands for WCT:
+
+(in the wct-parent folder)
+Build all projects from scratch:  
+	mvn clean install -P<databaseType>
+Build all projects, skip tests:   
+	mvn clean install -P<databaseType> -DskipTests
+
+(in the sub-modules wct-core, wct-harvest-agent or wct-store)
+Build project from scratch:  
+	mvn clean install -P<databaseType>
+Build project, skip tests:   
+	mvn clean install -P<databaseType> -DskipTests
+Run jetty:				
+	mvn jetty:run -Dcore.port=8080 -Dagent.port=8081 -Ddas.port=8082 -P<databaseType>

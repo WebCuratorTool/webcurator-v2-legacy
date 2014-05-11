@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<aqaReport>
+<targetInstance found="91" harvestNumber="1" id="12345" missing="5">
+<missingElements>
+<element contentLength="1234" contentType="text/html" contentfile="100077.txt" statuscode="200" url="http://images.icnetwork.co.uk/robots.txt"/>
+<element contentLength="0" contentType="text/html" contentfile="100134.htm" statuscode="404" url="http://www.oldyardsrugby.co.uk/GenericErrorPage.htm?aspxerrorpath=/news/article.aspx"/>
+<element contentLength="0" contentType="text/html" contentfile="100189.786" statuscode="404" url="http://www.oldyardsrugby.co.uk/5.786"/>
+<element contentLength="0" contentType="text/html" contentfile="100251.txt" statuscode="404" url="http://community.birminghampost.net/robots.txt"/>
+<element contentLength="0" contentType="text/html" contentfile="100352" statuscode="404" url="http://www.oldyardsrugby.co.uk/images/marker"/>
+</missingElements>
+<foundElements>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/milonic/images/multidarkgreen.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/milonic/menu_data.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/34/1041.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=106"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/whpainter.jpg"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/minis-and-juniors/officers.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=113"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/css/oy_main.css"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/34/1035.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/layout/greenGradient.jpg"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=105"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/css/print.css"/>
+<element statuscode="200" url="http://maps.gstatic.com/intl/en_ALL/mapfiles/193c/maps2.api/main.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/34/1037.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/forward.jpg"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/layout/800x100banner.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/homedir.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/emcevilly.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=128"/>
+<element statuscode="200" url="http://images.icnetwork.co.uk/collections/weather_icons_header/8.png"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/minis-and-juniors/u11fixtures.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=112"/>
+<element statuscode="200" url="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAOIyPj7V_0QDcsuoophDhPBQAnlBFWD6ukwYovm1a9r1vxIqxnxRLOIJy_Bl0mV7ZLP45vv8YTljHNw"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=109"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/minis-and-juniors/u9fixtures.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=126"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/senior-rugby/firstFixtures.aspx?season_id=1"/>
+<element statuscode="200" url="http://images.icnetwork.co.uk/collections/css_r25_livpost/sprites.png"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/layout/navSection.png"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=125"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/hv_logo.jpg"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=117"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=102"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/home.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=103"/>
+<element statuscode="200" url="http://s7.addthis.com/js/152/addthis_widget.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=111"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/SOALogo.jpg"/>
+<element statuscode="200" url="http://maps.google.com/maps/vp?spn=0.03143,0.085831&amp;z=13&amp;key=ABQIAAAAOIyPj7V_0QDcsuoophDhPBQAnlBFWD6ukwYovm1a9r1vxIqxnxRLOIJy_Bl0mV7ZLP45vv8YTljHNw&amp;mapclient=jsapi&amp;vp=52.388,-1.8488"/>
+<element statuscode="200" url="http://www.birminghampost.net/tm_datasource=birmpost%26method=r2-js_half_colour1%26mode=browse%26objectid=20438640%26jsrc=1-name_page.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/about/contact.aspx"/>
+<element statuscode="200" url="http://community.birminghampost.net/ver1.0/SiteLifeProxy"/>
+<element statuscode="200" url="http://images.icnetwork.co.uk/collections/css_r25_all/transpBlack.png"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/34/1038.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=108"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=122"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/manguard.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=101"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/markerA.png"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/css/oy_ie5win.css"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/33/1095.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/milonic/mmenudom.js"/>
+<element statuscode="200" url="http://community.birminghampost.net/ver1.0/Direct/DirectProxy"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=127"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/minis-and-juniors/playerdevelopment.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=100"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=119"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=110"/>
+<element statuscode="200" url="http://images.icnetwork.co.uk/css/icnetwork/r2_5_master.css"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gmaps.htm"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=124"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/senior-rugby/secondfixtures.aspx"/>
+<element statuscode="200" url="http://images.icnetwork.co.uk/js/xmlHttp.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/5/105.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/layout/footer_bg.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=107"/>
+<element statuscode="200" url="http://images.icnetwork.co.uk/css/birminghampost/r2_5_styles.css"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/milonic/milonic_src.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/ehsmithLogo.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/layout/posted.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/minis-and-juniors/default.aspx"/>
+<element statuscode="200" url="http://maps.gstatic.com/intl/en_ALL/mapfiles/transparent.png"/>
+<element statuscode="200" url="http://maps.gstatic.com/intl/en_ALL/mapfiles/marker.png"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=104"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/milonic/images/multimustard.gif"/>
+<element statuscode="200" url="http://ad.uk.doubleclick.net/robots.txt"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/css/oy_base.css"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/sponsors/harrislogo.jpg"/>
+<element statuscode="200" url="http://pagead2.googlesyndication.com/robots.txt"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=118"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=123"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/senior-rugby/firstFixtures.aspx?season_id=3"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=116"/>
+<element statuscode="200" url="http://maps.gstatic.com/intl/en_ALL/mapfiles/193c/maps2.api/mod_stats.js"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/milonic/images/multimaroon.gif"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/gallery/photos/33/1096.aspx"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=114"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=115"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/senior-rugby/firstFixtures.aspx?season_id=2"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/news/article.aspx?article_id=129"/>
+<element statuscode="200" url="http://www.oldyardsrugby.co.uk/images/feed.gif"/>
+</foundElements>
+</targetInstance>
+</aqaReport>

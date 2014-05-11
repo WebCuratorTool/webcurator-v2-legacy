@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wct-package" default="package">
+    	<property file="./build.properties" />
+	<property file="${root}/build/version.properties" />    
+	<property name="packtarget" value="${root}/target-package"/>
+	<property name="wcttarget" value="${root}/target"/>
+	<property name="dastarget" value="${das.root}/target"/>
+	<property name="hatarget" value="${ha.root}/target"/>
+	<property name="docs" value="${root}/docs"/>
+	<property name="db" value="${root}/db"/>
+	<description>
+            WCT Package ANT Build file 
+    </description>
+	
+	<target name="clean">
+		<delete dir="${packtarget}"/>		
+    </target>
+	
+	<target name="prepare">
+	    <mkdir dir="${packtarget}"/>
+		<mkdir dir="${packtarget}/war"/>
+		<mkdir dir="${packtarget}/docs"/>
+		<mkdir dir="${packtarget}/docs/javadocs"/>
+		<mkdir dir="${packtarget}/sql"/>
+		<mkdir dir="${packtarget}/upgrade"/>
+		<mkdir dir="${packtarget}/etc"/>
+	</target>
+
+	<target name="deploy">
+		<ant antfile="${root}/build/build.xml" target="war-with-sql" inheritall="false"/>		
+		<ant antfile="${ha.root}/build/build.xml" target="war" inheritall="false"/>
+		<ant antfile="${rosetta_module.root}/build/build.xml" target="deploy" inheritall="false"/>
+		<ant antfile="${das.root}/build/build.xml" target="war" inheritall="false"/>
+		<ant antfile="${root}/build/build.xml" target="javadoc" inheritall="false"/>
+		<copy todir="${packtarget}/war">
+		  	<fileset dir="${wcttarget}" includes="*.war"/>
+			<fileset dir="${dastarget}" includes="*.war"/>
+			<fileset dir="${hatarget}" includes="*.war"/>
+		</copy>
+		<copy todir="${packtarget}/docs">
+			<fileset dir="${root}/docs" includes="*.pdf"/>
+			<fileset dir="${root}/docs" includes="license.txt"/>
+		</copy>
+		<copy todir="${packtarget}/etc">
+			<fileset dir="${root}/etc" includes="*.jar"/>
+		</copy>
+		<copy todir="${packtarget}/sql">
+			<fileset dir="${root}/db/setup" includes="*.sql"/>
+			<fileset dir="${root}/db/sql" includes="*.sql">	
+				<exclude name="wct-schema-export-*.sql"/>
+			</fileset>
+		</copy>
+		<copy todir="${packtarget}/upgrade">
+			<fileset dir="${root}/db/upgrade" includes="upgrade*.sql" />
+		</copy>
+		<copy todir="${packtarget}/docs/javadocs">
+			<fileset dir="${root}/docs/javadoc" includes="**/*"/>
+		</copy>
+	</target>
+
+	<target name="zip-compress">
+		<tar destfile="${packtarget}/wct-package-bin-${wct.application.version}.tar.gz" compression="gzip" basedir="${packtarget}">
+		</tar>
+		<zip destfile="${packtarget}/wct-package-bin-${wct.application.version}.zip">
+			<fileset dir="${packtarget}" excludes="**/*.tar.gz"/>
+		</zip>		
+	</target>
+		
+	<target name="package" depends="clean,prepare, deploy, zip-compress"/>
+
+</project>

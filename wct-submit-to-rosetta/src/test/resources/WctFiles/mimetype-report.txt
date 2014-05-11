@@ -1,0 +1,11 @@
+[#urls] [#bytes] [mime-types]
+157 1823693 text/html
+85 684768 image/gif
+39 31662647 application/pdf
+23 196106 image/jpeg
+8 8026 text/css
+4 23816 image/png
+3 166 text/dns
+1 53625261 application/x-zip-compressed
+1 1422 image/x-icon
+1 328 text/plain

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <globalConfiguration>
+  <parameter name="sendMultiRefs" value="true"/>
+  <parameter name="disablePrettyXML" value="true"/>
+  <parameter name="adminPassword" value="admin"/>
+  <parameter name="attachments.Directory" value="${attach.dir}"/>
+  <parameter name="dotNetSoapEncFix" value="true"/>
+  <parameter name="enableNamespacePrefixOptimization" value="false"/>
+  <parameter name="sendXMLDeclaration" value="true"/>
+  <parameter name="sendXsiTypes" value="true"/>
+  <parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <requestFlow>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="session"/>
+   </handler>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="request"/>
+    <parameter name="extension" value=".jwr"/>
+   </handler>
+  </requestFlow>
+ </globalConfiguration>
+ <handler name="soapmonitor" type="java:org.apache.axis.handlers.SOAPMonitorHandler">
+  <parameter name="wsdlURL" value="/axis/SOAPMonitorService-impl.wsdl"/>
+  <parameter name="namespace" value="http://tempuri.org/wsdl/2001/12/SOAPMonitorService-impl.wsdl"/>
+  <parameter name="serviceName" value="SOAPMonitorService"/>
+  <parameter name="portName" value="Demo"/>
+ </handler>
+ <handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+ <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+ 
+ <beanMapping qname="ns:HarvestResourceDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.HarvestResourceDTO"/>  
+ <beanMapping qname="ns:ArcHarvestResourceDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestResourceDTO"/>  
+ <beanMapping qname="ns:ArcHarvestFileDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestFileDTO"/>  
+ <beanMapping qname="ns:ArcHarvestResultDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestResultDTO"/>  
+ <beanMapping qname="ns:ArcHarvestResourceDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestResourceDTO"/>  
+ <beanMapping qname="ns:Header" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.apache.commons.httpclient.Header"/>  
+ <beanMapping qname="ns:HeaderElement" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.apache.commons.httpclient.HeaderElement"/>  
+ <beanMapping qname="ns:NameValuePair" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.apache.commons.httpclient.NameValuePair"/>  
+ <beanMapping qname="ns:CustomDepositFormCriteriaDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.CustomDepositFormCriteriaDTO"/>  
+ <beanMapping qname="ns:CustomDepositFormResultDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.CustomDepositFormResultDTO"/>  
+ 
+ <beanMapping qname="ns:LogFilePropertiesDTO" xmlns:ns="urn:LogReader" languageSpecificType="java:org.webcurator.domain.model.core.LogFilePropertiesDTO"/>  
+ 
+ <!--  
+  <typeMapping 
+    xmlns:ns="urn:LogReader"
+    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" 
+    qname="ns:LogFilePropertiesDTO" 
+    type="java:org.webcurator.domain.model.core.LogFilePropertiesDTO[]" 
+    serializer="org.apache.axis.encoding.ser.ArraySerializerFactory" 
+    deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory" 
+ /> 
+  --> 
+ 
+  <typeMapping 
+    xmlns:ns="urn:WebCuratorTool"
+    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" 
+    qname="ns:DataHandler" 
+    type="java:javax.activation.DataHandler" 
+    serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" 
+    deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" 
+ /> 
+        
+ <typeMapping
+    xmlns:ns="urn:ArcDigitalAssetStoreService"
+    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+    qname="ns:ArrayOfString"
+    type="java:java.lang.String[]"
+    serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+    deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+ />        
+ 
+<service name="urn:DigitalAssetStore" provider="java:RPC">
+    <parameter name="allowedMethods" value="*"/>
+    <parameter name="className" value="org.webcurator.core.store.arc.ArcDigitalAssetStoreSOAPService"/>
+</service>
+    
+ <service name="urn:LogReader" provider="java:RPC">
+  <parameter name="className" value="org.webcurator.core.reader.LogReaderSOAPService"/>
+  <parameter name="allowedMethods" value="*"/>
+ </service>   
+
+ <transport name="http">
+  <requestFlow>
+   <handler type="URLMapper"/>
+   <handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+  </requestFlow>
+  <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+  <parameter name="qs.list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs.method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs.wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+ </transport>
+ <transport name="local">
+  <responseFlow>
+   <handler type="LocalResponder"/>
+  </responseFlow>
+ </transport>
+</deployment>

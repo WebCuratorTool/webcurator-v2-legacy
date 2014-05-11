@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd">
+    <mets:metsHdr CREATEDATE="2007-06-14T08:32:07">
+        <mets:agent ROLE="DISSEMINATOR" TYPE="INDIVIDUAL">
+            <mets:name>G. Lee</mets:name>
+        </mets:agent>
+        <mets:agent ROLE="CREATOR" TYPE="INDIVIDUAL">
+            <mets:name>G. Lee</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:dmdSec ID="DMD7962628" CREATED="2007-06-14T08:32:07" STATUS="current">
+        <mets:mdWrap MDTYPE="DC">
+            <mets:xmlData>
+                <dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/">
+                    <dc:title></dc:title>
+                    <dc:creator></dc:creator>
+                    <dc:subject></dc:subject>
+                    <dc:description></dc:description>
+                    <dc:publisher></dc:publisher>
+                    <dc:contributor></dc:contributor>
+                    <dc:type></dc:type>
+                    <dc:format></dc:format>
+                    <dc:identifier></dc:identifier>
+                    <dc:source></dc:source>
+                    <dc:language></dc:language>
+                    <dc:relation></dc:relation>
+                    <dc:coverage></dc:coverage>
+                    <dc:identifier></dc:identifier>
+                    <dc:identifier></dc:identifier>
+                </dc:dc>
+                <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:Target>
+                        <wct:ReferenceNumber>1005119</wct:ReferenceNumber>
+                        <wct:Name>Growth and Innovation</wct:Name>
+                        <wct:Description>Highlights policies and policy development work in the four action areas
+                            outlined in the Growth and Innovation Framework report Growing an Innovative New Zealand
+                        </wct:Description>
+                        <wct:Seeds>
+                            <wct:Seed>
+                                <wct:SeedURL>http://www.gif.med.govt.nz/</wct:SeedURL>
+                                <wct:SeedType>Primary</wct:SeedType>
+                            </wct:Seed>
+                        </wct:Seeds>
+                    </wct:Target>
+                    <wct:Groups>
+                    </wct:Groups>
+                </wct:wct>
+                <mets:mdRef>order.xml</mets:mdRef>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="AMD7962628">
+        <mets:techMD ID="TMD7962628">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                        <wct:TargetInstance>
+                            <wct:Crawl>
+                                <wct:StartDate>2007-06-01 20:00:03.419</wct:StartDate>
+                                <wct:Duration>1809049</wct:Duration>
+                                <wct:CaptureSystem>Heritrix 1.8.0</wct:CaptureSystem>
+                                <wct:URLs>
+                                    <wct:Downloaded>1369</wct:Downloaded>
+                                    <wct:Failed>0</wct:Failed>
+                                </wct:URLs>
+                                <wct:AverageBandwidth>19.0</wct:AverageBandwidth>
+                                <wct:DocumentProcessRate>0.7567716970702045</wct:DocumentProcessRate>
+                                <wct:DownloadedDataSize>37039535</wct:DownloadedDataSize>
+                            </wct:Crawl>
+                            <wct:Annotations>
+                                <wct:Annotation>
+                                    <wct:Date>2007-06-05</wct:Date>
+                                    <wct:Username>LeeG</wct:Username>
+                                    <wct:Note>A number of publications are on external links and are therefore not
+                                        included.
+                                    </wct:Note>
+                                </wct:Annotation>
+                            </wct:Annotations>
+                        </wct:TargetInstance>
+                    </wct:wct>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:techMD>
+        <mets:rightsMD ID="RMD7962628">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                        <wct:Permissions>
+                            <wct:Permission>
+                                <wct:State>Granted</wct:State>
+                                <wct:StartDate>2006-08-12</wct:StartDate>
+                                <wct:EndDate></wct:EndDate>
+                                <wct:HarvestAuthorisation>
+                                    <wct:Name>NZ E-Legal Deposit</wct:Name>
+                                    <wct:Description>All websites in the New Zealand domain acquired under legal deposit
+                                        legislation
+                                    </wct:Description>
+                                    <wct:OrderNumber></wct:OrderNumber>
+                                    <wct:IsPublished>false</wct:IsPublished>
+                                </wct:HarvestAuthorisation>
+                                <wct:AccessStatus>Open (unrestricted) access</wct:AccessStatus>
+                                <wct:SpecialRequirements></wct:SpecialRequirements>
+                                <wct:OpenAccessDate></wct:OpenAccessDate>
+                                <wct:CopyrightStatement></wct:CopyrightStatement>
+                                <wct:CopyrightURL></wct:CopyrightURL>
+                                <wct:FileReference></wct:FileReference>
+                                <wct:AuthorisingAgent>
+                                    <wct:Name>New Zealand Government</wct:Name>
+                                    <wct:Contact>e-Publications Librarian</wct:Contact>
+                                </wct:AuthorisingAgent>
+                                <wct:Paterns>
+                                    <wct:Pattern>http://*.nz/*</wct:Pattern>
+                                </wct:Paterns>
+                                <wct:SeedsURLs>
+                                    <wct:SeedURL>http://www.gif.med.govt.nz/</wct:SeedURL>
+                                </wct:SeedsURLs>
+                            </wct:Permission>
+
+                        </wct:Permissions>
+                    </wct:wct>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:digiprovMD ID="DPMD7962628">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                        <wct:TargetInstance>
+                            <wct:HarvestResult>
+                                <wct:Creator>LeeG</wct:Creator>
+                                <wct:CreationDate>2007-06-01</wct:CreationDate>
+                                <wct:ProvenanceNote>Original Harvest</wct:ProvenanceNote>
+                            </wct:HarvestResult>
+                            <wct:Owner>
+                                <wct:UID>LeeG</wct:UID>
+                                <wct:Agency>National Library of New Zealand</wct:Agency>
+                            </wct:Owner>
+                            <wct:ModificationType></wct:ModificationType>
+                            <wct:ModiicationNote></wct:ModiicationNote>
+                        </wct:TargetInstance>
+                        <wct:Target>
+                            <wct:ObjectType>Target</wct:ObjectType>
+
+                            <wct:ProfileNote></wct:ProfileNote>
+
+                            <wct:HarvestType>Subject</wct:HarvestType>
+                            <wct:SelectionDate>2007-06-01</wct:SelectionDate>
+                            <wct:SelectionType></wct:SelectionType>
+                            <wct:SeclectionNote>TPWD. W</wct:SeclectionNote>
+                            <wct:EvaluationNote>One off harvest - website no longer current, but has useful content.
+                            </wct:EvaluationNote>
+
+                            <wct:Annotations></wct:Annotations>
+                        </wct:Target>
+                    </wct:wct>
+                    <vCard:VCard xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+                        <vCard:FN>Gillian Lee</vCard:FN>
+                        <vCard:N>
+                            <vCard:FAMILY>Lee</vCard:FAMILY>
+                            <vCard:GIVEN>Gillian</vCard:GIVEN>
+                            <vCard:PREFIX></vCard:PREFIX>
+                        </vCard:N>
+                        <vCard:EMAIL>
+                            <vCard:WORK>Gillian.Lee@natlib.govt.nz</vCard:WORK>
+                        </vCard:EMAIL>
+                        <vCard:ORG>
+                            <vCard:Orgname>National Library of New Zealand</vCard:Orgname>
+                            <vCard:EMAIL></vCard:EMAIL>
+                        </vCard:ORG>
+                        <vCard:URL></vCard:URL>
+                        <vCard:LOGO></vCard:LOGO>
+                        <vCard:UID>LeeG</vCard:UID>
+                    </vCard:VCard>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp ADMID="AMD7962628" ID="FGRP001">
+            <mets:fileGrp ID="FGRP002" USE="HOME DIRECTORY">
+                <mets:file ID="FILE001" ADMID="AMD7962628" MIMETYPE="text/xml" SIZE="10432"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="4899f0698bff4ca70e0750cdebc9f13f" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./order.xml"/>
+                </mets:file>
+            </mets:fileGrp>
+            <mets:fileGrp ID="FGRP003" USE="ARCHIVE">
+                <mets:file ID="FILE002" ADMID="AMD7962628" MIMETYPE="application/octet-stream" SIZE="24996602"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="3491aaece95ebc05f49df3b09439f4f2" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./WCT-20070601080002-00000-skynet.arc"/>
+                </mets:file>
+                <mets:file ID="FILE003" ADMID="AMD7962628" MIMETYPE="application/octet-stream" SIZE="12201142"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="2b962920b6f2b542cac57f681aa0eaac" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./WCT-20070601080703-00001-skynet.arc"/>
+                </mets:file>
+            </mets:fileGrp>
+            <mets:fileGrp ID="FGRP004" USE="LOGS">
+                <mets:file ID="FILE004" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="347469"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="993834c7f73a8909f07dac0a61a6e969" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./crawl.log"/>
+                </mets:file>
+                <mets:file ID="FILE005" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="16136"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="95f432e710b2e10daf4dbe30b1e54325" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./progress-statistics.log"/>
+                </mets:file>
+            </mets:fileGrp>
+            <mets:fileGrp ID="FGRP005" USE="REPORTS">
+                <mets:file ID="FILE006" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="28" CREATED="2007-06-01T20:30:47"
+                           CHECKSUM="c02d82e566da7a6f64055d35dcb852dd" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./seeds.txt"/>
+                </mets:file>
+                <mets:file ID="FILE007" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="346"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="e79606492183a9a0b0ba1f4ab35b9a93" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./hosts-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE008" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="207"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="a19a7d91eb095edfe892b9b09654b458" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./mimetype-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE009" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="51" CREATED="2007-06-01T20:30:47"
+                           CHECKSUM="4ca9c931088fe0bbf68886c0983c8b85" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./responsecode-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE010" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="74" CREATED="2007-06-01T20:30:47"
+                           CHECKSUM="d9a5327916c834346c8cb6b2d2416c8c" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./seeds-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE011" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="266"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="ab95805f61b3cc5e3adb5b4337c5d120" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./crawl-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE012" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="1089"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="9b3fe4d0fb1152f5eddf1a245d39120d" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./processors-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE013" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="637"
+                           CREATED="2007-06-01T20:30:47" CHECKSUM="5ef86c4105612d401dee93b2971f26d6" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./crawl-manifest.txt"/>
+                </mets:file>
+                <mets:file ID="FILE014" ADMID="AMD7962628" MIMETYPE="text/plain" SIZE="15" CREATED="2007-06-01T20:30:47"
+                           CHECKSUM="2f264f7f7b2bb1e8c3da0bfb2f7a78ed" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./frontier-report.txt"/>
+                </mets:file>
+            </mets:fileGrp>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap>
+        <mets:div ADMID="AMD7962628" DMDID="DMD7962628" LABEL="Home Directory">
+            <mets:fptr FILEID="FILE001"/>
+            <mets:fptr FILEID="FILE002"/>
+            <mets:fptr FILEID="FILE003"/>
+            <mets:fptr FILEID="FILE004"/>
+            <mets:fptr FILEID="FILE005"/>
+            <mets:fptr FILEID="FILE006"/>
+            <mets:fptr FILEID="FILE007"/>
+            <mets:fptr FILEID="FILE008"/>
+            <mets:fptr FILEID="FILE009"/>
+            <mets:fptr FILEID="FILE010"/>
+            <mets:fptr FILEID="FILE011"/>
+            <mets:fptr FILEID="FILE012"/>
+            <mets:fptr FILEID="FILE013"/>
+            <mets:fptr FILEID="FILE014"/>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>

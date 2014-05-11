@@ -1,0 +1,7 @@
+[#urls] [#bytes] [host] [#robots] [#remaining]
+44 1770117 freespace.virgin.net 0 0 
+4 237 dns: 0 0 
+2 748 adserver.virgin.net 0 0 
+2 1557 www.bugsquat.co.uk 0 0 
+2 3393 www.virgin.net 0 0 
+0 0 dns: 0 0 

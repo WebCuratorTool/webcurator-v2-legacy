@@ -1,0 +1,4083 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dnx_profile>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">generalIECharacteristics</key>
+	<key id="description">IE attributes </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">submissionReason</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">status</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">IEStatus</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">statusDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">IEEntityType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">IEEntityType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">Version</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UserDefinedA</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UserDefinedB</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UserDefinedC</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">generalRepCharacteristics</key>
+	<key id="description">Rep attributes </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">label</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">preservationType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">PreservationType</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">usageType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">UsageType</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">representationEntityType</key>
+		<key id="description">Defines the semantics of the structure of the files in the Representation</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">representationEntityType</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">contentType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">contextType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">hardwareUsed</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">physicalCarrierMedia</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">derivedFromId</key>
+		<key id="description">Used in migration and enrichment tasks - used to identify the source representation which was used to derive this representation</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">deliveryPriority</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">orderingSequence</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">DigitalOriginal</key>
+		<key id="description">Used to mark a Preservation Master as being the Digital Original of the IE</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Boolean</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">RevisionNumber</key>
+		<key id="description">Used to sequence the set of Master Representations.  The highest revision number is by definition the latest master</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">RepresentationCode</key>
+		<key id="description">An code that categorizes a representation on how it can be used in delivery and external systems</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">RepresentationCode</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">TaskID</key>
+		<key id="description">An identifier of a certain type of derivative copy, used to manage it when a task operates on an IE</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:OriginalName</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">RepresentationOriginalName</key>
+		<key id="description">The name of the object as submitted to or harvested by the repository, before any renaming by the repository</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UserDefinedA</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UserDefinedB</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UserDefinedC</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">generalFileCharacteristics</key>
+	<key id="description">File attributes</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">label</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">note</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileCreationDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileModificationDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">FileEntityType</key>
+		<key id="description">Sub Format (GeoTiff)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">FileEntityType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectCharacteristics.compositionLevel</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">compositionLevel</key>
+		<key id="description">An indication of whether the object is subject to one or more processes of decoding or unbundling.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:storage.contentLocation.contentLocationType </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileLocationType</key>
+		<key id="description">The means of referencing the location of the content.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">fileLocationType</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:storage.contentLocation.contentLocationValue </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileLocation</key>
+		<key id="description">The reference to the location of the content used by the storage system.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:OriginalName</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileOriginalName</key>
+		<key id="description">The name of the object as submitted to or harvested by the repository, before any renaming by the repository</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileOriginalPath</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileOriginalID</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileExtension</key>
+		<key id="description">Normalized and definitive file extension for the file</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">SubmissionFormatFileExtensions</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileMIMEType</key>
+		<key id="description">definitive mime type for the file</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">MimeTypes</key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectCharacteristics.size</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">fileSizeBytes</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:storage.storageMedium </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">storageID</key>
+		<key id="description">Refernce to: The physical medium on which the object is stored (e.g., magnetic tape, hard disk, CD-ROM, DVD).</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">streamRefId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">formatLibraryId</key>
+		<key id="description">Reference to the file format library</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">riskLibraryIdentifiers</key>
+		<key id="description">List of risks associated with the file format</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission">ReadOnly</key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">objectCharacteristics</key>
+	<key id="description">attributes applicable to all types</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectCategory</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">objectType</key>
+		<key id="description">INTELLECTUAL_ENTITY, REPRESENTATION, FILE</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">objectType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">parentID</key>
+		<key id="description">Link to higher level object (File -> Rep, Rep -> IE)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">groupID</key>
+		<key id="description">Link between objects on the same level but that cross over representation boundaries</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">creationDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">createdBy</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">modificationDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">modifiedBy</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">owner</key>
+		<key id="description">consortial ownership path</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">CMS</key>
+	<key id="description">Collection Management System</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">system</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">ExternalSystems</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">recordId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">mId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">webHarvesting</key>
+	<key id="description">Metadata of Web Harvesting (NLNZ)</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">primarySeedURL</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">WCTIdentifier</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">targetName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">group</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">harvestDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">harvestTime</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">internalIdentifier</key>
+	<key id="description">The DPS Identifiers</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">internalIdentifierType@@internalIdentifierValue</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">internalIdentifierType</key>
+		<key id="description">PID, UUID, SIPID, DepositSetID</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">internalIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">internalIdentifierValue</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">objectIdentifier</key>
+	<key id="description">A designation used to uniquely identify the object within the preservation repository system in which it is stored.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">objectIdentifierType@@objectIdentifierValue</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectIdentifier.objectIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">objectIdentifierType</key>
+		<key id="description">A designation of the domain within which the object identifier is unique.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">objectIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectIdentifier.objectIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">objectIdentifierValue</key>
+		<key id="description">The value of the objectIdentifier.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">preservationLevel</key>
+	<key id="description">preservation Level </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">preservationLevelValue@@preservationLevelRole</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:preservationLevel.preservationLevelValue </key>
+		<key id="mandatoryForStaging">!</key>
+		<key id="name">preservationLevelValue</key>
+		<key id="description">A value indicating the set of preservation functions expected to be applied to the object (e.g. bit-level, full)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:preservationLevel.preservationLevelRole </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">preservationLevelRole</key>
+		<key id="description">A value indicating the context in which a set of preservation options is applicable (e.g. requirement, intention,capability)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:preservationLevel.preservationLevelRationale </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">preservationLevelRationale</key>
+		<key id="description">The reason a particular preservationLevelValue was applied to the object.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:preservationLevel.preservationLevelDateAssigned</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">preservationLevelDateAssigned</key>
+		<key id="description">The date, or date and time, when a particular preservationLevelValue was assigned to the object.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">significantProperties</key>
+	<key id="description">significant Properties </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">significantPropertiesType@@significantPropertiesValue</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:significantProperties.significantPropertiesType </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">significantPropertiesType</key>
+		<key id="description">The aspect, facet, or attribute of an object about which significant properties are being described (e.g. content, structure, behavior, page count,page width)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">significantPropertiesType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:significantProperties.significantPropertiesValue </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">significantPropertiesValue</key>
+		<key id="description">Description of the characteristics of a particular object subjectively be important to maintain through preservation actions.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:significantProperties.significantPropertiesExtension </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">significantPropertiesExtension</key>
+		<key id="description">A container to include semantic units defined outside of PREMIS for significant properties.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">fileFixity</key>
+	<key id="description">The File fixity</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">fixityType@@fixityValue</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectCharacteristics.fixity.messageDigestOriginator</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">agent</key>
+		<key id="description">Agent ID of file fixity utility (e.g. JAVA SE v5) if done internally or an externally provided agent information</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectCharacteristics.fixity.messageDigestAlgorithm</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">fixityType</key>
+		<key id="description">The specific algorithm used to construct the message digest for the digital object (e.g. MD5, CRC32,SHA1)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">fixityType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:objectCharacteristics.fixity.messageDigest</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">fixityValue</key>
+		<key id="description">The output of the message digest algorithm.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">fileFormat</key>
+	<key id="description">The File format</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">formatRegistryId@@formatVersion</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">agent</key>
+		<key id="description">Agent ID of file format utility (e.g. DROID v1 definition file v17)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.format.formatRegistry.formatRegistryName </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">formatRegistry</key>
+		<key id="description">Type of Format Library record (e.g. PRONOM)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.format.formatRegistry.formatRegistryKey </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">formatRegistryId</key>
+		<key id="description">The Registry ID </key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.format.formatRegistry.formatRegistryRole</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">formatRegistryRole</key>
+		<key id="description">The purpose or expected use of the registry (e.g. Specification, Validation profile) - format identification</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.format.formatDesignation.formatName</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">formatName</key>
+		<key id="description">A designation of the format of the file or bitstream.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.format.formatDesignation.formatVersion</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">formatVersion</key>
+		<key id="description">The version of the format named in formatName.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.format.formatNote</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">formatNote</key>
+		<key id="description">Additional information about format (e.g. tentative identification, multiple format identifications found) - Use DROID Warning</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">exactFormatIdentification</key>
+		<key id="description">Specific Output of DROID</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Boolean</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">mimeType</key>
+		<key id="description">Specific Output of DROID</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">fileVirusCheck</key>
+	<key id="description">The File Virus check</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">agent</key>
+		<key id="description">Agent ID of file virus check utility (e.g. McAffe v32, def file 98))</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">status</key>
+		<key id="description">pass/fail</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">content</key>
+		<key id="description">the descriptive output of the virus check utility</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">fileValidation</key>
+	<key id="description">The File validation utility (jhove)</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">agent</key>
+		<key id="description">Agent ID of file format utility (e.g.JHOVE v1.1)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">status</key>
+		<key id="description">pass/fail</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">size</key>
+		<key id="description">size in bytes of file</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.Format.FormatDesignation.formatName</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">format</key>
+		<key id="description">A designation of the format of the file or bitstream. (e.g. Tiff)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.Format.FormatDesignation.formatVersion</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">version</key>
+		<key id="description">The version of the format named in format. (e.g. 1.0)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">mimeType</key>
+		<key id="description">Specific Output of JHOVE/NLNZ</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">profile</key>
+		<key id="description">???</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">isValid</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Boolean</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">isWellFormed</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Boolean</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">vsOutcome</key>
+	<key id="description">The Validation Stack results - one record per Check</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">type@@result</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">checkDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">1</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">vsAgent</key>
+		<key id="description">Same agent as in output of specific sections</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">1</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">type</key>
+		<key id="description">Fixity, Virus, Validation etc.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">vsOutcomeType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">result</key>
+		<key id="description">pass, fail</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">vsResult</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">resultDetails</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">vsEvaluation</key>
+		<key id="description">pass, fail</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">vsEvaluation</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">vsEvaluationDetails</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">creatingApplication</key>
+	<key id="description">Information about the application that created the object.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">creatingApplicationName@@creatingApplicationVersion</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.creatingApplication.creatingApplicationName</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">creatingApplicationName</key>
+		<key id="description">A designation for the name of the software program that created the object (e.g. MSWord)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.creatingApplication.creatingApplicationVersion</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">creatingApplicationVersion</key>
+		<key id="description">The version of the software program that created the object.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.creatingApplication.dateCreatedByApplication</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">dateCreatedByApplication</key>
+		<key id="description">The actual or approximate date and time the object was created.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.creatingApplication.creatingApplicationExtension </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">creatingApplicationExtension</key>
+		<key id="description">Creating application information using semantic units defined external to PREMIS.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">inhibitors</key>
+	<key id="description">Features of the object intended to inhibit access, use, or migration.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">inhibitorType@@inhibitorTarget</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.inhibitors.inhibitorType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">inhibitorType</key>
+		<key id="description"> The inhibitor method employed.(e.g. DES, PGP, Blowfish Password protection)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">inhibitorType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.inhibitors.inhibitorTarget</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">inhibitorTarget</key>
+		<key id="description">The content or function protected by the inhibitor. (All content,Function: Play,Function: Print)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.inhibitors.inhibitorKey</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">inhibitorKey</key>
+		<key id="description">The decryption key or password.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">objectCharacteristicsExtension</key>
+	<key id="description">A container to include semantic units defined outside of PREMIS.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:ObjectCharacteristics.objectCharacteristicsExtension </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">objectCharacteristicsExtension</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">environment</key>
+	<key id="description">Hardware/software combinations supporting use of the object.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">environmentCharacteristic@@environmentPurpose</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.environmentCharacteristic</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">environmentCharacteristic</key>
+		<key id="description">An assessment of the extent to which the described environment supports its purpose. (e.g. recommended, minimum)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.environmentPurpose</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">environmentPurpose</key>
+		<key id="description">The use(s) supported by the specified environment (e.g. render, edit)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.environmentNote</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">environmentNote</key>
+		<key id="description">Additional information about the environment.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">environmentDependencies</key>
+	<key id="description">Information about a non-software component or associated file needed in order to use or render the representation or file, for example, a schema, DTD, or an entity file declaration.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">dependencyName</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyName</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">dependencyName</key>
+		<key id="description">A designation for a component or associated file needed by the representation or file.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyIdentifier.dependencyIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">dependencyIdentifierType1</key>
+		<key id="description">A designation of the domain in which the identifier of the dependent resource is unique. (e.g. URI)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">dependencyIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyIdentifier.dependencyIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">dependencyIdentifierValue1</key>
+		<key id="description">The value of the dependencyIdentifier. (e.g. http://www.teic.org/P4X/DTD/teicorp2.dtd</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyIdentifier.dependencyIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">dependencyIdentifierType2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">dependencyIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyIdentifier.dependencyIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">dependencyIdentifierValue2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyIdentifier.dependencyIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">dependencyIdentifierType3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">dependencyIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.dependency.dependencyIdentifier.dependencyIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">dependencyIdentifierValue3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">environmentSoftware</key>
+	<key id="description">Software required to render or use the object. </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">softwareType@@softwareName</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.swName</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">softwareName</key>
+		<key id="description">Manufacturer and title of the software application. (e.g. Adobe Photoshop)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.swVersion</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">softwareVersion</key>
+		<key id="description">The version or versions of the software referenced in swName. (e.g. >=2.2.0)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.swType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">softwareType</key>
+		<key id="description">Class or category of software. (e.g. renderer, operatingSystem)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.swOtherInformation</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">softwareOtherInformation</key>
+		<key id="description">Additional requirements or instructions related to the software referenced in swName.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.swDependancy</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">softwareDependancy</key>
+		<key id="description">The name and, if applicable, version of any software component needed by the software referenced in swName in the context of using this object.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">envSoftwareRegistry</key>
+	<key id="description">Software required to render or use the object. </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">registryId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">environmentHardware</key>
+	<key id="description">Hardware required to render or use the object. </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">hardwareType@@hardwareName</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.hwName</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">hardwareName</key>
+		<key id="description">Manufacturer, model, and version (if applicable) of the hardware. (e.g. Intel Pentium III)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.hwType</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">hardwareType</key>
+		<key id="description">Class or category of the hardware. (e.g. processor, memory, input/output device)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:environment.software.hwOtherInformation</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">hardwareOtherInformation</key>
+		<key id="description">Additional requirements or instructions related to the hardware referenced in hwName. (e.g. 32MB minimum)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">envHardwareRegistry</key>
+	<key id="description">Hardware required to render or use the object.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">registryId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">environmentExtension</key>
+	<key id="description">A container to include semantic units defined outside of PREMIS.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE"></key>
+		<key id="premisObjectPath">OBJECT:environment.environmentExtension </key>
+		<key id="mandatoryForStaging"></key>
+		<key id="name">environmentExtension</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep"></key>
+		<key id="relevantForFile"></key>
+		<key id="relevantForPreservation"></key>
+		<key id="mandatoryForPermanent"></key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">signatureInformation</key>
+	<key id="description">Information needed to use a digital signature to authenticate the signer of an object and/or the information contained in the object.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey">signatureInformationEncoding</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signatureInformationEncoding</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">signatureInformationEncoding</key>
+		<key id="description">The encoding used for the values of signatureValue, keyInformation. (e.g. Base64, Ds:CrytoBinary)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signer</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">signer</key>
+		<key id="description">The individual, institution, or authority responsible for generating the signature.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signatureMethod</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">signatureMethod</key>
+		<key id="description">A designation for the encryption and hash algorithms used for signature generation. (e.g. DSA-SHA1,DSA-SHA1)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signatureValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">signatureValue</key>
+		<key id="description">The digital signature; a value generated from the application of a private key to a message digest.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signatureValidationRules</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">signatureValidationRules</key>
+		<key id="description">The operations to be performed in order to validate the digital signature.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signatureProperties</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">signatureProperties</key>
+		<key id="description">Additional information about the generation of the signature.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.keyInformation </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">keyInformation</key>
+		<key id="description">Information about the signers public key needed to validate the digital signature.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">signatureInformationExtension</key>
+	<key id="description">Digital signature information using semantic units defined outside of PREMIS.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:signatureInformation.signature.signatureInformationEncoding</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">signatureInformationExtension</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">0</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">relationship</key>
+	<key id="description"></key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">Full</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relationshipType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relationshipType</key>
+		<key id="description">A high-level categorization of the nature of the relationship.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">relationshipType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relationshipSubType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relationshipSubType</key>
+		<key id="description">A specific characterization of the nature of the relationship documented in relationshipType.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">relationshipSubType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relatedObjectIdentifierType1</key>
+		<key id="description">A designation of the domain within which the identifier is unique.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">relatedObjectIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relatedObjectIdentifierValue1</key>
+		<key id="description">The value of the related object identifier.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectSequence</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">relatedObjectSequence1</key>
+		<key id="description">The order of the related object relative to other objects with the same type of relationship.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relatedObjectIdentifierType2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">relatedObjectIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relatedObjectIdentifierValue2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectSequence</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">relatedObjectSequence2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">int</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relatedObjectIdentifierType3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">relatedObjectIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">relatedObjectIdentifierValue3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:relationship.relatedObjectIdentification.relatedObjectSequence</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">relatedObjectSequence3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">int</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">linkingIEIdentifier</key>
+	<key id="description">An identifier for an Intellectual Entity associated with the object.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">linkingIEIdentifierType@@linkingIEIdentifierValue</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">techMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:linkingIntellectualEntityIdentifier.linkingIntellectualEntityIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">linkingIEIdentifierType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">linkingIEIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:linkingIntellectualEntityIdentifier.linkingIntellectualEntityIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">linkingIEIdentifierValue</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">producer</key>
+	<key id="description">Producer information</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">digiprovMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">producerId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">userIdAppId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">defaultLanguage</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">UserLanguage</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">authorativeName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">userName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">firstName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">lastName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">middleName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">jobTitle</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">address1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">address2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">address3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">address4</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">address5</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">zip</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">emailAddress</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">webSiteUrl</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">telephone1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">telephone2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">producerAgent</key>
+	<key id="description">Producer Agent information</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">digiprovMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">firstName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">lastName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">middleName</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">event</key>
+	<key id="description">Events that were created during the SIP processing</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">eventDescription@@eventDateTime</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">digiprovMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventIdentifier.eventIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">eventIdentifierType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventIdentifier.eventIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">eventIdentifierValue</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">eventType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">eventTypeCategory</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">eventDescription</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventDateTime</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">eventDateTime</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcome</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcome1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcomeDetail.eventOutcomeDetailNote </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcomeDetail1</key>
+		<key id="description">A detailed description of the result or product of the event in textual form.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcomeDetail.eventOutcomeDetailExtension </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcomeDetailExtension1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcome</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcome2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcomeDetail.eventOutcomeDetailNote </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcomeDetail2</key>
+		<key id="description">A detailed description of the result or product of the event in textual form.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcomeDetail.eventOutcomeDetailExtension </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcomeDetailExtension2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcome</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcome3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcomeDetail.eventOutcomeDetailNote </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcomeDetail3</key>
+		<key id="description">A detailed description of the result or product of the event in textual form.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:eventOutcomeInformation.eventOutcomeDetail.eventOutcomeDetailExtension </key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">eventOutcomeDetailExtension3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">Extension</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierXMLID1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentIdentifierType</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierType1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">linkingAgentIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentIdentifierValue</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierValue1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentRole</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentRole1</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierXMLID2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentIdentifierType</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierType2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">linkingAgentIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentIdentifierValue</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierValue2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentRole</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentRole2</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierXMLID3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentIdentifierType</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierType3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">linkingAgentIdentifierType</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentIdentifierValue</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentIdentifierValue3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">EVENT:linkingAgentIdentifier.linkingAgentRole</key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">linkingAgentRole3</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">linkingRightsStatementIdentifier</key>
+	<key id="description">An identifier for a rights statement associated with the object.</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey">linkingRightsStatementIdentifierType@@linkingRightsStatementIdentifierValue</key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">rightsMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:linkingIntellectualEntityIdentifier.linkingIntellectualEntityIdentifierType</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">linkingRightsStatementIdentifierType</key>
+		<key id="description">A designation of the domain within which the linkingRightsStatementIdentifier is unique.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">linkingRightsStatementIdentifierType </key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath">OBJECT:linkingIntellectualEntityIdentifier.linkingIntellectualEntityIdentifierValue</key>
+		<key id="mandatoryForStaging">1</key>
+		<key id="name">linkingRightsStatementIdentifierValue</key>
+		<key id="description">The value of the linkingRightsStatementIdentifier.</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">1</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">accessRightsPolicy</key>
+	<key id="description">Access Rights Policy </key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">rightsMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">policyId</key>
+		<key id="description">ID of the AR Policy record</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">policyParameters</key>
+		<key id="description">Modifiying parameters of the AR Policy record (Future Use)</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">policyDescription</key>
+		<key id="description">Textual brief description of the AR Policy record</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">0</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">grantedRightsStatement</key>
+	<key id="description">This is the deposit boiler plate statement</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">0</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">0</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">rightsMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">grantedRightsStatementIdentifier</key>
+		<key id="description">ID of the statement</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">grantedRightsStatementValue</key>
+		<key id="description">Actual content of the statement</key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+<dnx_profile_section>
+	<key id="relevantForIE">1</key>
+	<key id="repeating">1</key>
+	<key id="mandatoryForStaging">0</key>
+	<key id="name">metaData</key>
+	<key id="description">The Metadata record</key>
+	<key id="validationRoutine"></key>
+	<key id="editPermission">ReadOnly</key>
+	<key id="relevantForRep">1</key>
+	<key id="displayKey"></key>
+	<key id="mandatoryForPermanent">0</key>
+	<key id="relevantForFile">1</key>
+	<key id="relevantForPreservation">0</key>
+	<key id="metsMapping">sourceMD</key>
+	<key id="correctionRoutine"></key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">MID</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">UUID</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">creationDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">createdBy</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">modificationDate</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">DateTime</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">modifiedBy</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">metadataType</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">description</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">externalSystem</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename">ExternalSystems</key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">ControlledList</key>
+	</dnx_profile_section_key>
+	<dnx_profile_section_key>
+		<key id="relevantForIE">0</key>
+		<key id="premisObjectPath"></key>
+		<key id="mandatoryForStaging">0</key>
+		<key id="name">externalRecordId</key>
+		<key id="description"></key>
+		<key id="validationRoutine"></key>
+		<key id="codeTablename"></key>
+		<key id="editPermission"></key>
+		<key id="relevantForRep">0</key>
+		<key id="relevantForFile">0</key>
+		<key id="relevantForPreservation">0</key>
+		<key id="mandatoryForPermanent">0</key>
+		<key id="correctionRoutine"></key>
+		<key id="type">String</key>
+	</dnx_profile_section_key>
+</dnx_profile_section>
+</dnx_profile>

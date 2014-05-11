@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource
+    name="jdbc/wctDatasource"
+    type="javax.sql.DataSource"
+    password="${schema.password}"
+    driverClassName="${schema.driver}"
+    maxIdle="${schema.maxIdle}"
+    maxWait="5000"
+    validationQuery="${schema.query}"
+    username="${schema.user}"
+    url="${schema.url}"
+    maxActive="${schema.maxActive}"
+    />
+</Context>

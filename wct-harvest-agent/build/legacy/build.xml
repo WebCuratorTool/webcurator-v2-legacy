@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wct-harvest-agent" default="all">
+    <property file="./build.properties" />
+	<property name="target" value="${root}/target"/>
+	<property name="xdoclet.force" value="true"/>
+	<property name="xdoclet.mergedir" value="${root}/merge"/>
+	<property name="src" value="${root}/src"/>
+	<property name="gen-src" value="${root}/gen-src"/>
+	<property name="src-api" value="${root.core}/src-api"/>
+    <property name="src-test" value="${root}/src-test"/>
+	<property name="cfg" value="${root}/cfg"/>	
+	<property name="docs" value="${root}/docs"/>
+	<property name="db" value="${root}/db"/>
+	<property name="eclipse.webroot" value="${root}/WebRoot"/>
+	<property name="web.libs" value="${root}/WebRoot/WEB-INF/lib"/>	
+	<description>
+            WCT Harvest Agent ANT Build file 
+    </description>
+	
+	<path id="classpath.wct">
+		<fileset dir="${tomcat.lib}" includes="servlet-api.jar"/>
+		<fileset dir="${web.libs}" includes="*.jar"/>
+	</path>
+
+    <path id="classpath.wcttests">
+        <fileset dir="${tomcat.lib}">
+            <include name="servlet-api.jar"/>
+            <include name="jsp-api.jar"/>
+        </fileset>		
+        <fileset dir="${web.libs}" includes="*.jar"/>
+        <fileset dir="${junit.lib}">
+            <include name="junit-4.4.jar"/>
+        </fileset>		
+        <fileset dir="${springmock.lib}">
+            <include name="spring-mock.jar"/>
+        </fileset>		
+    </path>
+	
+	<path id="classpath.wct.target">
+		<fileset dir="${target}/${proj.name}/WEB-INF/classes" includes="**/*.*"/>
+		<fileset dir="${web.libs}" includes="*.jar"/>
+	</path>
+
+    <target name="clean">
+        <delete dir="${target}"/>		
+    </target>
+    
+	<target name="prepare">
+		<delete dir="${target}"/>
+	    <mkdir dir="${target}/${proj.name}/WEB-INF/classes"/>
+        <mkdir dir="${target}/test/classes"/>
+	</target>
+	
+	<target name="compile" depends="prepare">
+    	<javac srcdir="${src-api}:${src}"
+    	       destdir="${target}/${proj.name}/WEB-INF/classes"
+    		   includes="**/*.java"
+     		   debug="true" debuglevel="lines,vars,source">
+    		<classpath refid="classpath.wct"/>
+    	</javac>
+	</target>
+
+    <target name="compiletests">		
+        <javac srcdir="${src-api}:${src}:${src-test}"
+				 destdir="${target}/test/classes"
+				 includes="**/*.java"
+				 debug="true" debuglevel="lines,vars,source">
+            <classpath refid="classpath.wcttests"/>
+        </javac>
+        <jar destfile="${target}/test/test.jar" basedir="${target}/test/classes"/>
+    </target>
+	
+	<target name="copy-config">
+		<property file="${system}-config.properties"/>
+		
+		<copy todir="${target}/${proj.name}/WEB-INF/classes">
+			<fileset dir="${root}/cfg">
+				<include name="wct-agent.xml"/>
+				<include name="wct-agent.properties"/>
+				<include name="log4j.*"/>
+				<include name="logging.properties"/>
+			</fileset>
+		</copy>
+		
+		<copy file="${root}/WebRoot/WEB-INF/web.xml" todir="${target}/${proj.name}/WEB-INF"/>
+		<copy file="${cfg}/server-config.wsdd" todir="${target}/${proj.name}/WEB-INF"/>
+		
+		<copy todir="${target}/${proj.name}/WEB-INF/lib">
+			<fileset dir="${root}/WebRoot/WEB-INF/lib">
+				<include name="*"/>
+			</fileset>
+		</copy>	
+		
+		<copy todir="${target}/${proj.name}">
+			<fileset dir="${docs}">
+				<include name="license.txt"/>
+			</fileset>
+		</copy>
+		
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@TMP_DIR@@" value="${harvest.tmp.dir}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/log4j.xml" token="@@LOG4J_DIR@@" value="${log4j.log.dir}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/server-config.wsdd" token="@@ATTACH_DIR@@" value="${attach.dir}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@CORE_HOST@@" value="${core.host}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@CORE_PORT@@" value="${core.port}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@DAS_HOST@@" value="${das.host}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@DAS_PORT@@" value="${das.port}"/>				
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@AGENT_HOST@@" value="${agent.host}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@AGENT_PORT@@" value="${agent.port}"/>						
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-agent.properties" token="@@AGENT_NAME@@" value="${agent.name}"/>
+	</target>	
+	
+	<target name="deploy">
+	    <copy todir="${tomcat.webapps}">
+		  	<fileset dir="${target}" includes="**/*"/>
+		</copy>		
+	</target>
+	
+	<target name="war" depends="clean,compile, copy-config">
+		<jar destfile="${target}/${proj.name}.war" basedir="${target}/${proj.name}"/>
+	</target>
+	
+	<target name="all" depends="clean,compile, copy-config, deploy, compiletests"/>
+</project>

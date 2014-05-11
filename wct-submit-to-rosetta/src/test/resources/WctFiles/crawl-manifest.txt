@@ -1,0 +1,13 @@
+L+ /tmp/harvest-agent/11141123/logs/crawl.log
+L+ /tmp/harvest-agent/11141123/logs/runtime-errors.log
+L+ /tmp/harvest-agent/11141123/logs/local-errors.log
+L+ /tmp/harvest-agent/11141123/logs/uri-errors.log
+L+ /tmp/harvest-agent/11141123/logs/progress-statistics.log
+C+ /tmp/harvest-agent/11141123/order.xml
+C+ /tmp/harvest-agent/11141123/seeds.txt
+R+ /tmp/harvest-agent/11141123/hosts-report.txt
+R+ /tmp/harvest-agent/11141123/mimetype-report.txt
+R+ /tmp/harvest-agent/11141123/responsecode-report.txt
+R+ /tmp/harvest-agent/11141123/seeds-report.txt
+R+ /tmp/harvest-agent/11141123/crawl-report.txt
+R+ /tmp/harvest-agent/11141123/processors-report.txt

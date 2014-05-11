@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+
+<!--
+  | For more configuration infromation and examples see the Jakarta Log4j
+  | website: http://jakarta.apache.org/log4j
+ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <appender name="Console_Appender" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="debug"/>
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%t%-5p  %d{yyyy-MM-dd HH:mm:ss.SSS} -%m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="File_Appender" class="org.apache.log4j.RollingFileAppender">
+        <param name="Threshold" value="error"/>
+        <param name="File" value="DpsDepositError.log"/>
+        <param name="Append" value="true"/>
+        <param name="MaxFileSize" value="500KB"/>
+        <param name="MaxBackupIndex" value="1"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p %d{yyyy-MM-dd HH:mm:ss.SSS} -%m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="nz.govt.natlib.ndha.wctdpsdepositor">
+        <level value="debug"/>
+        <appender-ref ref="Console_Appender"/>
+    </logger>
+
+    <root>
+        <priority value="error"/>
+        <appender-ref ref="File_Appender"/>
+    </root>
+
+</log4j:configuration>

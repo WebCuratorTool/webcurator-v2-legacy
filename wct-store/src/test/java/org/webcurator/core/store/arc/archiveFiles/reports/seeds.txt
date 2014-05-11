@@ -1,0 +1,5 @@
+http://www.bugsquat.co.uk/
+http://freespace.virgin.net/kev.urwin/
+
+# Heritrix added seed redirect from http://www.bugsquat.co.uk/.
+http://freespace.virgin.net/kev.urwin

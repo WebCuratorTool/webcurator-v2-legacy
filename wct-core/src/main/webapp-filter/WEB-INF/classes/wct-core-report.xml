@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="reportMngr" class="org.webcurator.core.report.ReportManager">
+		<property name="reports">
+			<list>
+				<ref bean="systemUsageReport"/>
+				<ref bean="systemActivityReport"/>
+				<ref bean="crawlerActivityReport"/>
+				<ref bean="targetGroupSchedulesReport"/>
+				<ref bean="summaryTargetSchedulesReport"/>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<!-- System Usage Report -->
+	<bean id="systemUsageReport" class="org.webcurator.core.report.Report">
+		<property name="name" value="System Usage Report"></property>
+		<property name="description" value="A report showing who logged in to the system."></property>
+		<property name="info" value="&lt;FONT size=&quot;1&quot;&gt; &lt;I&gt;Start Date is inclusive.&lt;BR&gt;End Date is exclusive&lt;/I&gt; &lt;/FONT&gt;"></property>
+		<property name="reportGenerator">
+			<ref bean="systemUsageReportGeneratorImpl" /> 
+		</property>
+		<property name="parameters">
+			<list>
+				<bean class="org.webcurator.core.report.parameter.DateParameter">
+					<property name="name" value="startDate"></property>
+					<property name="description" value="Start Date"></property>
+					<property name="optional" value="false"></property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.DateParameter">
+					<property name="name" value="endDate"></property>
+					<property name="description" value="End Date"></property>
+					<property name="optional" value="false"></property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.AgencyParameter">
+					<property name="name" value="agency"></property>
+					<property name="description" value="Agencies"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+		
+	<bean id="systemUsageReportGeneratorImpl" class="org.webcurator.core.report.impl.SystemUsageReportGeneratorImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!--  System Activity Report -->
+	<bean id="systemActivityReport" class="org.webcurator.core.report.Report">
+		<property name="name" value="System Activity Report"></property>
+		<property name="description" value="A report showing the actions performed by users of the system."></property>
+		<property name="info" value="&lt;FONT size=&quot;1&quot;&gt; &lt;I&gt;Start Date is inclusive.&lt;BR&gt;End Date is exclusive&lt;/I&gt; &lt;/FONT&gt;"></property>
+		<property name="reportGenerator">
+			<ref bean="systemActivityReportGeneratorImpl" />
+		</property>
+		<property name="parameters">
+			<list>
+				<bean class="org.webcurator.core.report.parameter.DateParameter">
+					<property name="name" value="startDate"></property>
+					<property name="description" value="Start Date"></property>
+					<property name="optional" value="false"></property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.DateParameter">
+					<property name="name" value="endDate"></property>
+					<property name="description" value="End Date"></property>
+					<property name="optional" value="false"></property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.AgencyParameter">
+					<property name="name" value="agency"></property>
+					<property name="description" value="Agencies"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.UserParameter">
+					<property name="name" value="user"></property>
+					<property name="description" value="Users"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="systemActivityReportGeneratorImpl" class="org.webcurator.core.report.impl.SystemActivityReportGeneratorImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="crawlerActivityReport" class="org.webcurator.core.report.Report">
+		<property name="name" value="Crawler Activity Report"/>
+		<property name="description" value="A report showing which sites have been crawled, and some statistics on those crawls."/>
+		<property name="info" value="&lt;FONT size=&quot;1&quot;&gt; &lt;I&gt;Start Date is inclusive.&lt;BR&gt;End Date is exclusive&lt;/I&gt; &lt;/FONT&gt;"/>
+		<property name="parameters">
+			<list>
+				<bean class="org.webcurator.core.report.parameter.DateParameter">
+					<property name="name" value="startDate"></property>
+					<property name="description" value="Start Date"></property>
+					<property name="optional" value="false"></property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.DateParameter">
+					<property name="name" value="endDate"></property>
+					<property name="description" value="End Date"></property>
+					<property name="optional" value="false"></property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.AgencyParameter">
+					<property name="name" value="agency"></property>
+					<property name="description" value="Agencies"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.UserParameter">
+					<property name="name" value="user"></property>
+					<property name="description" value="Users"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="reportGenerator">
+			<bean class="org.webcurator.core.report.impl.CrawlerActivityReport">
+				<property name="sessionFactory" ref="sessionFactory"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!--  Target/Group Schedules Report 'A report showing the harvest schedules for &#096;Approved&#146; Targets/Groups' -->
+	<bean id="targetGroupSchedulesReport" class="org.webcurator.core.report.Report">
+		<property name="name" value="Target/Group Schedules Report"></property>
+		<property name="description" value="A report showing the harvest schedules for &#096;Approved&#146; Targets/Groups."></property>
+		<property name="info" value=""></property>
+		<property name="parameters">
+			<list>
+				<bean class="org.webcurator.core.report.parameter.AgencyParameter">
+					<property name="name" value="agency"></property>
+					<property name="description" value="Agencies"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.UserParameter">
+					<property name="name" value="user"></property>
+					<property name="description" value="Users"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+				<bean class="org.webcurator.core.report.parameter.TargetTypeParameter">
+					<property name="name" value="targettype"></property>
+					<property name="description" value="Target Types"></property>
+					<property name="optional" value="true"></property>
+				</bean>
+			</list>
+		</property>
+		<property name="reportGenerator">
+			<bean class="org.webcurator.core.report.impl.TargetGroupSchedulesReport">
+				<property name="sessionFactory" ref="sessionFactory"/>
+			</bean>
+		</property>
+	</bean>
+
+	<!--  Summary Target Schedules Report 'A summary report showing the harvest schedules for 'Approved' Targets/Groups' -->
+	<bean id="summaryTargetSchedulesReport" class="org.webcurator.core.report.Report">
+		<property name="name" value="Summary Target Schedules Report"></property>
+		<property name="description" value="A summary report showing the harvest schedules for &#096;Approved&#146; Targets/Groups."></property>
+		<property name="info" value=""></property>
+		<property name="parameters">
+			<list>
+				<bean class="org.webcurator.core.report.parameter.AgencyParameter">
+					<property name="name" value="agency"></property>
+					<property name="description" value="Agencies"></property>
+					<property name="optional" value="true"></property>
+					<property name="agencyUserManager">
+						<ref bean="agencyUserManager"/>
+					</property>
+					<property name="authorityManager">
+						<ref bean="authorityManager"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="reportGenerator">
+			<bean class="org.webcurator.core.report.impl.SummaryTargetSchedulesReport">
+				<property name="sessionFactory" ref="sessionFactory"/>
+			</bean>
+		</property>
+	</bean>
+
+</beans>

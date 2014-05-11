@@ -1,0 +1,46 @@
+/* CSS Document */
+h1 {
+	font-family: georgia, arial, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	}
+h2 {
+	font-family: georgia, arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	}
+h3 {
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	}
+
+h4 {
+	font-family: arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	}
+p {
+	font-family: arial, sans-serif;
+    font-size: 12px;
+	}
+td { 
+	font-family: arial, sans-serif;
+    font-size: 12px;
+	}
+th { 
+	font-family: arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+	}
+a {
+	font-family: arial, sans-serif;
+  	font-size: 12px;
+	}	
+
+.deletedGroupMember {
+	text-decoration: line-through;
+	font-style: oblique;
+	color: #333333;
+}

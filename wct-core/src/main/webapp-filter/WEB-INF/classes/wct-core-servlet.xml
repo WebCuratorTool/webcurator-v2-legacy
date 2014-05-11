@@ -1,0 +1,1589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
+	
+    <bean id="WCTCoreServletConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:wct-core.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="order" value="150"/>
+    </bean>
+	
+	<bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="interceptors">
+			<list>
+            	<ref bean="openSessionInViewInterceptor"/>
+            </list>
+		</property>
+		
+		<property name="mappings">
+			<map>
+				<entry key="/curator/site/site.html" value="siteController"></entry>
+				<entry key="/curator/site/search.html" value="siteSearchController"></entry>
+				<entry key="/curator/site/agencies.html" value="siteAgencyController"></entry>
+				<entry key="/curator/site/site-auth-agency-search.html" value="siteAgencySearchController"></entry>				
+				<entry key="/curator/site/permissions.html" value="sitePermissionController"></entry>
+				<entry key="/curator/site/transfer.html" value="transferSeedsController"/>
+				<entry key="/curator/site/generate.html" value="generatePermissionTemplateController"></entry>
+				<entry key="/curator/agent/harvest-agent.html" value="manageHarvestAgentController"></entry>
+				<entry key="/curator/agent/bandwidth-restrictions.html" value="bandwidthRestrictionsController"></entry>				
+				<entry key="/curator/tools/treetool.html" value="treeToolController"></entry>
+				<entry key="/curator/tools/treetoolAJAX.html" value="treeToolControllerAJAX"></entry>
+				<entry key="/curator/tools/harvest-history.html" value="harvestHistoryController"></entry>
+				<entry key="/curator/credentials/reset-password.html" value="resetPasswordController"></entry>
+				<entry key="/curator/target/quality-review-toc.html" value="qualityReviewToolController"/>
+				<entry key="/curator/target/deposit-form-envelope.html" value="customDepositFormController"/>
+				<entry key="/curator/logout.html" value="logoutController"/>
+				<entry key="/curator/home.html" value="homeController"/>
+				<entry key="/curator/target/queue.html" value="queueController"/>	
+				<entry key="/curator/target/qatisummary.html" value="qaTiSummaryController"/>
+				<entry key="/curator/target/qa-indicator-report.html" value="qaIndicatorReportController"/>
+				<entry key="/curator/target/qa-indicator-robots-report.html" value="qaIndicatorRobotsReportController"/>
+				<entry key="/curator/target/annotation-ajax.html" value="annotationAjaxController"/>
+				<entry key="/curator/target/target-instance.html" value="tabbedTargetInstanceController"/>
+				<entry key="/curator/target/harvest-now.html" value="harvestNowController"/>									
+				<entry key="/curator/target/target.html" value="targetController"/>
+				<entry key="/curator/target/search.html" value="targetSearchController"/>
+				<entry key="/curator/target/schedule.html" value="targetEditScheduleController"/>
+				<entry key="/curator/targets/add-parents.html" value="addParentsController"/>				
+				<entry key="/curator/admin/role.html" value="roleController"/>
+				<entry key="/curator/profiles/profiles.html" value="profileController"/>
+				<entry key="/curator/profiles/profiletargets.html" value="profileTargetsController"/>
+				<entry key="/curator/profiles/list.html" value="profileListController"/>
+				<entry key="/curator/profiles/view.html" value="profileViewController"/>
+				<entry key="/curator/profiles/delete.html" value="profileDeleteController"/>	
+				<entry key="/curator/profiles/make-default.html" value="makeDefaultProfileController"/>			
+				<entry key="/curator/admin/rejreason.html" value="rejReasonController"/>
+				<entry key="/curator/admin/create-rejreason.html" value="createRejReasonController"/>
+				<entry key="/curator/admin/qaindicators.html" value="qaIndicatorController"/>
+				<entry key="/curator/admin/create-qaindicator.html" value="createQaIndicatorController"/>
+				<entry key="/curator/admin/flags.html" value="flagController"/>
+				<entry key="/curator/admin/create-flag.html" value="createFlagController"/>
+				<entry key="/curator/admin/user.html" value="userController"/>
+				<entry key="/curator/admin/create-user.html" value="createUserController"/>
+				<entry key="/curator/admin/associate-userroles.html" value="associateUserRoleController"/>
+				<entry key="/curator/admin/agency.html" value="agencyController"/>
+				<entry key="/curator/admin/change-password.html" value="changePasswordController"/>
+				<entry key="/curator/admin/management.html" value="managementController"/>
+				<entry key="/curator/admin/templates.html" value="templateController"/>
+				<entry key="/curator/target/log-viewer.html" value="logReaderController"/>
+				<entry key="/curator/target/content-viewer.html" value="contentReaderController"/>
+				<entry key="/curator/target/live-content-retriever.html" value="liveContentRetrieverController"/>
+				<entry key="/curator/target/aqa-viewer.html" value="aqaReaderController"/>
+                <entry key="/curator/target/log-retriever.html" value="logRetrieverController"/>
+				<entry key="/curator/target/show-hop-path.html" value="showHopPathController"></entry>
+				<entry key="/curator/target/permission-popup.html" value="permissionPopupController"/>
+				<entry key="/curator/target/target-basic-credentials.html" value="basicCredentialsControllerTarget"/>
+				<entry key="/curator/target/target-form-credentials.html" value="formCredentialsControllerTarget"/>								
+				<entry key="/curator/target/ti-basic-credentials.html" value="basicCredentialsControllerTargetInstance"/>
+				<entry key="/curator/target/ti-form-credentials.html" value="formCredentialsControllerTargetInstance"/>
+				<entry key="/curator/intray/intray.html" value="inTrayController"/>				
+				<entry key="/curator/report/report.html" value="reportController"/>
+				<entry key="/curator/report/report-preview.html" value="reportPreviewController"/>
+				<entry key="/curator/report/report-save.html" value="reportSaveController"/>
+				<entry key="/curator/report/report-email.html" value="reportEmailController"/>
+				<entry key="/curator/groups/search.html" value="groupSearchController"/>
+				<entry key="/curator/groups/groups.html" value="groupsController"/>
+				<entry key="/curator/groups/add-members.html" value="addMembersController"/>
+				<entry key="/curator/groups/schedule.html" value="groupsEditScheduleController"/>
+				<entry key="/curator/groups/add-parents.html" value="groupAddParentsController"/>				
+				<entry key="/curator/groups/move-targets.html" value="moveTargetsController"/>				
+				<entry key="/curator/archive/submit.html" value="submitToArchiveController"/>
+				<entry key="/curator/archive/test.html" value="testArchiveController"/>
+				<entry key="/curator/target/group-basic-credentials.html" value="basicCredentialsControllerGroup"/>
+				<entry key="/curator/target/group-form-credentials.html" value="formCredentialsControllerGroup"/>
+				<entry key="/curator/target/ti-harvest-now.html" value="assignToHarvesterController"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver"/>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="maxUploadSize" value="1500000"/>
+	</bean>	
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="requestContextAttribute" value="requestContext"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesView"/>
+	</bean>
+	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">
+	<property name="factoryClass" value="org.apache.struts.tiles.xmlDefinition.I18nFactorySet"/>
+	<property name="definitions">
+	<list>
+	<value>/WEB-INF/tiles-defs.xml</value>
+	</list>
+	</property>
+	</bean>
+
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="defaultErrorView">
+			<value type="java.lang.String">Error</value>
+		</property>
+		<property name="exceptionMappings">
+			<map>
+				<entry
+					key="org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException"
+					value="NoObjectFound">
+				</entry>
+				<entry
+				    key="org.springframework.web.multipart.MaxUploadSizeExceededException"
+				    value="max-file-size-exceeeded"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="homeController" class="org.webcurator.ui.home.controller.HomeController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET"/>
+		<property name="inTrayManager" ref="inTrayManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="siteManager" ref="siteManager"/>
+		<property name="targetManager" ref="targetManager"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="enableQaModule">
+			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
+		</property>	
+	</bean>
+	
+	<bean id="siteSearchController" class="org.webcurator.ui.site.controller.SiteSearchController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="siteManager" ref="siteManager"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="commandClass" value="org.webcurator.ui.site.command.SiteSearchCommand"/>
+	</bean>
+	
+	<bean id="siteController" class="org.webcurator.ui.site.controller.SiteController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="tabConfig" ref="siteTabConfig"/> 
+		<property name="defaultCommandClass" value="org.webcurator.ui.site.command.DefaultSiteCommand"/>
+		<property name="siteManager" ref="siteManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="siteSearchController" ref="siteSearchController"/>
+	</bean>	
+	
+	<bean id="siteAgencySearchController" class="org.webcurator.ui.site.controller.SiteAgencySearchController">
+		<property name="siteController" ref="siteController"/>
+		<property name="siteManager" ref="siteManager"/>
+		<property name="validator">
+			<bean class="org.webcurator.ui.site.validator.SiteAgencySearchValidator"/>
+		</property>
+	</bean>
+	
+	<bean id="generatePermissionTemplateController" class="org.webcurator.ui.site.controller.GeneratePermissionTemplateController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="siteManager" ref="siteManager"/>
+		<property name="mailServer" ref="mailServer"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="permissionTemplateManager" ref="permissionTemplateManager"/>
+	</bean>	
+	
+	<bean id="transferSeedsController" class="org.webcurator.ui.site.controller.TransferSeedsController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	  <property name="targetManager" ref="targetManager"/>
+	  <property name="siteManager" ref="siteManager"/>
+	  <property name="messageSource" ref="messageSource"/>
+	  <property name="siteController" ref="siteController"/>
+	  <property name="authorityManager" ref="authorityManager"/>
+	  <property name="validator">
+	    <bean class="org.webcurator.ui.site.validator.TransferSeedsValidator"/>
+	  </property>  
+	</bean>
+
+
+	
+	<bean id="harvestHistoryController" class="org.webcurator.ui.tools.controller.HarvestHistoryController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+	</bean>	
+	
+	
+
+
+	<bean id="siteTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="viewName" value="site"/>	
+		<property name="tabs">
+			<list>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GENERAL" />
+					<property name="title" value="general" />
+					<property name="jsp" value="../site-general.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.site.command.SiteCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.site.validator.SiteValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.site.controller.SiteGeneralHandler">
+							<property name="siteManager" ref="siteManager" />							
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="URLS" />
+					<property name="title" value="url-patterns" />
+					<property name="jsp" value="../site-urls.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.site.command.UrlCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.site.validator.SiteURLsValidator">
+							<property name="strategy" ref="permissionMappingStrategy" />
+						</bean>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.site.controller.SiteUrlHandler">
+							<property name="businessObjectFactory" ref="businessObjectFactory"/>
+						</bean>
+					</property>					
+				</bean>
+				<bean id="siteAgencyTab" class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="AUTHORISING_AGENCIES" />
+					<property name="title" value="agencies" />
+					<property name="jsp" value="../site-auth-agencies.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.site.command.SiteAuthorisingAgencyCommand"/>
+					<property name="validator">
+						<null/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.site.controller.SiteAuthorisingAgencyHandler"/>
+					</property>					
+				</bean>
+				<bean id="sitePermissionsTab" class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="PERMISSIONS" />
+					<property name="title" value="permissions" />
+					<property name="jsp" value="../site-permissions.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.site.command.SitePermissionCommand"/>
+					<property name="validator">
+						<null/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.site.controller.SitePermissionHandler">
+							<property name="siteManager" ref="siteManager"/>
+							<property name="accessStatusList" ref="accessStatusList"/>
+							<property name="businessObjectFactory" ref="businessObjectFactory"/>
+						</bean>
+					</property>					
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="targetInstanceOverrideGetter" class="org.webcurator.ui.util.OverrideGetter"> 
+		<property name="overrideableType" value="Target Instance"/>
+	</bean>
+	
+	<bean id="targetInstanceTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="viewName" value="targetInstance"/>
+		<property name="tabs">
+			<list>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GENERAL" />
+					<property name="title" value="general" />
+					<property name="jsp" value="../target-instance-general.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.target.validator.TargetInstanceValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceGeneralHandler">
+							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
+							<property name="agencyUserManager"><ref bean="agencyUserManager"/></property>
+							<property name="authorityManager"><ref bean="authorityManager"/></property>
+							<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
+							<property name="enableQaModule">
+								<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
+							</property>	
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="PROFILE" />
+					<property name="title" value="profile" />
+					<property name="jsp" value="../target-profile.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceProfileCommand"/>
+					<property name="validator">
+						<bean id="tiProfileOverridesValidator" class="org.webcurator.ui.target.validator.ProfilesOverridesValidator" ></bean>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceProfileHandler">
+							<property name="profileManager" ref="profileManager"/>
+							<property name="overrideGetter" ref="targetInstanceOverrideGetter"/>
+							<property name="credentialUrlPrefix" value="ti" />
+						</bean>
+					</property>					
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="STATE" />
+					<property name="title" value="harvest-state" />
+					<property name="jsp" value="../target-instance-state.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+					<property name="validator">
+						<null/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceStateHandler">
+							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="LOGS" />
+					<property name="title" value="logs" />
+					<property name="jsp" value="../target-instance-logs.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+					<property name="validator">
+						<null/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceLogsHandler">
+							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
+						</bean>
+					</property>
+				</bean>				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="RESULTS" />
+					<property name="title" value="harvest" />
+					<property name="jsp" value="../target-instance-results.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+					<property name="validator">
+						<null/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceResultHandler">
+							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
+							<property name="digitalAssetStore"><ref bean="digitalAssetStore"></ref></property>
+							<property name="agencyUserManager"><ref bean="agencyUserManager"></ref></property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="ANNOTATIONS" />
+					<property name="title" value="annotations" />
+					<property name="jsp" value="../target-instance-annotations.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.target.validator.TargetInstanceValidator"/>
+					</property>					
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceAnnotationHandler">
+							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="DISPLAY" />
+					<property name="title" value="display" />
+					<property name="jsp" value="../target-instance-display.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.target.validator.TargetInstanceValidator"/>
+					</property>					
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetInstanceDisplayHandler">
+							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tabbedTargetInstanceController" class="org.webcurator.ui.target.controller.TabbedTargetInstanceController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="tabConfig" ref="targetInstanceTabConfig"/> 
+		<property name="defaultCommandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="harvestCoordinator" ref="harvestCoordinator"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="queueController" ref="queueController"/>
+		<property name="messageSource" ref="messageSource"/>
+	</bean>	
+	
+	<bean id="manageHarvestAgentController" class="org.webcurator.ui.agent.controller.ManageHarvestAgentController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator"/>
+		</property>
+	</bean>
+	<bean id="bandwidthRestrictionsController" class="org.webcurator.ui.agent.controller.BandwidthRestrictionsController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="harvestBandwidthManager">
+			<ref bean="harvestBandwidthManager"/>
+		</property>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="heatmapConfigDao" ref="heatmapConfigDao"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="validator"> 
+			<ref bean="bandwidthRestrictionValidator"/>
+		</property>
+	</bean>
+	
+	<bean id="bandwidthRestrictionValidator" class="org.webcurator.ui.agent.validator.BandwidthRestrictionValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	
+	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
+	</bean>
+	
+	<bean id="logoutController" class="org.webcurator.ui.base.LogoutController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
+	
+	<bean id="resetPasswordController" class="org.webcurator.ui.credentials.controller.ResetPasswordController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="validator"> 
+			<ref bean="resetPasswordValidator"/>
+		</property>
+		<property name="authDAO">
+			<ref bean="userRoleDAO"/>
+		</property>
+		<property name="encoder">
+			<ref bean="passwordEncoder"/>
+		</property>
+		<property name="salt">
+			<ref bean="saltSource"/>
+		</property>
+	</bean>
+	
+	<bean id="resetPasswordValidator" class="org.webcurator.ui.credentials.validator.ResetPasswordValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+
+    <bean id="changePasswordController" class="org.webcurator.ui.admin.controller.ChangePasswordController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">POST</value>
+		</property>
+		<property name="validator"> 
+			<ref bean="changePasswordValidator"/>
+		</property>
+		<property name="agencyUserManager">
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="encoder">
+			<ref bean="passwordEncoder"/>
+		</property>
+		<property name="salt">
+			<ref bean="saltSource"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	<bean id="changePasswordValidator" class="org.webcurator.ui.admin.validator.ChangePasswordValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+
+
+	<bean id="queueController" class="org.webcurator.ui.target.controller.QueueController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager" />
+		</property>
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator"/>
+		</property>
+		<property name="environment">
+			<ref bean="environment"/>
+		</property>
+		<property name="agencyUserManager">
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+		<property name="enableQaModule">
+			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
+		</property>		
+		<!-- configured width of the QA thumbnail preview -->
+		<property name="thumbnailWidth" value="${queueController.thumbnailWidth}" />
+		<!-- configured height of the QA thumbnail preview -->
+		<property name="thumbnailHeight" value="${queueController.thumbnailHeight}" />
+		<property name="thumbnailRenderer">
+			<value >${queueController.thumbnailRenderer}</value>
+		</property>
+		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
+	</bean>
+	
+	<bean id="qualityReviewFacade" class="org.webcurator.core.store.tools.QualityReviewFacade">
+	 	<property name="digialAssetStore">
+	 		<ref bean="digitalAssetStore"/>
+	 	</property>
+	 	<property name="targetInstanceDao">
+	 		<ref bean="targetInstanceDao"/>
+	 	</property>
+	 	<property name="auditor">
+	 		<ref bean="audit"/>
+	 	</property>
+	 </bean>
+	
+	<bean id="qaTiSummaryController" class="org.webcurator.ui.target.controller.QaTiSummaryController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceManager" ref="targetInstanceManager" />
+		<property name="harvestCoordinator" ref="harvestCoordinator"/>
+		<property name="environment" ref="environment"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="profileManager" ref="profileManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="targetManager" ref="targetManager" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="validator" ref="qaTiSummaryValidator"/>
+		<property name="digitalAssetStore"><ref bean="digitalAssetStore"></ref></property>
+	</bean>
+	
+	<bean id="qaIndicatorReportController" class="org.webcurator.ui.target.controller.QaIndicatorReportController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceManager" ref="targetInstanceManager" />
+		<property name="indicatorDAO" ref="indicatorDAO" />
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="messageSource" ref="messageSource" />
+		<property name="excludedIndicators">
+			<map>
+				<!-- 
+					these indicators are excluded from the IndicatorReportLine report since they have
+					and alternative representation built by a seperate report
+					the indicator name is specified by the map key and the report for the indicator is the map value
+				-->
+				<entry key="Robots.txt entries disallowed" value="/curator/target/qa-indicator-robots-report.html" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="qaIndicatorRobotsReportController" class="org.webcurator.ui.target.controller.QaIndicatorRobotsReportController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceManager" ref="targetInstanceManager" />
+		<property name="indicatorDAO" ref="indicatorDAO" />
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="messageSource" ref="messageSource" />
+		<property name="qualityReviewFacade" ref="qualityReviewFacade" />
+		<property name="fileNotFoundMessage" value="robots.txt file not found" />
+	</bean>
+
+	<bean id="annotationAjaxController" class="org.webcurator.ui.target.controller.AnnotationAjaxController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager" />
+		</property>
+		<property name="targetManager">
+			<ref bean="targetManager" />
+		</property>
+	</bean>
+ 
+    <bean id="roleController" class="org.webcurator.ui.admin.controller.RoleController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="validator"> 
+			<ref bean="roleValidator"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	<bean id="rejReasonController" class="org.webcurator.ui.admin.controller.RejReasonController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+
+	<bean id="createRejReasonController" class="org.webcurator.ui.admin.controller.CreateRejReasonController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+  		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+  		<property name="validator"> 
+			<ref bean="createRejReasonValidator"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+
+	<bean id="qaIndicatorController" class="org.webcurator.ui.admin.controller.QaIndicatorController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	<bean id="flagController" class="org.webcurator.ui.admin.controller.FlagController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+
+	<bean id="createQaIndicatorController" class="org.webcurator.ui.admin.controller.CreateQaIndicatorController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+  		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+  		<property name="validator"> 
+			<ref bean="createQaIndicatorValidator"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+		<bean id="createFlagController" class="org.webcurator.ui.admin.controller.CreateFlagController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+  		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+  		<property name="validator"> 
+			<ref bean="createFlagValidator"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	
+	<bean id="userController" class="org.webcurator.ui.admin.controller.UserController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	<bean id="createUserController" class="org.webcurator.ui.admin.controller.CreateUserController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="saltSource">
+			<ref bean="saltSource"/>
+		</property>
+  		<property name="passwordEncoder">
+  			<ref bean="passwordEncoder"/>
+  		</property>
+  		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+  		<property name="validator"> 
+			<ref bean="createUserValidator"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	<bean id="associateUserRoleController" class="org.webcurator.ui.admin.controller.AssociateUserRoleController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">POST</value>
+		</property>
+		<property name="agencyUserManager"> 
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="authorityManager">
+			<ref bean="authorityManager"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+	</bean>
+	
+	<bean id="agencyController" class="org.webcurator.ui.admin.controller.AgencyController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="agencyUserManager">
+			<ref bean="agencyUserManager"/>
+		</property>
+		<property name="validator"> 
+			<ref bean="agencyValidator"/>
+		</property>
+		<property name="messageSource"> 
+			<ref bean="messageSource"/>
+		</property>
+		<property name="typeList" ref="dublinCoreTypesList"/>
+	</bean>
+	
+	<bean id="createUserValidator" class="org.webcurator.ui.admin.validator.CreateUserValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+
+	<bean id="agencyValidator" class="org.webcurator.ui.admin.validator.AgencyValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	
+	<bean id="roleValidator" class="org.webcurator.ui.admin.validator.RoleValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+
+	<bean id="createRejReasonValidator" class="org.webcurator.ui.admin.validator.CreateRejReasonValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	
+	<bean id="createQaIndicatorValidator" class="org.webcurator.ui.admin.validator.CreateQaIndicatorValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+
+	<bean id="createFlagValidator" class="org.webcurator.ui.admin.validator.CreateFlagValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	
+	<bean id="qaTiSummaryValidator" class="org.webcurator.ui.target.validator.QaTiSummaryValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	
+	<bean id="harvestNowController" class="org.webcurator.ui.target.controller.HarvestNowController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">POST</value>
+		</property>
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator" />
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+		<property name="validator"> 
+			<ref bean="harvestNowValidator"/>
+		</property>
+		<property name="messageSource">
+		 <ref bean="messageSource"/>
+		 </property>
+	</bean>
+	
+	<bean id="harvestNowValidator" class="org.webcurator.ui.target.validator.HarvestNowValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+
+	<bean id="targetSearchController" class="org.webcurator.ui.target.controller.TargetSearchController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetDao" ref="targetDao"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="commandClass" value="org.webcurator.ui.target.command.TargetSearchCommand"/>
+		<property name="targetManager" ref="targetManager"/>
+	</bean>
+	
+	<bean id="permissionPopupController" class="org.webcurator.ui.target.controller.PermissionPopupController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.PermissionPopupCommand"/>
+		<property name="targetManager" ref="targetManager"/>
+	</bean>
+	
+	<!--  Target Controller and Tab Configuration -->	
+	<bean id="targetController" class="org.webcurator.ui.target.controller.TabbedTargetController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="tabConfig" ref="targetTabConfig"/>
+		<property name="defaultCommandClass" value="org.webcurator.ui.target.command.TargetDefaultCommand"/>
+		<property name="targetManager" ref="targetManager"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="searchController" ref="targetSearchController"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>	
+	
+	<bean id="targetGeneralValidator" class="org.webcurator.ui.target.validator.TargetGeneralValidator"/>
+	<bean id="targetSeedsValidator" class="org.webcurator.ui.target.validator.TargetSeedsValidator"/>
+	<bean id="targetAccessValidator" class="org.webcurator.ui.target.validator.TargetAccessValidator"/>
+
+	<bean id="targetOverrideGetter" class="org.webcurator.ui.util.OverrideGetter"> 
+		<property name="overrideableType" value="Target"/>
+	</bean>
+
+	<bean id="targetTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="viewName" value="target"/>	
+		<property name="tabs">
+			<list>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GENERAL" />
+					<property name="title" value="general" />
+					<property name="jsp" value="../target-general.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetGeneralCommand"/>
+					<property name="validator" ref="targetGeneralValidator"/>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetGeneralHandler">
+							<property name="userRoleDao" ref="userRoleDAO"/>
+							<property name="targetManager" ref="targetManager"/>
+							<property name="agencyUserManager" ref="agencyUserManager"/>
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="SEEDS" />
+					<property name="title" value="seeds" />
+					<property name="jsp" value="../target-seeds.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.SeedsCommand"/>
+					<property name="validator" ref="targetSeedsValidator"/>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetSeedsHandler">
+							<property name="businessObjectFactory" ref="businessObjectFactory"/>
+							<property name="targetManager" ref="targetManager"/>
+							<property name="validator" ref="targetSeedsValidator"/>
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="messageSource" ref="messageSource"/>
+						</bean>
+					</property>				
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="PROFILE" />
+					<property name="title" value="profile" />
+					<property name="jsp" value="../target-profile.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.ProfileCommand"/>
+					<property name="validator">
+						<bean id="targetProfileOverridesValidator" class="org.webcurator.ui.target.validator.ProfilesOverridesValidator" ></bean>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetProfileHandler">
+							<property name="profileManager" ref="profileManager"/>
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="overrideGetter" ref="targetOverrideGetter"/>
+							<property name="credentialUrlPrefix" value="target" />
+						</bean>
+					</property>				
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="SCHEDULES" />
+					<property name="title" value="schedule" />
+					<property name="jsp" value="../target-schedules.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetSchedulesCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.target.validator.TargetSchedulesValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetSchedulesHandler">
+							<property name="patternFactory" ref="schedulePatternFactory"/>
+							<property name="businessObjectFactory" ref="businessObjectFactory"/>
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="targetManager" ref="targetManager"/>
+							<property name="contextSessionKey" value="targetEditorContext"/>
+							<property name="privilegeString" value="ADD_SCHEDULE_TO_TARGET"/>
+							<property name="editControllerUrl" value="curator/target/schedule.html"/>
+ 						</bean>
+					</property>					
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="ANNOTATIONS" />
+					<property name="title" value="annotations" />
+					<property name="jsp" value="../target-annotations.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetAnnotationCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.target.validator.TargetAnnotationValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetAnnotationHandler">
+							<property name="targetManager" ref="targetManager"/>
+							<property name="selectionTypesList" ref="selectionTypesList"/>
+							<property name="harvestTypesList" ref="harvestTypesList"/>
+						</bean>
+					</property>					
+				</bean>		
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="DESCRIPTION" />
+					<property name="title" value="description" />
+					<property name="jsp" value="../target-description.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.DescriptionCommand"/>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetDescriptionHandler">
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="typeList" ref="dublinCoreTypesList"/>
+						</bean>
+					</property>					
+				</bean>				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GROUPS"/>
+					<property name="title" value="groups"/>
+					<property name="jsp" value="../target-groups.jsp"/>
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetGroupsCommand"/>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetGroupsHandler">
+							<property name="targetManager" ref="targetManager"/>
+							<property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="ACCESS" />
+					<property name="title" value="access" />
+					<property name="jsp" value="../target-access.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetAccessCommand"/>
+					<property name="validator" ref="targetAccessValidator"/>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetAccessHandler">
+							<property name="authorityManager" ref="authorityManager"/>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>	
+
+	<bean id="targetEditScheduleController" class="org.webcurator.ui.target.controller.EditScheduleController">
+		<property name="patternFactory" ref="schedulePatternFactory"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="contextSessionKey" value="targetEditorContext"/>
+		<property name="scheduleEditPrivilege" value="ADD_SCHEDULE_TO_TARGET"/>
+		<property name="targetController" ref="targetController"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="heatmapConfigDao" ref="heatmapConfigDao"/>
+		<property name="viewPrefix" value="target"/>
+		<property name="validator">
+			<bean class="org.webcurator.ui.target.validator.TargetSchedulesValidator"/>
+		</property>
+	</bean>
+	
+	<bean id="basicCredentialsControllerTarget" class="org.webcurator.ui.target.controller.ProfileBasicCredentialsController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.BasicCredentialsCommand"/>
+		<property name="tabbedController" ref="targetController"/>
+		<property name="overrideGetter" ref="targetOverrideGetter"/>
+		<property name="urlPrefix" value="target" />
+		<property name="validator"> 
+			<bean id="basicCredentialsValidatorTarget" class="org.webcurator.ui.target.validator.ProfilesBasicCredentialsValidator"></bean>
+		</property>
+	</bean>
+	
+	<bean id="formCredentialsControllerTarget" class="org.webcurator.ui.target.controller.ProfileFormCredentialsController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.FormCredentialsCommand"/>
+		<property name="tabbedController" ref="targetController"/>
+		<property name="overrideGetter" ref="targetOverrideGetter"/>
+		<property name="urlPrefix" value="target" />		
+		<property name="validator"> 
+			<bean id="formCredentialsValidatorTarget" class="org.webcurator.ui.target.validator.ProfilesFormCredentialsValidator"></bean>
+		</property>
+	</bean>
+	
+	<bean id="basicCredentialsControllerTargetInstance" class="org.webcurator.ui.target.controller.ProfileBasicCredentialsController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.BasicCredentialsCommand"/>
+		<property name="tabbedController" ref="tabbedTargetInstanceController"/>
+		<property name="overrideGetter" ref="targetInstanceOverrideGetter"/>
+		<property name="urlPrefix" value="ti" />
+		<property name="validator"> 
+			<bean id="basicCredentialsValidatorti" class="org.webcurator.ui.target.validator.ProfilesBasicCredentialsValidator"></bean>
+		</property>
+	</bean>
+	
+	<bean id="formCredentialsControllerTargetInstance" class="org.webcurator.ui.target.controller.ProfileFormCredentialsController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.FormCredentialsCommand"/>
+		<property name="tabbedController" ref="tabbedTargetInstanceController"/>
+		<property name="overrideGetter" ref="targetInstanceOverrideGetter"/>
+		<property name="urlPrefix" value="ti" />	
+		<property name="validator"> 
+			<bean id="formCredentialsValidatorti" class="org.webcurator.ui.target.validator.ProfilesFormCredentialsValidator"></bean>
+		</property>	
+	</bean>
+
+	<bean id="basicCredentialsControllerGroup" class="org.webcurator.ui.target.controller.ProfileBasicCredentialsController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.BasicCredentialsCommand"/>
+		<property name="tabbedController" ref="groupsController"/>
+		<property name="overrideGetter" ref="groupOverrideGetter"/>
+		<property name="urlPrefix" value="group" />
+		<property name="validator"> 
+			<bean id="basicCredentialsValidatorGroup" class="org.webcurator.ui.target.validator.ProfilesBasicCredentialsValidator"></bean>
+		</property>
+	</bean>
+	
+	<bean id="formCredentialsControllerGroup" class="org.webcurator.ui.target.controller.ProfileFormCredentialsController">
+		<property name="commandClass" value="org.webcurator.ui.target.command.FormCredentialsCommand"/>
+		<property name="tabbedController" ref="groupsController"/>
+		<property name="overrideGetter" ref="groupOverrideGetter"/>
+		<property name="urlPrefix" value="group" />
+		<property name="validator"> 
+			<bean id="formCredentialsValidatorGroup" class="org.webcurator.ui.target.validator.ProfilesFormCredentialsValidator"></bean>
+		</property>		
+	</bean>
+
+	<!--  Groups Controller and Tab Configuration -->	
+	<bean id="groupsController" class="org.webcurator.ui.groups.controller.TabbedGroupController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="tabConfig" ref="groupsTabConfig"/>
+		<property name="defaultCommandClass" value="org.webcurator.ui.groups.command.DefaultCommand"/>
+		<property name="targetManager" ref="targetManager"/>								
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="searchController" ref="groupSearchController"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>	
+	
+	<bean id="groupOverrideGetter" class="org.webcurator.ui.util.OverrideGetter"> 
+		<property name="overrideableType" value="Target Group"/>
+	</bean>
+
+	<bean id="groupsTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="viewName" value="groups"/>	
+		<property name="tabs">
+			<list>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GENERAL" />
+					<property name="title" value="general" />
+					<property name="jsp" value="../groups-general.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.groups.command.GeneralCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.groups.validator.GeneralValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.GeneralHandler">
+							<property name="agencyUserManager" ref="agencyUserManager"/>
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="targetManager" ref="targetManager"/>
+							<property name="groupTypesList" ref="groupTypesList"/>
+							<property name="subGroupTypeName" value="${groupTypes.subgroup}"/>
+							<property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
+						</bean>
+					</property>
+				</bean>
+
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="MEMBERS" />
+					<property name="title" value="members" />
+					<property name="jsp" value="../groups-members.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.groups.command.MembersCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.groups.validator.MembersValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.MembersHandler">
+							<property name="targetManager" ref="targetManager"/>
+							<property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
+						</bean>
+					</property>				
+				</bean>
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="MEMBEROF" />
+					<property name="title" value="memberof" />
+					<property name="jsp" value="../groups-memberof.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.groups.command.MemberOfCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.MemberOfHandler">
+							<property name="targetManager" ref="targetManager"/>
+							<property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
+						</bean>
+					</property>				
+				</bean>
+
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="PROFILE" />
+					<property name="title" value="profile" />
+					<property name="jsp" value="../target-profile.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.ProfileCommand"/>
+					<property name="validator">
+						<bean id="groupsProfileOverridesValidator" class="org.webcurator.ui.target.validator.ProfilesOverridesValidator" ></bean>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.GroupsProfileHandler">
+							<property name="profileManager" ref="profileManager"/>
+							<property name="overrideGetter" ref="groupOverrideGetter"/>
+							<property name="credentialUrlPrefix" value="group" />
+						</bean>
+					</property>				
+				</bean>				
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="SCHEDULES" />
+					<property name="title" value="schedule" />
+					<property name="jsp" value="../target-schedules.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetSchedulesCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.target.validator.TargetSchedulesValidator"/>
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.target.controller.TargetSchedulesHandler">
+							<property name="patternFactory" ref="schedulePatternFactory"/>
+							<property name="businessObjectFactory" ref="businessObjectFactory"/>
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="targetManager" ref="targetManager"/>
+							<property name="contextSessionKey" value="groupEditorContext"/>
+							<property name="privilegeString" value="MANAGE_GROUP_SCHEDULE"/>
+							<property name="editControllerUrl" value="curator/groups/schedule.html"/>
+ 						</bean>
+					</property>					
+				</bean>		
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="ANNOTATIONS" />
+					<property name="title" value="annotations" />
+					<property name="jsp" value="../group-annotations.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.groups.command.GroupAnnotationCommand"/>
+					<property name="validator">
+  						<bean class="org.webcurator.ui.groups.validator.GroupAnnotationValidator"/> 
+					</property> 
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.GroupAnnotationHandler">
+							<property name="targetManager" ref="targetManager"/>
+						</bean>
+					</property>					
+				</bean>									
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="DESCRIPTION" />
+					<property name="title" value="description" />
+					<property name="jsp" value="../target-description.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.DescriptionCommand"/>
+<!--					<property name="validator">
+  						<bean class="org.webcurator.ui.target.validator.TargetAnnotationValidator"/> 
+					</property> -->
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.DescriptionHandler">
+							<property name="authorityManager" ref="authorityManager"/>
+							<property name="typeList" ref="dublinCoreTypesList"/>
+						</bean>
+					</property>					
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="ACCESS" />
+					<property name="title" value="access" />
+					<property name="jsp" value="../target-access.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.target.command.TargetAccessCommand"/>
+					<property name="validator" ref="targetAccessValidator"/>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.groups.controller.AccessHandler">
+							<property name="authorityManager" ref="authorityManager"/>
+						</bean>
+					</property>
+				</bean>
+						
+			</list>
+		</property>
+	</bean>	
+
+	<bean id="groupsEditScheduleController" class="org.webcurator.ui.target.controller.EditScheduleController">
+		<property name="patternFactory" ref="schedulePatternFactory"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="contextSessionKey" value="groupEditorContext"/>
+		<property name="scheduleEditPrivilege" value="MANAGE_GROUP_SCHEDULE"/>
+		<property name="targetController" ref="groupsController"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="heatmapConfigDao" ref="heatmapConfigDao"/>
+		<property name="viewPrefix" value="groups"/>
+		<property name="validator">
+			<bean class="org.webcurator.ui.target.validator.TargetSchedulesValidator"/>
+		</property>
+	</bean>
+
+	<bean id="submitToArchiveController" class="org.webcurator.ui.archive.ArchiveController">
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="targetManager" ref="targetManager"/>
+		<property name="sipBuilder" ref="sipBuilder"/>
+		<property name="archiveAdapter" ref="archiveAdapter"/>
+		<property name="heritrixVersion" value="Heritrix ${heritrix.version}"/>
+		<property name="webCuratorUrl" value="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd"/>
+		
+	</bean>
+
+	<bean id="customDepositFormController" class="org.webcurator.ui.target.controller.CustomDepositFormController"/>
+	
+	<bean id="testArchiveController" class="org.webcurator.ui.archive.TestArchiveController" parent="submitToArchiveController"/>
+
+	<bean id="addMembersController" class="org.webcurator.ui.groups.controller.AddMembersController">
+	  <property name="targetManager" ref="targetManager"/>
+	  <property name="groupsController" ref="groupsController"/>
+	  <property name="authorityManager" ref="authorityManager"/>
+	  <property name="validator"> 
+	  	<bean name="addMembersValidator" class="org.webcurator.ui.groups.validator.AddMembersValidator"></bean>
+	  </property>
+	</bean>
+
+	<bean id="groupAddParentsController" class="org.webcurator.ui.groups.controller.AddParentsController">
+	  <property name="targetManager" ref="targetManager"/>
+	  <property name="groupsController" ref="groupsController"/>
+	  <property name="authorityManager" ref="authorityManager"/>
+	  <property name="validator"> 
+	  	<bean name="addParentsValidator" class="org.webcurator.ui.groups.validator.AddParentsValidator"></bean>
+	  </property>
+	</bean>
+
+	<bean id="moveTargetsController" class="org.webcurator.ui.groups.controller.MoveTargetsController">
+	  <property name="targetManager" ref="targetManager"/>
+	  <property name="groupsController" ref="groupsController"/>
+	  <property name="authorityManager" ref="authorityManager"/>
+	  <property name="validator"> 
+	  	<bean name="moveTargetsValidator" class="org.webcurator.ui.groups.validator.MoveTargetsValidator"></bean>
+	  </property>
+	</bean>
+
+	<bean id="addParentsController" class="org.webcurator.ui.target.controller.AddParentsController">
+	  <property name="targetManager" ref="targetManager"/>
+	  <property name="targetController" ref="targetController"/>
+	  <property name="authorityManager" ref="authorityManager"/>
+      <property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
+	  <property name="validator"> 
+	  	<bean name="addParentsValidator" class="org.webcurator.ui.target.validator.AddParentsValidator"></bean>
+	  </property>
+	</bean>
+
+
+	<!--  Profile Controller and Tab Configuration -->	
+	<bean id="profileListController" class="org.webcurator.ui.profiles.controller.ProfileListController">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="profileManager" ref="profileManager"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+	
+	<bean id="profileTargetsController" class="org.webcurator.ui.profiles.controller.ProfileTargetsController">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="profileManager" ref="profileManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+		<property name="targetManager" ref="targetManager"/>
+		<property name="targetDao" ref="targetDao"/>
+	</bean>
+
+	<bean id="profileViewController" class="org.webcurator.ui.profiles.controller.ProfileViewController">
+		<property name="profileManager" ref="profileManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+
+	<bean id="profileDeleteController" class="org.webcurator.ui.profiles.controller.DeleteProfileController">
+		<property name="profileManager" ref="profileManager"/>
+		<property name="messageSource" ref="messageSource"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+	
+	<bean id="makeDefaultProfileController" class="org.webcurator.ui.profiles.controller.MakeDefaultProfileController">
+		<property name="profileManager" ref="profileManager"/>
+		<property name="agencyUserManager" ref="agencyUserManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+	
+	<bean id="profileController" class="org.webcurator.ui.profiles.controller.ProfileController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="tabConfig" ref="profileTabConfig"/> 
+		<property name="defaultCommandClass" value="org.webcurator.ui.profiles.command.DefaultCommand"/>
+		<property name="profileManager" ref="profileManager"/>		
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>	
+
+	<bean id="profileTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="viewName" value="profile"/>	
+		<property name="tabs">
+			<list>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GENERAL" />
+					<property name="title" value="general" />
+					<property name="jsp" value="../profile-general.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.profiles.command.GeneralCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.profiles.validator.ProfileGeneralValidator" />
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.ProfileGeneralHandler"/>
+					</property>
+				</bean>
+
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="BASE" />
+					<property name="title" value="base" />
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order"/>
+							<property name="recursionFilter">
+								<bean class="org.webcurator.ui.profiles.renderers.GeneralOnlyRendererFilter"/>
+							</property>
+						</bean>
+					</property>										
+				</bean>
+
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="SCOPE" />
+					<property name="title" value="scope" />
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/scope"/>
+						</bean>
+					</property>										
+				</bean>
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="FRONTIER" />
+					<property name="title" value="frontier" />
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/frontier"/>
+						</bean>
+					</property>										
+				</bean>				
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="PREFETCH" />
+					<property name="title" value="prefetchers" />
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/pre-fetch-processors"/>
+						</bean>
+					</property>										
+				</bean>			
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="FETCH" />
+					<property name="title" value="fetchers" />
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/fetch-processors"/>
+						</bean>
+					</property>										
+				</bean>		
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="EXTRACT"/>
+					<property name="title" value="extractors"/>
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/extract-processors"/>
+						</bean>
+					</property>										
+				</bean>	
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="WRITE"/>
+					<property name="title" value="writers"/>
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/write-processors"/>
+						</bean>
+					</property>										
+				</bean>				
+				
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="POST"/>
+					<property name="title" value="postprocessors"/>
+					<property name="jsp" value="../profile-page-view.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.util.EmptyCommand"/>
+					<property name="validator"><null/></property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.HeritrixProfileHandler">
+							<property name="baseAttribute" value="/crawl-order/post-processors"/>
+						</bean>
+					</property>										
+				</bean>																
+			</list>
+		</property>
+	</bean>		
+
+	<bean name="logReaderController"
+		class="org.webcurator.ui.target.controller.LogReaderController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator"/>
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+	</bean>
+        
+	<bean name="contentReaderController"
+		class="org.webcurator.ui.target.controller.ContentReaderController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="harvestLogManager">
+			<ref bean="harvestLogManager"/>
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+	</bean>
+        
+	<bean name="aqaReaderController"
+		class="org.webcurator.ui.target.controller.AQAReaderController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="harvestCoordinator">
+			<ref bean="harvestCoordinator"/>
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+	</bean>
+	
+	<bean name="liveContentRetrieverController"
+		class="org.webcurator.ui.target.controller.LiveContentRetrieverController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+	</bean>
+        
+	<bean name="logRetrieverController"
+		class="org.webcurator.ui.target.controller.LogRetrieverController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="harvestLogManager">
+			<ref bean="harvestLogManager"/>
+		</property>
+		<property name="targetInstanceManager">
+			<ref bean="targetInstanceManager"/>
+		</property>
+	</bean>        
+
+	<bean name="inTrayController"
+		class="org.webcurator.ui.intray.controller.InTrayController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="inTrayManager">
+			<ref bean="inTrayManager"/>
+		</property>
+	</bean>
+
+	<!-- Reporting -->
+	<bean id="reportController" class="org.webcurator.ui.report.controller.ReportController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="reportMngr">
+			<ref bean="reportMngr"/>
+		</property>
+		<property name="commandName" value="reportCommand"/>
+		<property name="commandClass" value="org.webcurator.ui.report.command.ReportCommand"/>
+		<property name="validator"> 
+			<bean class="org.webcurator.ui.report.validator.ReportValidator"/>
+		</property>
+	</bean>
+	
+	<bean id="reportPreviewController" class="org.webcurator.ui.report.controller.ReportPreviewController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="commandName" value="reportPreviewCommand"/>
+		<property name="commandClass" value="org.webcurator.ui.report.command.ReportPreviewCommand"/>
+	</bean>
+	
+	<bean id="reportSaveController" class="org.webcurator.ui.report.controller.ReportSaveController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="commandName" value="reportSaveCommand"/>
+		<property name="commandClass" value="org.webcurator.ui.report.command.ReportSaveCommand"/>
+	</bean>
+
+	<bean id="reportEmailController" class="org.webcurator.ui.report.controller.ReportEmailController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="commandName" value="reportEmailCommand"/>
+		<property name="commandClass" value="org.webcurator.ui.report.command.ReportEmailCommand"/>
+		<property name="mailServer">
+			<ref bean="mailServer"/>
+		</property>
+	</bean>
+
+	
+	<!--  Management Controllers -->
+	<bean id="managementController" class="org.webcurator.ui.management.controller.ManagementController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET</value>
+		</property>
+		<property name="enableQaModule">
+			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
+		</property>	
+	</bean>
+	
+	<bean id="templateController" class="org.webcurator.ui.admin.controller.TemplateController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods">
+			<value type="java.lang.String">GET,POST</value>
+		</property>
+		<property name="permissionTemplateManager"><ref bean="permissionTemplateManager"/></property>
+		<property name="agencyUserManager"><ref bean="agencyUserManager"/></property>
+		<property name="validator"><ref bean="templateValidator"/></property>
+		<property name="messageSource"><ref bean="messageSource"/></property>
+		<property name="defaultSubject" value="Web Preservation Programme"/>
+	</bean>
+	
+	<bean id="templateValidator" class="org.webcurator.ui.admin.validator.TemplateValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
+
+	<bean id="siteAgencyController"
+		class="org.webcurator.ui.site.controller.SiteAgencyController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="siteController" ref="siteController"/>
+		<property name="busObjFactory" ref="businessObjectFactory" />
+		<property name="validator">
+			<bean id="siteAgencyValidator" class="org.webcurator.ui.site.validator.SiteAgencyValidator">
+				<property name="siteManager" ref="siteManager"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="sitePermissionController"
+		class="org.webcurator.ui.site.controller.SitePermissionController"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="siteController" ref="siteController"/>
+		<property name="businessObjectFactory" ref="businessObjectFactory" />
+		<property name="validator">
+			<bean id="sitePermissionValidator" class="org.webcurator.ui.site.validator.SitePermissionValidator"></bean>
+		</property>
+		<property name="accessStatusList" ref="accessStatusList"/>
+	</bean>
+	
+	<bean id="assignToHarvesterController" class="org.webcurator.ui.target.controller.AssignToHarvesterController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+ 		<property name="harvestCoordinator" ref="harvestCoordinator"/>
+	</bean>
+	      
+</beans>
+

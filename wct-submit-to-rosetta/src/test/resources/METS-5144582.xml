@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink"
+           xmlns="http://www.loc.gov/METS/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd">
+    <mets:metsHdr CREATEDATE="2007-05-07T12:06:39">
+        <mets:agent ROLE="DISSEMINATOR" TYPE="INDIVIDUAL">
+            <mets:name>S. Joe</mets:name>
+        </mets:agent>
+        <mets:agent ROLE="CREATOR" TYPE="INDIVIDUAL">
+            <mets:name>S. Joe</mets:name>
+        </mets:agent>
+    </mets:metsHdr>
+    <mets:dmdSec ID="DMD5144582" CREATED="2007-05-07T12:06:39" STATUS="current">
+        <mets:mdWrap MDTYPE="DC">
+            <mets:xmlData>
+                <dc:dc xmlns:dc="http://purl.org/dc/elements/1.1/">
+                    <dc:title></dc:title>
+                    <dc:creator></dc:creator>
+                    <dc:subject></dc:subject>
+                    <dc:description></dc:description>
+                    <dc:publisher></dc:publisher>
+                    <dc:contributor></dc:contributor>
+                    <dc:type></dc:type>
+                    <dc:format></dc:format>
+                    <dc:identifier></dc:identifier>
+                    <dc:source></dc:source>
+                    <dc:language></dc:language>
+                    <dc:relation></dc:relation>
+                    <dc:coverage></dc:coverage>
+                    <dc:identifier></dc:identifier>
+                    <dc:identifier></dc:identifier>
+                </dc:dc>
+                <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:Target>
+                        <wct:ReferenceNumber>1023182</wct:ReferenceNumber>
+                        <wct:Name>Office for Senior Citizens : Te Kari Kaumatua</wct:Name>
+                        <wct:Description>SAD:11503
+                        </wct:Description>
+                        <wct:Seeds>
+                            <wct:Seed>
+                                <wct:SeedURL>http://www.osc.govt.nz/</wct:SeedURL>
+                                <wct:SeedType>Primary</wct:SeedType>
+                            </wct:Seed>
+                        </wct:Seeds>
+                    </wct:Target>
+                    <wct:Groups>
+                    </wct:Groups>
+                </wct:wct>
+                <mets:mdRef>order.xml</mets:mdRef>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec ID="AMD5144582">
+        <mets:techMD ID="TMD5144582">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                        <wct:TargetInstance>
+                            <wct:Crawl>
+                                <wct:StartDate>2007-05-02 20:17:50.968</wct:StartDate>
+                                <wct:Duration>303217</wct:Duration>
+                                <wct:CaptureSystem>Heritrix 1.8.0</wct:CaptureSystem>
+                                <wct:URLs>
+                                    <wct:Downloaded>150</wct:Downloaded>
+                                    <wct:Failed>0</wct:Failed>
+                                </wct:URLs>
+                                <wct:AverageBandwidth>82.0</wct:AverageBandwidth>
+                                <wct:DocumentProcessRate>0.49504950495049505</wct:DocumentProcessRate>
+                                <wct:DownloadedDataSize>25724508</wct:DownloadedDataSize>
+                            </wct:Crawl>
+                            <wct:Annotations>
+                            </wct:Annotations>
+                        </wct:TargetInstance>
+                    </wct:wct>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:techMD>
+        <mets:rightsMD ID="RMD5144582">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                        <wct:Permissions>
+                            <wct:Permission>
+                                <wct:State>Granted</wct:State>
+                                <wct:StartDate>2006-08-12</wct:StartDate>
+                                <wct:EndDate></wct:EndDate>
+                                <wct:HarvestAuthorisation>
+                                    <wct:Name>NZ E-Legal Deposit</wct:Name>
+                                    <wct:Description>All websites in the New Zealand domain acquired under legal deposit
+                                        legislation
+                                    </wct:Description>
+                                    <wct:OrderNumber></wct:OrderNumber>
+                                    <wct:IsPublished>false</wct:IsPublished>
+                                </wct:HarvestAuthorisation>
+                                <wct:AccessStatus>Open (unrestricted) access</wct:AccessStatus>
+                                <wct:SpecialRequirements></wct:SpecialRequirements>
+                                <wct:OpenAccessDate></wct:OpenAccessDate>
+                                <wct:CopyrightStatement></wct:CopyrightStatement>
+                                <wct:CopyrightURL></wct:CopyrightURL>
+                                <wct:FileReference></wct:FileReference>
+                                <wct:AuthorisingAgent>
+                                    <wct:Name>New Zealand Government</wct:Name>
+                                    <wct:Contact>e-Publications Librarian</wct:Contact>
+                                </wct:AuthorisingAgent>
+                                <wct:Paterns>
+                                    <wct:Pattern>http://*.nz/*</wct:Pattern>
+                                </wct:Paterns>
+                                <wct:SeedsURLs>
+                                    <wct:SeedURL>http://www.osc.govt.nz/</wct:SeedURL>
+                                </wct:SeedsURLs>
+                            </wct:Permission>
+
+                        </wct:Permissions>
+                    </wct:wct>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:digiprovMD ID="DPMD5144582">
+            <mets:mdWrap MDTYPE="OTHER">
+                <mets:xmlData>
+                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                        <wct:TargetInstance>
+                            <wct:HarvestResult>
+                                <wct:Creator>JoeS</wct:Creator>
+                                <wct:CreationDate>2007-05-02</wct:CreationDate>
+                                <wct:ProvenanceNote>Original Harvest</wct:ProvenanceNote>
+                            </wct:HarvestResult>
+                            <wct:Owner>
+                                <wct:UID>JoeS</wct:UID>
+                                <wct:Agency>National Library of New Zealand</wct:Agency>
+                            </wct:Owner>
+                            <wct:ModificationType></wct:ModificationType>
+                            <wct:ModiicationNote></wct:ModiicationNote>
+                        </wct:TargetInstance>
+                        <wct:Target>
+                            <wct:ObjectType>Target</wct:ObjectType>
+
+                            <wct:ProfileNote></wct:ProfileNote>
+
+                            <wct:HarvestType>Subject</wct:HarvestType>
+                            <wct:SelectionDate></wct:SelectionDate>
+                            <wct:SelectionType>Producer type</wct:SelectionType>
+                            <wct:SeclectionNote>CGA site</wct:SeclectionNote>
+                            <wct:EvaluationNote></wct:EvaluationNote>
+
+                            <wct:Annotations>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-01</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>1. Recommend Eselection -- 20040816 -- Ingrid Mason -- Received 20040816
+                                        -- Ministry of Social Development subsite
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-02</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>2. Evaluate -- [Date] -- ATL Selection Policy -- ATL Published Collections
+                                        -- Ingrid Mason -- Selected 20040816 -- Harvest frequency: annual -- Components
+                                        not assessed
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-03</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>3. Request Permission -- [Date] -- BS Acquisitions -- [Method of Action]
+                                        -- Deirdre McFarland -- Not required 20040830 -- CGA
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-04</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>4. Harvest -- 20040818 -- Digital Library Transition Team -- Ingrid Mason
+                                        -- Harvested 20040818
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-05</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>5. Endorse -- 20040830 -- ATL Published Collections -- Ingrid Mason --
+                                        Endorsed 20040830
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-06</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>6. Harvest -- 20060717 -- Digital Library Transition Team -- Vanita Lala
+                                        -- Harvested 20060717
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-07</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>7. Endorse -- 20060718 -- ATL Published Collections -- Vanita Lala --
+                                        Endorsed 20060718 -- [Note]
+                                    </wct:Note>
+                                </wct:Annotation>
+                                <wct:Annotation>
+                                    <wct:Date>2006-01-08</wct:Date>
+                                    <wct:User>LegacyData</wct:User>
+                                    <wct:Note>8. Harvest -- [Date] -- Digital Library Transition Team -- [Staff Name] --
+                                        Pending harvest 20070718
+                                    </wct:Note>
+                                </wct:Annotation>
+                            </wct:Annotations>
+                        </wct:Target>
+                    </wct:wct>
+                    <vCard:VCard xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#">
+                        <vCard:FN>Susanna Joe</vCard:FN>
+                        <vCard:N>
+                            <vCard:FAMILY>Joe</vCard:FAMILY>
+                            <vCard:GIVEN>Susanna</vCard:GIVEN>
+                            <vCard:PREFIX></vCard:PREFIX>
+                        </vCard:N>
+                        <vCard:EMAIL>
+                            <vCard:WORK>Susanna.Joe@natlib.govt.nz</vCard:WORK>
+                        </vCard:EMAIL>
+                        <vCard:ORG>
+                            <vCard:Orgname>National Library of New Zealand</vCard:Orgname>
+                            <vCard:EMAIL></vCard:EMAIL>
+                        </vCard:ORG>
+                        <vCard:URL></vCard:URL>
+                        <vCard:LOGO></vCard:LOGO>
+                        <vCard:UID>JoeS</vCard:UID>
+                    </vCard:VCard>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:digiprovMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp ADMID="AMD5144582" ID="FGRP001">
+            <mets:fileGrp ID="FGRP002" USE="HOME DIRECTORY">
+                <mets:file ID="FILE001" ADMID="AMD5144582" MIMETYPE="text/xml" SIZE="10838"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="c3b0da95352d4a81b58f6a789ffde483" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./order.xml"/>
+                </mets:file>
+            </mets:fileGrp>
+            <mets:fileGrp ID="FGRP003" USE="ARCHIVE">
+                <mets:file ID="FILE002" ADMID="AMD5144582" MIMETYPE="application/octet-stream" SIZE="25742300"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="8eba0a1c02bfedcab4c96ca02e5d6953" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./WCT-20070502081749-00000-skynet.arc"/>
+                </mets:file>
+            </mets:fileGrp>
+            <mets:fileGrp ID="FGRP004" USE="LOGS">
+                <mets:file ID="FILE003" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="35528"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="3541e5f32bc16ae52e494473b7c69167" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./crawl.log"/>
+                </mets:file>
+                <mets:file ID="FILE004" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="3142"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="1c343823274707a5ad846db33ae2edd5" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./progress-statistics.log"/>
+                </mets:file>
+            </mets:fileGrp>
+            <mets:fileGrp ID="FGRP005" USE="REPORTS">
+                <mets:file ID="FILE005" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="24" CREATED="2007-05-02T20:23:26"
+                           CHECKSUM="a0d4a4e7f8c1e5fd785074015848d7f5" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./seeds.txt"/>
+                </mets:file>
+                <mets:file ID="FILE006" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="117"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="50d8ccd6c86cd88b62dfccfa008d5767" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./hosts-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE007" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="227"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="909061f93c13a930c135d853750478a6" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./mimetype-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE008" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="37" CREATED="2007-05-02T20:23:26"
+                           CHECKSUM="ba4be25a8283a2bba50935a7811583df" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./responsecode-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE009" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="70" CREATED="2007-05-02T20:23:26"
+                           CHECKSUM="c82455636e389599d04635f1b74c5e22" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./seeds-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE010" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="264"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="9c1f1953a73ac95917ffc12691177b36" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./crawl-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE011" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="1086"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="f5a05b409d011a9e5e30c169b862f660" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./processors-report.txt"/>
+                </mets:file>
+                <mets:file ID="FILE012" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="637"
+                           CREATED="2007-05-02T20:23:26" CHECKSUM="ffc47e46f694bb8959c625b313d01685" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./crawl-manifest.txt"/>
+                </mets:file>
+                <mets:file ID="FILE013" ADMID="AMD5144582" MIMETYPE="text/plain" SIZE="15" CREATED="2007-05-02T20:23:26"
+                           CHECKSUM="2f264f7f7b2bb1e8c3da0bfb2f7a78ed" CHECKSUMTYPE="MD5">
+                    <mets:FLocat LOCTYPE="URL" xlink:href="file://./frontier-report.txt"/>
+                </mets:file>
+            </mets:fileGrp>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap>
+        <mets:div ADMID="AMD5144582" DMDID="DMD5144582" LABEL="Home Directory">
+            <mets:fptr FILEID="FILE001"/>
+            <mets:fptr FILEID="FILE002"/>
+            <mets:fptr FILEID="FILE003"/>
+            <mets:fptr FILEID="FILE004"/>
+            <mets:fptr FILEID="FILE005"/>
+            <mets:fptr FILEID="FILE006"/>
+            <mets:fptr FILEID="FILE007"/>
+            <mets:fptr FILEID="FILE008"/>
+            <mets:fptr FILEID="FILE009"/>
+            <mets:fptr FILEID="FILE010"/>
+            <mets:fptr FILEID="FILE011"/>
+            <mets:fptr FILEID="FILE012"/>
+            <mets:fptr FILEID="FILE013"/>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>

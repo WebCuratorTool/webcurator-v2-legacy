@@ -1,0 +1,496 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+    <head>
+        <title>Web Curator Tool Release Notes</title>
+        <style>
+            
+            body { 
+            background-color:#ffffff;
+            margin:0px 0px 0px 0px;
+            font-family:arial, sans-serif;
+            font-size:12px;
+            height:100%;
+            padding:0px;
+            margin:10px;
+            }  
+            
+            h1 {
+            color: #800000;
+            font-family: georgia, arial, sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 10px;
+            }
+            
+            h2 {
+            color: #800000;
+            font-family: georgia, arial, sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+            border-bottom: 1px solid #800000;
+            }  
+            
+            h3 {
+            color: #800000;
+            font-family: georgia, arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+            }  
+            
+            h4 {
+            color: #800000;
+            font-family: georgia, arial, sans-serif;
+            font-size: 12px;
+            margin-right: 10px;
+            font-style: italic;
+            } 
+            
+            p {
+            font-family: arial, sans-serif;
+            font-size: 12px;
+            }            
+            
+            td { 
+            font-family: arial, sans-serif;
+            font-size: 12px;
+            }
+            
+            th {  
+            background-color: #AAAAAA;
+            color: white;
+            font-family: arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Web Curator Tool</h1>
+        
+        <h2>Releases</h2>
+        
+        <ul>
+          <li><a href="#rel_1_3_0">Release 1.3.0 (19 Feb 2008)</a></li>
+          <li><a href="#rel_1_2_7">Release 1.2.7 (08 Aug 2007)</a></li>
+          <li><a href="#rel_1_1_1">Release 1.1.1 (30 Mar 2007)</a></li>
+          <li><a href="#rel_1_1">Release 1.1 (24 Sept 2006)</a></li>
+        </ul>
+        
+        <h2><a name="#rel_1_3_0">Release 1.3.0 (19 Feb 2008)</a></h2>
+        <p>
+            Release 1.3.0 is the second major update of the Web Curator Tool.
+        </p>
+                
+        <h3>Table of Contents</h3>
+        <ul>        
+	        <li><a href="#e130_1">Added 'Member of' tab to Group display</a></li>
+	        <li><a href="#e130_2">Added a new Reports menu page</a></li>
+	        <li><a href="#e130_3">Added the ability to edit and delete Annotations (system wide)</a></li>
+	        <li><a href="#e130_4">Added indication of required fields (system wide)</a></li>
+	        <li><a href="#e130_5">Automatic update of Permission state</a></li>
+	        <li><a href="#e130_6">Added the ability to delete queued Target Instances</a></li>
+	        <li><a href="#e130_7">Added a 'view' icon to the Users, Roles, and Agencies screens</a></li>
+	        <li><a href="#e130_8">Added a 'view' icon to the 'Action' column of the Permission Request Template list</a></li>
+	        <li><a href="#e130_9">Added an 'Access' tab to the Target and Group screens</a></li>
+	        <li><a href="#e130_10">Added a 'Display' tab to the Target Instance screen</a></li>
+	        <li><a href="#e130_11">Allow users to select number of results per page</a></li>
+	        <li><a href="#e130_12">Modified Harvest Authorisations search results page</a></li>
+	        <li><a href="#e130_13">Modified the Harvest Authorisation search form fields</a></li>
+	        <li><a href="#e130_14">Added the facility to filter Harvester Profiles, Users & Roles by Agency</a></li>
+	        <li><a href="#e130_15">Modified Groups search form fields to filter by Group Type</a></li>
+	        <li><a href="#e130_16">Changed the default search when opening the Groups screen</a></li>
+	        <li><a href="#e130_17">Added the facility to 'Unclaim' Tasks from within the In-Tray</a></li>
+	        <li><a href="#e130_18">Made 'Target Reference Number is Mandatory' optional - according to system configuration</a></li>
+		</ul>
+
+        <h3>Feature Enhancements</h3>
+
+        <h4><a name="e130_1">Added 'Member of' tab to Group display</a></h4>
+        <p>This enables users to determine whether a Group is a Sub-Group of another.</p>
+        
+        <h4><a name="e130_2">Added a new Reports menu page</a></h4>
+        <p>The Reports menu page displays the report name and description along with a link to the report.</p>
+        
+        <h4><a name="e130_3">Added the ability to edit and delete Annotations (system wide)</a></h4>
+        <p>This has been applied to all screens that used annotations. It helps to prevent duplicate entry of annotations as users can now amend information when correcting mistakes.</p>
+        
+        <h4><a name="e130_4">Added indication of required fields (system wide)</a></h4>
+        <p>Implemented by marking required fields with a red asterix '*', this amendment makes WCT more user friendly.</p>
+        
+        <h4><a name="e130_5">Automatic update of Permission state</a></h4>
+        <p>When WCT is used to print or email a harvest authorisation request to an agent, the status is changed from 'pending' to 'requested'.</p>
+        
+        <h4><a name="e130_6">Added the ability to delete queued Target Instances</a></h4>
+        <p>Users are able to delete a queued Target Instance straight away rather than waiting for it to become scheduled or running before deleting it. This allows other queued or scheduled Target Instances to move forward in the queue quicker.</p>
+        
+        <h4><a name="e130_7">Added a 'view' icon to the Users, Roles, and Agencies screens</a></h4>
+        <p>Users can view records without being able to edit them.</p>
+        
+        <h4><a name="e130_8">Added a 'view' icon to the 'Action' column of the Permission Request Template list</a></h4>
+        <p>Users can view records without being able to edit them.</p>
+        
+        <h4><a name="e130_9">Added an 'Access' tab to the Target and Group screens</a></h4>
+        <p>This provides a place to store access related metadata which may be utilised by a web archive access tool.</p>
+        
+        <h4><a name="e130_10">Added a 'Display' tab to the Target Instance screen</a></h4>
+        <p>This provides a place to store access related metadata which may be utilised by a web archive access tool.</p>
+        
+        <h4><a name="e130_11">Allow users to select number of results per page</a></h4>
+        <p>Added a drop-down menu to the bottom of the search forms for setting the number of results per page (system wide). Possible values are 10, 20, 50, 100. The system remembers the user's preference using a cookie.</p>
+        
+        <h4><a name="e130_12">Modified Harvest Authorisations search results page</a></h4>
+        <p>Added a new column before the action column labelled 'Status'. This displays the status of the permission record (or records) for this item.</p>
+        
+        <h4><a name="e130_13">Modified the Harvest Authorisation search form fields</a></h4>
+        <p>Added a drop down menu to the Harvest Authorisation search form to filter Harvest Authorisations by Agency. Added a textbox to the search form called 'Permissions File Reference' for searching the Permissions 'File Reference' field (stored in a permissions record on the Permission tab). Added a textbox to the search form for searching 'URL Pattern' fields. Added checkboxes to the search form for searching on the Permissions 'Status' field.<br /><font color=red><b>Known Issue: &nbsp;</b></font>There is a bug in the hibernate libraries which causes a slight anomaly in the page/item numbering on results pages where duplicate rows are not shown. This bug does not affect the overall functionality.</p>
+        
+        <h4><a name="e130_14">Added the facility to filter Harvester Profiles, Users & Roles by Agency</a></h4>
+        <p>Added a drop down list box (similar to the Targets screen) so lists on the Profiles, Users and Roles screens can be filtered by agency, with the lists filtered by the users' agency by default.</p>
+        
+        <h4><a name="e130_15">Modified Groups search form fields to filter by Group Type</a></h4>
+        <p>Added a drop down list to the Groups Search Form to filter Groups by Type. Added a new column to the results page called 'Type' which will display the Group Type.</p>
+        
+        <h4><a name="e130_16">Changed the default search when opening the Groups screen</a></h4>
+        <p>Changed the default search to display results filtered by Agency only.</p>
+        
+        <h4><a name="e130_17">Added the facility to 'Unclaim' Tasks from within the In-Tray</a></h4>
+        <p>Added a new icon similar to the claim icon (with alt text 'Unclaim') which appears as an action once a user claims a task. When clicked the task is released - meaning the task will reappear in the In Trays of all the users with the appropriate privileges.</p>
+        
+        <h4><a name="e130_18">Made 'Target Reference Number is Mandatory' optional - according to system configuration</a></h4>
+        <p>Added a property section to the relevant system configuration file called ‘TargetReferenceIsMandatory’, defaulting to true. If true the behaviour doesn’t change, if false, the Target Reference Number is no longer mandatory, and no error will occur without one. This allows a quicker workflow for the British Library without causing any problems for NLNZ.</p>
+        
+        
+        
+        <h2><a name="#rel_1_2_7">Release 1.2.7 (08 Aug 2007)</a></h2>
+        <p>
+            Release 1.2.7 is the first major update of the Web Curator Tool.
+        </p>
+        
+        <h3>Feature Enhancements</h3>
+
+        <h4>Table of Contents</h4>
+        <ul>        
+	        <li><a href="#enh_1">Automated Modification Metadata in Prune Tool</a></li>
+			<li><a href="#enh_2">Harvest History Quality Review Tool</a></li>
+			<li><a href="#enh_3">Paged Search Results</a></li>
+			<li><a href="#enh_4">Browse Tool Updates</a></li>
+			<li><a href="#enh_5">Prune Tool Updates</a></li>
+			<li><a href="#enh_6">Targets and Groups Searchable by Group</a></li>
+			<li><a href="#enh_7">Crawler Activity Report</a></li>
+			<li><a href="#enh_8">Notification and Task Controls</a></li>
+			<li><a href="#enh_9">Add Targets to Groups in Target Workflow</a></li>
+			<li><a href="#enh_10">Log Viewer Enhancements</a></li>
+			<li><a href="#enh_11">Delete All Notifications</a></li>
+			<li><a href="#enh_12">Description Field Length Extended</a></li>
+			<li><a href="#enh_13">Notification of Ownership Change</a></li>
+			<li><a href="#enh_14">Harvest Agent Field for Target Instance Objects</a></li>
+			<li><a href="#enh_15">Search ID Fields</a></li>
+			<li><a href="#enh_16">Target Instance Notification Messages</a></li>
+			<li><a href="#enh_17">Interval Schedule Builder</a></li>
+			<li><a href="#enh_18">Indicate when Permission Records are Expired or Future</a></li>
+			<li><a href="#enh_19">Harvest Now Button</a></li>
+			<li><a href="#enh_20">Tab order and Names</a></li>
+			<li><a href="#enh_21">Transfer Permission Button Moved</a></li>
+			<li><a href="#enh_22">Input Fields Resized</a></li>
+			<li><a href="#enh_23">MySQL Support</a></li>
+			<li><a href="#enh_24">Date Validation</a></li>
+			<li><a href="#enh_25">Internationalisation Updates (Library of Congress)</a></li>
+		</ul>
+        
+        <h4><a name="enh_1">Automated Modification Metadata in Prune Tool</a></h4>
+        <p>The WCT now explicityly records whetehr a Harvet Result is the original harvest or has been modified. The
+           Prune tool will record all items pruned from the harvest result, and this information will be reported 
+           in the SIP.
+        </p>
+        
+        <h4><a name="enh_2">Harvest History Quality Review Tool</a></h4>
+        <p>A new Quality Review tool has been created that will allow users to check how the current harvest compares
+           with previous harvests. This can be useful to compare that the number of URLs harvests is similar to the 
+           number of URLs harvested in the past. A major reduction in the number of URLs or the size of the harvest may
+           indicate that the harvest was not successful.
+        </p>
+        
+        <h4><a name="enh_3">Paged Search Results</a></h4>
+        <p>The search results screens now display a count of the number of results as well as the current page
+           number and the number of pages in the result set. It is now possible to jump to any page in the result
+           set.
+        </p>
+        
+        <h4><a name="enh_4">Browse Tool Updates</a></h4>
+        <p>In the Quality Review Tools menu, new links have been added to link to the live website and to the 
+           archived version. By default the archived version links to the International Web Archive, though this can
+           be customised to point to your repository if desired.
+        </p>
+        
+        <h4><a name="enh_5">Prune Tool Updates</a></h4>
+        <p>The purne tool has been updated to provide more information about the website including:</p>
+        <ul>
+            <li>The HTTP status code</li>
+            <li>The size of the resource</li>
+            <li>The size of the resource</lI>
+            <li>The number of child URLs</li>
+            <li>The number of successfully downloaded child URLs</li>
+            <li>The number of failed downloaded child URLs</li>
+            <li>The size of the resource and its children</li>
+        </ul>
+        <p>It is now also possible to choose a URL and jump into the browse tool.</p>
+        
+        <h4><a name="enh_6">Targets and Groups Searchable by Group</a></h4>
+        <p>It is now possible to search Targets and Groups based on the groups to which they belong.</p>
+        
+        <h4><a name="enh_7">Crawler Activity Report</a></h4>
+        <p>A new report has been created that will give an overview of the Harvest Agent's activities. This report
+           includes information such as:</p>
+        <ul>
+           <li>Target name</li>
+           <li>Status of harvest</li>
+           <li>The size of the resource</lI>
+           <li>Start/end dates</li>
+           <li>Crawl duration</li>
+           <li>Bytes downloaded</li>
+           <li>Name of harvest agent</li>
+        </ul>
+        
+        <h4><a name="enh_8">Notification and Task Controls</a></h4>
+        <p>A user now has finer grained control over the delivery of their notification and tasks. They may choose
+           to whether or not to receive certain notifications, and independently choose whether notifications or
+           tasks are also sent to their email account.
+        </p>
+        
+        <h4><a name="enh_9">Add Targets to Groups in Target Workflow</a></h4>
+        <p>A new Groups tab has been added to the Target User Interface. This allows the user to select the parent
+           groups for a given target. This is in addition to being able to also add targets to groups from the Groups
+           user interface.
+        </p>
+        
+        <h4><a name="enh_10">Log Viewer Enhancements</a></h4>
+        <p>It is now possible to download the full log files from the WCT in addition to viewing them online. 
+           Downloading the full log file allows the user to view all information without being subject to the 
+           size restrictions placed on the online viewer.
+        </p>
+        
+        <h4><a name="enh_11">Delete All Notifications</a></h4>
+        <p>A new button has been added to the WCT Inbox that allows the user to delete all of their notifications.</p>
+        
+        <h4><a name="enh_12">Description Field Length Extended</a></h4>
+        <p>The length of the description fields has been extended from 255 characters to 4000 characters.</p>
+        
+        <h4><a name="enh_13">Notification of Ownership Change</a></h4>
+        <p>A notification is sent original owner of an object when ownership is transferred away from them.</p>
+        
+        <h4><a name="enh_14">Harvest Agent Field for Target Instance Objects</a></h4>
+        <p>A target instance now holds the name of the Harvest Agent to which is was assigned. This is a read-only 
+           attribute, set by the system at the time the harvest is assigned. This information is included in the 
+           SIP.
+        </p>
+        
+        <h4><a name="enh_15">Search ID Fields</a></h4>
+        <p>It is now possible to search the main objects by their object identifier.</p>
+        
+        <h4><a name="enh_16">Target Instance Notification Messages</a></h4>
+        <p>A number of target instnance notification messages have had minor changes to their format.</p>
+        
+        <h4><a name="enh_17">Interval Schedule Builder</a></h4>
+        <p>A new mechanism has been created for setting schedules on targets and groups. The new mechanism
+           allows a user to choose one of the following interval types:</p>
+           <ul>
+             <li>Daily</li>
+             <li>Weekly</li>
+             <li>Monthly</li>
+             <li>Bi-monthly</li>
+             <li>Quarterly</li>
+             <li>Half yearly</li>
+             <li>Annually</li>
+           </ul>
+        <p>These can then be configured with a time and other options. This new schedule builder is a simpler way
+           to create regular schedules than using cron expressions in the custom schedule builder.</p>
+        <p>The custom schedule builder is still available and can be used when the new schedule builder does not 
+           offer enough flexibility.</p>
+        
+        <h4><a name="enh_18">Indicate when Permission Records are Expired or Future</a></h4>
+        <p>The Target's seed list now shows a warning if one of the attached permissions is a future or 
+           expired record.</p>
+           
+        <h4><a name="enh_19">Harvest Now Button</a></h4>
+        <p>The <i>Harvest Now</i> button is no longer on the Target Instance view screen. Instead, it has been moved
+           directly on to the Target Instance search results screen, making it faster to launch a harvest.
+        </p>
+        
+        <h4><a name="enh_20">Tab order and Names</a></h4>
+        <p>A couple of the tabs have been re-ordered or renamed for consistency with the WCT home page. The
+           reports tab is no longer a main-level tab and now resides uner the Management section.
+        </p>
+        
+        <h4><a name="enh_21">Transfer Permission Button Moved</a></h4>
+        <p>The Transfer Permissions button has been moved from the view permission screen to the edit permission
+           screen.</p>
+           
+        <h4><a name="enh_22">Input Fields Resized</a></h4>
+        <p>A number of input fields have been resized to display a larger number of characters on-screen.</p>
+        
+        <h4><a name="enh_23">MySQL Support</a></h4>
+        <p>To support MySQL databases, the tablenames and fieldnames are now consistently in upper case.</p>
+        <p>The documentation includes instructions for deploying against MySQL.
+        
+        <h4><a name="enh_24">Date Validation</a></h4>
+        <p>All dates must now be entered with 4-digit years.</p>
+        
+        <h4><a name="enh_25">Internationalisation Updates (Library of Congress)</a></h4>
+        <p>Notification messages and many JSP messages have been internationalised allowing libraries to localise
+           messages for different languages or terminology. The focus of these changes has been to allow the 
+           terminology to be modified between different English speaking countries. While the underlying 
+           architecture will support language translation, not all messages have been extracted from the JSPs at
+           this point.
+        </p>
+        
+		<h3>Bug Fixes</h3>
+        <p>The following sourceforge bugs have been fixed.</p>
+        <table border="0" cellspacing="0" cellpadding="3">
+            <thead>
+                <tr>
+                    <th>SourceForge#</th>
+                    <th>Description</th>
+                    <th>Resolution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td valign="top">1580999</td>
+                    <td valign="top">Case-insensitive database.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>              
+				<tr>
+                    <td valign="top">1592383</td>
+                    <td valign="top">Error viewing pages with empty hyperlinks in browse tool.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                              
+                <tr>
+                    <td valign="top">1685710 </td>
+                    <td valign="top">Digital Asset Store is purging non-archived harvests.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                        
+                <tr>
+                    <td valign="top">1692829</td>
+                    <td valign="top">Browse Tool: Cannot Review URLs with spaces</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                
+                <tr>
+                    <td valign="top">1693457 </td>
+                    <td valign="top">Out of Memory Exceptions When Doing Large Crawls.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>           
+                <tr>
+                    <td valign="top">1694666</td>
+                    <td valign="top">Modifying seeds in Target affects Harvested Target Instance </td>
+                    <td valign="top">Fixed.</td>
+                </tr>       
+				<tr>
+                    <td valign="top">1701162</td>
+                    <td valign="top">Browse Tool problem with CSS file using @import.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                              
+                <tr>
+                    <td valign="top">1702224</td>
+                    <td valign="top">First of Two Simultaneous Crawls Fails</td>
+                    <td valign="top">Fixed.</td>
+                </tr>           
+                <tr>
+                    <td valign="top">1702552</td>
+                    <td valign="top">Browse tool not handling some background URLs.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>           
+                <tr>
+                    <td valign="top">1712498</td>
+                    <td valign="top">Default profile is too simple.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>           
+                <tr>
+                    <td valign="top">1715451</td>
+                    <td valign="top">Harvest Agent does not retry submission of index to core.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                
+                
+                                 
+			</tbody>
+		</table>                   		
+                
+		          
+        
+        <h2><a name="#rel_1_1_1">Release 1.1.1 (30 Mar 2007)</a></h2>
+        <p>
+            Release 1.1.1 of the Web Curator Tool is a fix release only. It does
+            not contain any new features.
+        </P>
+        
+        <h3>Bug Fixes</h3>
+        <p>The following sourceforge bugs have been fixed.</p>
+        <table border="0" cellspacing="0" cellpadding="3">
+            <thead>
+                <tr>
+                    <th>SourceForge#</th>
+.                    <th>Description</th>
+                    <th>Resolution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td valign="top">1556246</td>
+                    <td valign="top">Incorrect message when Target Group is saved.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                                        
+                <tr>
+                    <td valign="top">1558937</td>
+                    <td valign="top">Can not search for Targets in the Completed state.</td>
+                    <td valign="top">Added a checkbox for the Completed state</td>
+                </tr>
+                <tr>
+                    <td valign="top">1559056</td>
+                    <td valign="top">Cannot change bandwidth of running job.</td>
+                    <td valign="top">Fixed.</td>
+                </tr>                        
+                <tr>
+                    <td valign="top">1577783</td>
+                    <td valign="top">Email address validation is causing certain addresses to fail.</td>
+                    <td valign="top">Extended the regular expression check to permit the addresses that were failing.</td>
+                </tr>            
+                <tr>
+                    <td valign="top">1577791</td>
+                    <td valign="top">Target error message language.</td>
+                    <td valign="top">Modified messages.properties with the recommended text.</td>
+                </tr>   
+                <tr>
+                    <td valign="top">1579321</td>
+                    <td valign="top">When viewing permissions, no URL patterns are displayed, even if they show up in the edit mode.</td>
+                    <td valign="top">Fixed</td>
+                </tr>
+                <tr>
+                    <td valign="top">1666472</td>
+                    <td valign="top">Errors with Javascript links in Browse Tool.</td>
+                    <td valign="top">Modified the contentTypePatterns in 
+                    wct-browse-servlet.xml to ignore JavaScript matches.</td>
+                </tr>                 
+                <tr>
+                    <td valign="top">1685710</td>
+                    <td valign="top">Digital Asset Store is purging non-archived harvests.</td>
+                    <td valign="top">Modified to only purge Archived harvests.</td>
+                </tr>                            
+                <tr>
+                    <td valign="top">-</td>
+                    <td valign="top">Administration Guide does not cover the setting of the 
+                                     attachments.Directory setting in the server-config.wsdd config
+                                     files.</td>
+                    <td valign="top">Documentation Updated.</td>
+                </tr>                       
+            </tbody>
+        </table>
+        
+        <h2><a name="#rel_1_1">Release 1.1 (24 Sept 2006)</a></h2>
+        <p>Initial release of the Web Curator Tool.</p>
+        
+    </body>
+</html>
+

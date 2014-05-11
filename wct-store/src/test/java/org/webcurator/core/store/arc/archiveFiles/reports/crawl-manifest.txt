@@ -1,0 +1,13 @@
+L+ C:\wct\harvest-agent\9469952\logs\crawl.log
+L+ C:\wct\harvest-agent\9469952\logs\runtime-errors.log
+L+ C:\wct\harvest-agent\9469952\logs\local-errors.log
+L+ C:\wct\harvest-agent\9469952\logs\uri-errors.log
+L+ C:\wct\harvest-agent\9469952\logs\progress-statistics.log
+C+ C:\wct\harvest-agent\9469952\order.xml
+C+ C:\wct\harvest-agent\9469952\seeds.txt
+R+ C:\wct\harvest-agent\9469952\hosts-report.txt
+R+ C:\wct\harvest-agent\9469952\mimetype-report.txt
+R+ C:\wct\harvest-agent\9469952\responsecode-report.txt
+R+ C:\wct\harvest-agent\9469952\seeds-report.txt
+R+ C:\wct\harvest-agent\9469952\crawl-report.txt
+R+ C:\wct\harvest-agent\9469952\processors-report.txt

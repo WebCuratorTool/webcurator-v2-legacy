@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rolecontrollertest>
+	<agencies>
+		<agency id="2000">
+		   <name>British Library</name>
+		    <address/>
+		    <phone/>
+		    <agencyURL/>
+		    <agencyLogoURL/>
+		    <email/>
+		    <fax/>
+			<roles>
+				<role id="3000">
+					<name>BL-Admin</name>
+					<description>Test Role</description>
+					<role-privileges>
+						<!-- SCOPE_ALL = 0; SCOPE_AGENCY = 100; SCOPE_OWNER = 200; SCOPE_NONE = 500; -->
+						<role-privilege id="4000">
+						<scope>0</scope>
+						<privilege>MANAGE_AGENCIES</privilege>
+						</role-privilege>
+					</role-privileges>
+				</role>
+			</roles>
+			<users>
+				<user id="1000" username="TestUser">
+					<title/>
+					<firstname>Test</firstname>
+					<lastname>User</lastname>
+					<email>test.user@localhost.co.uk</email>
+					<active>true</active>
+					<externalAuth>false</externalAuth>
+					<roles>
+						<role id="3000" />
+					</roles>
+				</user> 
+			</users>
+		</agency>
+		<agency id="2001">
+		   <name>Test Agency</name>
+		    <address/>
+		    <phone/>
+		    <agencyURL/>
+		    <agencyLogoURL/>
+		    <email/>
+		    <fax/>
+			<roles>
+				<role id="3001">
+					<name>TA-Admin</name>
+					<description>Test Role</description>
+					<role-privileges>
+						<!-- SCOPE_ALL = 0; SCOPE_AGENCY = 100; SCOPE_OWNER = 200; SCOPE_NONE = 500; -->
+						<role-privilege id="4000">
+						<scope>0</scope>
+						<privilege>MANAGE_AGENCIES</privilege>
+						</role-privilege>
+					</role-privileges>
+				</role>
+			</roles>
+			<users>
+				<user id="1001" username="TestUser2">
+					<title/>
+					<firstname>Test</firstname>
+					<lastname>User</lastname>
+					<email>test.user@localhost.co.uk</email>
+					<active>true</active>
+					<externalAuth>false</externalAuth>
+					<roles>
+						<role id="3001" />
+					</roles>
+				</user> 
+			</users>
+		</agency>
+	</agencies>
+</rolecontrollertest>
+
+

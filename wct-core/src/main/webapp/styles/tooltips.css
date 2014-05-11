@@ -1,0 +1,112 @@
+/* the main target instance tooltip */
+.titooltip {	
+    visibility: hidden;
+    position: absolute; 
+	float: left; 
+    top: 0;  
+    left: 0; 
+    z-index: 2; 
+
+    width: 500px;
+    overflow-x: hidden; 
+    overflow-y: auto;
+    resize: both;
+    word-wrap: break-word;
+
+    font: normal 8pt sans-serif; 
+    padding: 0px; 
+    border: solid 1px;
+    border-color: black;
+	background-color: rgb(255, 255, 128);
+}
+/* the annotation date inside the target instance tooltip */
+.titooltip_annotationdate {
+	color: yellow; 
+	background-color: rgb(192, 192, 192);
+}
+/* the header inside the target instance tooltip */
+.titooltip_header {
+	font-weight: bold; 
+	background-color: black; 
+	color: rgb(255, 255, 128);
+}
+/* the current status inside the target instance tooltip */
+.titooltip_statuscurrent {
+	font-weight: bold; 
+	background-color: blue; 
+	color: rgb(255, 255, 128);
+}
+/* the annotation text inside the target instance tooltip */
+.titooltip_annotationtext {
+    background-color: rgb(255, 255, 128);
+    color: rgb(192, 192, 192);
+}
+
+/* the main target tooltip */
+.ttooltip {	
+    visibility: hidden;
+    position: absolute; 
+	float: left; 
+    top: 0;  
+    left: 0; 
+    z-index: 2; 
+
+    width: 400px;
+    overflow-x: hidden; 
+    overflow-y: auto;
+    resize: both;
+    word-wrap: break-word;
+
+    font: normal 8pt sans-serif; 
+    padding: 0px; 
+    border: solid 1px;
+    border-color: black;
+    background-color: #CCFFFF;
+}
+/* the annotation date inside the target tooltip */
+.ttooltip_annotationdate {
+	color: #CCFFFF; 
+	background-color: blue;
+}
+/* the header inside the target tooltip */
+.ttooltip_header {
+	font-weight: bold; 
+	background-color: black; 
+	color: #CCFFFF;
+}
+/* the annotation text inside the target tooltip */
+.ttooltip_annotationtext {
+    background-color: #CCFFFF;
+    color: blue;
+    vertical-align: top;
+    horizontal-align: left;
+}
+
+/* the target instance recommendation tooltip */
+.rectooltip {	
+    visibility: hidden;
+    position: absolute; 
+	float: left; 
+    top: 0;  
+    left: 0; 
+    z-index: 2; 
+
+    width: 480px;
+    overflow-x: hidden; 
+    overflow-y: auto;
+    resize: both;
+    word-wrap: break-word;
+
+    border: solid 1px;
+    border-color: black;
+    background-color: #CCFFFF;
+}
+
+.rectooltiptext {
+    padding: 0px; 
+    vertical-align: top;
+    horizontal-align: left;
+}
+
+
+

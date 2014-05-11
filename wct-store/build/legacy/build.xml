@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wct-harvest-agent" default="all">
+    <property file="./build.properties" />
+	<property name="target" value="${root}/target"/>
+	<property name="xdoclet.force" value="true"/>
+	<property name="xdoclet.mergedir" value="${root}/merge"/>
+	<property name="src" value="${root}/src"/>
+	<property name="gen-src" value="${root}/gen-src"/>
+	<property name="src-api" value="${root.core}/src-api"/>
+    <property name="src-test" value="${root}/src-test"/>
+	<property name="cfg" value="${root}/cfg"/>	
+	<property name="docs" value="${root}/docs"/>	
+	<property name="db" value="${root}/db"/>
+	<property name="eclipse.webroot" value="${root}/WebRoot"/>
+	<property name="web.libs" value="${root}/WebRoot/WEB-INF/lib"/>	
+	<property name="tomcat.endorsed.lib" value="${tomcat.lib}/../endorsed"/>	
+	<description>
+            WCT Digital Asset Store ANT Build file 
+    </description>
+	
+	<path id="classpath.wct">
+		<fileset dir="${tomcat.lib}" includes="servlet-api.jar"/>
+		<fileset dir="${web.libs}" includes="*.jar"/>
+	</path>
+
+    <path id="classpath.wcttests">
+        <fileset dir="${tomcat.lib}">
+            <include name="servlet-api.jar"/>
+            <include name="jsp-api.jar"/>
+        </fileset>		
+        <fileset dir="${web.libs}" includes="*.jar"/>
+        <fileset dir="${junit.lib}">
+            <include name="junit-4.4.jar"/>
+        </fileset>		
+        <fileset dir="${springmock.lib}">
+            <include name="spring-mock.jar"/>
+        </fileset>		
+    </path>
+	
+	<path id="classpath.wct.target">
+		<fileset dir="${target}/${proj.name}/WEB-INF/classes" includes="**/*.*"/>
+		<fileset dir="${web.libs}" includes="*.jar"/>
+	</path>
+
+    <target name="clean">
+        <delete dir="${target}"/>		
+    </target>
+    
+	<target name="prepare">
+		<delete dir="${target}"/>
+	    <mkdir dir="${target}/${proj.name}/WEB-INF/classes"/>
+        <mkdir dir="${target}/test/classes"/>
+	</target>
+	
+	<target name="compile" depends="prepare">
+    	<javac srcdir="${src-api}"
+    	       destdir="${target}/${proj.name}/WEB-INF/classes"
+    		   includes="**/*.java"
+     		   debug="true" debuglevel="lines,vars,source">
+    		<classpath refid="classpath.wct"/>
+    	</javac>
+
+		<javac srcdir="${src}"
+    	       destdir="${target}/${proj.name}/WEB-INF/classes"
+    		   includes="**/*.java"
+     		   debug="true" debuglevel="lines,vars,source">
+    		<classpath refid="classpath.wct"/>
+    	</javac>
+	</target>
+
+    <target name="compiletests">		
+        <javac srcdir="${src-api}:${src}:${src-test}"
+				 destdir="${target}/test/classes"
+				 includes="**/*.java"
+				 debug="true" debuglevel="lines,vars,source">
+            <classpath refid="classpath.wcttests"/>
+        </javac>
+        <jar destfile="${target}/test/test.jar" basedir="${target}/test/classes"/>
+    </target>
+	
+	<target name="copy-config">
+		<property file="${system}-config.properties"/>
+		
+		<copy todir="${target}/${proj.name}/WEB-INF/classes">
+			<fileset dir="${root}/cfg">
+				<include name="log4j.*"/>
+				<include name="wct-das.xml"/>
+				<include name="wct-das.properties"/>
+			</fileset>
+		</copy>
+		
+		<copy file="${root}/WebRoot/WEB-INF/web.xml" todir="${target}/${proj.name}/WEB-INF"/>
+		<copy file="${cfg}/server-config.wsdd" todir="${target}/${proj.name}/WEB-INF"/>
+
+		<copy todir="${target}/${proj.name}">
+			<fileset dir="${root}/WebRoot">
+				<include name="**/*.jsp"/>
+				<include name="**/*.html"/>
+			</fileset>
+		</copy>		
+		
+		<copy todir="${target}/${proj.name}/WEB-INF/lib">
+			<fileset dir="${root}/WebRoot/WEB-INF/lib">
+				<include name="*"/>
+			</fileset>
+		</copy>		
+		
+		<copy todir="${target}/${proj.name}">
+			<fileset dir="${docs}">
+				<include name="license.txt"/>
+			</fileset>
+		</copy>		
+		
+	</target>
+	
+	<target name="customise-archive-oms" depends="check-if-oms-url-provided" if="oms.url.provided">
+		<echo>Customising the wct-das.properties for OMS Archive</echo>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@OMS_UPLOAD_URL@@" value="${oms.upload.url}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@OMS_ARCHIVE_FILES@@" value="${oms.archive.files}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@OMS_USERNAME@@" value="${oms.username}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@OMS_PASSWORD@@" value="${oms.password}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@ARCHIVE_TYPE@@" value="omsArchive"/>
+	</target>
+
+	<target name="customise-archive-dps" depends="check-if-dps-url-provided" if="dps.url.provided">
+		<echo>Customising the wct-das.properties for Rosetta/DPS Archive</echo>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_DEPOSIT_SERVER_BASE_URL@@" value="${dps.depositServer.baseUrl}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_PDS_URL@@" value="${dps.pds.url}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_FTP_HOST@@" value="${dps.ftp.host}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_FTP_USERNAME@@" value="${dps.ftp.username}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_FTP_PASSWORD@@" value="${dps.ftp.password}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_FTP_DIRECTORY@@" value="${dps.ftp.directory}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_INSTITUTION@@" value="${dps.institution}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_USERNAME@@" value="${dps.username}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_PASSWORD@@" value="${dps.password}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_MATERIALFLOW_ID@@" value="${dps.materialflow.id}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@DPS_PRODUCER_ID@@" value="${dps.producer.id}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@ARCHIVE_TYPE@@" value="dpsArchive"/>
+	</target>
+
+	<target name="customise-archive-file" depends="check-oms-and-dps-not-provided" if="oms.and.dps.not.provided">
+		<echo>Customising the wct-das.properties for File Archive</echo>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@FILE_ARCHIVE_FILES@@" value="${file.archive.files}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@FILE_ARCHIVE_REPOSITORY@@" value="${file.archive.repository}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@ARCHIVE_TYPE@@" value="fileArchive"/>		
+	</target>
+	
+	<target name="check-if-oms-url-provided" depends="check-both-oms-and-dps-provided">
+		<condition property="oms.url.provided">
+			<and>
+				<isset property="oms.upload.url"/>
+				<not>
+					<isset property="dps.depositServer.baseUrl"/>
+				</not>
+			</and>
+		</condition>
+	</target>
+	<target name="check-if-dps-url-provided" depends="check-both-oms-and-dps-provided">
+		<condition property="dps.url.provided">
+			<and>
+				<isset property="dps.depositServer.baseUrl"/>
+				<not>
+					<isset property="oms.upload.url"/>
+				</not>
+			</and>
+		</condition>
+	</target>
+	<target name="check-oms-and-dps-not-provided" depends="check-both-oms-and-dps-provided">
+		<condition property="oms.and.dps.not.provided">
+			<and>
+				<not>
+					<isset property="oms.upload.url"/>
+				</not>
+				<not>
+					<isset property="dps.depositServer.baseUrl"/>
+				</not>
+			</and>
+		</condition>
+	</target>
+	<target name="check-both-oms-and-dps-provided">
+		<condition property="both.oms.and.dps.provided">
+			<and>
+				<isset property="oms.upload.url"/>
+				<isset property="dps.depositServer.baseUrl"/>
+			</and>
+		</condition>
+		<fail if="both.oms.and.dps.provided" 
+			message="You should provide either oms.upload.url or dps.depositServer.baseUrl in the config file, but not both."/>
+	</target>
+
+	<target name="customise" depends="copy-config,customise-archive-oms,customise-archive-dps,customise-archive-file">
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@ARC_STORE_BASE@@" value="${arc.store.dir}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/log4j.xml" token="@@LOG4J_DIR@@" value="${log4j.log.dir}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/server-config.wsdd" token="@@ATTACH_DIR@@" value="${attach.dir}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@CORE_HOST@@" value="${core.host}"/>
+		<replace file="${target}/${proj.name}/WEB-INF/classes/wct-das.properties" token="@@CORE_PORT@@" value="${core.port}"/>			
+	</target>
+	
+	<target name="war" depends="compile, customise">
+		<jar destfile="${target}/${proj.name}.war" basedir="${target}/${proj.name}"/>
+	</target>
+
+	
+	<target name="deploy">
+		<copy todir="${tomcat.webapps}">
+			<fileset dir="${target}" includes="**/*" 
+				excludes="**/jaxb-api-2.1.jar,**/jboss-jaxws-jbossws-2.0.jar,**/jboss-saaj-4.2.2.jar,**/wsdl4j-1.5.1.jar"/>
+		</copy>		
+		<copy todir="${tomcat.endorsed.lib}">
+			<fileset dir="${target}/${proj.name}/WEB-INF/lib"
+				includes="jaxb-api-2.1.jar,jboss-jaxws-jbossws-2.0.jar,jboss-saaj-4.2.2.jar"/>
+		</copy>		
+	</target>
+	
+	
+	<target name="all" depends="compile, customise, deploy, compiletests"/>
+</project>

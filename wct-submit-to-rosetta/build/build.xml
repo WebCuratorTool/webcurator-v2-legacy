@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wct-submit-to-rosetta" default="all">
+	<property file="./build.properties" />
+	<property name="target" value="${root}/target" />
+	<property name="src" value="${root}/src/main/java" />
+	<property name="src-test" value="${root}/src/test/java" />
+	<property name="test.results.dir" value="${target}/test-results" />
+	<property name="cfg" value="${root}/src/main/resources" />
+	<property name="docs" value="${root}/docs" />
+	<property name="dir.libs" value="${root}/lib" />
+	<property name="dir.endorsed.libs" value="${root}/endorsed-lib" />
+	<property name="dir.test.libs" value="${root}/lib/test-support" />
+	<property name="das.web.libs" value="${root.das}/WebRoot/WEB-INF/lib" />
+	<description>
+		WCT Submit To Rosetta Module ANT Build File
+	</description>
+
+	<path id="classpath.wct">
+		<fileset dir="${dir.libs}" includes="*.jar" />
+		<fileset dir="${dir.endorsed.libs}" includes="*.jar" />
+		<fileset dir="${das.web.libs}" includes="*.jar" />
+	</path>
+
+	<path id="classpath.wcttests">
+		<pathelement location="${target}/${proj.name}.jar" />
+		<pathelement location="${target}/${proj.name}-required-for-unit-test.jar" />
+		<path refid="classpath.wct"/>
+		<fileset dir="${junit.lib}">
+			<include name="junit-4.4.jar" />
+		</fileset>
+		<fileset dir="${dir.test.libs}" includes="*.jar" />
+		<pathelement location="${target}/test/test.jar" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${target}" />
+	</target>
+
+	<target name="prepare" depends="clean">
+		<mkdir dir="${target}/${proj.name}" />
+		<mkdir dir="${target}/test/classes" />
+		<mkdir dir="${test.results.dir}" />
+	</target>
+
+	<target name="compile" depends="prepare">
+		<javac srcdir="${src}"
+			destdir="${target}/${proj.name}" includes="**/*.java"
+			debug="true" debuglevel="lines,vars,source">
+			<classpath refid="classpath.wct" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile, customise">
+		<jar destfile="${target}/${proj.name}.jar" basedir="${target}/${proj.name}" />
+	</target>
+
+	<target name="compiletests" depends="compile, jar">
+		<javac srcdir="${src}:${src-test}"
+			destdir="${target}/test/classes" includes="**/*.java" debug="true"
+			debuglevel="lines,vars,source">
+			<classpath refid="classpath.wcttests" />
+		</javac>
+		<jar destfile="${target}/test/test.jar"
+			basedir="${target}/test/classes" />
+	</target>
+
+	<target name="runtests" depends="compiletests">
+		<junit printsummary="true" haltonfailure="true" fork="true" dir="${root}">
+			<classpath refid="classpath.wcttests" />
+			<test name="nz.govt.natlib.ndha.test.AllTests"
+				todir="${test.results.dir}" haltonfailure="true"
+				outfile="testWCTSubmitToRosetta">
+				<formatter type="brief" extension=".log" />
+			</test>
+		</junit>
+	</target>
+
+	<target name="copy-config">
+		<copy todir="${target}/${proj.name}">
+			<fileset dir="${cfg}">
+				<include name="log4j.*"/>
+				<include name="commons-logging.properties"/>
+				<include name="dnx_profile.xml"/>
+				<include name="topology.properties"/>
+			</fileset>
+		</copy>
+		<copy todir="${target}/${proj.name}">
+			<fileset dir="${docs}">
+				<include name="license.txt"/>
+			</fileset>
+		</copy>		
+	</target>
+
+	<target name="customise" depends="copy-config">
+		<replace file="${target}/${proj.name}/log4j.xml" token="@@LOG4J_DIR@@" value="${log4j.log.dir}"/>
+	</target>
+
+	<target name="deploy">
+		<copy todir="${das.web.libs}">
+			<fileset dir="${target}" >
+				<include name="${proj.name}.jar"/>
+			</fileset>
+			<fileset dir="${dir.libs}" excludes="aheritrix-1.14.1.jar">
+				<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${dir.endorsed.libs}" >
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="all"
+		depends="compile, customise, jar, compiletests, runtests, deploy" />
+</project>

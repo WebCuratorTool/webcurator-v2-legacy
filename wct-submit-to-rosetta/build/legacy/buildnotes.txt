@@ -1,0 +1,45 @@
+Procedure to build the WCTSubmitToRosetta module and integrate with WCTDigitalAssetStore
+========================================================================================
+
+This module needs to be built before compiling the WCTDigitalAssetStore module.
+
+This note below assumes that:
+	- The WCTSubmitToRosetta module has been checked out from CVS to the C:\projects\WCTSubmitToRosetta directory, and 
+	- the WCTDigitalAssetStore module has been checked out to C:\projects\WCTDigitalAssetStore
+
+Steps to build using ANT:
+=========================
+
+- Open a command window and change directory to C:\projects\WCTSubmitToRosetta\build directory
+
+- Type the command: ant all (or, simply ant)
+
+- The ANT program, using the build.xml file in C:\projects\WCTSubmitToRosetta\build, does the following:
+	- Compiles the Java classes
+	- Executes Unit Tests
+	- Creates a wct-submit-to-rosetta.jar
+	- Copies this JAR and other JAR files (from C:\projects\WCTSubmitToRosetta\lib directory) to the WCTDigitalAssetStore lib directory (C:\projects\WCTDigitalAssetStore\WebRoot\WEB-INF\lib)
+	- Copies 3 JAR files from C:\projects\WCTSubmitToRosetta\endorsed-lib to the Tomcat's endorsed directory (C:\Development\apache-tomcat-5.5.23\common\endorsed)
+
+Steps to build using Maven:
+===========================
+
+- Open a command window and change directory to C:\projects\WCTSubmitToRosetta directory
+
+- Execute the batch program: install-libs.bat
+
+- Type the command: mvn -Ddas.location.present clean install
+
+- The Maven program, using the pom.xml file in C:\projects\WCTSubmitToRosetta, does the following:
+	- Compiles the Java classes
+	- Executes Unit Tests
+	- Creates a wct-submit-to-rosetta.jar
+	- Copies this JAR and other JAR files (from C:\projects\WCTSubmitToRosetta\lib directory) to the WCTDigitalAssetStore lib directory (C:\projects\WCTDigitalAssetStore\WebRoot\WEB-INF\lib)
+	- Copies 3 JAR files from C:\projects\WCTSubmitToRosetta\endorsed-lib to the Tomcat's endorsed directory (C:\Development\apache-tomcat-5.5.23\common\endorsed)
+
+
+Manual Verification:
+====================
+
+Once the WCTSubmitToRosetta module is built using the above procedure and before building the WCTDigitalAssetStore, make sure that the C:\projects\WCTDigitalAssetStore\WebRoot\WEB-INF\lib directory contains wct-submit-to-rosetta.jar and all JARs from C:\projects\WCTSubmitToRosetta\lib directory.
+

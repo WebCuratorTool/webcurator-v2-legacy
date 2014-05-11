@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>wct-assembly</artifactId>
+	<packaging>pom</packaging>
+	<name>Web curator tool zip assembler</name>
+
+	<parent>
+		<artifactId>wct-parent</artifactId>
+		<groupId>org.webcurator</groupId>
+		<version>1.6.2-SNAPSHOT</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<configuration>
+							<finalName>wct-package-bin-v${project.version}.zip</finalName>
+							<descriptors>
+								<descriptor>src/main/descriptors/bin.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<id>make-assembly-bin</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+					<execution>
+						<configuration>
+							<finalName>wct-package-src-v${project.version}.zip</finalName>
+							<descriptors>
+								<descriptor>src/main/descriptors/src.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<id>make-assembly-src</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

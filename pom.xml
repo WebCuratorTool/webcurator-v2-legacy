@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.webcurator</groupId>
+	<artifactId>wct-parent</artifactId>
+	<version>1.6.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Web curator tool parent</name>
+
+	<properties>
+		<powermock.version>1.5.1</powermock.version>
+	</properties>
+
+	<modules>
+		<module>wct-core</module>
+		<module>wct-submit-to-rosetta</module>
+		<module>wct-harvest-agent</module>
+		<module>wct-store</module>
+		<module>wct-assembly</module>
+	</modules>
+
+	<scm>
+		<!-- <developerConnection>scm:svn:https://your-server-here/repos/myapplication/trunk/mycomponent/</developerConnection> -->
+		<developerConnection>scm:svn:svn://svn.natlib.govt.nz/Natlib/WebCuratorTool/trunk</developerConnection>
+	</scm>
+
+	<build>
+		<plugins>
+			<!-- Maven Compiler Plugin using Java 1.6 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<verbose>true</verbose>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<!-- Install only as there is no maven repository -->
+					<goals>install</goals>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
+		</dependency>
+	</dependencies>
+
+
+	<repositories>
+		<repository>
+			<id>maven-forgerock-org</id>
+			<name>maven-forgerock-org</name>
+			<url>http://maven.forgerock.org/repo/repo</url>
+		</repository>
+		<repository>
+			<id>builds-archive-org</id>
+			<name>builds-archive-org</name>
+			<url>http://builds.archive.org:8080/maven2</url>
+		</repository>
+		<repository>
+			<id>download-oracle-com</id>
+			<name>dow-oracle-com</name>
+			<url>http://download.oracle.com/maven</url>
+		</repository>
+		<repository>
+			<id>download-java-net</id>
+			<name>download-java-net</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+
+	</repositories>
+</project>
