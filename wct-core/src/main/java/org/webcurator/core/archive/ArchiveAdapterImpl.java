@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Copyright 2006 The National Library of New Zealand
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,7 +126,7 @@ public class ArchiveAdapterImpl implements ArchiveAdapter {
 		 * However, the advice we have is that it has to be an OMS username, and is generally 
 		 * set to the username of the person who submits to the OMS, so we will probably have to do that.
 		 */ 
-		/* Use seed URL(s) where Seed.Type = primary. (But we are not exactly sure how to implant it�)
+		/* Use seed URL(s) where Seed.Type = primary. (But we are not exactly sure how to implant it…)
 		 */
 		map.put(ENTRY_POINT_URL,entryPointURL);
 		/* Who is the logged in user??? 

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  *  Copyright 2006 The National Library of New Zealand
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,25 +68,25 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
 	/** The name of the query for getting the Harvest History */
 	public static final String QRY_GET_HARVEST_HISTORY = "org.webcurator.domain.model.core.TargetInstance.get_harvest_history";
 
-	/** Scheduled – The Target Instance is scheduled for harvesting. */
+	/** Scheduled â€“ The Target Instance is scheduled for harvesting. */
     public static final String STATE_SCHEDULED = "Scheduled";
-    /** Queued – The Target Instances scheduled time has past but there is no capacity process the Harvest. */
+    /** Queued â€“ The Target Instances scheduled time has past but there is no capacity process the Harvest. */
     public static final String STATE_QUEUED = "Queued";
-    /** Running – A Harvest Agent is running the harvest for the Target Instance. */
+    /** Running â€“ A Harvest Agent is running the harvest for the Target Instance. */
     public static final String STATE_RUNNING = "Running";
-    /** Stopping – A Harvest Agent is stopping the harvest for the Target Instance. */
+    /** Stopping â€“ A Harvest Agent is stopping the harvest for the Target Instance. */
     public static final String STATE_STOPPING = "Stopping";
-    /** Paused – The harvest for the Target Instance has been paused on the Harvest Agent and may be restarted after changes to the Target Instance. */    
+    /** Paused â€“ The harvest for the Target Instance has been paused on the Harvest Agent and may be restarted after changes to the Target Instance. */    
     public static final String STATE_PAUSED = "Paused";
-    /** Aborted – The harvest for the Target Instance has been aborted and will not be restarted.  Any harvest data has been deleted. */    
+    /** Aborted â€“ The harvest for the Target Instance has been aborted and will not be restarted.  Any harvest data has been deleted. */    
     public static final String STATE_ABORTED = "Aborted";
-    /** Harvested – The Harvest Agent has completed the harvest for the Target Instance or the harvest has been manually stopped. */    
+    /** Harvested â€“ The Harvest Agent has completed the harvest for the Target Instance or the harvest has been manually stopped. */    
     public static final String STATE_HARVESTED = "Harvested";
-    /** Rejected – The Harvest Result for the Target Instance has been Quality Reviewed and determined unsuitable for archiving. */    
+    /** Rejected â€“ The Harvest Result for the Target Instance has been Quality Reviewed and determined unsuitable for archiving. */    
     public static final String STATE_REJECTED = "Rejected";
-    /** Endorsed – The Harvest Result for the Target Instance has been Quality Reviewed and determined suitable for archiving. */    
+    /** Endorsed â€“ The Harvest Result for the Target Instance has been Quality Reviewed and determined suitable for archiving. */    
     public static final String STATE_ENDORSED = "Endorsed";
-    /** Archived – The Harvest Result for the Target Instance has been submitted to the Digital Archive System. */    
+    /** Archived â€“ The Harvest Result for the Target Instance has been submitted to the Digital Archive System. */    
     public static final String STATE_ARCHIVED = "Archived";
     /** Archiving - We have started the archiving, but not completed */
 	public static final String STATE_ARCHIVING = "Archiving";
