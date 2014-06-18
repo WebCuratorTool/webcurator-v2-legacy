@@ -10,6 +10,11 @@
 		<version>1.6.2-SNAPSHOT</version>
 	</parent>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
 	<build>
 		<finalName>wct-store</finalName>
 		<resources>
