@@ -32,9 +32,12 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.targets.TargetManager;
 import org.webcurator.domain.TargetInstanceDAO;
+import org.webcurator.domain.model.core.BusinessObjectFactory;
 import org.webcurator.domain.model.core.HarvestResourceDTO;
 import org.webcurator.domain.model.core.HarvestResult;
 import org.webcurator.domain.model.core.Seed;
+import org.webcurator.domain.model.core.SeedHistory;
+import org.webcurator.domain.model.core.Target;
 import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.ui.tools.command.QualityReviewToolCommand;
 
@@ -57,10 +60,12 @@ public class QualityReviewToolController extends AbstractCommandController {
 	private boolean enableBrowseTool = true;
 	private boolean enableAccessTool = false;
 	private String webArchiveTarget = null;
+	private BusinessObjectFactory businessObjectFactory = null;
     
     
 	public QualityReviewToolController() {
 		setCommandClass(QualityReviewToolCommand.class);
+		businessObjectFactory = new BusinessObjectFactory();
 	}
 
 	@Override
@@ -90,6 +95,36 @@ public class QualityReviewToolController extends AbstractCommandController {
             	}
             }
         	
+        }
+        
+        // If the seed url has been changed on the Target, then look for a match in the seed history.
+        // Construct a new seed object for the purposes of the QR tool.
+        if(seeds.isEmpty()){
+        	originalSeedsIt = ti.getOriginalSeeds().iterator();        
+            while (originalSeedsIt.hasNext()) {
+            	String seedUrl = originalSeedsIt.next();
+                Iterator<SeedHistory> currentSeedHistory = ti.getSeedHistory().iterator();
+                while (currentSeedHistory.hasNext()) {
+                	SeedHistory seedHistoryObj = currentSeedHistory.next();
+                	if (seedHistoryObj.getSeed().equals(seedUrl)) {
+                		// Retrieve target for building new seed
+                		Target existingTarget = null;
+                		Iterator<Seed> currentSeedsIt = targetManager.getSeeds(ti).iterator();
+                        while (currentSeedsIt.hasNext()) {
+                        	Seed seed = currentSeedsIt.next();
+                        	existingTarget = seed.getTarget();
+                        	if(existingTarget != null) break;
+                        }
+                		// Build new seed
+                		if(existingTarget != null){
+                			Seed newSeed = businessObjectFactory.newSeed(existingTarget);
+                			newSeed.setPrimary(seedHistoryObj.isPrimary());
+                			newSeed.setSeed(seedHistoryObj.getSeed());
+                    		seeds.add(newSeed);
+                		}
+                	}
+                }
+            }
         }
         
         // load seedMap list with primary seeds, followed by non-primary seeds.
