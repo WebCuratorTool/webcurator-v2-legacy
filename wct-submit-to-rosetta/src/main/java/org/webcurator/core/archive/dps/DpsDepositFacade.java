@@ -63,6 +63,7 @@ public interface DpsDepositFacade {
 	public static final String HARVEST_TYPE = "HarvestType";
 	public static final String DCTERMS_BIBLIOGRAPHIC_CITATION = "DctermsBibliographicCitation";
 	public static final String DCTERMS_AVAILABLE = "DctermsAvailable";
+	public static final String OMS_OPEN_ACCESS = "omsOpenAccess";
 
 	/**
 	 * Interface to the information returned by the DPS Deposit service.

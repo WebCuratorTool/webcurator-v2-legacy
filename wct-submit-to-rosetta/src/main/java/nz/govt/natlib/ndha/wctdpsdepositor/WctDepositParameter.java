@@ -41,6 +41,8 @@ public class WctDepositParameter {
 
     private String materialFlowId;
     private String producerId;
+    
+    private String omsOpenAccess;
 
     
     public void isValid() throws WctDepositParameterValidationException {
@@ -56,6 +58,8 @@ public class WctDepositParameter {
 
         isFieldValid("material flow ID", materialFlowId);
         isFieldValid("producer ID", producerId);
+        
+        isFieldValid("OMS DNX Open Access", omsOpenAccess);
     }
 
     private void isFieldValid(String displayableFieldName, String field) {
@@ -150,5 +154,13 @@ public class WctDepositParameter {
 
     public void setProducerId(String producerId) {
         this.producerId = producerId;
+    }
+    
+    public String getOmsOpenAccess() {
+        return omsOpenAccess;
+    }
+    
+    public void setOmsOpenAccess(String omsOpenAccess){
+    	this.omsOpenAccess = omsOpenAccess;
     }
 }

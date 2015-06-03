@@ -106,6 +106,7 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         try {
             depositParameter.isValid();
             preDepositProcessor.process(wctData);
+            dnxMapper.populateAccessRightsCodes(depositParameter);
             MetsDocument dpsMetsDocument = dnxMapper.generateDnxFrom(wctData);
             moveFilesToServer(dpsMetsDocument, wctData.getAllFiles(), depositParameter);
             String pdsSessionId = authenticate(depositParameter);
@@ -175,6 +176,7 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         depositParameter.setPdsUrl(parameters.get(DpsDepositFacade.PDS_URL));
         depositParameter.setProducerId(parameters.get(DpsDepositFacade.PRODUCER_ID));
         depositParameter.setDpsWsdlUrl(parameters.get(DpsDepositFacade.DPS_WSDL_URL));
+        depositParameter.setOmsOpenAccess(parameters.get(DpsDepositFacade.OMS_OPEN_ACCESS));
 
         return depositParameter;
     }

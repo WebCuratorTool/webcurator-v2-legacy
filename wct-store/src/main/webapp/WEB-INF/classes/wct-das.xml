@@ -256,6 +256,10 @@
  		<property name="customDepositFormURLsForHtmlSerialIngest">
  			<value>${dpsArchive.htmlSerials.customDepositFormURLs}</value>
  		</property>
+ 		
+ 		<property name="omsOpenAccess">
+ 			<value>${dpsArchive.dnx_open_access}</value>
+ 		</property>
  	</bean>
 
 </beans>

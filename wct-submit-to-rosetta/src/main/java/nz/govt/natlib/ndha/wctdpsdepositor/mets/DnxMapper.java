@@ -25,6 +25,8 @@ package nz.govt.natlib.ndha.wctdpsdepositor.mets;
 import com.exlibris.digitool.common.dnx.DnxDocument;
 import com.exlibris.core.sdk.formatting.DublinCore;
 import com.google.inject.ImplementedBy;
+
+import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameter;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.WctDataExtractor;
 
 /**
@@ -37,5 +39,6 @@ public interface DnxMapper {
     MetsDocument generateDnxFrom(WctDataExtractor wctData);
     void addWebHarvestSpecificDc(WctDataExtractor wctData, DublinCore ieDc);
     void addWebHarvestSpecificDnx(WctDataExtractor wctData, DnxDocument dnx);
+    void populateAccessRightsCodes(WctDepositParameter depositParameter);
 
 }

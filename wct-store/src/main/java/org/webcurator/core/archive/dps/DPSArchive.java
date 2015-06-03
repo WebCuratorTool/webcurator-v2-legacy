@@ -97,6 +97,7 @@ public class DPSArchive extends BaseArchive {
     private java.lang.String dpsUserPassword;
     private java.lang.String materialFlowId;
     private java.lang.String producerId;
+    private java.lang.String omsOpenAccess;    
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
@@ -503,6 +504,10 @@ public class DPSArchive extends BaseArchive {
     public void setCustomDepositFormURLsForHtmlSerialIngest(String customDepositFormURLsForHtmlSerialIngest) {
         this.customDepositFormURLsForHtmlSerialIngest = toList(customDepositFormURLsForHtmlSerialIngest);
     }
+    
+    public void setOmsOpenAccess(String omsOpenAccess) {
+        this.omsOpenAccess = omsOpenAccess;
+    }
 
     /**
      * Converts a comma-separated string into a list of lower-case letter strings.
@@ -617,6 +622,7 @@ public class DPSArchive extends BaseArchive {
         parameterMap.put(DpsDepositFacade.PDS_URL, this.pdsUrl);
         parameterMap.put(DpsDepositFacade.PRODUCER_ID, producerIdToUse);
         parameterMap.put(DpsDepositFacade.DPS_WSDL_URL, depositServerBaseUrl + depositWsdlRelativePath);
+        parameterMap.put(DpsDepositFacade.OMS_OPEN_ACCESS, this.omsOpenAccess);
 
         /*
          * Add target reference number.

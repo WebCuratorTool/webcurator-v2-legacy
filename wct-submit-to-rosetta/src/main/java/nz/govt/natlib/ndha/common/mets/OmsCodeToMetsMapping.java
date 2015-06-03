@@ -57,10 +57,11 @@ public class OmsCodeToMetsMapping {
 	private static final String DefaultIE = "DefaultIE";
 	
 	// DPS Access Codes
-	private static final int DNX_OPEN_ACCESS = 100;
+//	private static final int DNX_OPEN_ACCESS = 100;
 	private static final int DNX_PUBLISHED_RESTRICTED = 200;		//Restricted to 3 people
 	private static final int DNX_UNPUBLISHED_RESTRICTED_BY_LOCATION = 300;
 	private static final int DNX_UNPUBLISHED_RESTRICTED_BY_PERSON = 400;
+	private static int DNX_OPEN_ACCESS;
 
 	// OMS Access Codes
 	private static final String ACR_OPA = "ACR_OPA";
@@ -119,5 +120,15 @@ public class OmsCodeToMetsMapping {
 		if (omsObjectAccessRestrictionMap.containsKey(omsAccessCodeId) == false) return null;
 		return String.valueOf(omsObjectAccessRestrictionMap.get(omsAccessCodeId));
 	}
+	
+	public static void setDNX_OPEN_ACCESS(String omsCode) {
+		try{
+			DNX_OPEN_ACCESS = Integer.parseInt(omsCode);
+		}
+		catch(NumberFormatException ex){
+			throw new RuntimeException("Could not parse DNX OPEN ACCESS code.");
+		}
+        
+    }
 
 }
