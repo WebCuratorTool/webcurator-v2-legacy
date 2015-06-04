@@ -106,6 +106,7 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         try {
             depositParameter.isValid();
             preDepositProcessor.process(wctData);
+            dnxMapper.populateAccessRightsCodes(depositParameter);
             MetsDocument dpsMetsDocument = dnxMapper.generateDnxFrom(wctData);
             moveFilesToServer(dpsMetsDocument, wctData.getAllFiles(), depositParameter);
             String pdsSessionId = authenticate(depositParameter);
@@ -175,7 +176,11 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         depositParameter.setPdsUrl(parameters.get(DpsDepositFacade.PDS_URL));
         depositParameter.setProducerId(parameters.get(DpsDepositFacade.PRODUCER_ID));
         depositParameter.setDpsWsdlUrl(parameters.get(DpsDepositFacade.DPS_WSDL_URL));
-
+        depositParameter.setOmsOpenAccess(parameters.get(DpsDepositFacade.OMS_OPEN_ACCESS));
+        depositParameter.setOmsPublishedRestricted(parameters.get(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED));
+        depositParameter.setOmsUnpublishedRestrictedByLocation(parameters.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION));
+        depositParameter.setOmsUnpublishedRestrictedByPersion(parameters.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON));
+        
         return depositParameter;
     }
 

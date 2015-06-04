@@ -97,6 +97,10 @@ public class DPSArchive extends BaseArchive {
     private java.lang.String dpsUserPassword;
     private java.lang.String materialFlowId;
     private java.lang.String producerId;
+    private java.lang.String omsOpenAccess;  
+    private java.lang.String omsPublishedRestricted = "";
+	private java.lang.String omsUnpublishedRestrictedByLocation = "";
+    private java.lang.String omsUnpublishedRestrictedByPersion = "";
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
@@ -503,6 +507,22 @@ public class DPSArchive extends BaseArchive {
     public void setCustomDepositFormURLsForHtmlSerialIngest(String customDepositFormURLsForHtmlSerialIngest) {
         this.customDepositFormURLsForHtmlSerialIngest = toList(customDepositFormURLsForHtmlSerialIngest);
     }
+    
+    public void setOmsOpenAccess(String omsOpenAccess) {
+        this.omsOpenAccess = omsOpenAccess;
+    }
+    
+    public void setOmsPublishedRestricted(String omsPublishedRestricted) {
+		this.omsPublishedRestricted = omsPublishedRestricted;
+	}
+
+	public void setOmsUnpublishedRestrictedByLocation(String omsUnpublishedRestrictedByLocation) {
+		this.omsUnpublishedRestrictedByLocation = omsUnpublishedRestrictedByLocation;
+	}
+
+	public void setOmsUnpublishedRestrictedByPersion(String omsUnpublishedRestrictedByPersion) {
+		this.omsUnpublishedRestrictedByPersion = omsUnpublishedRestrictedByPersion;
+	}
 
     /**
      * Converts a comma-separated string into a list of lower-case letter strings.
@@ -617,6 +637,10 @@ public class DPSArchive extends BaseArchive {
         parameterMap.put(DpsDepositFacade.PDS_URL, this.pdsUrl);
         parameterMap.put(DpsDepositFacade.PRODUCER_ID, producerIdToUse);
         parameterMap.put(DpsDepositFacade.DPS_WSDL_URL, depositServerBaseUrl + depositWsdlRelativePath);
+        parameterMap.put(DpsDepositFacade.OMS_OPEN_ACCESS, this.omsOpenAccess);
+        parameterMap.put(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED, this.omsPublishedRestricted);
+        parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION, this.omsUnpublishedRestrictedByLocation);
+        parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON, this.omsUnpublishedRestrictedByPersion);
 
         /*
          * Add target reference number.

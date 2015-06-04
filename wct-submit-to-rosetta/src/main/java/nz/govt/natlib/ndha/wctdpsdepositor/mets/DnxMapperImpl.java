@@ -30,6 +30,7 @@ import com.exlibris.core.sdk.formatting.DublinCore;
 import com.exlibris.core.sdk.consts.Enum;
 import com.google.inject.Inject;
 import gov.loc.mets.MetsType;
+import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameter;
 import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameterValidationException;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.ArchiveFile;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.WctDataExtractor;
@@ -67,6 +68,7 @@ public class DnxMapperImpl implements DnxMapper {
     }
 
     public MetsDocument generateDnxFrom(WctDataExtractor wctData) {
+    	
         MetsWriter metsWriter = metsWriterFactory.createMetsWriter();
         populateIeDc(wctData, metsWriter);
         populateIeDnx(wctData, metsWriter);
@@ -345,6 +347,21 @@ public class DnxMapperImpl implements DnxMapper {
             log.error(msg);
             throw new RuntimeException(msg);
         }
+    }
+    
+    public void populateAccessRightsCodes(WctDepositParameter depositParameter){
+    	if(!depositParameter.getOmsOpenAccess().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_OPA", depositParameter.getOmsOpenAccess());
+    	}
+    	if(!depositParameter.getOmsPublishedRestricted().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_OSR", depositParameter.getOmsPublishedRestricted());
+    	}
+    	if(!depositParameter.getOmsUnpublishedRestrictedByLocation().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_ONS", depositParameter.getOmsUnpublishedRestrictedByLocation());
+    	}
+    	if(!depositParameter.getOmsUnpublishedRestrictedByPersion().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_RES", depositParameter.getOmsUnpublishedRestrictedByPersion());
+    	}
     }
 
     private String determineAccessRightsCode(WctDataExtractor wctData) {
