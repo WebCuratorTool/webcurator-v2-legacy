@@ -42,7 +42,10 @@ public class WctDepositParameter {
     private String materialFlowId;
     private String producerId;
     
-    private String omsOpenAccess;
+    private String omsOpenAccess = "";
+    private String omsPublishedRestricted = "";
+    private String omsUnpublishedRestrictedByLocation = "";
+    private String omsUnpublishedRestrictedByPersion = "";
 
     
     public void isValid() throws WctDepositParameterValidationException {
@@ -59,14 +62,17 @@ public class WctDepositParameter {
         isFieldValid("material flow ID", materialFlowId);
         isFieldValid("producer ID", producerId);
         
-        isFieldValid("OMS DNX Open Access", omsOpenAccess);
+//        isFieldValid("OMS Open Access", omsOpenAccess);
+//        isFieldValid("OMS Published Restricted", omsPublishedRestricted);
+//        isFieldValid("OMS Unpublished Restricted by Location", omsUnpublishedRestrictedByLocation);
+//        isFieldValid("OMS Unpublished Restricted by Person", omsUnpublishedRestrictedByPersion);
     }
 
     private void isFieldValid(String displayableFieldName, String field) {
         if (StringUtils.isBlank(field))
             throw new WctDepositParameterValidationException("The property " + displayableFieldName + " was not populated, the DPS deposit service requires a value for this property to be specified.");
     }
-
+    
     public String getPdsUrl() {
         return pdsUrl;
     }
@@ -161,6 +167,34 @@ public class WctDepositParameter {
     }
     
     public void setOmsOpenAccess(String omsOpenAccess){
-    	this.omsOpenAccess = omsOpenAccess;
+    	if(omsOpenAccess != null)
+    		this.omsOpenAccess = omsOpenAccess;
+    }
+
+	public String getOmsPublishedRestricted() {
+		return omsPublishedRestricted;
+	}
+	
+	public void setOmsPublishedRestricted(String omsPublishedRestricted){
+		if(omsPublishedRestricted != null)
+			this.omsPublishedRestricted = omsPublishedRestricted;
+    }
+
+	public String getOmsUnpublishedRestrictedByLocation() {
+		return omsUnpublishedRestrictedByLocation;
+	}
+	
+	public void setOmsUnpublishedRestrictedByLocation(String omsUnpublishedRestrictedByLocation){
+		if(omsUnpublishedRestrictedByLocation != null)
+			this.omsUnpublishedRestrictedByLocation = omsUnpublishedRestrictedByLocation;
+    }
+
+	public String getOmsUnpublishedRestrictedByPersion() {
+		return omsUnpublishedRestrictedByPersion;
+	}
+	
+	public void setOmsUnpublishedRestrictedByPersion(String omsUnpublishedRestrictedByPersion){
+		if(omsUnpublishedRestrictedByPersion != null)
+			this.omsUnpublishedRestrictedByPersion = omsUnpublishedRestrictedByPersion;
     }
 }

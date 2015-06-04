@@ -143,6 +143,10 @@ public class DpsDepositFacadeImplTest {
         parameterMap.put(DpsDepositFacade.ACCESS_RESTRICTION, "ACR_OPA");
         parameterMap.put(DpsDepositFacade.WCT_METS_XML_DOCUMENT, wctMetsDocument);
         parameterMap.put(DpsDepositFacade.TARGET_INSTANCE_ID, "111122223333");
+        parameterMap.put(DpsDepositFacade.OMS_OPEN_ACCESS, "100");
+        parameterMap.put(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED, "200");
+        parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION, "300");
+        parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON, "400");
         return parameterMap;
     }
 

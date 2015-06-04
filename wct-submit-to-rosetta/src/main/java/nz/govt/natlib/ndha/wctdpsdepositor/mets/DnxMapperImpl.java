@@ -68,6 +68,12 @@ public class DnxMapperImpl implements DnxMapper {
     }
 
     public MetsDocument generateDnxFrom(WctDataExtractor wctData) {
+    	
+    	log.info("OMS_OPEN_ACCESS 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_OPA"));
+    	log.info("OMS_PUBLISHED_RESTRICTED 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_OSR"));
+    	log.info("OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_ONS"));
+    	log.info("OMS_UNPUBLISHED_RESTRICTED_BY_PERSON 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_RES"));
+    	
         MetsWriter metsWriter = metsWriterFactory.createMetsWriter();
         populateIeDc(wctData, metsWriter);
         populateIeDnx(wctData, metsWriter);
@@ -349,7 +355,18 @@ public class DnxMapperImpl implements DnxMapper {
     }
     
     public void populateAccessRightsCodes(WctDepositParameter depositParameter){
-    	OmsCodeToMetsMapping.setDNX_OPEN_ACCESS(depositParameter.getOmsOpenAccess());
+    	if(!depositParameter.getOmsOpenAccess().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_OPA", depositParameter.getOmsOpenAccess());
+    	}
+    	if(!depositParameter.getOmsPublishedRestricted().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_OSR", depositParameter.getOmsPublishedRestricted());
+    	}
+    	if(!depositParameter.getOmsUnpublishedRestrictedByLocation().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_ONS", depositParameter.getOmsUnpublishedRestrictedByLocation());
+    	}
+    	if(!depositParameter.getOmsUnpublishedRestrictedByPersion().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_RES", depositParameter.getOmsUnpublishedRestrictedByPersion());
+    	}
     }
 
     private String determineAccessRightsCode(WctDataExtractor wctData) {

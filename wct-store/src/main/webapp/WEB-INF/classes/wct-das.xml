@@ -260,6 +260,18 @@
  		<property name="omsOpenAccess">
  			<value>${dpsArchive.dnx_open_access}</value>
  		</property>
+ 		
+ 		<property name="omsPublishedRestricted">
+ 			<value>${dpsArchive.dnx_published_restricted}</value>
+ 		</property>
+ 		
+ 		<property name="omsUnpublishedRestrictedByLocation">
+ 			<value>${dpsArchive.dnx_unpublished_restricted_location}</value>
+ 		</property>
+ 		
+ 		<property name="omsUnpublishedRestrictedByPersion">
+ 			<value>${dpsArchive.dnx_unpublished_restricted_person}</value>
+ 		</property>
  	</bean>
 
 </beans>

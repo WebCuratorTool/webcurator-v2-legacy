@@ -55,7 +55,7 @@ public class WctDepositParameterTest {
     }
 
     private boolean isNotLastFieldOfArray(Field[] fields, int i) {
-        return i < fields.length - 1;
+        return i < fields.length - /*number of access codes*/ 4 /**/ - 1;
     }
 
 

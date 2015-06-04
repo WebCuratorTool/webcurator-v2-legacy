@@ -57,11 +57,10 @@ public class OmsCodeToMetsMapping {
 	private static final String DefaultIE = "DefaultIE";
 	
 	// DPS Access Codes
-//	private static final int DNX_OPEN_ACCESS = 100;
-	private static final int DNX_PUBLISHED_RESTRICTED = 200;		//Restricted to 3 people
-	private static final int DNX_UNPUBLISHED_RESTRICTED_BY_LOCATION = 300;
-	private static final int DNX_UNPUBLISHED_RESTRICTED_BY_PERSON = 400;
-	private static int DNX_OPEN_ACCESS;
+	private static int DNX_OPEN_ACCESS = 100;
+	private static int DNX_PUBLISHED_RESTRICTED = 200;		//Restricted to 3 people
+	private static int DNX_UNPUBLISHED_RESTRICTED_BY_LOCATION = 300;
+	private static int DNX_UNPUBLISHED_RESTRICTED_BY_PERSON = 400;
 
 	// OMS Access Codes
 	private static final String ACR_OPA = "ACR_OPA";
@@ -124,6 +123,20 @@ public class OmsCodeToMetsMapping {
 	public static void setDNX_OPEN_ACCESS(String omsCode) {
 		try{
 			DNX_OPEN_ACCESS = Integer.parseInt(omsCode);
+			omsObjectAccessRestrictionMap.put(ACR_OPA, DNX_OPEN_ACCESS);
+		}
+		catch(NumberFormatException ex){
+			throw new RuntimeException("Could not parse DNX OPEN ACCESS code.");
+		}
+        
+    }
+	
+	public static void setOmsAccessRestrictionCode(String omsAccessCodeId, String omsCode) {
+		try{
+			if(omsObjectAccessRestrictionMap.containsKey(omsAccessCodeId)){
+				DNX_OPEN_ACCESS = Integer.parseInt(omsCode);
+				omsObjectAccessRestrictionMap.put(omsAccessCodeId, DNX_OPEN_ACCESS);
+			}
 		}
 		catch(NumberFormatException ex){
 			throw new RuntimeException("Could not parse DNX OPEN ACCESS code.");
