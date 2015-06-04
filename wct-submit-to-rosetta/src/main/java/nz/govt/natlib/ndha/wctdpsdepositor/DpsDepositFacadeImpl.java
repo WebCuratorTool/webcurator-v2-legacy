@@ -180,11 +180,6 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         depositParameter.setOmsPublishedRestricted(parameters.get(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED));
         depositParameter.setOmsUnpublishedRestrictedByLocation(parameters.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION));
         depositParameter.setOmsUnpublishedRestrictedByPersion(parameters.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON));
-
-        log.info("OMS_OPEN_ACCESS 2: " + depositParameter.getOmsOpenAccess());
-        log.info("OMS_PUBLISHED_RESTRICTED 2: " + depositParameter.getOmsPublishedRestricted());
-        log.info("OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION 2: " + depositParameter.getOmsUnpublishedRestrictedByLocation());
-        log.info("OMS_UNPUBLISHED_RESTRICTED_BY_PERSON 2: " + depositParameter.getOmsUnpublishedRestrictedByPersion());
         
         return depositParameter;
     }

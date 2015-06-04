@@ -61,11 +61,6 @@ public class WctDepositParameter {
 
         isFieldValid("material flow ID", materialFlowId);
         isFieldValid("producer ID", producerId);
-        
-//        isFieldValid("OMS Open Access", omsOpenAccess);
-//        isFieldValid("OMS Published Restricted", omsPublishedRestricted);
-//        isFieldValid("OMS Unpublished Restricted by Location", omsUnpublishedRestrictedByLocation);
-//        isFieldValid("OMS Unpublished Restricted by Person", omsUnpublishedRestrictedByPersion);
     }
 
     private void isFieldValid(String displayableFieldName, String field) {

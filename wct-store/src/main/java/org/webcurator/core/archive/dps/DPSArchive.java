@@ -641,11 +641,6 @@ public class DPSArchive extends BaseArchive {
         parameterMap.put(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED, this.omsPublishedRestricted);
         parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION, this.omsUnpublishedRestrictedByLocation);
         parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON, this.omsUnpublishedRestrictedByPersion);
-        
-        log.info("OMS_OPEN_ACCESS 1: " + parameterMap.get(DpsDepositFacade.OMS_OPEN_ACCESS));
-        log.info("OMS_PUBLISHED_RESTRICTED 1: " + parameterMap.get(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED));
-        log.info("OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION 1: " + parameterMap.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION));
-        log.info("OMS_UNPUBLISHED_RESTRICTED_BY_PERSON 1: " + parameterMap.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON));
 
         /*
          * Add target reference number.

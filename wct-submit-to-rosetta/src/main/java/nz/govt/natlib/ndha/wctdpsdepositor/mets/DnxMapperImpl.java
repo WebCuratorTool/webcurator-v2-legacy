@@ -69,11 +69,6 @@ public class DnxMapperImpl implements DnxMapper {
 
     public MetsDocument generateDnxFrom(WctDataExtractor wctData) {
     	
-    	log.info("OMS_OPEN_ACCESS 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_OPA"));
-    	log.info("OMS_PUBLISHED_RESTRICTED 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_OSR"));
-    	log.info("OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_ONS"));
-    	log.info("OMS_UNPUBLISHED_RESTRICTED_BY_PERSON 3: " + OmsCodeToMetsMapping.getMappedOmsAccessCode("ACR_RES"));
-    	
         MetsWriter metsWriter = metsWriterFactory.createMetsWriter();
         populateIeDc(wctData, metsWriter);
         populateIeDnx(wctData, metsWriter);
