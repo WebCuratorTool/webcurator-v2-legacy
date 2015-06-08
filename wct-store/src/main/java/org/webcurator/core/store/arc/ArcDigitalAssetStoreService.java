@@ -530,7 +530,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					if (impArcType == null) {
 						impArcType = "ARC";
 					}
-
+					
 					// Read the Meta Data
 					ARCRecord headerRec = (ARCRecord) archiveRecordsIt.next();
 					byte[] buff = new byte[1024];
@@ -604,16 +604,61 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					byte[] buff = new byte[1024];
 					StringBuffer metaData = new StringBuffer();
 					int bytesRead = 0;
+					
+					/*
+					 * Post 1.6.1 code.
+					 * 
+					 * Problem: 
+					 * The correct number of bytes/characters are being read from the header record, and saved in the
+					 * buffer array. But the input stream appears (for some unknown reason) to read or mark one character further 
+					 * than the length that was read into the array.
+					 * 
+					 * For example, with content-length: 398, the stream should be stopping at the <|> below. So the next character read
+					 * would be a carriage return "\r". This is what the WarcReader (line 65 - gotoEOR()) is expecting in order to move 
+					 * the marker to the start of the next record.
+					 * 
+					 * http-header-from: youremail@yourdomain.com\r\n
+					 * \r\n<|>
+					 * \r\n
+					 * \r\n
+					 * WARC/0.18\r\n
+					 * 
+					 * Instead the stream is reading up until the marker in the following example, and throwing a runtime error.
+					 * 
+					 * http-header-from: youremail@yourdomain.com\r\n
+					 * \r\n
+					 * \r<|>\n
+					 * \r\n
+					 * WARC/0.18\r\n
+					 * 
+					 * 
+					 * Workaround/Fix:
+					 * This workaround assumes that the input stream marker will always be incremented exactly one extra character
+					 * each time the header record is read. The length of characters read from the header record is one less than 
+					 * the amount available. Then an extra "\n" is appended to the metaData StringBuffer manually. This is a crude 
+					 * way of ensuring that the input stream will continue to line up with the start of the next record.
+					 * 
+					 */
+					bytesRead = headerRec.read(buff, 0, headerRec.available()-1);
+					metaData.append(new String(buff, 0, bytesRead));
+					metaData.append("\n");
+					
+					/*
+					 * Old 1.6.1 code
+					 *
 					while ((bytesRead = headerRec.read(buff)) != -1) {
 						metaData.append(new String(buff, 0, bytesRead));
 					}
+					*/
+					
 					List<String> l = new ArrayList<String>();
 					l.add(metaData.toString());
 
 					if (impArcHeader.isEmpty()) {
 						impArcHeader.add(metaData.toString());
 					}
-
+					
+					
 					// Create a WARC Writer
 					WARCWriter writer = new WARCWriter(aint, dirs, prefix,
 							suffix, compressed,
@@ -622,7 +667,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					// Iterate through all the records, skipping deleted or
 					// imported URLs.
 					while (archiveRecordsIt.hasNext()) {
-
 						WARCRecord record = (WARCRecord) archiveRecordsIt
 								.next();
 						ArchiveRecordHeader header = record.getHeader();
@@ -635,6 +679,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 								strRecordId.lastIndexOf(">") - 1));
 						long contentLength = header.getLength()
 								- header.getContentBegin();
+						
 
 						if (!WARCType.equals(WARCConstants.WARCINFO)
 								&& (urisToDelete.contains(header.getUrl()) || listContainsURL(
@@ -785,6 +830,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 				}
 			}
 
+			log.info("copyAndPrune - Now time to reindex.");
 			// Now re-index the files.
 			ArcHarvestResultDTO ahr = new ArcHarvestResultDTO();
 			File[] fileList = destDir.listFiles();
@@ -802,6 +848,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 
 			ahr.index(destDir);
 
+			log.info("copyAndPrune - Now returning the ArcHarvestResult: " + ahr.getOid());
 			return ahr;
 
 		} catch (URISyntaxException e) {
@@ -820,6 +867,11 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 			if (log.isErrorEnabled()) {
 				log.error("Prune and Copy Failed : " + e.getMessage(), e);
 			}
+			throw new DigitalAssetStoreException("Prune and Copy Failed : "
+					+ e.getMessage(), e);
+		} catch (Exception e){
+			log.info(e.getMessage());
+			e.printStackTrace();
 			throw new DigitalAssetStoreException("Prune and Copy Failed : "
 					+ e.getMessage(), e);
 		}
