@@ -104,8 +104,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 	/** the archive service to use. */
 	private Archive archive = null;
 	/** Arc files meta data date format. */
-	private static final SimpleDateFormat sdf = new SimpleDateFormat(
-			"yyyyMMddHHmmss");
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	private static final SimpleDateFormat writerDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	/** The Indexer */
 	private Indexer indexer = null;
 	/** The DAS File Mover */
@@ -121,6 +121,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 	
 	static {
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+		writerDF.setTimeZone(TimeZone.getTimeZone("GMT"));
 	}
 
 	public void save(String targetInstanceName, String directory, File file)
@@ -632,6 +633,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					 * the first record (which we read with the other ArchiveReader) still has an issue with the iterator hasNext() 
 					 * call. So it is skipped before entering the loop that copies each record.
 					 * 
+					 * 
 					 */
 					
 					// Get a another reader for the warc header metadata
@@ -822,7 +824,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 							// namedFields.addLabelValue(WARCConstants.CONTENT_TYPE,
 							// hr.getContentType());
 							warcWriter.writeResponseRecord(hr.getName(),
-									dtNow.toString(), hr.getContentType(),
+									writerDF.format(dtNow), hr.getContentType(),
 									recordId, namedFields,
 									new java.io.FileInputStream(fin),
 									hr.getLength());
