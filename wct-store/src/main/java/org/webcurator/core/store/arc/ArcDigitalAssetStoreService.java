@@ -598,12 +598,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					if (impArcType == null) {
 						impArcType = "WARC";
 					}
-
-					// Read the Meta Data
-					WARCRecord headerRec = (WARCRecord) archiveRecordsIt.next();
-					byte[] buff = new byte[1024];
-					StringBuffer metaData = new StringBuffer();
-					int bytesRead = 0;
 					
 					/*
 					 * Post 1.6.1 code.
@@ -633,23 +627,28 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					 * 
 					 * 
 					 * Workaround/Fix:
-					 * This workaround assumes that the input stream marker will always be incremented exactly one extra character
-					 * each time the header record is read. The length of characters read from the header record is one less than 
-					 * the amount available. Then an extra "\n" is appended to the metaData StringBuffer manually. This is a crude 
-					 * way of ensuring that the input stream will continue to line up with the start of the next record.
+					 * Create a duplicate ArchiveReader (headerRecordIt) for just the warc header metadata, that is then closed after 
+					 * the metadata is read. The archiveRecordsIt ArchiveReader is still used to read the rest of the records. However 
+					 * the first record (which we read with the other ArchiveReader) still has an issue with the iterator hasNext() 
+					 * call. So it is skipped before entering the loop that copies each record.
 					 * 
 					 */
-					bytesRead = headerRec.read(buff, 0, headerRec.available()-1);
-					metaData.append(new String(buff, 0, bytesRead));
-					metaData.append("\n");
 					
-					/*
-					 * Old 1.6.1 code
-					 *
+					// Get a another reader for the warc header metadata
+					ArchiveReader headerReader = ArchiveReaderFactory.get(arcFiles[i]);
+					Iterator<ArchiveRecord> headerRecordIt = headerReader.iterator();
+					
+					// Read the Meta Data
+					WARCRecord headerRec = (WARCRecord) headerRecordIt.next();
+					byte[] buff = new byte[1024];
+					StringBuffer metaData = new StringBuffer();
+					int bytesRead = 0;
+					
+					
 					while ((bytesRead = headerRec.read(buff)) != -1) {
 						metaData.append(new String(buff, 0, bytesRead));
 					}
-					*/
+					
 					
 					List<String> l = new ArrayList<String>();
 					l.add(metaData.toString());
@@ -658,6 +657,12 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 						impArcHeader.add(metaData.toString());
 					}
 					
+					headerRec.close();
+					headerReader.close();
+					
+					
+					// Bypass warc header metadata as it has been read above from a different ArchiveReader
+					archiveRecordsIt.next();
 					
 					// Create a WARC Writer
 					WARCWriter writer = new WARCWriter(aint, dirs, prefix,
@@ -715,19 +720,16 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 									header.getDate(), header.getMimetype(),
 									recordId, namedFields, record,
 									contentLength);
-
 						} else if (WARCType.equals(WARCConstants.METADATA)) {
 							writer.writeMetadataRecord(header.getUrl(),
 									header.getDate(), header.getMimetype(),
 									recordId, namedFields, record,
 									contentLength);
-
 						} else if (WARCType.equals(WARCConstants.REQUEST)) {
 							writer.writeRequestRecord(header.getUrl(),
 									header.getDate(), header.getMimetype(),
 									recordId, namedFields, record,
 									contentLength);
-
 						} else if (WARCType.equals(WARCConstants.RESOURCE)) {
 							writer.writeResourceRecord(header.getUrl(),
 									header.getDate(), header.getMimetype(),
