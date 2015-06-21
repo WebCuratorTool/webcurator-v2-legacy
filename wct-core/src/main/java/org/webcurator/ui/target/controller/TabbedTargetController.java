@@ -167,6 +167,10 @@ public class TabbedTargetController extends TabbedController {
 					tmav.getTabStatus().setCurrentTab(currentTab);
 					tmav.addObject(Constants.GBL_MESSAGES, messageSource.getMessage("target.saved", new Object[] { target.getName() }, Locale.getDefault()));
 					tmav.addObject(Constants.GBL_CMD_DATA,  comm);
+					
+					// Refresh the context editor cache to use any new oids as the keys.
+					ctx.refreshCachedSchedules();
+					
 					return tmav;
 				}
 			}

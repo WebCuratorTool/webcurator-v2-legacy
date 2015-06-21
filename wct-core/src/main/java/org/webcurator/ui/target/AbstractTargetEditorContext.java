@@ -64,6 +64,12 @@ public class AbstractTargetEditorContext extends EditorContext {
 	    return schedules;
 	}	
 	
+	// Remove and re-add all schedules back into context cache, ensuring correct map key is being used.
+	public void refreshCachedSchedules(){
+		removeObjectsOfType(Schedule.class);
+		putAllObjects(abstractTarget.getSchedules());
+	}
+	
 	/**
 	 * @param canEdit the editMode to set
 	 */
