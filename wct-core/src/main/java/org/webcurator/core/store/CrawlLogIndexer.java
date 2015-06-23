@@ -76,7 +76,7 @@ public class CrawlLogIndexer extends IndexerBase {
 
 		// create path to log files folder from input directory..
 		String logPath = directory.getAbsolutePath().substring(0, directory.getAbsolutePath().length()-1);
-        logPath = logPath + logsSubFolder + "\\";
+        logPath = logPath + logsSubFolder + directory.separator;
 
         // write new 'stripped' crawl.log, replacing multiple spaces with a single space in each record..
         try {
