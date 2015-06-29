@@ -108,7 +108,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-site-search.html" />
+			value="https://github.com/DIA-NZ/webcurator/wiki" />
 	</definition>
 
 	<definition name="site" extends=".tabbedNew">
@@ -118,7 +118,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-site.html" />
+			value="https://github.com/DIA-NZ/webcurator/wiki" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
 	</definition>
 
@@ -129,7 +129,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-site-agencies.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
 	</definition>
 
@@ -140,7 +140,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-site-agencies.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
 	</definition>
 
@@ -151,7 +151,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-site-permissions.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
 	</definition>
 
@@ -162,7 +162,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-permission-search.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
 	</definition>
 
@@ -173,7 +173,7 @@
 		<put name="pageIcon" value="authorisations" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-select-permission.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="generate-request" extends=".reportLayout">
@@ -183,7 +183,7 @@
 		<put name="pageIcon" value="templates" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-generate-request.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="targetInstance" extends=".tabbedNew">
@@ -193,7 +193,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-target-instance.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -204,7 +204,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-custom-deposit-form.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -215,7 +215,7 @@
 		<put name="pageIcon" value="targets" />
 		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-target.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
 	</definition>
 
@@ -226,7 +226,7 @@
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="body" value="/jsp/groups-search.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-groups-search.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="groups" extends=".tabbedNew">
@@ -236,7 +236,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-groups.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -248,7 +248,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-group-add-members.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -260,7 +260,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-target-add-parents.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -272,7 +272,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-target-add-parents.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -284,7 +284,7 @@
 		<put name="pageIcon" value="targets" />
 		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-target-add-parents.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
 	</definition>
 
@@ -296,7 +296,7 @@
 		<put name="pageIcon" value="targets" />
 		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-schedule-edit.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
 	</definition>
 
@@ -307,7 +307,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-schedule-edit.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -318,7 +318,7 @@
 		<put name="pageIcon" value="targets" />
 		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-basic-credentials.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
 	</definition>
 
@@ -329,7 +329,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-basic-credentials.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -340,7 +340,7 @@
 		<put name="pageIcon" value="targets" />
 		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-form-credentials.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
 	</definition>
 
@@ -351,7 +351,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-form-credentials.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -362,7 +362,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-basic-credentials.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -373,7 +373,7 @@
 		<put name="pageIcon" value="groups" />
 		<put name="page-title" value="/jsp/layouts/page-title-groups.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-form-credentials.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-groups.jsp" />
 	</definition>
 
@@ -389,7 +389,7 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-profile.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-profiles.jsp" />
 	</definition>
 
@@ -400,7 +400,7 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-profile-list.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="profile-targets" extends=".mainLayoutNew">
@@ -410,14 +410,14 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-profile-list.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="Error" extends=".errorLayout">
 		<put name="title" value="Error" />
 		<put name="body" value="/jsp/layouts/Error.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-errors.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 
@@ -425,14 +425,14 @@
 		<put name="title" value="Maximum File Upload Size Exceeeded" />
 		<put name="body" value="/jsp/max-file-size-exceeeded.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-errors.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="NoObjectFound" extends=".errorLayout">
 		<put name="title" value="Object Not Found" />
 		<put name="body" value="/jsp/no-object-found.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-errors.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<!-- Manage Harvest Agents Views -->
@@ -443,7 +443,7 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-manage-harvest-agents.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="HarvestAgentDetail" extends=".mainLayoutNew">
@@ -453,7 +453,7 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-harvest-agent-detail.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="ManageBandwidth" extends=".mainLayoutNew">
@@ -463,7 +463,7 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-manage-bandwidth.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="EditBandwidth" extends=".mainLayoutNew">
@@ -473,7 +473,7 @@
 		<put name="pageIcon" value="harvestConfig" />
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-edit-bandwidth.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="TargetInstanceQueue" extends=".mainLayoutNew">
@@ -483,7 +483,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-queue.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="TargetInstanceQaQueue" extends=".mainLayoutNew">
@@ -493,7 +493,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-queue.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="TargetInstanceQaSummary" extends=".mainLayoutNew">
@@ -503,7 +503,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-queue.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="QaIndicatorReport" extends=".mainLayoutNew">
@@ -513,7 +513,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-queue.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="QaIndicatorRobotsReport" extends=".mainLayoutNew">
@@ -523,7 +523,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-queue.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="TargetAnnotationHistory" path="/jsp/target_annotations_via_ajax.jsp">
@@ -539,7 +539,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-submit-to-archive.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="submit-to-archive2" extends=".mainLayoutNew">
@@ -549,7 +549,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-submit-to-archive.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 
@@ -560,7 +560,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-harvest-now.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -583,21 +583,21 @@
 		<put name="title" value="Message" />
 		<put name="body" value="/jsp/message.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-message-view.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="HomeView" extends=".mainLayout">
 		<put name="title" value="WEB CURATOR TOOL" />
 		<put name="body" value="/jsp/home.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-home.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="QaHomeView" extends=".mainLayout">
 		<put name="title" value="WEB CURATOR TOOL" />
 		<put name="body" value="/jsp/qa-home.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-home.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<!-- Browse Tool does not use any templates -->
@@ -622,7 +622,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-tree-tool.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -637,7 +637,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-harvest=history.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -648,7 +648,7 @@
 		<put name="pageIcon" value="instances" />
 		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-quality-review-toc.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
@@ -659,14 +659,14 @@
 		<put name="pageIcon" value="targets" />
 		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-target-search.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="object-locked" extends=".mainLayout">
 		<put name="title" value="Object is Locked" />
 		<put name="body" value="/jsp/object-locked.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-object-locked.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="Roles" extends=".mainLayoutNew">
@@ -676,7 +676,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-roles.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="AddRole" extends=".subTabbedNamed">
@@ -686,7 +686,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-add-role.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="Role" />
 	</definition>
@@ -698,7 +698,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-view-users.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="newReason" extends=".subTabbedNamed">
@@ -708,7 +708,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-new-user.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="Rejection Reason" />
 	</definition>
@@ -721,7 +721,7 @@
 		<put name="page-title"
 			value="/jsp/layouts/page-title-users-roles-agencies-indicators.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-view-users.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="newIndicator" extends=".subTabbedNamed">
@@ -732,7 +732,7 @@
 		<put name="page-title"
 			value="/jsp/layouts/page-title-users-roles-agencies-indicators.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-new-user.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="QA Indicator" />
 	</definition>
@@ -745,7 +745,7 @@
 		<put name="page-title"
 			value="/jsp/layouts/page-title-users-roles-agencies-indicators.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-view-users.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="newFlag" extends=".subTabbedNamed">
@@ -756,7 +756,7 @@
 		<put name="page-title"
 			value="/jsp/layouts/page-title-users-roles-agencies-indicators.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-new-user.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="QA Indicator" />
 	</definition>
@@ -768,7 +768,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-view-users.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="newUser" extends=".subTabbedNamed">
@@ -778,7 +778,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-new-user.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="User" />
 	</definition>
@@ -790,7 +790,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-view-user-roles.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="Users Role Associations" />
 	</definition>
@@ -802,7 +802,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-agencies.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="newAgency" extends=".subTabbedNamed">
@@ -812,7 +812,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-new-agency.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="Agency" />
 	</definition>
@@ -824,7 +824,7 @@
 		<put name="pageIcon" value="users" />
 		<put name="page-title" value="/jsp/layouts/page-title-users-roles-agencies.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-change-password.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="Change Password" />
 	</definition>
@@ -836,7 +836,7 @@
 		<put name="pageIcon" value="reports" />
 		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-reporting.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="reporting-preview" extends=".reportLayout">
@@ -846,7 +846,7 @@
 		<put name="pageIcon" value="reports" />
 		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-reporting-preview.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="reporting-save" extends=".mainLayoutNew">
@@ -856,7 +856,7 @@
 		<put name="pageIcon" value="reports" />
 		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-reporting-save.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="reporting-email" extends=".mainLayoutNew">
@@ -866,7 +866,7 @@
 		<put name="pageIcon" value="reports" />
 		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-reporting-email.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="intray" extends=".mainLayoutNew">
@@ -876,7 +876,7 @@
 		<put name="pageIcon" value="intray" />
 		<put name="page-title" value="/jsp/layouts/page-title-intray.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-intray.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="intray-notification" extends=".mainLayoutNew">
@@ -886,7 +886,7 @@
 		<put name="pageIcon" value="intray" />
 		<put name="page-title" value="/jsp/layouts/page-title-intray.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-intray-notification.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="intray-task" extends=".mainLayoutNew">
@@ -896,7 +896,7 @@
 		<put name="pageIcon" value="intray" />
 		<put name="page-title" value="/jsp/layouts/page-title-intray.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-intray-task.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="management" extends=".mainLayoutNew">
@@ -906,7 +906,7 @@
 		<put name="pageIcon" value="management" />
 		<put name="page-title" value="/jsp/layouts/page-title-management.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-management.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="Qamanagement" extends=".mainLayoutNew">
@@ -916,7 +916,7 @@
 		<put name="pageIcon" value="management" />
 		<put name="page-title" value="/jsp/layouts/page-title-management.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-management.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="view-templates" extends=".mainLayoutNew">
@@ -926,7 +926,7 @@
 		<put name="pageIcon" value="templates" />
 		<put name="page-title" value="/jsp/layouts/page-title-permissions.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-view-templates.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="view-template" extends=".subTabbedNamed">
@@ -936,7 +936,7 @@
 		<put name="pageIcon" value="templates" />
 		<put name="page-title" value="/jsp/layouts/page-title-permissions.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-add-template.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="View Template" />
 	</definition>
@@ -948,7 +948,7 @@
 		<put name="pageIcon" value="templates" />
 		<put name="page-title" value="/jsp/layouts/page-title-permissions.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-add-template.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value=".generic-object-identifier" />
 		<put name="object-name" value="Add/Edit Template" />
 	</definition>
@@ -957,7 +957,7 @@
 		<put name="title" value="Authorisation Failure" />
 		<put name="body" value="/jsp/authorisation-failure.jsp" />
 		<put name="page-help"
-			value="http://webcurator.sourceforge.net/help/1.2/help-authorisation-failure.html" />
+			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="Logout" path="/jsp/logout.jsp" />
