@@ -16,13 +16,13 @@ cursor cur_1 is
                 select a.pe_site_id, count(*) as cnt
                 from
                 (    select distinct pe_site_id, pe_owning_agency_id
-                    from db_wct.permission
+                    from DB_WCT.PERMISSION
                     where pe_site_id is not null
                 ) a
                 group by a.pe_site_id
             ) b
             where cnt = 1
-        ) c join db_wct.permission p
+        ) c join DB_WCT.PERMISSION p
         on p.pe_site_id = c.pe_site_id;
 v_cur_1 cur_1%rowtype;
 begin
@@ -30,7 +30,7 @@ open cur_1;
 loop
   fetch cur_1 into v_cur_1;
   exit when cur_1%notfound;
-  update db_wct.site set st_owning_agency_id = v_cur_1.pe_owning_agency_id
+  update DB_WCT.SITE set st_owning_agency_id = v_cur_1.pe_owning_agency_id
     where st_oid = v_cur_1.pe_site_id;
 end loop;
 commit;

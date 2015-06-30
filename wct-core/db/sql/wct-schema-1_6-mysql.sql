@@ -159,7 +159,7 @@ create table DB_WCT.WCTAUDIT (AUD_OID bigint not null, AUD_ACTION varchar(40) no
 create table DB_WCT.WCTROLE (ROL_OID bigint not null, ROL_DESCRIPTION varchar(255), ROL_NAME varchar(80) not null, ROL_AGENCY_OID bigint not null, primary key (ROL_OID));
 create table DB_WCT.WCTUSER (USR_OID bigint not null, USR_ACTIVE bit not null, USR_ADDRESS varchar(200), USR_EMAIL varchar(100) not null, USR_EXTERNAL_AUTH bit not null, USR_FIRSTNAME varchar(50) not null, USR_FORCE_PWD_CHANGE bit not null, USR_LASTNAME varchar(50) not null, USR_NOTIFICATIONS_BY_EMAIL bit not null, USR_PASSWORD varchar(255), USR_PHONE varchar(16), USR_TITLE varchar(10), USR_USERNAME varchar(80) not null unique, USR_AGC_OID bigint not null, USR_DEACTIVATE_DATE TIMESTAMP NULL, USR_TASKS_BY_EMAIL bit not null, USR_NOTIFY_ON_GENERAL bit not null, USR_NOTIFY_ON_WARNINGS bit not null, primary key (USR_OID));
 create table DB_WCT.WCT_LOGON_DURATION (LOGDUR_OID bigint not null, LOGDUR_DURATION bigint, LOGDUR_LOGON_TIME TIMESTAMP not null, LOGDUR_LOGOUT_TIME TIMESTAMP NULL, LOGDUR_USERNAME varchar(80), LOGDUR_USER_OID bigint not null, LOGDUR_USER_REALNAME varchar(100), LOGDUR_SESSION_ID varchar(32) not null, primary key (LOGDUR_OID));
-alter table db_wct.ABSTRACT_TARGET add unique key AT_NAME_AND_TYPE (AT_NAME, AT_OBJECT_TYPE);
+alter table DB_WCT.ABSTRACT_TARGET add unique key AT_NAME_AND_TYPE (AT_NAME, AT_OBJECT_TYPE);
 alter table DB_WCT.ABSTRACT_TARGET add index FK_AT_DUBLIN_CORE_OID (AT_DUBLIN_CORE_OID), add constraint FK_AT_DUBLIN_CORE_OID foreign key (AT_DUBLIN_CORE_OID) references DB_WCT.DUBLIN_CORE (DC_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FK_T_PROF_OVERRIDE_OID (AT_PROF_OVERRIDE_OID), add constraint FK_T_PROF_OVERRIDE_OID foreign key (AT_PROF_OVERRIDE_OID) references DB_WCT.PROFILE_OVERRIDES (PO_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FKB6DD784E5C2C497 (AT_OWNER_ID), add constraint FKB6DD784E5C2C497 foreign key (AT_OWNER_ID) references DB_WCT.WCTUSER (USR_OID);
@@ -252,8 +252,8 @@ create view DB_WCT.ABSTRACT_TARGET_SCHEDULE_VIEW as
   
 create view DB_WCT.ABSTRACT_TARGET_GROUPTYPE_VIEW as 
  SELECT a.at_oid, a.at_desc, a.at_name, a.at_owner_id, a.at_prof_override_oid, a.at_state, a.t_profile_id, a.at_object_type, a.at_creation_date, a.at_reference, a.at_profile_note, a.at_dublin_core_oid, a.at_access_zone, a.at_display_target, a.at_display_note, tg.tg_type
-   FROM db_wct.abstract_target a
-   LEFT JOIN db_wct.target_group tg ON a.at_oid = tg.tg_at_oid;  
+   FROM DB_WCT.ABSTRACT_TARGET a
+   LEFT JOIN DB_WCT.TARGET_GROUP tg ON a.at_oid = tg.tg_at_oid;  
 
 -- WCT 1.6 UPGRADE   
 drop table if exists DB_WCT.FLAG;
@@ -261,21 +261,21 @@ drop table if exists DB_WCT.INDICATOR_CRITERIA;
 drop table if exists DB_WCT.INDICATOR_REPORT_LINE;
 drop table if exists DB_WCT.INDICATOR;
 
-alter table db_wct.TARGET_INSTANCE add column TI_FLAG_OID bigint;
-alter table db_wct.TARGET_INSTANCE add column TI_RECOMMENDATION varchar(255);
-create table db_wct.FLAG (F_OID bigint not null, F_NAME varchar(255) not null, F_RGB varchar(6) not null, F_COMPLEMENT_RGB varchar(6) not null, F_AGC_OID bigint not null, primary key (F_OID));
-alter table db_wct.FLAG add constraint FK_F_AGENCY_OID foreign key (F_AGC_OID) references db_wct.AGENCY (AGC_OID);
-alter table db_wct.TARGET_INSTANCE add constraint FK_F_OID foreign key (TI_FLAG_OID) references db_wct.FLAG (F_OID);
-create table db_wct.INDICATOR_CRITERIA (IC_OID bigint not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE double precision, IC_LOWER_LIMIT_PERCENTAGE double precision, IC_UPPER_LIMIT double precision, IC_LOWER_LIMIT double precision, IC_AGC_OID bigint not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bit not null, IC_ENABLE_REPORT bit not null);
-alter table db_wct.INDICATOR_CRITERIA add constraint FK_IC_AGENCY_OID foreign key (IC_AGC_OID) references db_wct.AGENCY (AGC_OID);
-create table db_wct.INDICATOR (I_OID bigint not null, I_IC_OID bigint not null, I_TI_OID bigint not null, I_NAME varchar(255) not null, I_FLOAT_VALUE double precision, I_UPPER_LIMIT_PERCENTAGE double precision, I_LOWER_LIMIT_PERCENTAGE double precision, I_UPPER_LIMIT double precision, I_LOWER_LIMIT double precision, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID bigint not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bit not null, I_INDEX integer, I_DATE TIMESTAMP(9) not null);
-alter table db_wct.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) references db_wct.TARGET_INSTANCE (TI_OID) on delete cascade;
-alter table db_wct.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references db_wct.INDICATOR_CRITERIA (IC_OID);
-alter table db_wct.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references db_wct.AGENCY (AGC_OID);
-create table db_wct.INDICATOR_REPORT_LINE (IRL_OID bigint, IRL_I_OID bigint, IRL_LINE varchar(1024), IRL_INDEX integer);
-alter table db_wct.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references db_wct.INDICATOR (I_OID);
-alter table db_wct.ABSTRACT_TARGET add column AT_CRAWLS bigint;
-alter table db_wct.ABSTRACT_TARGET add column AT_REFERENCE_CRAWL_OID bigint;
-alter table db_wct.ABSTRACT_TARGET add column AT_AUTO_PRUNE boolean not null default false;
-alter table db_wct.ABSTRACT_TARGET add column AT_AUTO_DENOTE_REFERENCE_CRAWL boolean not null default false;
-alter table db_wct.ABSTRACT_TARGET add column AT_REQUEST_TO_ARCHIVISTS varchar(4000);
+alter table DB_WCT.TARGET_INSTANCE add column TI_FLAG_OID bigint;
+alter table DB_WCT.TARGET_INSTANCE add column TI_RECOMMENDATION varchar(255);
+create table DB_WCT.FLAG (F_OID bigint not null, F_NAME varchar(255) not null, F_RGB varchar(6) not null, F_COMPLEMENT_RGB varchar(6) not null, F_AGC_OID bigint not null, primary key (F_OID));
+alter table DB_WCT.FLAG add constraint FK_F_AGENCY_OID foreign key (F_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+alter table DB_WCT.TARGET_INSTANCE add constraint FK_F_OID foreign key (TI_FLAG_OID) references DB_WCT.FLAG (F_OID);
+create table DB_WCT.INDICATOR_CRITERIA (IC_OID bigint not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE double precision, IC_LOWER_LIMIT_PERCENTAGE double precision, IC_UPPER_LIMIT double precision, IC_LOWER_LIMIT double precision, IC_AGC_OID bigint not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bit not null, IC_ENABLE_REPORT bit not null);
+alter table DB_WCT.INDICATOR_CRITERIA add constraint FK_IC_AGENCY_OID foreign key (IC_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+create table DB_WCT.INDICATOR (I_OID bigint not null, I_IC_OID bigint not null, I_TI_OID bigint not null, I_NAME varchar(255) not null, I_FLOAT_VALUE double precision, I_UPPER_LIMIT_PERCENTAGE double precision, I_LOWER_LIMIT_PERCENTAGE double precision, I_UPPER_LIMIT double precision, I_LOWER_LIMIT double precision, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID bigint not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bit not null, I_INDEX integer, I_DATE TIMESTAMP(9) not null);
+alter table DB_WCT.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) references DB_WCT.TARGET_INSTANCE (TI_OID) on delete cascade;
+alter table DB_WCT.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references DB_WCT.INDICATOR_CRITERIA (IC_OID);
+alter table DB_WCT.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+create table DB_WCT.INDICATOR_REPORT_LINE (IRL_OID bigint, IRL_I_OID bigint, IRL_LINE varchar(1024), IRL_INDEX integer);
+alter table DB_WCT.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references DB_WCT.INDICATOR (I_OID);
+alter table DB_WCT.ABSTRACT_TARGET add column AT_CRAWLS bigint;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_REFERENCE_CRAWL_OID bigint;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_AUTO_PRUNE boolean not null default false;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_AUTO_DENOTE_REFERENCE_CRAWL boolean not null default false;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_REQUEST_TO_ARCHIVISTS varchar(4000);

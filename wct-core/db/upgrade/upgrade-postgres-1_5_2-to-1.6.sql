@@ -1,23 +1,23 @@
 -- WCT 1.6 UPGRADE (schema)  
-alter table db_wct.TARGET_INSTANCE add column TI_FLAG_OID int4;
-alter table db_wct.TARGET_INSTANCE add column TI_RECOMMENDATION varchar(255);
+alter table DB_WCT.TARGET_INSTANCE add column TI_FLAG_OID int4;
+alter table DB_WCT.TARGET_INSTANCE add column TI_RECOMMENDATION varchar(255);
 
-create table db_wct.FLAG (F_OID int8 not null, F_NAME varchar(255) not null, F_RGB varchar(6) not null, F_COMPLEMENT_RGB varchar(6) not null, F_AGC_OID int8 not null, primary key (F_OID));
-alter table db_wct.FLAG add constraint FK_F_AGENCY_OID foreign key (F_AGC_OID) references db_wct.AGENCY (AGC_OID);
-alter table db_wct.TARGET_INSTANCE add constraint FK_F_OID foreign key (TI_FLAG_OID) references db_wct.FLAG (F_OID);
-create table db_wct.INDICATOR_CRITERIA (IC_OID int8 not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE float8, IC_LOWER_LIMIT_PERCENTAGE float8, IC_UPPER_LIMIT float8, IC_LOWER_LIMIT float8, IC_AGC_OID int8 not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bool not null, IC_ENABLE_REPORT bool not null);
-alter table db_wct.INDICATOR_CRITERIA add constraint FK_IC_AGENCY_OID foreign key (IC_AGC_OID) references db_wct.AGENCY (AGC_OID);
-create table db_wct.INDICATOR (I_OID int8 not null, I_IC_OID int8 not null, I_TI_OID int8 not null, I_NAME varchar(255) not null, I_FLOAT_VALUE float8, I_UPPER_LIMIT_PERCENTAGE float8, I_LOWER_LIMIT_PERCENTAGE float8, I_UPPER_LIMIT float8, I_LOWER_LIMIT float8, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID int8 not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bool not null, I_INDEX int4, I_DATE TIMESTAMP(9) not null);
-alter table db_wct.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) references db_wct.TARGET_INSTANCE (TI_OID) on delete cascade;
-alter table db_wct.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references db_wct.INDICATOR_CRITERIA (IC_OID);
-alter table db_wct.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references db_wct.AGENCY (AGC_OID);
-create table db_wct.INDICATOR_REPORT_LINE (IRL_OID int8, IRL_I_OID int8, IRL_LINE varchar(1024), IRL_INDEX int4);
-alter table db_wct.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references db_wct.INDICATOR (I_OID);
-alter table db_wct.ABSTRACT_TARGET add column AT_CRAWLS int8;
-alter table db_wct.ABSTRACT_TARGET add column AT_REFERENCE_CRAWL_OID int8;
-alter table db_wct.ABSTRACT_TARGET add column AT_AUTO_PRUNE bool not null default false;
-alter table db_wct.ABSTRACT_TARGET add column AT_AUTO_DENOTE_REFERENCE_CRAWL bool not null default false;
-alter table db_wct.ABSTRACT_TARGET add column AT_REQUEST_TO_ARCHIVISTS varchar(4000);
+create table DB_WCT.FLAG (F_OID int8 not null, F_NAME varchar(255) not null, F_RGB varchar(6) not null, F_COMPLEMENT_RGB varchar(6) not null, F_AGC_OID int8 not null, primary key (F_OID));
+alter table DB_WCT.FLAG add constraint FK_F_AGENCY_OID foreign key (F_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+alter table DB_WCT.TARGET_INSTANCE add constraint FK_F_OID foreign key (TI_FLAG_OID) references DB_WCT.FLAG (F_OID);
+create table DB_WCT.INDICATOR_CRITERIA (IC_OID int8 not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE float8, IC_LOWER_LIMIT_PERCENTAGE float8, IC_UPPER_LIMIT float8, IC_LOWER_LIMIT float8, IC_AGC_OID int8 not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bool not null, IC_ENABLE_REPORT bool not null);
+alter table DB_WCT.INDICATOR_CRITERIA add constraint FK_IC_AGENCY_OID foreign key (IC_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+create table DB_WCT.INDICATOR (I_OID int8 not null, I_IC_OID int8 not null, I_TI_OID int8 not null, I_NAME varchar(255) not null, I_FLOAT_VALUE float8, I_UPPER_LIMIT_PERCENTAGE float8, I_LOWER_LIMIT_PERCENTAGE float8, I_UPPER_LIMIT float8, I_LOWER_LIMIT float8, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID int8 not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bool not null, I_INDEX int4, I_DATE TIMESTAMP(9) not null);
+alter table DB_WCT.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) references DB_WCT.TARGET_INSTANCE (TI_OID) on delete cascade;
+alter table DB_WCT.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references DB_WCT.INDICATOR_CRITERIA (IC_OID);
+alter table DB_WCT.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+create table DB_WCT.INDICATOR_REPORT_LINE (IRL_OID int8, IRL_I_OID int8, IRL_LINE varchar(1024), IRL_INDEX int4);
+alter table DB_WCT.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references DB_WCT.INDICATOR (I_OID);
+alter table DB_WCT.ABSTRACT_TARGET add column AT_CRAWLS int8;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_REFERENCE_CRAWL_OID int8;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_AUTO_PRUNE bool not null default false;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_AUTO_DENOTE_REFERENCE_CRAWL bool not null default false;
+alter table DB_WCT.ABSTRACT_TARGET add column AT_REQUEST_TO_ARCHIVISTS varchar(4000);
 
 -- WCT 1.6 UPGRADE (indexes)
 CREATE UNIQUE INDEX IX_I_OID ON DB_WCT.INDICATOR(I_OID);

@@ -125,7 +125,7 @@ drop table DB_WCT.WCTROLE;
 drop table DB_WCT.WCTUSER;
 drop table DB_WCT.WCT_LOGON_DURATION;
 drop table DB_WCT.ID_GENERATOR;
-drop sequence DB_WCT.hibernate_sequence;
+drop sequence DB_WCT.HIBERNATE_SEQUENCE;
 create table DB_WCT.ABSTRACT_TARGET (AT_OID int8 not null, AT_DESC varchar(4000), AT_NAME varchar(255) unique, AT_OWNER_ID int8, AT_PROF_OVERRIDE_OID int8, AT_STATE int4, T_PROFILE_ID int8, AT_OBJECT_TYPE int4, AT_CREATION_DATE TIMESTAMP(9) NULL, AT_REFERENCE varchar(255), AT_PROFILE_NOTE varchar(255), AT_DUBLIN_CORE_OID int8, AT_RR_OID int8, AT_DISPLAY_TARGET bool, AT_ACCESS_ZONE int4, AT_DISPLAY_NOTE varchar(4000), AT_DISPLAY_CHG_REASON varchar(1000), AT_REFERENCE_CRAWL_OID int8, AT_AUTO_PRUNE bool, AT_AUTO_DENOTE_REFERENCE_CRAWL bool, AT_REQUEST_TO_ARCHIVISTS varchar(4000), primary key (AT_OID));
 create table DB_WCT.ABSTRACT_TARGET_GROUPTYPE_VIEW (AT_OID int8 not null, AT_DESC varchar(4000), AT_NAME varchar(255) unique, AT_OWNER_ID int8, AT_PROF_OVERRIDE_OID int8, AT_STATE int4, T_PROFILE_ID int8, AT_OBJECT_TYPE int4, AT_CREATION_DATE TIMESTAMP(9) NULL, AT_REFERENCE varchar(255), AT_PROFILE_NOTE varchar(255), AT_DUBLIN_CORE_OID int8, AT_DISPLAY_TARGET bool, AT_ACCESS_ZONE int4, AT_DISPLAY_NOTE varchar(4000), TG_TYPE varchar(255), primary key (AT_OID));
 create table DB_WCT.ABSTRACT_TARGET_SCHEDULE_VIEW (THEKEY varchar(255) not null, AT_OBJECT_TYPE_DESC varchar(255), AT_NAME varchar(255) unique, AT_STATE int4, USR_USERNAME varchar(80), AGC_NAME varchar(80), S_OID int8, S_START TIMESTAMP(9) not null, S_END TIMESTAMP(9) NULL, S_TYPE int4, S_CRON varchar(255), primary key (THEKEY));
@@ -253,4 +253,4 @@ alter table DB_WCT.USER_ROLE add constraint FK_USERROLE_TO_USER foreign key (URO
 alter table DB_WCT.WCTROLE add constraint FK_ROLE_AGENCY_OID foreign key (ROL_AGENCY_OID) references DB_WCT.AGENCY;
 alter table DB_WCT.WCTUSER add constraint FK_USER_AGENCY_OID foreign key (USR_AGC_OID) references DB_WCT.AGENCY;
 create table DB_WCT.ID_GENERATOR ( IG_TYPE varchar(255),  IG_VALUE int4 ) ;
-create sequence DB_WCT.hibernate_sequence;
+create sequence DB_WCT.HIBERNATE_SEQUENCE;

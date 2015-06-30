@@ -8,14 +8,14 @@
 -- future, but this should not be a problem and will resolve within 60 days.
 
 -- Purged Target Instances
-update db_wct.target_instance
+update DB_WCT.TARGET_INSTANCE
 set ti_archived_time = ti_start_time + INTERVAL '60 days'
 where ti_purged = true 
 and ti_archived_time is null 
 and (ti_state = 'Archived' or ti_state = 'Rejected');
 
 -- Not yet purged Target Instances
-update db_wct.target_instance
+update DB_WCT.TARGET_INSTANCE
 set ti_archived_time = ti_start_time + INTERVAL '46 days'
 where ti_purged = false 
 and ti_archived_time is null 

@@ -10,11 +10,11 @@ from
 		select a.pe_site_id, count(*) as cnt
 		from
 		(	select distinct pe_site_id, pe_owning_agency_id
-			from db_wct.permission
+			from DB_WCT.PERMISSION
 			where pe_site_id is not null
 		) a
 		group by a.pe_site_id
 	) b
 	where cnt > 1
-) c join db_wct.site s
+) c join DB_WCT.SITE s
 on c.pe_site_id = s.st_oid

@@ -1,22 +1,22 @@
 -- generate the indicators for each agency
-CREATE OR REPLACE FUNCTION db_wct.generateIndicators() RETURNS varchar(80) AS $PROC$
+CREATE OR REPLACE FUNCTION DB_WCT.GENERATEINDICATORS() RETURNS varchar(80) AS $PROC$
 DECLARE
-	agency_rec db_wct.agency%ROWTYPE;
-	agency_cur CURSOR FOR SELECT * from db_wct.agency FOR READ ONLY;
+	agency_rec DB_WCT.AGENCY%ROWTYPE;
+	agency_cur CURSOR FOR SELECT * from DB_WCT.AGENCY FOR READ ONLY;
 	max_ic_oid bigint;
 BEGIN
 	OPEN agency_cur;
 	LOOP 
 		fetch agency_cur into agency_rec;
 		
-		max_ic_oid := (select max(ic_oid) from db_wct.indicator_criteria);
+		max_ic_oid := (select max(ic_oid) from DB_WCT.INDICATOR_CRITERIA);
 		if max_ic_oid is null THEN
 			max_ic_oid = 0;
 		END IF;
 		
 		if agency_rec.agc_oid is not null then
 			RAISE NOTICE 'Generating indicators for agency % with oid: % ', agency_rec.agc_name, agency_rec.agc_oid;
-			DELETE FROM db_wct.indicator_criteria where ic_agc_oid = agency_rec.agc_oid;
+			DELETE FROM DB_WCT.INDICATOR_CRITERIA where ic_agc_oid = agency_rec.agc_oid;
 			INSERT INTO DB_WCT.INDICATOR_CRITERIA (ic_oid, ic_name, ic_description, ic_upper_limit_percentage, ic_lower_limit_percentage, ic_upper_limit, ic_lower_limit, ic_agc_oid, ic_unit, ic_show_delta, ic_enable_report) VALUES (max_ic_oid+1, 'Crawl Runtime', 'Elapsed time of crawl in milliseconds', 10, -10, 25200000, 60000, agency_rec.agc_oid, 'millisecond', false, false);
 			INSERT INTO DB_WCT.INDICATOR_CRITERIA (ic_oid, ic_name, ic_description, ic_upper_limit_percentage, ic_lower_limit_percentage, ic_upper_limit, ic_lower_limit, ic_agc_oid, ic_unit, ic_show_delta, ic_enable_report) VALUES (max_ic_oid+2, 'URLs Downloaded', 'The number of URLs downloaded for the site', 10, -10, NULL, 1, agency_rec.agc_oid, 'integer', true, false);
 			INSERT INTO DB_WCT.INDICATOR_CRITERIA (ic_oid, ic_name, ic_description, ic_upper_limit_percentage, ic_lower_limit_percentage, ic_upper_limit, ic_lower_limit, ic_agc_oid, ic_unit, ic_show_delta, ic_enable_report) VALUES (max_ic_oid+3, 'Delist', 'Number of times that the same content is downloaded before a target is flagged for de-listing (based on the number of bytes downloaded)', NULL, NULL, 2, NULL, agency_rec.agc_oid, 'integer', false, false);
@@ -40,4 +40,4 @@ BEGIN
 END;
 $PROC$ LANGUAGE plpgsql;
 	
-select db_wct.generateIndicators();
+select DB_WCT.GENERATEINDICATORS();
