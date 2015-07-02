@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT wct (TargetInstance | Target | Groups | Permissions)*>
+
+<!-- Shared elements -->
+<!ELEMENT Name (#PCDATA)>
+<!ELEMENT Description (#PCDATA)>
+<!ELEMENT ReferenceNumber (#PCDATA)>
+<!ELEMENT OrderNumber (#PCDATA)>
+<!ELEMENT State (#PCDATA)>
+
+<!ELEMENT Annotations (Annotation)*>
+<!ELEMENT Annotation (Date, Username, Note)*>
+<!ELEMENT Date (#PCDATA)>
+<!ELEMENT Username (#PCDATA)>
+<!ELEMENT Note (#PCDATA)>
+
+
+<!-- Target Instance data -->
+<!ELEMENT TargetInstance (ReferenceNumber | Crawl | HarvestResult | Annotations | Owner | ModificationType | ModificationNote)*>
+
+<!ELEMENT Crawl (ScheduleDate | StartDate | EndDate | Duration | CaptureSystem | URLs | DownloadedDataSize | AverageBandwidth | DocumentProcessRate)*>
+
+<!ELEMENT ModificationType (#PCDATA)>
+<!ELEMENT ModificationNote (#PCDATA)>
+
+<!ELEMENT ScheduleDate (#PCDATA)>
+<!ELEMENT StartDate (#PCDATA)>
+<!ELEMENT EndDate (#PCDATA)>
+<!ELEMENT Duration (#PCDATA)>
+
+<!ELEMENT CaptureSystem (#PCDATA)>
+
+<!ELEMENT URLs (Discovered | Queued | Downloaded | Failed)*>
+<!ELEMENT Discovered (#PCDATA)>
+<!ELEMENT Queued (#PCDATA)>
+<!ELEMENT Downloaded (#PCDATA)>
+<!ELEMENT Failed (#PCDATA)>
+
+<!ELEMENT DownloadedDataSize (#PCDATA)>
+<!ELEMENT AverageBandwidth (#PCDATA)>
+<!ELEMENT DocumentProcessRate (#PCDATA)>
+
+<!ELEMENT HarvestResult (CreationDate | Creator | ProvenanceNote)*>
+<!ELEMENT Creator (#PCDATA)>
+<!ELEMENT CreationDate (#PCDATA)>
+<!ELEMENT ProvenanceNote (#PCDATA)>
+
+<!ELEMENT Owner (UID | Agency)*>
+<!ELEMENT UID (#PCDATA)>
+<!ELEMENT Agency (#PCDATA)*>
+
+<!-- Target data -->
+<!ELEMENT Target (ReferenceNumber | Name | Description | ObjectType  | HarvestType | ProfileNote | SelectionDate | SelectionType | SelectionNote | EvaluationNote | Seeds | GroupType | GroupOwnershipInformation)*>
+
+<!ELEMENT ObjectType (#PCDATA)>
+
+<!ELEMENT HarvestType (#PCDATA)>
+<!ELEMENT ProfileNote (#PCDATA)>
+<!ELEMENT SelectionDate (#PCDATA)>
+<!ELEMENT SelectionType (#PCDATA)>
+<!ELEMENT SelectionNote (#PCDATA)>
+<!ELEMENT EvaluationNote (#PCDATA)>
+
+<!ELEMENT Seeds (Seed)*>
+<!ELEMENT Seed (SeedUrl, SeedType)>
+<!ELEMENT SeedUrl (#PCDATA)>
+<!ELEMENT SeedType (#PCDATA)>
+
+<!ELEMENT GroupType (#PCDATA)>
+<!ELEMENT GroupOwnershipInformation (#PCDATA)>
+
+
+<!-- Groups data -->
+<!ELEMENT Groups (Group)*>
+<!ELEMENT Group (ReferenceNumber | Name | Description | Type | OwnerInformation)*>
+<!ELEMENT Type (#PCDATA)>
+<!ELEMENT OwnerInformation (#PCDATA)>
+
+
+<!-- Permissions data -->
+<!ELEMENT Permissions (Permission)*>
+<!ELEMENT Permission (State | StartDate | EndDate | FileReference | AccessStatus | SpecialRequirements | OpenAccessDate | CopyrightUrl | CopyrightSatement | HarvestAuthorisation | AuthorisingAgent | Patterns | SeedUrls )*>
+
+<!ELEMENT FileReference (#PCDATA)>
+
+<!ELEMENT HarvestAuthorisation (Name | Description | IsPublished | OrderNumber)*>
+<!ELEMENT IsPublished (#PCDATA)>
+
+<!ELEMENT AuthorisingAgent (Name | Contact)*>
+<!ELEMENT Contact (#PCDATA)>
+
+<!ELEMENT SpecialRequirements (#PCDATA)>
+<!ELEMENT AccessStatus (#PCDATA)>
+<!ELEMENT OpenAccessDate (#PCDATA)>
+<!ELEMENT CopyrightStatement (#PCDATA)>
+<!ELEMENT CopyrightURL (#PCDATA)>
+
+<!ELEMENT Patterns (Pattern)*>
+<!ELEMENT Pattern (#PCDATA)>
+<!ELEMENT SeedUrls (SeedUrl)*>
