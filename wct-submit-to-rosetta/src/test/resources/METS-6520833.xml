@@ -30,7 +30,7 @@
                     <dc:identifier></dc:identifier>
                     <dc:identifier></dc:identifier>
                 </dc:dc>
-                <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                     <wct:Target>
                         <wct:ReferenceNumber>1026692</wct:ReferenceNumber>
                         <wct:Name>Good Practice Participate</wct:Name>
@@ -54,7 +54,7 @@
         <mets:techMD ID="TMD6520833">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:Crawl>
                                 <wct:StartDate>2007-05-17 11:24:30.886</wct:StartDate>
@@ -78,7 +78,7 @@
         <mets:rightsMD ID="RMD6520833">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:Permissions>
                             <wct:Permission>
                                 <wct:State>Granted</wct:State>
@@ -118,7 +118,7 @@
         <mets:digiprovMD ID="DPMD6520833">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:HarvestResult>
                                 <wct:Creator>LalaV</wct:Creator>

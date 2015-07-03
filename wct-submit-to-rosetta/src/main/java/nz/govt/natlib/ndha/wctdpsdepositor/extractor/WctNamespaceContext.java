@@ -36,7 +36,7 @@ public class WctNamespaceContext implements NamespaceContext {
         if (prefix == null) throw new NullPointerException("Null prefix");
         else if ("mets".equals(prefix)) return "http://www.loc.gov/METS/";
         else if ("dc".equals(prefix)) return "http://purl.org/dc/elements/1.1/";
-        else if ("wct".equals(prefix)) return "http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd";
+        else if ("wct".equals(prefix)) return "http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd";
         else if ("xlink".equals(prefix)) return "http://www.w3.org/1999/xlink";
         else if ("xml".equals(prefix)) return XMLConstants.XML_NS_URI;
         return XMLConstants.NULL_NS_URI;

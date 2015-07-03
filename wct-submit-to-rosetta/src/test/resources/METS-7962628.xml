@@ -30,7 +30,7 @@
                     <dc:identifier></dc:identifier>
                     <dc:identifier></dc:identifier>
                 </dc:dc>
-                <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                     <wct:Target>
                         <wct:ReferenceNumber>1005119</wct:ReferenceNumber>
                         <wct:Name>Growth and Innovation</wct:Name>
@@ -55,7 +55,7 @@
         <mets:techMD ID="TMD7962628">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:Crawl>
                                 <wct:StartDate>2007-06-01 20:00:03.419</wct:StartDate>
@@ -86,7 +86,7 @@
         <mets:rightsMD ID="RMD7962628">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:Permissions>
                             <wct:Permission>
                                 <wct:State>Granted</wct:State>
@@ -126,7 +126,7 @@
         <mets:digiprovMD ID="DPMD7962628">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:HarvestResult>
                                 <wct:Creator>LeeG</wct:Creator>

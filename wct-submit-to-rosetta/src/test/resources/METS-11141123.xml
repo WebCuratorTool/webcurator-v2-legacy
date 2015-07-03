@@ -30,7 +30,7 @@
                     <dc:identifier></dc:identifier>
                     <dc:identifier></dc:identifier>
                 </dc:dc>
-                <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                     <wct:Target>
                         <wct:ReferenceNumber>1010528</wct:ReferenceNumber>
                         <wct:Name>New Zealand Centre for Ecological Economics ; NZCEE</wct:Name>
@@ -56,7 +56,7 @@
         <mets:techMD ID="TMD11141123">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:Crawl>
                                 <wct:StartDate>2007-08-13 20:00:24.61</wct:StartDate>
@@ -80,7 +80,7 @@
         <mets:rightsMD ID="RMD11141123">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:Permissions>
                             <wct:Permission>
                                 <wct:State>Granted</wct:State>
@@ -120,7 +120,7 @@
         <mets:digiprovMD ID="DPMD11141123">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:HarvestResult>
                                 <wct:Creator>LeeG 0/1</wct:Creator>

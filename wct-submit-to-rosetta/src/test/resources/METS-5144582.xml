@@ -30,7 +30,7 @@
                     <dc:identifier></dc:identifier>
                     <dc:identifier></dc:identifier>
                 </dc:dc>
-                <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                     <wct:Target>
                         <wct:ReferenceNumber>1023182</wct:ReferenceNumber>
                         <wct:Name>Office for Senior Citizens : Te Kari Kaumatua</wct:Name>
@@ -54,7 +54,7 @@
         <mets:techMD ID="TMD5144582">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:Crawl>
                                 <wct:StartDate>2007-05-02 20:17:50.968</wct:StartDate>
@@ -78,7 +78,7 @@
         <mets:rightsMD ID="RMD5144582">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:Permissions>
                             <wct:Permission>
                                 <wct:State>Granted</wct:State>
@@ -118,7 +118,7 @@
         <mets:digiprovMD ID="DPMD5144582">
             <mets:mdWrap MDTYPE="OTHER">
                 <mets:xmlData>
-                    <wct:wct xmlns:wct="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd">
+                    <wct:wct xmlns:wct="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd">
                         <wct:TargetInstance>
                             <wct:HarvestResult>
                                 <wct:Creator>JoeS</wct:Creator>
