@@ -68,14 +68,14 @@ Allowing the version of Rosetta you are archiving to to generate the appropriate
 ---
 Quality Review tool uses original seed url
 ---
-The harvest quality review tools weren't not available previously if the original target seed URL was modified.
-Now the target seed URL can be changed, and the QR tool will always look for the original URL instead.
+The harvest quality review tools were not available previously if the original target seed URL was modified.
+Now the target seed URL can be changed, and the QR tool will always look for the original URL of the Target Instance instead.
 
 
 ---
 Pruning and importing for warc files fixed
 ---
-The process when saving on the Tree View screen was encountering a bug when reading warcs. When parsing a warc, the
+Pruning and importing on warcs in the Tree View screen was encountering a bug. When parsing a warc, the
 input stream was over-reading the number of bytes in the warc-info header, causing unexpected characters to 
 be read when trying to access the next record. This was mainly visible when trying to import and prune.
 
@@ -83,7 +83,7 @@ be read when trying to access the next record. This was mainly visible when tryi
 ---
 Indexing breaking for compressed warcs
 ---
-Harvesting as compressed warcs was breaking the indexing of a harvest. The Heritrix class handling the reading of 
+Harvesting as compressed warc was breaking the indexing of a harvest. The Heritrix class handling the reading of 
 the compressed warc was missing the functionality to move to the next record. The Heritrix library included has
 been recompiled to include a fix.
 
@@ -95,7 +95,7 @@ When creating/editing a Target - if a schedule is created/edited without saving 
 saved whilst adding an annotation, WCT creates target instances for that schedule but the Target remains in a state
 where it contains a cache of new a schedule(s). So if the Target is then saved via the bottom save button, another
 group of target instances will be generated for the new schedule(s).
-This bug has now been fixed. If a schedule has already had target instances generated (at Annotations tab), then WCT 
+This bug has now been fixed. If a schedule already has target instances generated (at Annotations tab), then WCT 
 will flag this to prevent any duplicates from being generated.
 
 
