@@ -29,3 +29,30 @@ wct-store/target/
 wct-submit-to-rosetta/target/
 wct-assembly/target/
 wct-submit-to-rosetta/DpsDepositError.log
+
+*.eml
+
+### Intellij ###
+*.iml
+
+## Directory-based project format:
+.idea/
+# if you remove the above rule, at least ignore the following:
+
+# User-specific stuff:
+# .idea/workspace.xml
+# .idea/tasks.xml
+# .idea/dictionaries
+
+# Sensitive or high-churn files:
+# .idea/dataSources.ids
+# .idea/dataSources.xml
+# .idea/sqlDataSources.xml
+# .idea/dynamic.xml
+# .idea/uiDesigner.xml
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
