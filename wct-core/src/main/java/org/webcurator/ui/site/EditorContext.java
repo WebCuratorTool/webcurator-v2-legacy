@@ -48,7 +48,7 @@ public class EditorContext{
 			return null;
 		}
 	}	
-	
+		
 	/**
 	 * Used when the OID of the object is known. 
 	 * @param clazz The class type of the object.
@@ -89,6 +89,20 @@ public class EditorContext{
 	public void putAllObjects(Collection<? extends HasIdentity> aCollection) {
 		for(HasIdentity element: aCollection) {
 			putObject(element);
+		}
+	}
+	
+	/**
+	 * Removes all of the collection's objects of class type.
+	 * @param clazz The class type of the objects.
+	 */
+	protected void removeObjectsOfType(Class clazz){
+		// Get the cache for the given object type.
+		Map<String,HasIdentity> clazzCache = objectCache.get(clazz);
+		
+		// Get the object out of the cache.
+		if(clazzCache != null) {
+			clazzCache.clear();
 		}
 	}
 }

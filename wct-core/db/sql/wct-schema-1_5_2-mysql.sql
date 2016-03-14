@@ -159,7 +159,7 @@ create table DB_WCT.WCTAUDIT (AUD_OID bigint not null, AUD_ACTION varchar(40) no
 create table DB_WCT.WCTROLE (ROL_OID bigint not null, ROL_DESCRIPTION varchar(255), ROL_NAME varchar(80) not null, ROL_AGENCY_OID bigint not null, primary key (ROL_OID));
 create table DB_WCT.WCTUSER (USR_OID bigint not null, USR_ACTIVE bit not null, USR_ADDRESS varchar(200), USR_EMAIL varchar(100) not null, USR_EXTERNAL_AUTH bit not null, USR_FIRSTNAME varchar(50) not null, USR_FORCE_PWD_CHANGE bit not null, USR_LASTNAME varchar(50) not null, USR_NOTIFICATIONS_BY_EMAIL bit not null, USR_PASSWORD varchar(255), USR_PHONE varchar(16), USR_TITLE varchar(10), USR_USERNAME varchar(80) not null unique, USR_AGC_OID bigint not null, USR_DEACTIVATE_DATE TIMESTAMP NULL, USR_TASKS_BY_EMAIL bit not null, USR_NOTIFY_ON_GENERAL bit not null, USR_NOTIFY_ON_WARNINGS bit not null, primary key (USR_OID));
 create table DB_WCT.WCT_LOGON_DURATION (LOGDUR_OID bigint not null, LOGDUR_DURATION bigint, LOGDUR_LOGON_TIME TIMESTAMP not null, LOGDUR_LOGOUT_TIME TIMESTAMP NULL, LOGDUR_USERNAME varchar(80), LOGDUR_USER_OID bigint not null, LOGDUR_USER_REALNAME varchar(100), LOGDUR_SESSION_ID varchar(32) not null, primary key (LOGDUR_OID));
-alter table db_wct.ABSTRACT_TARGET add unique key `AT_NAME_AND_TYPE` (AT_NAME, AT_OBJECT_TYPE);
+alter table DB_WCT.ABSTRACT_TARGET add unique key `AT_NAME_AND_TYPE` (AT_NAME, AT_OBJECT_TYPE);
 alter table DB_WCT.ABSTRACT_TARGET add index FK_AT_DUBLIN_CORE_OID (AT_DUBLIN_CORE_OID), add constraint FK_AT_DUBLIN_CORE_OID foreign key (AT_DUBLIN_CORE_OID) references DB_WCT.DUBLIN_CORE (DC_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FK_T_PROF_OVERRIDE_OID (AT_PROF_OVERRIDE_OID), add constraint FK_T_PROF_OVERRIDE_OID foreign key (AT_PROF_OVERRIDE_OID) references DB_WCT.PROFILE_OVERRIDES (PO_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FKB6DD784E5C2C497 (AT_OWNER_ID), add constraint FKB6DD784E5C2C497 foreign key (AT_OWNER_ID) references DB_WCT.WCTUSER (USR_OID);
@@ -252,5 +252,5 @@ create view DB_WCT.ABSTRACT_TARGET_SCHEDULE_VIEW as
   
 create view DB_WCT.ABSTRACT_TARGET_GROUPTYPE_VIEW as 
  SELECT a.at_oid, a.at_desc, a.at_name, a.at_owner_id, a.at_prof_override_oid, a.at_state, a.t_profile_id, a.at_object_type, a.at_creation_date, a.at_reference, a.at_profile_note, a.at_dublin_core_oid, a.at_access_zone, a.at_display_target, a.at_display_note, tg.tg_type
-   FROM db_wct.abstract_target a
-   LEFT JOIN db_wct.target_group tg ON a.at_oid = tg.tg_at_oid;  
+   FROM DB_WCT.ABSTRACT_TARGET a
+   LEFT JOIN DB_WCT.TARGET_GROUP tg ON a.at_oid = tg.tg_at_oid;  

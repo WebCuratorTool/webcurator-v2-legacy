@@ -256,10 +256,12 @@ a {
       }
     
     function importURL() {
-			if(document.getElementById("targetURL").value.trim().toLowerCase().startsWith("http://")) {
+			if(document.getElementById("targetURL").value.trim().toLowerCase().startsWith("http://") ||
+					document.getElementById("targetURL").value.trim().toLowerCase().startsWith("https://")) {
 			
 				if(document.getElementById("sourceURL").value.trim() != "") {
-					if (document.getElementById("sourceURL").value.trim().toLowerCase().startsWith("http://")) {
+					if (document.getElementById("sourceURL").value.trim().toLowerCase().startsWith("http://") ||
+							document.getElementById("sourceURL").value.trim().toLowerCase().startsWith("https://")) {
 				    	document.forms.importform.importType.value = "URL";
 				    	document.forms.importform.submit();
 				        selectedRow = -1;
@@ -428,7 +430,7 @@ a {
 				<table>
 					<tr>
 						<td>
-							<font color="blue"><strong>All URLs must be of the form http://[host-name]/[file-path]/[file-name] e.g http://crawledsite.com/images/logo.jpg</strong></font><br /><br />
+							<font color="blue"><strong>All URLs must be of the form http(s)://[host-name]/[file-path]/[file-name] e.g http://crawledsite.com/images/logo.jpg</strong></font><br /><br />
 						</td>
 					</tr>
 					<tr>

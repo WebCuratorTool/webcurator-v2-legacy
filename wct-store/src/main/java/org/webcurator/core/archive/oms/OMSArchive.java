@@ -174,7 +174,7 @@ public class OMSArchive extends BaseArchive {
 		if(o != null){
 			uploader.setInDependencies((String)o);
 		}
-		/* Use seed URL(s) where Seed.Type = primary. (But we are not exactly sure how to implant it…)
+		/* Use seed URL(s) where Seed.Type = primary. (But we are not exactly sure how to implant itâ€¦)
 		 */
 		o = attributes.get(ENTRY_POINT_URL);
 		if(o != null){

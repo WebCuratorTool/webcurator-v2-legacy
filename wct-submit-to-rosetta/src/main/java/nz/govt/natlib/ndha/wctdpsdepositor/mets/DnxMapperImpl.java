@@ -30,6 +30,8 @@ import com.exlibris.core.sdk.formatting.DublinCore;
 import com.exlibris.core.sdk.consts.Enum;
 import com.google.inject.Inject;
 import gov.loc.mets.MetsType;
+import gov.loc.mets.StructMapType;
+import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameter;
 import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameterValidationException;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.ArchiveFile;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.WctDataExtractor;
@@ -67,13 +69,13 @@ public class DnxMapperImpl implements DnxMapper {
     }
 
     public MetsDocument generateDnxFrom(WctDataExtractor wctData) {
+    	
         MetsWriter metsWriter = metsWriterFactory.createMetsWriter();
         populateIeDc(wctData, metsWriter);
         populateIeDnx(wctData, metsWriter);
         populateFileSections(wctData, metsWriter);
 
         metsWriter.fixIdNaming();
-        metsWriter.generateStructMap(null);
         metsWriter.generateGID();
 
         checkForErrors(wctData, metsWriter);
@@ -338,13 +340,35 @@ public class DnxMapperImpl implements DnxMapper {
             StringBuilder errorMessage = new StringBuilder();
 
             for (XmlError error : errors)
-                errorMessage.append(error.toString());
+            	// ignore error relating to missing structure map as we are not adding one.
+            	if(!error.getMessage().matches("(Expected element).*(structMap).*")){
+            		errorMessage.append(error.toString());
+            	}
+                
 
-            String msg = String.format("WCT Harvest Instance %s: The METs writer failed to produce a valid document, error message: %s",
-                    wctData.getWctTargetInstanceID(), errorMessage);
-            log.error(msg);
-            throw new RuntimeException(msg);
+            if(errorMessage.length() > 0){
+            	String msg = String.format("WCT Harvest Instance %s: The METs writer failed to produce a valid document, error message: %s",
+                        wctData.getWctTargetInstanceID(), errorMessage);
+                log.error(msg);
+                throw new RuntimeException(msg);
+            }
+            
         }
+    }
+    
+    public void populateAccessRightsCodes(WctDepositParameter depositParameter){
+    	if(!depositParameter.getOmsOpenAccess().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_OPA", depositParameter.getOmsOpenAccess());
+    	}
+    	if(!depositParameter.getOmsPublishedRestricted().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_OSR", depositParameter.getOmsPublishedRestricted());
+    	}
+    	if(!depositParameter.getOmsUnpublishedRestrictedByLocation().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_ONS", depositParameter.getOmsUnpublishedRestrictedByLocation());
+    	}
+    	if(!depositParameter.getOmsUnpublishedRestrictedByPersion().isEmpty()){
+    		OmsCodeToMetsMapping.setOmsAccessRestrictionCode("ACR_RES", depositParameter.getOmsUnpublishedRestrictedByPersion());
+    	}
     }
 
     private String determineAccessRightsCode(WctDataExtractor wctData) {

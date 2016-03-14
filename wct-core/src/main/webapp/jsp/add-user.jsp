@@ -2,7 +2,7 @@
 <%@ page import="org.webcurator.ui.admin.command.CreateUserCommand" %>
 <%@ page import="org.webcurator.ui.common.Constants" %>
 <%@ page import="org.webcurator.domain.model.auth.Privilege" %>
-<%@ page import="org.webcurator.ui.admin.command.ChangePasswordCommand;"%>
+<%@ page import="org.webcurator.ui.admin.command.ChangePasswordCommand"%>
 <%@taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
 <%@taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="allowPrivs"><%= Privilege.MANAGE_USERS +","+ Privilege.MODIFY_OWN_CREDENTIALS %></c:set>

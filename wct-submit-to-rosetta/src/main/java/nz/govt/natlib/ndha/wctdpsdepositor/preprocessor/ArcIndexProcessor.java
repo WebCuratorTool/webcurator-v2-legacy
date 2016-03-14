@@ -84,7 +84,8 @@ public class ArcIndexProcessor implements PreDepositProcessor {
                      * from these files, do a check.
                      */
                      String path = arcFileToWorkWith.getPath();
-                     //path = path.replace("C:","");
+                     if(path.startsWith("C:"))
+                    	 path = path.replace("C:","");
                      String lcPath = path.toLowerCase();
 					if(lcPath.endsWith(".arc") || lcPath.endsWith(".arc.gz")) {
 						ARCReaderFactory.get(path);
@@ -182,7 +183,8 @@ public class ArcIndexProcessor implements PreDepositProcessor {
     private File createCdxFrom(File arcFile) throws IOException {
         try {
             String arcFilePath = arcFile.getPath();
-            //arcFilePath = arcFilePath.replace("C:", "");
+            if(arcFilePath.startsWith("C:"))
+            	arcFilePath = arcFilePath.replace("C:", "");
             String lcPath = arcFilePath.toLowerCase();
 			if(lcPath.endsWith(".arc") || lcPath.endsWith(".arc.gz")) {
             ARCReader.createCDXIndexFile(arcFilePath);

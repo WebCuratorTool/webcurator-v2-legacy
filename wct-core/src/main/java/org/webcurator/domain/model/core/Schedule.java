@@ -69,6 +69,8 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
     private Date nextScheduleAfterPeriod;
     /**  */
     private Date lastProcessedDate;
+    /** The first date after the currently assigned period on which this schedule should run */
+    private boolean savedInThisSession = false;
     
     /**
      * Protected constructor - all schedules should be constructed by 
@@ -337,5 +339,18 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
 	 */
 	public void setLastProcessedDate(Date lastProcessedDate) {
 		this.lastProcessedDate = lastProcessedDate;
+	}
+
+	public boolean isSavedInThisSession() {
+		return savedInThisSession;
+	}
+
+	/**
+	 * Sets whether the schedule has been processed for generating
+	 * Target Instances. Used when a Target Instance is saved via the 
+	 * Annotations screen, to prevent a duplicate scheduling bug. 
+	 */
+	public void setSavedInThisSession(boolean savedInThisSession) {
+		this.savedInThisSession = savedInThisSession;
 	}
 }

@@ -10,7 +10,7 @@ BEGIN
 	
 	DECLARE agency_cur CURSOR FOR 
 		SELECT agc_oid 
-		FROM db_wct.agency;
+		FROM DB_WCT.AGENCY;
 	DECLARE CONTINUE HANDLER FOR NOT FOUND 
 		SET no_more_rows = true;
 	
@@ -26,7 +26,7 @@ BEGIN
 		
 		select v_agc_oid;
 
-		select max(ic_oid) into max_ic_oid from db_wct.indicator_criteria;
+		select max(ic_oid) into max_ic_oid from DB_WCT.INDICATOR_CRITERIA;
 		IF max_ic_oid is null THEN
 			select 0 into max_ic_oid;
 		END IF;
@@ -35,7 +35,7 @@ BEGIN
 		select max_ic_oid+1 into max_ic_oid;
 		
 		if v_agc_oid is not null then
-			DELETE FROM db_wct.indicator_criteria where ic_agc_oid = v_agc_oid;
+			DELETE FROM DB_WCT.INDICATOR_CRITERIA where ic_agc_oid = v_agc_oid;
 			select max_ic_oid+1 into max_ic_oid;
 			INSERT INTO DB_WCT.INDICATOR_CRITERIA (ic_oid, ic_name, ic_description, ic_upper_limit_percentage, ic_lower_limit_percentage, ic_upper_limit, ic_lower_limit, ic_agc_oid, ic_unit, ic_show_delta, ic_enable_report) VALUES (max_ic_oid, 'Crawl Runtime', 'Elapsed time of crawl in milliseconds', 10, -10, 25200000, 60000, v_agc_oid, 'millisecond', 0, 0);
 			select max_ic_oid+1 into max_ic_oid;

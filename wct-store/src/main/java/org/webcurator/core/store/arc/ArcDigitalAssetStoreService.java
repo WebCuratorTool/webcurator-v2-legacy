@@ -104,8 +104,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 	/** the archive service to use. */
 	private Archive archive = null;
 	/** Arc files meta data date format. */
-	private static final SimpleDateFormat sdf = new SimpleDateFormat(
-			"yyyyMMddHHmmss");
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+	private static final SimpleDateFormat writerDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	/** The Indexer */
 	private Indexer indexer = null;
 	/** The DAS File Mover */
@@ -121,6 +121,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 	
 	static {
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+		writerDF.setTimeZone(TimeZone.getTimeZone("GMT"));
 	}
 
 	public void save(String targetInstanceName, String directory, File file)
@@ -530,7 +531,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					if (impArcType == null) {
 						impArcType = "ARC";
 					}
-
+					
 					// Read the Meta Data
 					ARCRecord headerRec = (ARCRecord) archiveRecordsIt.next();
 					byte[] buff = new byte[1024];
@@ -598,22 +599,73 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					if (impArcType == null) {
 						impArcType = "WARC";
 					}
-
+					
+					/*
+					 * Post 1.6.1 code.
+					 * 
+					 * Problem: 
+					 * The correct number of bytes/characters are being read from the header record, and saved in the
+					 * buffer array. But the input stream appears (for some unknown reason) to read or mark one character further 
+					 * than the length that was read into the array.
+					 * 
+					 * For example, with content-length: 398, the stream should be stopping at the <|> below. So the next character read
+					 * would be a carriage return "\r". This is what the WarcReader (line 65 - gotoEOR()) is expecting in order to move 
+					 * the marker to the start of the next record.
+					 * 
+					 * http-header-from: youremail@yourdomain.com\r\n
+					 * \r\n<|>
+					 * \r\n
+					 * \r\n
+					 * WARC/0.18\r\n
+					 * 
+					 * Instead the stream is reading up until the marker in the following example, and throwing a runtime error.
+					 * 
+					 * http-header-from: youremail@yourdomain.com\r\n
+					 * \r\n
+					 * \r<|>\n
+					 * \r\n
+					 * WARC/0.18\r\n
+					 * 
+					 * 
+					 * Workaround/Fix:
+					 * Create a duplicate ArchiveReader (headerRecordIt) for just the warc header metadata, that is then closed after 
+					 * the metadata is read. The archiveRecordsIt ArchiveReader is still used to read the rest of the records. However 
+					 * the first record (which we read with the other ArchiveReader) still has an issue with the iterator hasNext() 
+					 * call. So it is skipped before entering the loop that copies each record.
+					 * 
+					 * 
+					 */
+					
+					// Get a another reader for the warc header metadata
+					ArchiveReader headerReader = ArchiveReaderFactory.get(arcFiles[i]);
+					Iterator<ArchiveRecord> headerRecordIt = headerReader.iterator();
+					
 					// Read the Meta Data
-					WARCRecord headerRec = (WARCRecord) archiveRecordsIt.next();
+					WARCRecord headerRec = (WARCRecord) headerRecordIt.next();
 					byte[] buff = new byte[1024];
 					StringBuffer metaData = new StringBuffer();
 					int bytesRead = 0;
+					
+					
 					while ((bytesRead = headerRec.read(buff)) != -1) {
 						metaData.append(new String(buff, 0, bytesRead));
 					}
+					
+					
 					List<String> l = new ArrayList<String>();
 					l.add(metaData.toString());
 
 					if (impArcHeader.isEmpty()) {
 						impArcHeader.add(metaData.toString());
 					}
-
+					
+					headerRec.close();
+					headerReader.close();
+					
+					
+					// Bypass warc header metadata as it has been read above from a different ArchiveReader
+					archiveRecordsIt.next();
+					
 					// Create a WARC Writer
 					WARCWriter writer = new WARCWriter(aint, dirs, prefix,
 							suffix, compressed,
@@ -622,7 +674,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 					// Iterate through all the records, skipping deleted or
 					// imported URLs.
 					while (archiveRecordsIt.hasNext()) {
-
 						WARCRecord record = (WARCRecord) archiveRecordsIt
 								.next();
 						ArchiveRecordHeader header = record.getHeader();
@@ -635,6 +686,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 								strRecordId.lastIndexOf(">") - 1));
 						long contentLength = header.getLength()
 								- header.getContentBegin();
+						
 
 						if (!WARCType.equals(WARCConstants.WARCINFO)
 								&& (urisToDelete.contains(header.getUrl()) || listContainsURL(
@@ -670,19 +722,16 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 									header.getDate(), header.getMimetype(),
 									recordId, namedFields, record,
 									contentLength);
-
 						} else if (WARCType.equals(WARCConstants.METADATA)) {
 							writer.writeMetadataRecord(header.getUrl(),
 									header.getDate(), header.getMimetype(),
 									recordId, namedFields, record,
 									contentLength);
-
 						} else if (WARCType.equals(WARCConstants.REQUEST)) {
 							writer.writeRequestRecord(header.getUrl(),
 									header.getDate(), header.getMimetype(),
 									recordId, namedFields, record,
 									contentLength);
-
 						} else if (WARCType.equals(WARCConstants.RESOURCE)) {
 							writer.writeResourceRecord(header.getUrl(),
 									header.getDate(), header.getMimetype(),
@@ -775,7 +824,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 							// namedFields.addLabelValue(WARCConstants.CONTENT_TYPE,
 							// hr.getContentType());
 							warcWriter.writeResponseRecord(hr.getName(),
-									dtNow.toString(), hr.getContentType(),
+									writerDF.format(dtNow), hr.getContentType(),
 									recordId, namedFields,
 									new java.io.FileInputStream(fin),
 									hr.getLength());
@@ -785,6 +834,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 				}
 			}
 
+			log.info("copyAndPrune - Now time to reindex.");
 			// Now re-index the files.
 			ArcHarvestResultDTO ahr = new ArcHarvestResultDTO();
 			File[] fileList = destDir.listFiles();
@@ -802,6 +852,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 
 			ahr.index(destDir);
 
+			log.info("copyAndPrune - Now returning the ArcHarvestResult: " + ahr.getOid());
 			return ahr;
 
 		} catch (URISyntaxException e) {
@@ -820,6 +871,11 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 			if (log.isErrorEnabled()) {
 				log.error("Prune and Copy Failed : " + e.getMessage(), e);
 			}
+			throw new DigitalAssetStoreException("Prune and Copy Failed : "
+					+ e.getMessage(), e);
+		} catch (Exception e){
+			log.info(e.getMessage());
+			e.printStackTrace();
 			throw new DigitalAssetStoreException("Prune and Copy Failed : "
 					+ e.getMessage(), e);
 		}

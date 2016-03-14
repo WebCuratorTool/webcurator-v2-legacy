@@ -1211,7 +1211,7 @@
 		<property name="sipBuilder" ref="sipBuilder"/>
 		<property name="archiveAdapter" ref="archiveAdapter"/>
 		<property name="heritrixVersion" value="Heritrix ${heritrix.version}"/>
-		<property name="webCuratorUrl" value="http://webcurator.sourceforge.net/schemata/webcuratortool-1.0.dtd"/>
+		<property name="webCuratorUrl" value="http://dia-nz.github.io/webcurator/schemata/webcuratortool-1.0.dtd"/>
 		
 	</bean>
 

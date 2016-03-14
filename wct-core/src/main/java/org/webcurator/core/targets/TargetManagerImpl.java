@@ -157,14 +157,25 @@ public class TargetManagerImpl implements TargetManager {
 		// Deal with new schedules
 		List<Schedule> newSchedules = new LinkedList<Schedule>();
 		for (Schedule schedule : aTarget.getSchedules()) {
-			if (schedule.isNew()) {
+			if(schedule.isNew()) {
 				// Record the schedule for auditing after save.
 				newSchedules.add(schedule);
+
+				// Flag that this schedule is going to be processed (only used when Target saved in Annotations tab)
+				schedule.setSavedInThisSession(true);
 				
 				// Send a notification if the schedule owner is not the same as
 				// the owner of the target.
 				if (!schedule.getOwningUser().equals(aTarget.getOwningUser())) {
 					newSchedulesAddedByNonOwner = true;
+				}
+			}
+			else {
+				// If this schedule is not new and has already been saved via adding an annotation then it is in a buggy state.
+				if(schedule.isSavedInThisSession()){
+					targetInstanceDao.deleteScheduledInstances(schedule);
+					schedule.setTargetInstances(new HashSet<TargetInstance>());
+					targetInstanceDao.save(schedule);
 				}
 			}
 		}
@@ -194,7 +205,7 @@ public class TargetManagerImpl implements TargetManager {
 		log.debug("Saving Target");
 		int originalState = aTarget.getOriginalState();
 		targetDao.save(aTarget, parents);
-
+		
 		/* ---------------------------------------------------------------- */
 		/* Save the annotations */
 		/* ---------------------------------------------------------------- */
@@ -1276,7 +1287,7 @@ public class TargetManagerImpl implements TargetManager {
 			// We cannot schedule an unschedulable target.
 			return;
 		}
-
+		
 		Date scheduleTill = getScheduleUntilDate(aSchedule);
 		Date startFrom = getScheduleStartDate(aTarget, aSchedule);
 		createAndSaveTargetInstances(aTarget, aSchedule, scheduleTill, startFrom);

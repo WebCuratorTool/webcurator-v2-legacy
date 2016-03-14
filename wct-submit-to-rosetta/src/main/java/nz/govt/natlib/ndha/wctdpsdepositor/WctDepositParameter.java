@@ -41,6 +41,11 @@ public class WctDepositParameter {
 
     private String materialFlowId;
     private String producerId;
+    
+    private String omsOpenAccess = "";
+    private String omsPublishedRestricted = "";
+    private String omsUnpublishedRestrictedByLocation = "";
+    private String omsUnpublishedRestrictedByPersion = "";
 
     
     public void isValid() throws WctDepositParameterValidationException {
@@ -62,7 +67,7 @@ public class WctDepositParameter {
         if (StringUtils.isBlank(field))
             throw new WctDepositParameterValidationException("The property " + displayableFieldName + " was not populated, the DPS deposit service requires a value for this property to be specified.");
     }
-
+    
     public String getPdsUrl() {
         return pdsUrl;
     }
@@ -150,5 +155,41 @@ public class WctDepositParameter {
 
     public void setProducerId(String producerId) {
         this.producerId = producerId;
+    }
+    
+    public String getOmsOpenAccess() {
+        return omsOpenAccess;
+    }
+    
+    public void setOmsOpenAccess(String omsOpenAccess){
+    	if(omsOpenAccess != null)
+    		this.omsOpenAccess = omsOpenAccess;
+    }
+
+	public String getOmsPublishedRestricted() {
+		return omsPublishedRestricted;
+	}
+	
+	public void setOmsPublishedRestricted(String omsPublishedRestricted){
+		if(omsPublishedRestricted != null)
+			this.omsPublishedRestricted = omsPublishedRestricted;
+    }
+
+	public String getOmsUnpublishedRestrictedByLocation() {
+		return omsUnpublishedRestrictedByLocation;
+	}
+	
+	public void setOmsUnpublishedRestrictedByLocation(String omsUnpublishedRestrictedByLocation){
+		if(omsUnpublishedRestrictedByLocation != null)
+			this.omsUnpublishedRestrictedByLocation = omsUnpublishedRestrictedByLocation;
+    }
+
+	public String getOmsUnpublishedRestrictedByPersion() {
+		return omsUnpublishedRestrictedByPersion;
+	}
+	
+	public void setOmsUnpublishedRestrictedByPersion(String omsUnpublishedRestrictedByPersion){
+		if(omsUnpublishedRestrictedByPersion != null)
+			this.omsUnpublishedRestrictedByPersion = omsUnpublishedRestrictedByPersion;
     }
 }

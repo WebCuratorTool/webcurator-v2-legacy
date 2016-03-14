@@ -15,10 +15,14 @@
  */
 package org.webcurator.core.common;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.webcurator.core.permissionmapping.PermissionMappingStrategy;
@@ -32,6 +36,7 @@ public class StartupServlet extends HttpServlet {
     
     /** Serial Version UID. */
     private static final long serialVersionUID = 7300074460312541802L;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     /** @see javax.servlet.Servlet#init(javax.servlet.ServletConfig). */
     public void init() {
@@ -42,8 +47,12 @@ public class StartupServlet extends HttpServlet {
         PermissionMappingStrategy strategy = (PermissionMappingStrategy) context.getBean("permissionMappingStrategy");
         PermissionMappingStrategy.setStrategy(strategy);
         
-        //Add the default SUN provider for SSL, used by the ldaps protocol
-        Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());      
+        // Add the default SSLContext provider for SSL, used by the ldaps protocol
+        try {
+			Security.addProvider(SSLContext.getDefault().getProvider());
+		} catch (NoSuchAlgorithmException e) {
+			log.warn("Error adding SSL Provider to startup servlet.", e);
+		}   
     }
 
     /** @see javax.servlet.Servlet#destroy(). */
