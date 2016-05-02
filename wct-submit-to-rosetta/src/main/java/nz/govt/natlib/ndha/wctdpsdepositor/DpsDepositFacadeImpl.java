@@ -87,6 +87,8 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
             wctDataExtractor.setWctTargetInstanceID(targetInstanceOID);
             wctDataExtractor.setILSReference(ilsReference);
             wctDataExtractor.setAccessRestriction(accessRestriction);
+            wctDataExtractor.setCmsSection(parameters.get(CMS_SECTION));
+            wctDataExtractor.setCmsSystem(parameters.get(CMS_SYSTEM));
 
             WctDepositParameter depositParameter = populateDepositParameterFromMap(parameters);
 

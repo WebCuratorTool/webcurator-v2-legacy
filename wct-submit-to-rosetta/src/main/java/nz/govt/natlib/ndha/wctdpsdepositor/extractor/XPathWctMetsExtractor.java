@@ -89,6 +89,10 @@ public class XPathWctMetsExtractor implements WctDataExtractor {
     private DublinCore additionalDublinCoreElements;
     private HarvestType harvestType;
     private String ieEntityType;
+
+
+    private String cmsSection;
+    private String cmsSystem;
     
     private static final String XML_MIME_TYPE = "text/xml";
 
@@ -285,6 +289,22 @@ public class XPathWctMetsExtractor implements WctDataExtractor {
 
     public void setIeEntityType(String ieEntityType) {
         this.ieEntityType = ieEntityType;
+    }
+
+    public String getCmsSection() {
+        return cmsSection;
+    }
+
+    public void setCmsSection(String cmsSection) {
+        this.cmsSection = cmsSection;
+    }
+
+    public String getCmsSystem() {
+        return cmsSystem;
+    }
+
+    public void setCmsSystem(String cmsSystem) {
+        this.cmsSystem = cmsSystem;
     }
 
     public DublinCore getAdditionalDublinCoreElements() {
