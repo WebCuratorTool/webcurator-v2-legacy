@@ -272,6 +272,14 @@
  		<property name="omsUnpublishedRestrictedByPersion">
  			<value>${dpsArchive.dnx_unpublished_restricted_person}</value>
  		</property>
+
+		<property name="cmsSection">
+			<value>${dpsArchive.cmsSection}</value>
+		</property>
+
+		<property name="cmsSystem">
+			<value>${dpsArchive.cmsSystem}</value>
+		</property>
  	</bean>
 
 </beans>

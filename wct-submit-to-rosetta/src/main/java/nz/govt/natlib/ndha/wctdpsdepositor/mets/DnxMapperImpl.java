@@ -240,6 +240,12 @@ public class DnxMapperImpl implements DnxMapper {
         dnx.updateSectionKey(DNXConstants.CMS.SYSTEM, "ilsdb");
         dnx.updateSectionKey(DNXConstants.CMS.RECORDID, wctData.getILSReference());
 
+        DnxDocumentHelper dnxHelper = new DnxDocumentHelper(dnx);
+        List<DnxDocumentHelper.ObjectIdentifier> OIs = dnxHelper.getObjectIdentifiers();
+        DnxDocumentHelper.ObjectIdentifier cmsOI = dnxHelper.new ObjectIdentifier("ALMA_MMS", wctData.getILSReference());
+        OIs.add(cmsOI);
+        dnxHelper.setObjectIdentifiers(OIs);
+
         addWebHarvestSpecificDnx(wctData, dnx);
 
         metsWriter.setIeDnx(dnx);
@@ -264,7 +270,7 @@ public class DnxMapperImpl implements DnxMapper {
      * to populate WCT-specific metadata information.
      * 
      * @param wctData
-     * @param dnx
+     * @param ieDc
      */
     public void addWebHarvestSpecificDc(WctDataExtractor wctData, DublinCore ieDc) {
         populateDcTitleFromSeedUrls(wctData, ieDc);

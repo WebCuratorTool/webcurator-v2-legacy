@@ -67,6 +67,8 @@ public interface DpsDepositFacade {
 	public static final String OMS_PUBLISHED_RESTRICTED = "omsPublishedRestricted";
 	public static final String OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION = "omsUnpublishedRestrictedByLocation";
 	public static final String OMS_UNPUBLISHED_RESTRICTED_BY_PERSON = "omsUnpublishedRestrictedByPersion";
+	public static final String CMS_SECTION = "cmsSection";
+	public static final String CMS_SYSTEM = "cmsSystem";
 	
 	/**
 	 * Interface to the information returned by the DPS Deposit service.

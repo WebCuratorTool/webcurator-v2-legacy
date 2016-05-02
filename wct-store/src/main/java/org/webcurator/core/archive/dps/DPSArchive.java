@@ -101,6 +101,8 @@ public class DPSArchive extends BaseArchive {
     private java.lang.String omsPublishedRestricted = "";
 	private java.lang.String omsUnpublishedRestrictedByLocation = "";
     private java.lang.String omsUnpublishedRestrictedByPersion = "";
+    private java.lang.String cmsSection = "";
+    private java.lang.String cmsSystem = "";
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
@@ -524,6 +526,14 @@ public class DPSArchive extends BaseArchive {
 		this.omsUnpublishedRestrictedByPersion = omsUnpublishedRestrictedByPersion;
 	}
 
+    public void setCmsSection(String cmsSection) {
+        this.cmsSection = cmsSection;
+    }
+
+    public void setCmsSystem(String cmsSystem) {
+        this.cmsSystem = cmsSystem;
+    }
+
     /**
      * Converts a comma-separated string into a list of lower-case letter strings.
      * 
@@ -641,6 +651,8 @@ public class DPSArchive extends BaseArchive {
         parameterMap.put(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED, this.omsPublishedRestricted);
         parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION, this.omsUnpublishedRestrictedByLocation);
         parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON, this.omsUnpublishedRestrictedByPersion);
+        parameterMap.put(DpsDepositFacade.CMS_SECTION, this.cmsSection);
+        parameterMap.put(DpsDepositFacade.CMS_SYSTEM, this.cmsSystem);
 
         /*
          * Add target reference number.
