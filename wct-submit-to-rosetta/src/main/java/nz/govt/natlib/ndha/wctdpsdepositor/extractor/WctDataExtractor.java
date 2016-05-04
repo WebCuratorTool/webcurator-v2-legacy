@@ -65,4 +65,8 @@ public interface WctDataExtractor extends WctRequiredData {
 
     void cleanUpCdxFile();
 
+    String getCmsSystem();
+
+    String getCmsSection();
+
 }

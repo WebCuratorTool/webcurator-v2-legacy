@@ -517,13 +517,13 @@
 		<dependency>
 			<groupId>org.webcurator</groupId>
 			<artifactId>wct-core</artifactId>
-			<version>1.6.2-SNAPSHOT</version>
+			<version>1.6.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.webcurator</groupId>
 			<artifactId>wct-submit-to-rosetta</artifactId>
-			<version>1.6.2-SNAPSHOT</version>
+			<version>1.6.2</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>

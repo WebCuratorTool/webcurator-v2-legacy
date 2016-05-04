@@ -41,6 +41,8 @@ public class WctDataExtractorStub implements WctDataExtractor {
     private String creationDate;
     private String provenanceNote;
     private String copyrightURL;
+    private String cmsSystem;
+    private String cmsSection;
     private List<ArchiveFile> archiveFiles = new ArrayList<ArchiveFile>();
     private List<ArchiveFile> homeDirectoryFiles = new ArrayList<ArchiveFile>();
     private List<ArchiveFile> logFiles = new ArrayList<ArchiveFile>();
@@ -205,6 +207,14 @@ public class WctDataExtractorStub implements WctDataExtractor {
     }
 
     public void cleanUpCdxFile() {
+    }
+
+    public String getCmsSystem() {
+        return cmsSystem;
+    }
+
+    public String getCmsSection() {
+        return cmsSection;
     }
 
     public DublinCore getAdditionalDublinCoreElements() {

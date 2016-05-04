@@ -213,12 +213,12 @@ public class DnxMapperImpl implements DnxMapper {
     private void populateIeDnx(WctDataExtractor wctData, MetsWriter metsWriter) {
 
     	addProvenanceNote(metsWriter
-    			, "IE Created in NLNZ WCT"
-    			, convertDateFormat(wctData, wctData.getHarvestDate(), "yyyy-MM-dd HH:mm:ss.SSSSSS", PROV_EVENT_DATE_FORMAT)
-        		, "WCT_1"
-        		, "Created by " + wctData.getCreatedBy()
-        		, "Created on " + convertDateFormat(wctData, wctData.getHarvestDate(), "yyyy-MM-dd HH:mm:ss.SSSSSS", "yyyy-MM-dd")
-        		, "");
+                , "IE Created in NLNZ WCT"
+                , convertDateFormat(wctData, wctData.getHarvestDate(), "yyyy-MM-dd HH:mm:ss.SSSSSS", PROV_EVENT_DATE_FORMAT)
+                , "WCT_1"
+                , "Created by " + wctData.getCreatedBy()
+                , "Created on " + convertDateFormat(wctData, wctData.getHarvestDate(), "yyyy-MM-dd HH:mm:ss.SSSSSS", "yyyy-MM-dd")
+                , "");
     	String provNoteFromWCT = wctData.getProvenanceNote();
     	if (!StringUtils.isEmpty(provNoteFromWCT)) {
     		addProvenanceNote(metsWriter
@@ -237,14 +237,21 @@ public class DnxMapperImpl implements DnxMapper {
 
         dnx.updateSectionKey(DNXConstants.WEBHARVESTING.HARVESTDATE, wctData.getHarvestDate());
 
-        dnx.updateSectionKey(DNXConstants.CMS.SYSTEM, "ilsdb");
-        dnx.updateSectionKey(DNXConstants.CMS.RECORDID, wctData.getILSReference());
-
-        DnxDocumentHelper dnxHelper = new DnxDocumentHelper(dnx);
-        List<DnxDocumentHelper.ObjectIdentifier> OIs = dnxHelper.getObjectIdentifiers();
-        DnxDocumentHelper.ObjectIdentifier cmsOI = dnxHelper.new ObjectIdentifier("ALMA_MMS", wctData.getILSReference());
-        OIs.add(cmsOI);
-        dnxHelper.setObjectIdentifiers(OIs);
+        if(wctData.getCmsSection().equals("objectIdentifier")){
+            DnxDocumentHelper dnxHelper = new DnxDocumentHelper(dnx);
+            List<DnxDocumentHelper.ObjectIdentifier> OIs = dnxHelper.getObjectIdentifiers();
+            DnxDocumentHelper.ObjectIdentifier cmsOI = dnxHelper.new ObjectIdentifier(wctData.getCmsSystem(), wctData.getILSReference());
+            OIs.add(cmsOI);
+            dnxHelper.setObjectIdentifiers(OIs);
+        }
+        else if(wctData.getCmsSection().equals("CMS")){
+            dnx.updateSectionKey(DNXConstants.CMS.SYSTEM, wctData.getCmsSystem());
+            dnx.updateSectionKey(DNXConstants.CMS.RECORDID, wctData.getILSReference());
+        }
+        else{
+            dnx.updateSectionKey(DNXConstants.CMS.SYSTEM, "ilsdb");
+            dnx.updateSectionKey(DNXConstants.CMS.RECORDID, wctData.getILSReference());
+        }
 
         addWebHarvestSpecificDnx(wctData, dnx);
 
