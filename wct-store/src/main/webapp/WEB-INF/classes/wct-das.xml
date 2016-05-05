@@ -280,6 +280,18 @@
 		<property name="cmsSystem">
 			<value>${dpsArchive.cmsSystem}</value>
 		</property>
+
+		<property name="targetDCTypesOfWebHarvest">
+			<value>${dpsArchive.webHarvest.customTargetDCTypes}</value>
+		</property>
+
+		<property name="materialFlowsOfWebHarvest">
+			<value>${dpsArchive.webHarvest.customerMaterialFlowIds}</value>
+		</property>
+
+		<property name="ieEntityTypesOfWebHarvest">
+			<value>${dpsArchive.webHarvest.customIeEntityTypes}</value>
+		</property>
  	</bean>
 
 </beans>

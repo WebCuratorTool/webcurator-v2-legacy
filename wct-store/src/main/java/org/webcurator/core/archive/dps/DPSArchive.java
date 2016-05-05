@@ -65,6 +65,7 @@ import javax.xml.ws.Service;
  * @author Nicolai Moles-Benfell
  */
 public class DPSArchive extends BaseArchive {
+
     /**
      * A very light-weight version of the com.exlibris.digitool.deposit.service.xmlbeans.DepData
      * class, so that this can be stored in the cache much more efficiently and with less
@@ -103,6 +104,9 @@ public class DPSArchive extends BaseArchive {
     private java.lang.String omsUnpublishedRestrictedByPersion = "";
     private java.lang.String cmsSection = "";
     private java.lang.String cmsSystem = "";
+    private List<String> targetDCTypesOfWebHarvest = new ArrayList<String>();
+    private List<String> materialFlowsOfWebHarvest = new ArrayList<String>();
+    private List<String> ieEntityTypesOfWebHarvest = new ArrayList<String>();
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
@@ -509,6 +513,30 @@ public class DPSArchive extends BaseArchive {
     public void setCustomDepositFormURLsForHtmlSerialIngest(String customDepositFormURLsForHtmlSerialIngest) {
         this.customDepositFormURLsForHtmlSerialIngest = toList(customDepositFormURLsForHtmlSerialIngest);
     }
+
+    public void setTargetDCTypesOfWebHarvest(String targetDCTypesOfWebHarvest) {
+        this.targetDCTypesOfWebHarvest = toListOfLowerCaseValues(targetDCTypesOfWebHarvest);
+    }
+
+    public String getTargetDCTypesOfWebHarvest() {
+        return targetDCTypesOfWebHarvest;
+    }
+
+    public void setMaterialFlowsOfWebHarvest(String materialFlowsOfWebHarvest) {
+        this.materialFlowsOfWebHarvest = toListOfLowerCaseValues(materialFlowsOfWebHarvest);
+    }
+
+    public String getMaterialFlowsOfWebHarvest() {
+        return materialFlowsOfWebHarvest;
+    }
+
+    public void setIeEntityTypesOfWebHarvest(String ieEntityTypesOfWebHarvest) {
+        this.ieEntityTypesOfWebHarvest = toListOfLowerCaseValues(ieEntityTypesOfWebHarvest);
+    }
+
+    public String getIeEntityTypesOfWebHarvest() {
+        return ieEntityTypesOfWebHarvest;
+    }
     
     public void setOmsOpenAccess(String omsOpenAccess) {
         this.omsOpenAccess = omsOpenAccess;
@@ -634,6 +662,13 @@ public class DPSArchive extends BaseArchive {
         } else {
             // The custom deposit form is not filled; So this is a traditional web harvest.
             parameterMap.put(DpsDepositFacade.HARVEST_TYPE, DpsDepositFacade.HarvestType.TraditionalWebHarvest.name());
+
+            if(hasCustomTargetDCType()){
+                // Get custom target DC type
+                // String targetDcType =
+                // materialFlowIdToUse = getMaterialFlowOfTargetDCType(targetDcType);
+                // ieEntityTypeToUse = getIeEntityTypeOfTargetDCType(targetDcType);
+            }
         }
         parameterMap.put(DpsDepositFacade.DPS_INSTITUTION, this.dpsUserInstitution);
         parameterMap.put(DpsDepositFacade.DPS_USER_NAME, dpsUserNameToUse);
