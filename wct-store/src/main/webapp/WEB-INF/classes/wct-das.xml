@@ -281,15 +281,15 @@
 			<value>${dpsArchive.cmsSystem}</value>
 		</property>
 
-		<property name="targetDCTypesOfWebHarvest">
+		<property name="targetDCTypesOfCustomWebHarvest">
 			<value>${dpsArchive.webHarvest.customTargetDCTypes}</value>
 		</property>
 
-		<property name="materialFlowsOfWebHarvest">
+		<property name="materialFlowsOfCustomWebHarvest">
 			<value>${dpsArchive.webHarvest.customerMaterialFlowIds}</value>
 		</property>
 
-		<property name="ieEntityTypesOfWebHarvest">
+		<property name="ieEntityTypesOfCustomWebHarvest">
 			<value>${dpsArchive.webHarvest.customIeEntityTypes}</value>
 		</property>
  	</bean>

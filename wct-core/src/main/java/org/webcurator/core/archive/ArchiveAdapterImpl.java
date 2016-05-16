@@ -83,8 +83,7 @@ public class ArchiveAdapterImpl implements ArchiveAdapter {
 		map.put(REFERENCE_NUMBER,instance.getTarget().getReferenceNumber());
 		map.put(ALTERNATE_REFERENCE_NUMBER, "WCT:"+instance.getTarget().getOid());
 		map.put(MAINTENANCE_NOTES, DateUtils.get().formatFullDateTime(instance.getActualStartTime()));
-		
-		/* This depends on what the Target Access Restrictions were. 
+		/* This depends on what the Target Access Restrictions were.
 		 * 
 		 * The four values in Permissions: 
 		 * Access Restrictions should match these exactly for NLNZ. 
@@ -133,6 +132,8 @@ public class ArchiveAdapterImpl implements ArchiveAdapter {
 		 */ 
 		map.put(USER,org.webcurator.core.util.AuthUtil.getRemoteUserObject().getUsername());
 //		uploader.setUser(null); // TODO
+
+		map.put(HARVEST_TYPE,instance.getTarget().getDublinCoreMetaData().getType());
 		}
 		catch(ArchiveException ex) {
 			// Make sure that the Archive Exception is thrown to the front-end.

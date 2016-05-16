@@ -38,7 +38,8 @@ public interface DpsDepositFacade {
 	 */
 	public enum HarvestType {
 		TraditionalWebHarvest,
-		HtmlSerialHarvest
+		HtmlSerialHarvest,
+		CustomWebHarvest
 	};
 
 	/*

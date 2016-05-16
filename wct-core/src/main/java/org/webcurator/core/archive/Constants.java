@@ -19,7 +19,8 @@ public interface Constants {
 	public static final String MAINTENANCE_NOTES = "maintenance-notes"; 
 	public static final String DEPENDENCIES = "dependencies"; 
 	public static final String ENTRY_POINT_URL = "entry-point-url"; 
-	public static final String USER = "user"; 
+	public static final String USER = "user";
+	public static final String HARVEST_TYPE = "harvest-type";
 	public static final int LOG_FILE = 0; 
 	public static final int ARC_FILE = 1; 
 	public static final int REPORT_FILE = 2; 

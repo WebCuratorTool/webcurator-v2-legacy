@@ -29,6 +29,7 @@ import net.sf.ehcache.Element;
 import org.webcurator.core.archive.BaseArchive;
 import org.webcurator.core.archive.ArchiveFile;
 import static org.webcurator.core.archive.Constants.ACCESS_RESTRICTION;
+import static org.webcurator.core.archive.Constants.HARVEST_TYPE;
 import static org.webcurator.core.archive.Constants.REFERENCE_NUMBER;
 
 import org.webcurator.core.archive.SIPUtils;
@@ -104,9 +105,9 @@ public class DPSArchive extends BaseArchive {
     private java.lang.String omsUnpublishedRestrictedByPersion = "";
     private java.lang.String cmsSection = "";
     private java.lang.String cmsSystem = "";
-    private List<String> targetDCTypesOfWebHarvest = new ArrayList<String>();
-    private List<String> materialFlowsOfWebHarvest = new ArrayList<String>();
-    private List<String> ieEntityTypesOfWebHarvest = new ArrayList<String>();
+    private List<String> targetDCTypesOfCustomWebHarvest = new ArrayList<String>();
+    private List<String> materialFlowsOfCustomWebHarvest = new ArrayList<String>();
+    private List<String> ieEntityTypesOfCustomWebHarvest = new ArrayList<String>();
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
@@ -315,16 +316,24 @@ public class DPSArchive extends BaseArchive {
     }
 
     private String getMaterialFlowOfTargetDCType(String targetDcType) {
-        return locatePropertyAgainstTargetDCType(targetDcType, materialFlowsOfHtmlSerials);
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfHtmlSerials, materialFlowsOfHtmlSerials);
     }
 
     private String getIeEntityTypeOfTargetDCType(String targetDcType) {
-        return locatePropertyAgainstTargetDCType(targetDcType, ieEntityTypesOfHtmlSerials);
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfHtmlSerials, ieEntityTypesOfHtmlSerials);
     }
 
-    private String locatePropertyAgainstTargetDCType(String targetDcType, List<String> propertyList) {
+    private String getMaterialFlowOfCustomTargetDCType(String targetDcType) {
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, materialFlowsOfCustomWebHarvest);
+    }
+
+    private String getIeEntityTypeOfCustomTargetDCType(String targetDcType) {
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, ieEntityTypesOfCustomWebHarvest);
+    }
+
+    private String locatePropertyAgainstTargetDCType(String targetDcType, List<String> indexList, List<String> propertyList) {
         String propertyAgainstTargetDCType = null;
-        int targetTypeIndex = getIndexInList(targetDcType, targetDCTypesOfHtmlSerials);
+        int targetTypeIndex = getIndexInList(targetDcType, indexList);
         if (targetTypeIndex < 0) {
             log.error("DC Type " + targetDcType + " of the target instance is not of an HTML serial type");
             return null;
@@ -514,30 +523,18 @@ public class DPSArchive extends BaseArchive {
         this.customDepositFormURLsForHtmlSerialIngest = toList(customDepositFormURLsForHtmlSerialIngest);
     }
 
-    public void setTargetDCTypesOfWebHarvest(String targetDCTypesOfWebHarvest) {
-        this.targetDCTypesOfWebHarvest = toListOfLowerCaseValues(targetDCTypesOfWebHarvest);
+    public void setTargetDCTypesOfCustomWebHarvest(String targetDCTypesOfCustomWebHarvest) {
+        this.targetDCTypesOfCustomWebHarvest = toListOfLowerCaseValues(targetDCTypesOfCustomWebHarvest);
     }
 
-    public String getTargetDCTypesOfWebHarvest() {
-        return targetDCTypesOfWebHarvest;
+    public void setMaterialFlowsOfCustomWebHarvest(String materialFlowsOfCustomWebHarvest) {
+        this.materialFlowsOfCustomWebHarvest = toList(materialFlowsOfCustomWebHarvest);
     }
 
-    public void setMaterialFlowsOfWebHarvest(String materialFlowsOfWebHarvest) {
-        this.materialFlowsOfWebHarvest = toListOfLowerCaseValues(materialFlowsOfWebHarvest);
+    public void setIeEntityTypesOfCustomWebHarvest(String ieEntityTypesOfCustomWebHarvest) {
+        this.ieEntityTypesOfCustomWebHarvest = toList(ieEntityTypesOfCustomWebHarvest);
     }
 
-    public String getMaterialFlowsOfWebHarvest() {
-        return materialFlowsOfWebHarvest;
-    }
-
-    public void setIeEntityTypesOfWebHarvest(String ieEntityTypesOfWebHarvest) {
-        this.ieEntityTypesOfWebHarvest = toListOfLowerCaseValues(ieEntityTypesOfWebHarvest);
-    }
-
-    public String getIeEntityTypesOfWebHarvest() {
-        return ieEntityTypesOfWebHarvest;
-    }
-    
     public void setOmsOpenAccess(String omsOpenAccess) {
         this.omsOpenAccess = omsOpenAccess;
     }
@@ -560,6 +557,16 @@ public class DPSArchive extends BaseArchive {
 
     public void setCmsSystem(String cmsSystem) {
         this.cmsSystem = cmsSystem;
+    }
+
+    /**
+     * For determining if a harvest is using a custom Target DC Type.
+     *
+     * @param harvestType the Target DC Type of the harvest
+     * @return whether type is in Custom Target DC Types list
+     */
+    private boolean isCustomTargetDCType(String harvestType) {
+        return containsInList(harvestType, targetDCTypesOfCustomWebHarvest);
     }
 
     /**
@@ -660,14 +667,19 @@ public class DPSArchive extends BaseArchive {
             parameterMap.put(DpsDepositFacade.DCTERMS_AVAILABLE, (String) attributes.get("customDepositForm_dctermsAvailable"));
 //            parameterMap.put(DpsDepositFacade.DCTERMS_ISSUED, (String) attributes.get("customDepositForm_dctermsIssued"));
         } else {
-            // The custom deposit form is not filled; So this is a traditional web harvest.
-            parameterMap.put(DpsDepositFacade.HARVEST_TYPE, DpsDepositFacade.HarvestType.TraditionalWebHarvest.name());
 
-            if(hasCustomTargetDCType()){
+
+            // Check if the Harvest Type matches any of the Custom Types
+            if(isCustomTargetDCType((String) attributes.get(HARVEST_TYPE))){
                 // Get custom target DC type
-                // String targetDcType =
-                // materialFlowIdToUse = getMaterialFlowOfTargetDCType(targetDcType);
-                // ieEntityTypeToUse = getIeEntityTypeOfTargetDCType(targetDcType);
+                 String targetDcType = (String) attributes.get(HARVEST_TYPE);
+                 materialFlowIdToUse = getMaterialFlowOfCustomTargetDCType(targetDcType);
+                 ieEntityTypeToUse = getIeEntityTypeOfCustomTargetDCType(targetDcType);
+                parameterMap.put(DpsDepositFacade.HARVEST_TYPE, DpsDepositFacade.HarvestType.CustomWebHarvest.name());
+            }
+            else {
+                // The custom deposit form is not filled AND is not a Custom Target DC Type; So this is a traditional web harvest.
+                parameterMap.put(DpsDepositFacade.HARVEST_TYPE, DpsDepositFacade.HarvestType.TraditionalWebHarvest.name());
             }
         }
         parameterMap.put(DpsDepositFacade.DPS_INSTITUTION, this.dpsUserInstitution);

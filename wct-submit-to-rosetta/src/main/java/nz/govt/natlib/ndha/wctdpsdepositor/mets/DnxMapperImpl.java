@@ -117,6 +117,9 @@ public class DnxMapperImpl implements DnxMapper {
         if (HarvestType.HtmlSerialHarvest.equals(wctData.getHarvestType())) {
             // Set HTML Harvest specific DC fields such as title and date
             addHTMLSerialHarvestSpecificDc(wctData, ieDc);
+        } else if(HarvestType.CustomWebHarvest.equals(wctData.getHarvestType())){
+            // Set Custom Harvest specific DC fields such as title and date
+            addCustomWebHarvestSpecificDc(wctData, ieDc);
         } else {
             // Set Web Harvest specific title and date
             addWebHarvestSpecificDc(wctData, ieDc);
@@ -300,6 +303,14 @@ public class DnxMapperImpl implements DnxMapper {
         addAdditionalDcElement(dc, "bibliographicCitation", ieDc);
         addAdditionalDcElement(dc, "available", ieDc);
 
+    }
+
+    private void addCustomWebHarvestSpecificDc(WctDataExtractor wctData, DublinCore ieDc) {
+        String title = wctData.getTargetName();
+        if (StringUtils.isBlank(title))
+            throw new RuntimeException("Target name of the harvest was not specified.");
+        addDcElement(ieDc, DCElementSet.Title, title);
+        populateDcDateFromHarvestDate(wctData, ieDc);
     }
 
     private void addAdditionalDcElement(DublinCore dc, String key, DublinCore ieDc) {
