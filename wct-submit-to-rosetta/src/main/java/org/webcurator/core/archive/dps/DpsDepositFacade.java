@@ -55,6 +55,7 @@ public interface DpsDepositFacade {
 	public static final String FTP_DIRECTORY = "FtpDirectory";
 	public static final String MATERIAL_FLOW_ID = "MaterialFlowId";
 	public static final String IE_ENTITY_TYPE = "IEEntityType";
+	public static final String TITLE_SOURCE = "DCTitleSource";
 	public static final String PDS_URL = "PdsUrl";
 	public static final String PRODUCER_ID = "ProducerId";
 	public static final String ILS_REFERENCE = "IlsReference";

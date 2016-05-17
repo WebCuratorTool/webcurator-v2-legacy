@@ -89,6 +89,7 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
             wctDataExtractor.setAccessRestriction(accessRestriction);
             wctDataExtractor.setCmsSection(parameters.get(CMS_SECTION));
             wctDataExtractor.setCmsSystem(parameters.get(CMS_SYSTEM));
+            wctDataExtractor.setDCTitleSource(parameters.get(TITLE_SOURCE));
 
             WctDepositParameter depositParameter = populateDepositParameterFromMap(parameters);
 
@@ -182,7 +183,7 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         depositParameter.setOmsPublishedRestricted(parameters.get(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED));
         depositParameter.setOmsUnpublishedRestrictedByLocation(parameters.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION));
         depositParameter.setOmsUnpublishedRestrictedByPersion(parameters.get(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON));
-        
+
         return depositParameter;
     }
 

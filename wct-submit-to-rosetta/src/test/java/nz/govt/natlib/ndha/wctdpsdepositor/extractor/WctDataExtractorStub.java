@@ -217,6 +217,8 @@ public class WctDataExtractorStub implements WctDataExtractor {
         return cmsSection;
     }
 
+    public String getDCTitleSource() { return null; }
+
     public DublinCore getAdditionalDublinCoreElements() {
         return null;
     }

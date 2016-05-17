@@ -108,6 +108,7 @@ public class DPSArchive extends BaseArchive {
     private List<String> targetDCTypesOfCustomWebHarvest = new ArrayList<String>();
     private List<String> materialFlowsOfCustomWebHarvest = new ArrayList<String>();
     private List<String> ieEntityTypesOfCustomWebHarvest = new ArrayList<String>();
+    private List<String> DCTitleSourceOfCustomWebHarvest = new ArrayList<String>();
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
@@ -331,6 +332,10 @@ public class DPSArchive extends BaseArchive {
         return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, ieEntityTypesOfCustomWebHarvest);
     }
 
+    private String getDCTitleSourceOfCustomTargetDCType(String targetDcType) {
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, DCTitleSourceOfCustomWebHarvest);
+    }
+
     private String locatePropertyAgainstTargetDCType(String targetDcType, List<String> indexList, List<String> propertyList) {
         String propertyAgainstTargetDCType = null;
         int targetTypeIndex = getIndexInList(targetDcType, indexList);
@@ -535,6 +540,10 @@ public class DPSArchive extends BaseArchive {
         this.ieEntityTypesOfCustomWebHarvest = toList(ieEntityTypesOfCustomWebHarvest);
     }
 
+    public void setDCTitleSourceOfCustomWebHarvest(String DCTitleSourceOfCustomWebHarvest) {
+        this.DCTitleSourceOfCustomWebHarvest = toList(DCTitleSourceOfCustomWebHarvest);
+    }
+
     public void setOmsOpenAccess(String omsOpenAccess) {
         this.omsOpenAccess = omsOpenAccess;
     }
@@ -646,6 +655,7 @@ public class DPSArchive extends BaseArchive {
         String producerIdToUse = this.producerId;
         String materialFlowIdToUse = this.materialFlowId;
         String ieEntityTypeToUse = null;
+        String dcTitleSourceToUse = null;
         if (Boolean.parseBoolean((String)attributes.get("customDepositForm_customFormPopulated"))) {
             /*
              * This is an HTML Serial Deposit harvest. So do not use the 
@@ -675,6 +685,8 @@ public class DPSArchive extends BaseArchive {
                  String targetDcType = (String) attributes.get(HARVEST_TYPE);
                  materialFlowIdToUse = getMaterialFlowOfCustomTargetDCType(targetDcType);
                  ieEntityTypeToUse = getIeEntityTypeOfCustomTargetDCType(targetDcType);
+                 dcTitleSourceToUse= getDCTitleSourceOfCustomTargetDCType(targetDcType);
+                if(dcTitleSourceToUse == null) dcTitleSourceToUse = "";
                 parameterMap.put(DpsDepositFacade.HARVEST_TYPE, DpsDepositFacade.HarvestType.CustomWebHarvest.name());
             }
             else {
@@ -691,6 +703,7 @@ public class DPSArchive extends BaseArchive {
         parameterMap.put(DpsDepositFacade.FTP_DIRECTORY, this.ftpDirectory);
         parameterMap.put(DpsDepositFacade.MATERIAL_FLOW_ID, materialFlowIdToUse);
         parameterMap.put(DpsDepositFacade.IE_ENTITY_TYPE, ieEntityTypeToUse);
+        parameterMap.put(DpsDepositFacade.TITLE_SOURCE, dcTitleSourceToUse);
         parameterMap.put(DpsDepositFacade.PDS_URL, this.pdsUrl);
         parameterMap.put(DpsDepositFacade.PRODUCER_ID, producerIdToUse);
         parameterMap.put(DpsDepositFacade.DPS_WSDL_URL, depositServerBaseUrl + depositWsdlRelativePath);

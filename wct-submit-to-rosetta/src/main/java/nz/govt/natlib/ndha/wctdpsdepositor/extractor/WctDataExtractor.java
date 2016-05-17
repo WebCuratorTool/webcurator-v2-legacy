@@ -69,4 +69,6 @@ public interface WctDataExtractor extends WctRequiredData {
 
     String getCmsSection();
 
+    String getDCTitleSource();
+
 }

@@ -305,12 +305,26 @@ public class DnxMapperImpl implements DnxMapper {
 
     }
 
+    /**
+     * This method handles specific DC data for custom web harvests. Primarily for determining
+     * the value for the DC Title element. This is taken from either the Target Title or Primary
+     * Seed URL.
+     *
+     * @param wctData
+     * @param ieDc
+     */
     private void addCustomWebHarvestSpecificDc(WctDataExtractor wctData, DublinCore ieDc) {
-        String title = wctData.getTargetName();
-        if (StringUtils.isBlank(title))
-            throw new RuntimeException("Target name of the harvest was not specified.");
-        addDcElement(ieDc, DCElementSet.Title, title);
-        populateDcDateFromHarvestDate(wctData, ieDc);
+        if (wctData.getDCTitleSource().equals("TargetName")) {
+            String title = wctData.getTargetName();
+            if (StringUtils.isBlank(title))
+                throw new RuntimeException("Target name of the harvest was not specified.");
+            addDcElement(ieDc, DCElementSet.Title, title);
+            populateDcDateFromHarvestDate(wctData, ieDc);
+        } else if(wctData.getDCTitleSource().equals("SeedUrl")){
+            addWebHarvestSpecificDc(wctData, ieDc);
+        } else {
+            addWebHarvestSpecificDc(wctData, ieDc);
+        }
     }
 
     private void addAdditionalDcElement(DublinCore dc, String key, DublinCore ieDc) {
@@ -332,7 +346,11 @@ public class DnxMapperImpl implements DnxMapper {
         if (ieEntityTypeToUse == null) {
             if (HarvestType.HtmlSerialHarvest.equals(wctData.getHarvestType())) {
                 // For an HTML Serial, the IE Entity Type needs to be specified explicitly.
-                throw new RuntimeException("The IE Entity Type was not speficied for the HTML Serial Deposit. " +
+                throw new RuntimeException("The IE Entity Type was not specified for the HTML Serial Deposit. " +
+                        "Please check the DAS configuration file to make sure this is configured correctly");
+            } else if(HarvestType.CustomWebHarvest.equals(wctData.getHarvestType())){
+                // For a Custom Web Harvest, the IE Entity Type needs to be specified explicitly.
+                throw new RuntimeException("The IE Entity Type was not specified for the Custom Web Harvest. " +
                         "Please check the DAS configuration file to make sure this is configured correctly");
             }
             ieEntityTypeToUse = OmsCodeToMetsMapping.getObjectTypeCodeMapping(OmsCodeToMetsMapping.OT_WWW).ieEntityType;

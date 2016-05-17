@@ -89,6 +89,7 @@ public class XPathWctMetsExtractor implements WctDataExtractor {
     private DublinCore additionalDublinCoreElements;
     private HarvestType harvestType;
     private String ieEntityType;
+    private String dcTitlesource;
 
 
     private String cmsSection;
@@ -305,6 +306,14 @@ public class XPathWctMetsExtractor implements WctDataExtractor {
 
     public void setCmsSystem(String cmsSystem) {
         this.cmsSystem = cmsSystem;
+    }
+
+    public String getDCTitleSource() {
+        return dcTitlesource;
+    }
+
+    public void setDCTitleSource(String dcTitlesource) {
+        this.dcTitlesource = dcTitlesource;
     }
 
     public DublinCore getAdditionalDublinCoreElements() {

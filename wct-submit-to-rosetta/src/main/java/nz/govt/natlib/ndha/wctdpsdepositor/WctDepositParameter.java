@@ -47,6 +47,8 @@ public class WctDepositParameter {
     private String omsUnpublishedRestrictedByLocation = "";
     private String omsUnpublishedRestrictedByPersion = "";
 
+    private String dcTitleSource = "";
+
     
     public void isValid() throws WctDepositParameterValidationException {
         isFieldValid("PDS URL", pdsUrl);
@@ -192,4 +194,9 @@ public class WctDepositParameter {
 		if(omsUnpublishedRestrictedByPersion != null)
 			this.omsUnpublishedRestrictedByPersion = omsUnpublishedRestrictedByPersion;
     }
+
+    public String getDCTitleSource() {return dcTitleSource;}
+
+    public void setDCTitleSource(String setDCTitleSource) {this.dcTitleSource = dcTitleSource;}
+
 }

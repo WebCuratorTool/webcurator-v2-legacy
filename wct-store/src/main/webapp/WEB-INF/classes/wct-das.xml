@@ -292,6 +292,11 @@
 		<property name="ieEntityTypesOfCustomWebHarvest">
 			<value>${dpsArchive.webHarvest.customIeEntityTypes}</value>
 		</property>
+
+		<property name="DCTitleSourceOfCustomWebHarvest">
+			<value>${dpsArchive.webHarvest.customDCTitleSource}</value>
+		</property>
+
  	</bean>
 
 </beans>
