@@ -256,6 +256,8 @@
  		<property name="customDepositFormURLsForHtmlSerialIngest">
  			<value>${dpsArchive.htmlSerials.customDepositFormURLs}</value>
  		</property>
+
+		<property name="customDepositFieldMapping" ref="CustomDepositFormFieldMappings"/>
  		
  		<property name="omsOpenAccess">
  			<value>${dpsArchive.dnx_open_access}</value>
@@ -298,5 +300,31 @@
 		</property>
 
  	</bean>
+
+	<bean name="CustomDepositFormFieldMappings" class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping"
+		  abstract="false" singleton="true" lazy-init="default"
+		  autowire="default" dependency-check="default">
+
+		<property name="customDepositFormFieldMaps">
+			<map>
+				<entry key="/wct-store/customDepositForms/rosetta_custom_deposit_form.jsp">
+					<map>
+						<entry key="customDepositForm_bibliographicCitation" value="DctermsBibliographicCitation"/>
+						<entry key="customDepositForm_dctermsAvailable" value="DctermsAvailable"/>
+					</map>
+				</entry>
+				<entry key="/wct-store/customDepositForms/rosetta_alma_custom_deposit_form.jsp">
+					<map>
+						<entry key="customDepositForm_volume" value="dcterms:bibliographicCitation"/>
+						<entry key="customDepositForm_issue" value="dcterms:issued"/>
+						<entry key="customDepositForm_number" value="dcterms:accrualPeriodicity"/>
+						<entry key="customDepositForm_year" value="dc:date"/>
+						<entry key="customDepositForm_month" value="dcterms:available"/>
+						<entry key="customDepositForm_day" value="dc:coverage"/>
+					</map>
+				</entry>
+			</map>
+		</property>
+	</bean>
 
 </beans>

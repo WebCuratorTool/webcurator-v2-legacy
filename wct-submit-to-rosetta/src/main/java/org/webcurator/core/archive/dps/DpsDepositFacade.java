@@ -22,6 +22,8 @@
 
 package org.webcurator.core.archive.dps;
 
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +73,7 @@ public interface DpsDepositFacade {
 	public static final String OMS_UNPUBLISHED_RESTRICTED_BY_PERSON = "omsUnpublishedRestrictedByPersion";
 	public static final String CMS_SECTION = "cmsSection";
 	public static final String CMS_SYSTEM = "cmsSystem";
+	public static final String CUSTOM_DEPOSIT_FORM_URL = "customDepositFormURL";
 	
 	/**
 	 * Interface to the information returned by the DPS Deposit service.
@@ -96,5 +99,7 @@ public interface DpsDepositFacade {
 	public DepositResult deposit(Map<String, String> parameters, List<File> fileList) throws RuntimeException;
 
 	public String loginToPDS(Map<String, String> parameters) throws RuntimeException;
-    
+
+	public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositMapping);
+
 }

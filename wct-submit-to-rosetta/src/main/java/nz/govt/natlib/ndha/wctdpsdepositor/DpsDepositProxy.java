@@ -36,19 +36,37 @@ import com.google.inject.Injector;
  */
 public class DpsDepositProxy implements DpsDepositFacade {
 
+    private DpsDepositFacade dpsDeposit = null;
+
     public DepositResult deposit(Map<String, String> parameters, List<File> fileList) {
-        DpsDepositFacade dpsDeposit = createInstance();
+        if(dpsDeposit == null){
+            createInstance();
+        }
+//        DpsDepositFacade dpsDeposit = createInstance();
         return dpsDeposit.deposit(parameters, fileList);
     }
 
     public String loginToPDS(Map<String, String> parameters) throws RuntimeException {
-        DpsDepositFacade dpsDeposit = createInstance();
+        if(dpsDeposit == null){
+            createInstance();
+        }
+//        DpsDepositFacade dpsDeposit = createInstance();
         return dpsDeposit.loginToPDS(parameters);
     }
 
-    private DpsDepositFacade createInstance() {
-        Injector dependencyInjector = Guice.createInjector();
-        return dependencyInjector.getInstance(DpsDepositFacadeImpl.class);
+    public void createInstance() {
+        if(dpsDeposit == null){
+            Injector dependencyInjector = Guice.createInjector();
+            dpsDeposit = dependencyInjector.getInstance(DpsDepositFacadeImpl.class);
+        }
+//        return dependencyInjector.getInstance(DpsDepositFacadeImpl.class);
+    }
+
+    public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositMapping){
+        if(dpsDeposit == null){
+            createInstance();
+        }
+        dpsDeposit.setCustomDepositFieldMapping(customDepositMapping);
     }
 
 }

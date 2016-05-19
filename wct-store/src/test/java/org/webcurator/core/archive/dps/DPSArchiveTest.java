@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping;
 import org.junit.Before;
 import org.junit.Test;
 import org.webcurator.core.archive.ArchiveFile;
@@ -319,6 +320,11 @@ public class DPSArchiveTest {
 			public String loginToPDS(Map<String, String> parameters) throws RuntimeException {
 				return null;
 			}
+
+			@Override
+			public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositMapping) {
+				return;
+			}
 		};
 	}
 
@@ -399,9 +405,9 @@ public class DPSArchiveTest {
 	 * 
 	 */
 	private class UnitTestDPSArchive extends DPSArchive {
-		protected DpsDepositFacade getDpsDepositFacade() {
-			return mockDpsDepositFacade;
-		}
+//		protected DpsDepositFacade getDpsDepositFacade() {
+//			return mockDpsDepositFacade;
+//		}
 		/**
 		 * Since we are using dummy files, the original MD5 calculation
 		 * will throw FileNotFoundException. The overriding below is to

@@ -57,6 +57,8 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
     private final PreDepositProcessor preDepositProcessor;
     private static PdsClient pdsClient;
 
+    private CustomDepositFieldMapping customDepositFieldMapping;
+
     private DepositResultConverter resultConverter = new DepositResultConverter();
 
     @Inject
@@ -68,7 +70,7 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         this.preDepositProcessor = preDepositProcessor;
     }
 
-   
+
     public DepositResult deposit(Map<String, String> parameters, List<File> fileList) throws WctDepositParameterValidationException {
     	DepositResult depositResultAdapter = null;
     	try {
@@ -196,8 +198,19 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         wctDataExtractor.setHarvestType(type);
     }
 
+    public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositFieldMapping) {
+        this.customDepositFieldMapping = customDepositFieldMapping;
+    }
+
     private void setAdditionalDublinCoreElements(XPathWctMetsExtractor wctDataExtractor, Map<String, String> parameters) {
         if (HarvestType.HtmlSerialHarvest.equals(wctDataExtractor.getHarvestType()) == false) return;
+        String customDepositFormURL = parameters.get(DpsDepositFacade.CUSTOM_DEPOSIT_FORM_URL);
+        Map<String, String> customDepositFormFieldMapping = customDepositFieldMapping.getFormMapping(customDepositFormURL);
+
+//        for(Map.Entry<String, String> mapping : customDepositFormFieldMapping.entrySet()){
+//            parameterMap.put(mapping.getValue(), (String) attributes.get(mapping.getKey()));
+//        }
+
         wctDataExtractor.setAdditionalDCTermElement("bibliographicCitation", parameters.get(DpsDepositFacade.DCTERMS_BIBLIOGRAPHIC_CITATION));
         wctDataExtractor.setAdditionalDCTermElement("available", parameters.get(DpsDepositFacade.DCTERMS_AVAILABLE));
     }
