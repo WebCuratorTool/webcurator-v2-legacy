@@ -257,7 +257,7 @@
  			<value>${dpsArchive.htmlSerials.customDepositFormURLs}</value>
  		</property>
 
-		<property name="customDepositFieldMapping" ref="CustomDepositFormFieldMappings"/>
+		<property name="customDepositFormMapping" ref="CustomDepositFormFieldMappings"/>
  		
  		<property name="omsOpenAccess">
  			<value>${dpsArchive.dnx_open_access}</value>
@@ -301,27 +301,57 @@
 
  	</bean>
 
-	<bean name="CustomDepositFormFieldMappings" class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping"
+	<!--
+		<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+			// The label given to the field on the form
+			<property name="formFieldLabel" value="customDepositForm_bibliographicCitation"/>
+			// A reference used when passing this value from WCT-Store to WCT-SubmitToRosetta
+			<property name="fieldReference" value="DctermsBibliographicCitation"/>
+			// The DC/DCTerms label used in the mets.xml
+			<property name="dcFieldLabel" value="bibliographicCitation"/>
+		</bean>
+	-->
+	<bean name="CustomDepositFormFieldMappings" class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFormMapping"
 		  abstract="false" singleton="true" lazy-init="default"
 		  autowire="default" dependency-check="default">
 
 		<property name="customDepositFormFieldMaps">
 			<map>
 				<entry key="/wct-store/customDepositForms/rosetta_custom_deposit_form.jsp">
-					<map>
-						<entry key="customDepositForm_bibliographicCitation" value="DctermsBibliographicCitation"/>
-						<entry key="customDepositForm_dctermsAvailable" value="DctermsAvailable"/>
-					</map>
+					<list>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_bibliographicCitation"/>
+							<property name="fieldReference" value="DctermsBibliographicCitation"/>
+							<property name="dcFieldLabel" value="bibliographicCitation"/>
+						</bean>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_dctermsAvailable"/>
+							<property name="fieldReference" value="DctermsAvailable"/>
+							<property name="dcFieldLabel" value="available"/>
+						</bean>
+					</list>
 				</entry>
 				<entry key="/wct-store/customDepositForms/rosetta_alma_custom_deposit_form.jsp">
-					<map>
-						<entry key="customDepositForm_volume" value="dcterms:bibliographicCitation"/>
-						<entry key="customDepositForm_issue" value="dcterms:issued"/>
-						<entry key="customDepositForm_number" value="dcterms:accrualPeriodicity"/>
-						<entry key="customDepositForm_year" value="dc:date"/>
-						<entry key="customDepositForm_month" value="dcterms:available"/>
-						<entry key="customDepositForm_day" value="dc:coverage"/>
-					</map>
+					<list>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_volume"/>
+							<property name="fieldReference" value="DctermsBibliographicCitation"/>
+							<property name="dcFieldLabel" value="bibliographicCitation"/>
+						</bean>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_issue"/>
+							<property name="fieldReference" value="dctermsIssued"/>
+							<property name="dcFieldLabel" value="issue"/>
+						</bean>
+					</list>
+					<!--<map>-->
+						<!--<entry key="customDepositForm_volume" value="dcterms:bibliographicCitation"/>-->
+						<!--<entry key="customDepositForm_issue" value="dcterms:issued"/>-->
+						<!--<entry key="customDepositForm_number" value="dcterms:accrualPeriodicity"/>-->
+						<!--<entry key="customDepositForm_year" value="dc:date"/>-->
+						<!--<entry key="customDepositForm_month" value="dcterms:available"/>-->
+						<!--<entry key="customDepositForm_day" value="dc:coverage"/>-->
+					<!--</map>-->
 				</entry>
 			</map>
 		</property>

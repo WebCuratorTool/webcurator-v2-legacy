@@ -35,7 +35,8 @@ import static org.webcurator.core.archive.Constants.HARVEST_TYPE;
 import static org.webcurator.core.archive.Constants.REFERENCE_NUMBER;
 
 import nz.govt.natlib.ndha.wctdpsdepositor.DpsDepositProxy;
-import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFormMapping;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import org.webcurator.core.archive.SIPUtils;
 import org.webcurator.core.archive.dps.DpsDepositFacade.DepositResult;
 import org.webcurator.domain.model.core.CustomDepositFormCriteriaDTO;
@@ -119,7 +120,7 @@ public class DPSArchive extends BaseArchive {
     private List<String> ieEntityTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> customDepositFormURLsForHtmlSerialIngest;
 //    private Map<String, Map<String, String>> customDepositFormFieldMaps = new HashMap<String, Map<String, String>>();
-    private CustomDepositFieldMapping customDepositFieldMapping;
+    private CustomDepositFormMapping customDepositFormMapping;
 
     private static final String DPS_SIPID_PREFIX = "dps-sipid-";
 
@@ -165,7 +166,7 @@ public class DPSArchive extends BaseArchive {
 
                 Map<String, String> parameters = populateDepositParameterFromFields(xAttributes, finalSIP, targetInstanceOID);
 
-                dpsDeposit.setCustomDepositFieldMapping(customDepositFieldMapping);
+                dpsDeposit.setCustomDepositFormMapping(customDepositFormMapping);
 
                 DepositResult depositResult = dpsDeposit.deposit(parameters, files);
 
@@ -580,8 +581,8 @@ public class DPSArchive extends BaseArchive {
         this.cmsSystem = cmsSystem;
     }
 
-    public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositFieldMapping) {
-        this.customDepositFieldMapping = customDepositFieldMapping;
+    public void setCustomDepositFormMapping(CustomDepositFormMapping customDepositFormMapping) {
+        this.customDepositFormMapping = customDepositFormMapping;
     }
 
     /**
@@ -676,10 +677,10 @@ public class DPSArchive extends BaseArchive {
 
             int targetTypeIndex = getIndexInList((String) attributes.get(HARVEST_TYPE), targetDCTypesOfHtmlSerials);
 
-            Map<String, String> customDepositFormFieldMapping = null;
+            List<CustomDepositField> customDepositFormFieldMapping = null;
             String customFormURL = customDepositFormURLsForHtmlSerialIngest.get(targetTypeIndex);
-            if(customDepositFieldMapping.hasFormMapping(customFormURL)){
-                customDepositFormFieldMapping = customDepositFieldMapping.getFormMapping(customFormURL);
+            if(customDepositFormMapping.hasFormMapping(customFormURL)){
+                customDepositFormFieldMapping = customDepositFormMapping.getFormMapping(customFormURL);
             }
             else {
                 throw new RuntimeException("Could not retrieve the Custom Deposit Form mappings for " + customFormURL + ".");
@@ -702,8 +703,8 @@ public class DPSArchive extends BaseArchive {
             parameterMap.put(DpsDepositFacade.CUSTOM_DEPOSIT_FORM_URL, customDepositFormURLsForHtmlSerialIngest.get(targetTypeIndex));
 
             // Capture Dublin Core values in the parameters map
-            for(Map.Entry<String, String> mapping : customDepositFormFieldMapping.entrySet()){
-                parameterMap.put(mapping.getValue(), (String) attributes.get(mapping.getKey()));
+            for(CustomDepositField field : customDepositFormFieldMapping){
+                parameterMap.put(field.getFieldReference(), (String) attributes.get(field.getFormFieldLabel()));
             }
 //            parameterMap.put(DpsDepositFacade.DCTERMS_BIBLIOGRAPHIC_CITATION, (String) attributes.get("customDepositForm_bibliographicCitation"));
 ////            parameterMap.put(DpsDepositFacade.DCTERMS_ACCRUAL_PERIODICITY, (String) attributes.get("customDepositForm_dctermsAccrualPeriodicity"));

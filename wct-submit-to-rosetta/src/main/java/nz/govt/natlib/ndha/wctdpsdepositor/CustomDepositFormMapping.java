@@ -1,20 +1,22 @@
 package nz.govt.natlib.ndha.wctdpsdepositor;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Developer on 19/05/2016.
  */
-public class CustomDepositFieldMapping {
+public class CustomDepositFormMapping {
 
-    private Map<String, Map<String, String>> customDepositFormFieldMaps = new HashMap<String, Map<String, String>>();
+//    private Map<String, Map<String, String>> customDepositFormFieldMaps = new HashMap<String, Map<String, String>>();
+    private Map<String, List<CustomDepositField>> customDepositFormFieldMaps = new HashMap<String, List<CustomDepositField>>();
 
 //    public CustomDepositMapping(Map<String, Map<String, String>> customDepositFormFieldMaps) {
 //        this.customDepositFormFieldMaps = customDepositFormFieldMaps;
 //    }
 
-    public void setCustomDepositFormFieldMaps(Map<String, Map<String, String>> customDepositFormFieldMaps) {
+    public void setCustomDepositFormFieldMaps(Map<String, List<CustomDepositField>> customDepositFormFieldMaps) {
         this.customDepositFormFieldMaps = customDepositFormFieldMaps;
     }
 
@@ -24,7 +26,7 @@ public class CustomDepositFieldMapping {
         }
         else return false;
     }
-    public Map<String, String> getFormMapping(String key){
+    public List<CustomDepositField> getFormMapping(String key){
         return customDepositFormFieldMaps.get(key);
     }
 }

@@ -62,11 +62,11 @@ public class DpsDepositProxy implements DpsDepositFacade {
 //        return dependencyInjector.getInstance(DpsDepositFacadeImpl.class);
     }
 
-    public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositMapping){
+    public void setCustomDepositFormMapping(CustomDepositFormMapping customDepositMapping){
         if(dpsDeposit == null){
             createInstance();
         }
-        dpsDeposit.setCustomDepositFieldMapping(customDepositMapping);
+        dpsDeposit.setCustomDepositFormMapping(customDepositMapping);
     }
 
 }

@@ -22,7 +22,7 @@
 
 package org.webcurator.core.archive.dps;
 
-import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFormMapping;
 
 import java.io.File;
 import java.util.List;
@@ -100,6 +100,6 @@ public interface DpsDepositFacade {
 
 	public String loginToPDS(Map<String, String> parameters) throws RuntimeException;
 
-	public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositMapping);
+	public void setCustomDepositFormMapping(CustomDepositFormMapping customDepositMapping);
 
 }
