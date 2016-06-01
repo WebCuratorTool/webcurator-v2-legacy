@@ -207,14 +207,12 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         String customDepositFormURL = parameters.get(DpsDepositFacade.CUSTOM_DEPOSIT_FORM_URL);
         List<CustomDepositField> customDepositFormFieldMapping = customDepositFormMapping.getFormMapping(customDepositFormURL);
 
-//        for(Map.Entry<String, String> mapping : customDepositFormFieldMapping.entrySet()){
-//            parameterMap.put(mapping.getValue(), (String) attributes.get(mapping.getKey()));
-//        }
-
-        // TODO use new CustomDepositField class to get values for below
-
-        wctDataExtractor.setAdditionalDCTermElement("bibliographicCitation", parameters.get(DpsDepositFacade.DCTERMS_BIBLIOGRAPHIC_CITATION));
-        wctDataExtractor.setAdditionalDCTermElement("available", parameters.get(DpsDepositFacade.DCTERMS_AVAILABLE));
+        for(CustomDepositField field : customDepositFormFieldMapping){
+            wctDataExtractor.setAdditionalDCTermElement(field.getDcFieldLabel(), parameters.get(field.getFieldReference()));
+        }
+        if(!customDepositFormFieldMapping.isEmpty()){
+            wctDataExtractor.setDcFieldsAdditional(customDepositFormFieldMapping);
+        }
     }
 
 }

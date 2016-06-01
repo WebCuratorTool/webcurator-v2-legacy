@@ -23,6 +23,8 @@
 package nz.govt.natlib.ndha.wctdpsdepositor.extractor;
 
 import java.util.List;
+
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import org.webcurator.core.archive.dps.DpsDepositFacade.HarvestType;
 import com.exlibris.core.sdk.formatting.DublinCore;
 
@@ -70,5 +72,7 @@ public interface WctDataExtractor extends WctRequiredData {
     String getCmsSection();
 
     String getDCTitleSource();
+
+    List<CustomDepositField> getDcFieldsAdditional();
 
 }

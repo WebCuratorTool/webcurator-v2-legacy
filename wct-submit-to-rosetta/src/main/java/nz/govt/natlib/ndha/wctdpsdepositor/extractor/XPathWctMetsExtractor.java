@@ -23,6 +23,7 @@
 package nz.govt.natlib.ndha.wctdpsdepositor.extractor;
 
 //import nz.govt.natlib.ndha.common.FixityUtils;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.filefinder.FileArchiveBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -91,7 +92,7 @@ public class XPathWctMetsExtractor implements WctDataExtractor {
     private String ieEntityType;
     private String dcTitlesource;
 
-
+    private List<CustomDepositField> dcFieldsAdditional = new ArrayList<CustomDepositField>();
     private String cmsSection;
     private String cmsSystem;
     
@@ -306,6 +307,14 @@ public class XPathWctMetsExtractor implements WctDataExtractor {
 
     public void setCmsSystem(String cmsSystem) {
         this.cmsSystem = cmsSystem;
+    }
+
+    public List<CustomDepositField> getDcFieldsAdditional() {
+        return dcFieldsAdditional;
+    }
+
+    public void setDcFieldsAdditional(List<CustomDepositField> dcFieldsAdditional) {
+        this.dcFieldsAdditional = dcFieldsAdditional;
     }
 
     public String getDCTitleSource() {

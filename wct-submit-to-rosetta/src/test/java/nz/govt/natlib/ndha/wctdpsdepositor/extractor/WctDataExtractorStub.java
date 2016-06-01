@@ -25,6 +25,7 @@ package nz.govt.natlib.ndha.wctdpsdepositor.extractor;
 import java.util.List;
 import java.util.ArrayList;
 
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import org.webcurator.core.archive.dps.DpsDepositFacade.HarvestType;
 
 import com.exlibris.core.sdk.formatting.DublinCore;
@@ -52,6 +53,7 @@ public class WctDataExtractorStub implements WctDataExtractor {
     private List<ArchiveFile> reportFiles = new ArrayList<ArchiveFile>();
     private List<SeedUrl> seedUrls = new ArrayList<SeedUrl>();
     private String wctTargetInstanceID;
+    private List<CustomDepositField> dcFieldsAdditional = new ArrayList<CustomDepositField>();
 
 
     public String getTargetName() {
@@ -218,6 +220,10 @@ public class WctDataExtractorStub implements WctDataExtractor {
     }
 
     public String getDCTitleSource() { return null; }
+
+    public List<CustomDepositField> getDcFieldsAdditional() {
+        return dcFieldsAdditional;
+    }
 
     public DublinCore getAdditionalDublinCoreElements() {
         return null;

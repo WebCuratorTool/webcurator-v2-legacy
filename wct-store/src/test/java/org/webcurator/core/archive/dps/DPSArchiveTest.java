@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFieldMapping;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFormMapping;
 import org.junit.Before;
 import org.junit.Test;
 import org.webcurator.core.archive.ArchiveFile;
@@ -322,7 +322,7 @@ public class DPSArchiveTest {
 			}
 
 			@Override
-			public void setCustomDepositFieldMapping(CustomDepositFieldMapping customDepositMapping) {
+			public void setCustomDepositFormMapping(CustomDepositFormMapping customDepositMapping) {
 				return;
 			}
 		};

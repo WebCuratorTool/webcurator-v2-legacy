@@ -31,6 +31,7 @@ import com.exlibris.core.sdk.consts.Enum;
 import com.google.inject.Inject;
 import gov.loc.mets.MetsType;
 import gov.loc.mets.StructMapType;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameter;
 import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameterValidationException;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.ArchiveFile;
@@ -300,8 +301,15 @@ public class DnxMapperImpl implements DnxMapper {
         DublinCore dc = wctData.getAdditionalDublinCoreElements();
         if (dc == null)
             throw new RuntimeException("The DC/DCTERMS elements required for HTML Serial Deposit were not speficied.");
-        addAdditionalDcElement(dc, "bibliographicCitation", ieDc);
-        addAdditionalDcElement(dc, "available", ieDc);
+
+        // Add additional DC/DCTerms fields
+        if(!wctData.getDcFieldsAdditional().isEmpty()){
+            for(CustomDepositField field : wctData.getDcFieldsAdditional()){
+                addAdditionalDcElement(dc, field.getDcFieldLabel(), ieDc);
+            }
+        }
+//        addAdditionalDcElement(dc, "bibliographicCitation", ieDc);
+//        addAdditionalDcElement(dc, "available", ieDc);
 
     }
 
