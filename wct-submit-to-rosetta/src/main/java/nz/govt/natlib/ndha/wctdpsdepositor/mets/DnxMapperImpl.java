@@ -172,6 +172,10 @@ public class DnxMapperImpl implements DnxMapper {
         dc.addElement(key, value);
     }
 
+    private void addDcElement(DublinCore dc, String key, String value) {
+        dc.addElement(DublinCore.DC_NAMESPACE, key, value);
+    }
+
     private void addDcTermsElement(DublinCore dc, String key, String value) {
         dc.addElement(DublinCore.DCTERMS_NAMESPACE, key, value);
     }
@@ -305,7 +309,17 @@ public class DnxMapperImpl implements DnxMapper {
         // Add additional DC/DCTerms fields
         if(!wctData.getDcFieldsAdditional().isEmpty()){
             for(CustomDepositField field : wctData.getDcFieldsAdditional()){
-                addAdditionalDcElement(dc, field.getDcFieldLabel(), ieDc);
+                // Check whether element
+                if(field.getDcFieldType().equals("dc")){
+                    // If the field has already been set above, then remove so it can be updated with value below
+                    if(ieDc.getValue(DublinCore.DC_NAMESPACE, field.getDcFieldLabel()) != null){
+                        ieDc.removeElemet(DublinCore.DC_NAMESPACE, field.getDcFieldLabel());
+                    }
+                    addAdditionalDcElement(dc, field.getDcFieldLabel(), ieDc);
+                }
+                else if(field.getDcFieldType().equals("dcterms")){
+                    addAdditionalDcTermsElement(dc, field.getDcFieldLabel(), ieDc);
+                }
             }
         }
 //        addAdditionalDcElement(dc, "bibliographicCitation", ieDc);
@@ -336,6 +350,13 @@ public class DnxMapperImpl implements DnxMapper {
     }
 
     private void addAdditionalDcElement(DublinCore dc, String key, DublinCore ieDc) {
+        String value = dc.getDcValue(key);
+        if (StringUtils.isBlank(value))
+            throw new RuntimeException("The DC/DCTERMS element " + key + " was not speficied for the HTML Serial Deposit.");
+        addDcElement(ieDc, key, value);
+    }
+
+    private void addAdditionalDcTermsElement(DublinCore dc, String key, DublinCore ieDc) {
         String value = dc.getDctermsValue(key);
         if (StringUtils.isBlank(value))
             throw new RuntimeException("The DC/DCTERMS element " + key + " was not speficied for the HTML Serial Deposit.");

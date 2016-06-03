@@ -335,23 +335,41 @@
 					<list>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_volume"/>
-							<property name="fieldReference" value="DctermsBibliographicCitation"/>
+							<property name="fieldReference" value="dctermsBibliographicCitation"/>
 							<property name="dcFieldLabel" value="bibliographicCitation"/>
+							<property name="dcFieldType" value="dcterms"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_issue"/>
 							<property name="fieldReference" value="dctermsIssued"/>
 							<property name="dcFieldLabel" value="issue"/>
+							<property name="dcFieldType" value="dcterms"/>
+						</bean>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_number"/>
+							<property name="fieldReference" value="dctermsAaccrualPeriodicity"/>
+							<property name="dcFieldLabel" value="accrualPeriodicity"/>
+							<property name="dcFieldType" value="dcterms"/>
+						</bean>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_year"/>
+							<property name="fieldReference" value="dcDate"/>
+							<property name="dcFieldLabel" value="date"/>
+							<property name="dcFieldType" value="dc"/>
+						</bean>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_month"/>
+							<property name="fieldReference" value="dctermsAvailable"/>
+							<property name="dcFieldLabel" value="available"/>
+							<property name="dcFieldType" value="dcterms"/>
+						</bean>
+						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
+							<property name="formFieldLabel" value="customDepositForm_day"/>
+							<property name="fieldReference" value="dcCoverage"/>
+							<property name="dcFieldLabel" value="coverage"/>
+							<property name="dcFieldType" value="dc"/>
 						</bean>
 					</list>
-					<!--<map>-->
-						<!--<entry key="customDepositForm_volume" value="dcterms:bibliographicCitation"/>-->
-						<!--<entry key="customDepositForm_issue" value="dcterms:issued"/>-->
-						<!--<entry key="customDepositForm_number" value="dcterms:accrualPeriodicity"/>-->
-						<!--<entry key="customDepositForm_year" value="dc:date"/>-->
-						<!--<entry key="customDepositForm_month" value="dcterms:available"/>-->
-						<!--<entry key="customDepositForm_day" value="dc:coverage"/>-->
-					<!--</map>-->
 				</entry>
 			</map>
 		</property>

@@ -48,7 +48,6 @@ public enum DCElementSet {
     Rights("rights");
 
     private static final Namespace namespace = new Namespace("dc", "http://purl.org/dc/elements/1.1/");
-    ;
 
     private String name;
 

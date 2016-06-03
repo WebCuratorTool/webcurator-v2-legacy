@@ -208,7 +208,13 @@ public class DpsDepositFacadeImpl implements DpsDepositFacade {
         List<CustomDepositField> customDepositFormFieldMapping = customDepositFormMapping.getFormMapping(customDepositFormURL);
 
         for(CustomDepositField field : customDepositFormFieldMapping){
-            wctDataExtractor.setAdditionalDCTermElement(field.getDcFieldLabel(), parameters.get(field.getFieldReference()));
+            // Check whether field is dc or dcterms
+            if(field.getDcFieldType().equals("dc")){
+                wctDataExtractor.setAdditionalDCElement(field.getDcFieldLabel(), parameters.get(field.getFieldReference()));
+            }
+            else if(field.getDcFieldType().equals("dcterms")){
+                wctDataExtractor.setAdditionalDCTermElement(field.getDcFieldLabel(), parameters.get(field.getFieldReference()));
+            }
         }
         if(!customDepositFormFieldMapping.isEmpty()){
             wctDataExtractor.setDcFieldsAdditional(customDepositFormFieldMapping);

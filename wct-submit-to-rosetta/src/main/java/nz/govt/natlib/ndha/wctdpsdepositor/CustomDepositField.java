@@ -6,6 +6,7 @@ public class CustomDepositField {
     String formFieldLabel;
     String fieldReference;
     String dcFieldLabel;
+    String dcFieldType;
 
     public String getFormFieldLabel() {
         return formFieldLabel;
@@ -29,5 +30,13 @@ public class CustomDepositField {
 
     public void setDcFieldLabel(String dcFieldLabel) {
         this.dcFieldLabel = dcFieldLabel;
+    }
+
+    public String getDcFieldType() {
+        return dcFieldType;
+    }
+
+    public void setDcFieldType(String dcFieldType) {
+        this.dcFieldType = dcFieldType;
     }
 }
