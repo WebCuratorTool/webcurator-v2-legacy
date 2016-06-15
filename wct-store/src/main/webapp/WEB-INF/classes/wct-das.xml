@@ -248,6 +248,10 @@
  		<property name="materialFlowsOfHtmlSerials">
  			<value>${dpsArchive.htmlSerials.materialFlowIds}</value>
  		</property>
+
+		<property name="producerIdsOfHtmlSerials">
+			<value>${dpsArchive.htmlSerials.producerIds}</value>
+		</property>
  
  		<property name="ieEntityTypesOfHtmlSerials">
  			<value>${dpsArchive.htmlSerials.ieEntityTypes}</value>

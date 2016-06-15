@@ -48,8 +48,9 @@ document.onkeypress = stopRKey;
 <input type="hidden" name="harvestNumber" value="<%= request.getParameter("harvestResultNumber") %>">
 <input type="hidden" name="customDepositForm_customFormPopulated" value="true">
 <input type="hidden" name="customDepositForm_loggedInUser" value="<%= org.webcurator.core.util.AuthUtil.getRemoteUser() %>">
+<input type="hidden" name="customDepositForm_ProducerPreset" value="<c:out value="${customDepositFormProducerId}"/>">
 <input type="hidden" name="customDepositForm_targetDcType" value="<c:out value="${sessionTargetInstance.target.dublinCoreMetaData.type}"/>">
- 
+
 <c:choose>
 <c:when test="${not empty customDepositFormURL}">
 <c:import url="${customDepositFormURL}"/>

@@ -39,6 +39,10 @@ public class CustomDepositFormResultDTO {
 	 */
 	private String htmlForCustomDepositForm;
 	/**
+	 * Producer Id to pass to custom form if preset.
+	 */
+	private String producerId;
+	/**
 	 * Default constructor.
 	 */
 	public CustomDepositFormResultDTO() {
@@ -89,6 +93,13 @@ public class CustomDepositFormResultDTO {
 	public void setHTMLForCustomDepositForm(String htmlForCustomDepositForm) {
 		this.htmlForCustomDepositForm = htmlForCustomDepositForm;
 	}
+	public String getProducerId() {
+		return producerId;
+	}
+	public void setProducerId(String producerId) {
+		this.producerId = producerId;
+	}
+
 	public String toString() {
 		return "CustomDepositFormResultDTO: "
 			+ "isCustomDepositFormRequired(" + isCustomDepositFormRequired + "), "

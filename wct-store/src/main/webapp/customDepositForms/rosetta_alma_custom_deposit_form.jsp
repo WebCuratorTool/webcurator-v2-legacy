@@ -385,6 +385,7 @@ function setDivValue(divName, value) {
 }
 </script>
 
+
 <table>
 <tr>
 <td colspan="5"><h1>Electronic Serial Metadata:</h1></td>
@@ -456,18 +457,20 @@ END COMMENTED 	-->
 <tr>
 <td colspan="5"><br></td>
 </tr>
-<tr>
-<td colspan="5">
-<h1>Producer Details:</h1>
-<div id="producerLinkDiv">
-<a title="Displays the last viewed list of producers" style="text-decoration:underline;" href="#" onClick="javascript: return getProducers(true);">Display list</a> 
-</div>
-
-<br>
-<div id="producerResultDiv">
-</div>
-</td>
-</tr>
+	<tr>
+		<td colspan="5">
+			<h1>Producer Details:</h1>
+			<div id="producerLinkDiv" style="visibility:hidden">
+				<a title="Displays the last viewed list of producers" style="text-decoration:underline;" href="#" onClick="javascript: return getProducers(true);">Display list</a>
+			</div>
+			<div id="producerPresetDiv" style="visibility:hidden">
+				<a title="Displays the preset producer" style="text-decoration:underline;" >Producer NLNZ 23948723894</a>
+			</div>
+			<br>
+			<div id="producerResultDiv">
+			</div>
+		</td>
+	</tr>
 <tr>
 <td colspan="5"><br></td>
 </tr>
@@ -501,5 +504,14 @@ END COMMENTED 	-->
 </tr>
 </table>
 <script type="text/javascript">
-document.CustomDepositForm.customDepositForm_producerAgent.value = document.CustomDepositForm.customDepositForm_loggedInUser.value;
+	document.CustomDepositForm.customDepositForm_producerAgent.value = document.CustomDepositForm.customDepositForm_loggedInUser.value;
+
+	var producerPreset = document.CustomDepositForm.customDepositForm_ProducerIdPreset.value
+
+	if(producerPreset != ""){
+		document.getElementById('producerPresetDiv').style.visibility = "visible";
+	}
+	else{
+		document.getElementById('producerLinkDiv').style.visibility = "visible";
+	}
 </script>

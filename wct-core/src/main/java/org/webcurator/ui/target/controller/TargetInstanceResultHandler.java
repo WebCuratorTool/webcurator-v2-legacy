@@ -337,6 +337,10 @@ public class TargetInstanceResultHandler extends TabHandler {
 					if (customDepositFormURL != null) {
 						customDepositFormRequired = true;
 						req.getSession().setAttribute("customDepositFormURL", customDepositFormURL);
+						String producerId = response.getProducerId();
+						if (producerId != null) {
+							req.getSession().setAttribute("customDepositFormProducerId", producerId);
+						}
 					}
 					if (customDepositFormHTMLContent != null) {
 						customDepositFormRequired = true;

@@ -117,6 +117,7 @@ public class DPSArchive extends BaseArchive {
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
     private List<String> targetDCTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> materialFlowsOfHtmlSerials = new ArrayList<String>();
+    private List<String> producerIdsOfHtmlSerials = new ArrayList<String>();
     private List<String> ieEntityTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> customDepositFormURLsForHtmlSerialIngest;
 //    private Map<String, Map<String, String>> customDepositFormFieldMaps = new HashMap<String, Map<String, String>>();
@@ -219,6 +220,7 @@ public class DPSArchive extends BaseArchive {
              */
             response.setCustomDepositFormRequired(true);
             response.setUrlForCustomDepositForm(customDepositFormURLsForHtmlSerialIngest.get(targetTypeIndex));
+            response.setProducerId(getProdcuerIdOfTargetDCType(criteria.getTargetType()));
         } else {
             /*
              * Do not show custom form if you do not belong to the agency responsible for HTML serials.
@@ -330,6 +332,10 @@ public class DPSArchive extends BaseArchive {
         return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfHtmlSerials, materialFlowsOfHtmlSerials);
     }
 
+    private String getProdcuerIdOfTargetDCType(String targetDcType) {
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfHtmlSerials, producerIdsOfHtmlSerials);
+    }
+
     private String getIeEntityTypeOfTargetDCType(String targetDcType) {
         return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfHtmlSerials, ieEntityTypesOfHtmlSerials);
     }
@@ -351,6 +357,10 @@ public class DPSArchive extends BaseArchive {
         int targetTypeIndex = getIndexInList(targetDcType, indexList);
         if (targetTypeIndex < 0) {
             log.error("DC Type " + targetDcType + " of the target instance is not of an HTML serial type");
+            return null;
+        }
+        if(propertyList.isEmpty()){
+            log.info("DC Type " + targetDcType + " of the target instance does not have a preset Producer Id");
             return null;
         }
         try {
@@ -531,6 +541,10 @@ public class DPSArchive extends BaseArchive {
 
     public void setMaterialFlowsOfHtmlSerials(String materialFlowsOfHtmlSerials) {
         this.materialFlowsOfHtmlSerials = toList(materialFlowsOfHtmlSerials);
+    }
+
+    public void setProducerIdsOfHtmlSerials(String producerIdsOfHtmlSerials) {
+        this.producerIdsOfHtmlSerials = toList(producerIdsOfHtmlSerials);
     }
 
     public void setIeEntityTypesOfHtmlSerials(String ieEntityTypesOfHtmlSerials) {
