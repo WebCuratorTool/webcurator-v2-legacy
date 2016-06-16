@@ -318,6 +318,21 @@ function getProducers(fromCache) {
 	return false; 
 }
 
+function getProducer() {
+	var producerAgent = document.CustomDepositForm.customDepositForm_producerAgent.value;
+	var producerId = document.CustomDepositForm.customDepositForm_ProducerIdPreset.value;
+	if (validateText(producerAgent) == false) {
+//		alert("Please enter the producer agent id");
+		return false;
+	}
+	if (validateText(producerId) == false) {
+		alert("Please enter the producer agent id");
+		return false;
+	}
+	ajaxFunction("query=getProducerName&producerAgent=" + producerAgent + "&producerId=" + producerId, 'producerPresetDiv');
+	return false;
+}
+
 /*
  * Asynchronous AJAX function to invoke a web URL that gets data
  * from Rosetta.
@@ -464,7 +479,6 @@ END COMMENTED 	-->
 				<a title="Displays the last viewed list of producers" style="text-decoration:underline;" href="#" onClick="javascript: return getProducers(true);">Display list</a>
 			</div>
 			<div id="producerPresetDiv" style="visibility:hidden">
-				<a title="Displays the preset producer" style="text-decoration:underline;" >Producer NLNZ 23948723894</a>
 			</div>
 			<br>
 			<div id="producerResultDiv">
@@ -505,10 +519,10 @@ END COMMENTED 	-->
 </table>
 <script type="text/javascript">
 	document.CustomDepositForm.customDepositForm_producerAgent.value = document.CustomDepositForm.customDepositForm_loggedInUser.value;
-
+	// If there is a Producer Id already set, then query Rosetta for producer and display details in producerPresetDiv div
 	var producerPreset = document.CustomDepositForm.customDepositForm_ProducerIdPreset.value
-
 	if(producerPreset != ""){
+		getProducer();
 		document.getElementById('producerPresetDiv').style.visibility = "visible";
 	}
 	else{

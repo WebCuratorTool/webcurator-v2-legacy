@@ -292,6 +292,34 @@ public class DPSArchive extends BaseArchive {
         return null;
     }
 
+    public DepData getProducer(String producerAgentUserId, String producerId) {
+        try {
+            ProducerWebServices _pws = getProducerWebServices();
+            String producerAgentId = _pws.getInternalUserIdByExternalId(producerAgentUserId);
+            log.debug("Producer agent id for the user id " + producerAgentUserId + ": " + producerAgentId);
+            if (producerAgentId == null) return null;
+            String xmlReply = _pws.getProducersOfProducerAgent(producerAgentId);
+            DepData[] depData = xmlReplyToDepData(xmlReply);
+            DepData retDepData = null;
+            for(DepData data : depData){
+                if(data.id.equals(producerId)){
+                    retDepData = data;
+                    break;
+                }
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Producers for agent " + producerAgentId + ":");
+                for (DepData data : depData) {
+                    log.debug("\tdata.id = " + data.id + ", description: " + data.description);
+                }
+            }
+            return retDepData;
+        } catch (Exception e) {
+            log.error("Error getting producer for agent " + producerAgentUserId + " and id " + producerId + " from URL " + producerWsdlUrl, e);
+        }
+        return null;
+    }
+
     public DepData[] getMaterialFlows(String producerID) {
         try {
             ProducerWebServices _pws = getProducerWebServices();

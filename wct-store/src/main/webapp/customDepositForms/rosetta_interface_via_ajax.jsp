@@ -7,7 +7,21 @@
 	DPSArchive dpsArchive = (DPSArchive)ApplicationContextFactory.getWebApplicationContext().getBean("dpsArchive");
 	response.addHeader("Cache-Control", "no-store");
 	String query = request.getParameter("query");
-	if ("getProducers".equals(query)) {
+	if ("getProducerName".equals(query)) {
+		String producerAgent = request.getParameter("producerAgent");
+		String producerId = request.getParameter("producerId");
+		DepData producer = dpsArchive.getProducer(producerAgent, producerId);
+
+		if (producer == null) {
+			%><b>Preset producer does not match available producers for the user <%= producerAgent %> in Rosetta</b><%
+		}
+		else {
+			String prodId = producer.id;
+			String prodName = producer.description;
+			%><b><%= prodName%> (ID: <%= prodId %>)</b><%
+		}
+	}
+	else if ("getProducers".equals(query)) {
 		String producerAgent = request.getParameter("producerAgent");
 		String fromCacheStr = request.getParameter("fromCache");
 		boolean fromCache = Boolean.parseBoolean(fromCacheStr);
