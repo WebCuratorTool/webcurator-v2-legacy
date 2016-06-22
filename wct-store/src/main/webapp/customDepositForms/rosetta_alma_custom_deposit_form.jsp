@@ -142,11 +142,31 @@ function validate_internal() {
 		alert("Please enter the producer agent password");
 		return false;
 	}
-	var producerId = getSelectionFromList(document.CustomDepositForm.customDepositForm_producerId);
+
+//	var producerId = "";
+//	// If a Producer Id was preset then use that
+//	var producerPreset = document.CustomDepositForm.customDepositForm_ProducerIdPreset.value
+//	if(producerPreset != ""){
+//		producerId = producerPreset;
+//		if(validateText(producerId) == false) {
+//			alert("Please select a producer");
+//			return false;
+//		}
+//	}
+//	else{
+//		producerId = getSelectionFromList(document.CustomDepositForm.customDepositForm_producerId);
+//		if (validateText(producerId) == false) {
+//			alert("Please select a producer");
+//			return false;
+//		}
+//	}
+
+	var producerId = getChosenProducer();
 	if (validateText(producerId) == false) {
 		alert("Please select a producer");
 		return false;
 	}
+
 	/*
 	 * Now comes the tricky part.
 	 *The following statements will validate:
@@ -236,13 +256,27 @@ function sleep(milliSeconds){
 function getConfirmationMessage() {
 	var finalList = "Please confirm the following before submitting. If you need to make changes, select Cancel";
 	finalList += "\n";
-	finalList += "\n\tIssue Number: " + document.CustomDepositForm.customDepositForm_bibliographicCitation.value;
-//	finalList += "\n\tFrequency of Publication: " + document.CustomDepositForm.customDepositForm_dctermsAccrualPeriodicity.value;
-	finalList += "\n\tIssue Date: " + document.CustomDepositForm.customDepositForm_dctermsAvailable.value;
-//	finalList += "\n\tYear: " + document.CustomDepositForm.customDepositForm_dctermsIssued.value;
+	if (validateText(document.CustomDepositForm.customDepositForm_volume.value)) {
+		finalList += "\n\tVolume: " + document.CustomDepositForm.customDepositForm_volume.value;
+	}
+	if (validateText(document.CustomDepositForm.customDepositForm_issue.value)) {
+		finalList += "\n\tIssue: " + document.CustomDepositForm.customDepositForm_issue.value;
+	}
+	if (validateText(document.CustomDepositForm.customDepositForm_number.value)) {
+		finalList += "\n\tNumber: " + document.CustomDepositForm.customDepositForm_number.value;
+	}
+	if (validateText(document.CustomDepositForm.customDepositForm_year.value)) {
+		finalList += "\n\tYear: " + document.CustomDepositForm.customDepositForm_year.value;
+	}
+	if (validateText(document.CustomDepositForm.customDepositForm_month.value)) {
+		finalList += "\n\tMonth: " + document.CustomDepositForm.customDepositForm_month.value;
+	}
+	if (validateText(document.CustomDepositForm.customDepositForm_day.value)) {
+		finalList += "\n\tDay: " + document.CustomDepositForm.customDepositForm_day.value;
+	}
 	finalList += "\n\tProducer Agent: " + document.CustomDepositForm.customDepositForm_producerAgent.value;
 	finalList += "\n\tProducer Password: *******";
-	finalList += "\n\tProducer: " + getSelectedOptionFromList(document.CustomDepositForm.customDepositForm_producerId).text;
+	finalList += "\n\tProducer: " + getChosenProducer();
 	return finalList;
 }
 
@@ -299,7 +333,8 @@ function sendPasswordValidationRequest() {
 
 function sendMaterialFlowValidationRequest() {
 	var targetDcType = document.CustomDepositForm.customDepositForm_targetDcType.value;
-	var producerId = getSelectionFromList(document.CustomDepositForm.customDepositForm_producerId);
+	//var producerId = getSelectionFromList(document.CustomDepositForm.customDepositForm_producerId);
+	var producerId = getChosenProducer();
 	if (validateText(producerId) == false) {
 		alert("Please select a producer");
 		return false;
@@ -331,6 +366,19 @@ function getProducer() {
 	}
 	ajaxFunction("query=getProducerName&producerAgent=" + producerAgent + "&producerId=" + producerId, 'producerPresetDiv');
 	return false;
+}
+
+function getChosenProducer(){
+	var producerId = "";
+	// If a Producer Id was preset then use that
+	var producerPreset = document.CustomDepositForm.customDepositForm_ProducerIdPreset.value
+	if(producerPreset != ""){
+		producerId = producerPreset;
+	}
+	else{
+		producerId = getSelectionFromList(document.CustomDepositForm.customDepositForm_producerId);
+	}
+	return producerId;
 }
 
 /*
