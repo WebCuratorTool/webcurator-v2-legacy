@@ -23,6 +23,7 @@
 package nz.govt.natlib.ndha.wctdpsdepositor.mets;
 
 import nz.govt.natlib.ndha.wctdpsdepositor.Constants;
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.ArchiveFile;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.FileSystemArchiveFile;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.WctDataExtractor;
@@ -67,6 +68,10 @@ public class DnxMapperTest {
 
         final List<ArchiveFile> archiveFiles = new ArrayList<ArchiveFile>();
         archiveFiles.add(archiveFile);
+
+        final List<CustomDepositField> customDepositFields = new ArrayList<CustomDepositField>();
+        customDepositFields.add(new CustomDepositField("customDepositForm_bibliographicCitation", "DctermsBibliographicCitation", "bibliographicCitation", "dcterms"));
+        customDepositFields.add(new CustomDepositField("customDepositForm_dctermsAvailable", "DctermsAvailable", "available", "dcterms"));
 
         mockContext.checking(new Expectations() {
             {
@@ -124,9 +129,18 @@ public class DnxMapperTest {
                 will(returnValue(Constants.TARGET_NAME));
                 values.add(Constants.TARGET_NAME);
 
+                atLeast(1).of(mockedStrategy).getCmsSection();
+                will(returnValue(Constants.CMS_SECTION));
+
+                atLeast(1).of(mockedStrategy).getCmsSystem();
+                will(returnValue(Constants.CMS_SYSTEM));
+
                 atLeast(1).of(mockedStrategy).getHarvestType();
                 will(returnValue(harvestType));
                 if (HarvestType.HtmlSerialHarvest.equals(harvestType)) {
+                    atLeast(1).of(mockedStrategy).getDcFieldsAdditional();
+                    will(returnValue(customDepositFields));
+
                     DublinCore dc = mockContext.mock(DublinCore.class);
                     one(mockedStrategy).getAdditionalDublinCoreElements();
                     will(returnValue(dc));

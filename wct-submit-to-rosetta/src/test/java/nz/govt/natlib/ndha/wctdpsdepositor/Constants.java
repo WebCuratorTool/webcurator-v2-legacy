@@ -35,6 +35,9 @@ public class Constants {
     public static final String TARGET_NAME = "New Zealand Centre for Ecological Economics ; NZCEE";
     public static final String HARVEST_DATE = "2007-08-13 20:00:24.61";
 
+    public static final String CMS_SECTION = "CMS";
+    public static final String CMS_SYSTEM = "ilsdb";
+
     public static final String FILE_LOCATION = "file://./order.xml";
     public static final String FILE_MIME_TYPE = "text/xml";
     public static final String FILE_FIXITY = "5b8e0ef130911c544e406f99cb5eb90a";

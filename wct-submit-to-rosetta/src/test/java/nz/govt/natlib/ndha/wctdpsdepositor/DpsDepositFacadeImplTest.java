@@ -147,6 +147,8 @@ public class DpsDepositFacadeImplTest {
         parameterMap.put(DpsDepositFacade.OMS_PUBLISHED_RESTRICTED, "200");
         parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_LOCATION, "300");
         parameterMap.put(DpsDepositFacade.OMS_UNPUBLISHED_RESTRICTED_BY_PERSON, "400");
+        parameterMap.put(DpsDepositFacade.CMS_SECTION, "CMS");
+        parameterMap.put(DpsDepositFacade.CMS_SYSTEM, "ilsdb");
         return parameterMap;
     }
 
