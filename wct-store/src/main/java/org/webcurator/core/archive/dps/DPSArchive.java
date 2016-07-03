@@ -748,10 +748,6 @@ public class DPSArchive extends BaseArchive {
             for(CustomDepositField field : customDepositFormFieldMapping){
                 parameterMap.put(field.getFieldReference(), (String) attributes.get(field.getFormFieldLabel()));
             }
-//            parameterMap.put(DpsDepositFacade.DCTERMS_BIBLIOGRAPHIC_CITATION, (String) attributes.get("customDepositForm_bibliographicCitation"));
-////            parameterMap.put(DpsDepositFacade.DCTERMS_ACCRUAL_PERIODICITY, (String) attributes.get("customDepositForm_dctermsAccrualPeriodicity"));
-//            parameterMap.put(DpsDepositFacade.DCTERMS_AVAILABLE, (String) attributes.get("customDepositForm_dctermsAvailable"));
-////            parameterMap.put(DpsDepositFacade.DCTERMS_ISSUED, (String) attributes.get("customDepositForm_dctermsIssued"));
         } else {
 
 
