@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField;
 import nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositFormMapping;
+import nz.govt.natlib.ndha.wctdpsdepositor.DpsDepositProxy;
 import org.junit.Before;
 import org.junit.Test;
 import org.webcurator.core.archive.ArchiveFile;
@@ -26,7 +28,7 @@ import org.webcurator.domain.model.core.CustomDepositFormResultDTO;
 
 public class DPSArchiveTest {
 
-	private DpsDepositFacade mockDpsDepositFacade;
+	private DpsDepositProxy mockDpsDepositFacade;
 	private File[] testFiles = new File[] {
 			new File("FileOne"),
 			new File("FileTwo")
@@ -250,9 +252,23 @@ public class DPSArchiveTest {
 	public void testPopulateDepositParameterFromFields_htmlSerialHarvest() {
 		DPSArchive archiver = new DPSArchive();
 		setVariousParameters(archiver);
-		archiver.setTargetDCTypesOfHtmlSerials("eJournal, anHtmlSerialTargetDcType, eSerial");
+		archiver.setTargetDCTypesOfHtmlSerials("eJournal, HtmlSerialHarvest, eSerial");
 		archiver.setMaterialFlowsOfHtmlSerials("1111, anHtmlSerialMaterialFlowId, 3333");
 		archiver.setIeEntityTypesOfHtmlSerials("OneHTMLSerialIeEntityType, TwoHTMLSerialIeEntityType, ThreeHTMLSerialIeEntityType");
+		archiver.setCustomDepositFormURLsForHtmlSerialIngest("/wct-store/customDepositForms/eJournal_form.jsp, /wct-store/customDepositForms/anHtmlSerialTargetDcType_form.jsp, /wct-store/customDepositForms/eSerial_form.jsp");
+
+		// Custom Deposit Form Mapping
+		List<CustomDepositField> customDepositFieldsForTest = new ArrayList<CustomDepositField>();
+		customDepositFieldsForTest.add(new CustomDepositField("customDepositForm_bibliographicCitation", "DctermsBibliographicCitation", "bibliographicCitation", "dcterms"));
+		customDepositFieldsForTest.add(new CustomDepositField("customDepositForm_dctermsAvailable", "DctermsAvailable", "available", "dcterms"));
+
+		Map<String, List<CustomDepositField>> customDepositFieldMap = new HashMap<String, List<CustomDepositField>>();
+		customDepositFieldMap.put("/wct-store/customDepositForms/anHtmlSerialTargetDcType_form.jsp", customDepositFieldsForTest);
+
+		CustomDepositFormMapping testCustomDepositFormMapping = new CustomDepositFormMapping();
+		testCustomDepositFormMapping.setCustomDepositFormFieldMaps(customDepositFieldMap);
+		archiver.setCustomDepositFormMapping(testCustomDepositFormMapping);
+
 
 		Map<String, String> attributes = mockDasAttributeMapForHtmlSerials();
 		String finalSIP = "someFinalSIPXml";
@@ -306,8 +322,8 @@ public class DPSArchiveTest {
 		assertEquals("dps-sipid-" + expectedSipId, archiveId);
 	}
 
-	private DpsDepositFacade mockDpsDepositFacade() {
-		return new DpsDepositFacade() {
+	private DpsDepositProxy mockDpsDepositFacade() {
+		return new DpsDepositProxy() {
 			public DepositResult deposit(Map<String, String> parameters, List<File> fileList) throws RuntimeException {
 				for (int i = 0; i < testFiles.length; i++) {
 					File file = fileList.get(i);
@@ -374,11 +390,11 @@ public class DPSArchiveTest {
 		attributes.put("customDepositForm_producerAgent", "anHtmlSerialUserName");
 		attributes.put("customDepositForm_producerAgentPassword", "anHtmlSerialUserPassword");
 		attributes.put("customDepositForm_producerId", "anHtmlSerialProducerId");
-		attributes.put("customDepositForm_targetDcType", "anHtmlSerialTargetDcType");
+		attributes.put("customDepositForm_targetDcType", "HtmlSerialHarvest");
 		attributes.put("customDepositForm_bibliographicCitation", "anHtmlSerialBibCitation");
 //		attributes.put("customDepositForm_dctermsAccrualPeriodicity", "anHtmlSerialAccrualPeriodicity");
 		attributes.put("customDepositForm_dctermsAvailable", "anHtmlSerialDctermsAvailable");
-//		attributes.put("customDepositForm_dctermsIssued", "anHtmlSerialDctermsIssued");
+		attributes.put("harvest-type", "HtmlSerialHarvest");
 		return attributes;
 	}
 
@@ -405,9 +421,9 @@ public class DPSArchiveTest {
 	 * 
 	 */
 	private class UnitTestDPSArchive extends DPSArchive {
-//		protected DpsDepositFacade getDpsDepositFacade() {
-//			return mockDpsDepositFacade;
-//		}
+		protected DpsDepositProxy getDpsDepositFacade() {
+			return mockDpsDepositFacade;
+		}
 		/**
 		 * Since we are using dummy files, the original MD5 calculation
 		 * will throw FileNotFoundException. The overriding below is to

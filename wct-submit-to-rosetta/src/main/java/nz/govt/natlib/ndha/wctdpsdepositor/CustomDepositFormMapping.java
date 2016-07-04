@@ -9,7 +9,6 @@ import java.util.Map;
  */
 public class CustomDepositFormMapping {
 
-//    private Map<String, Map<String, String>> customDepositFormFieldMaps = new HashMap<String, Map<String, String>>();
     private Map<String, List<CustomDepositField>> customDepositFormFieldMaps = new HashMap<String, List<CustomDepositField>>();
 
 //    public CustomDepositMapping(Map<String, Map<String, String>> customDepositFormFieldMaps) {
