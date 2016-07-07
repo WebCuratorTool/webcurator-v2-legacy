@@ -569,7 +569,7 @@ END COMMENTED 	-->
 	document.CustomDepositForm.customDepositForm_producerAgent.value = document.CustomDepositForm.customDepositForm_loggedInUser.value;
 	// If there is a Producer Id already set, then query Rosetta for producer and display details in producerPresetDiv div
 	var producerPreset = document.CustomDepositForm.customDepositForm_ProducerIdPreset.value
-	if(producerPreset != ""){
+	if(producerPreset != "" && !isNaN(producerPreset)){
 		getProducer();
 		document.getElementById('producerPresetDiv').style.visibility = "visible";
 	}

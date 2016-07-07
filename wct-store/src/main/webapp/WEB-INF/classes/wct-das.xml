@@ -295,6 +295,10 @@
 			<value>${dpsArchive.webHarvest.customerMaterialFlowIds}</value>
 		</property>
 
+		<property name="producerIdsOfCustomWebHarvest">
+			<value>${dpsArchive.webHarvest.customerProducerIds}</value>
+		</property>
+
 		<property name="ieEntityTypesOfCustomWebHarvest">
 			<value>${dpsArchive.webHarvest.customIeEntityTypes}</value>
 		</property>

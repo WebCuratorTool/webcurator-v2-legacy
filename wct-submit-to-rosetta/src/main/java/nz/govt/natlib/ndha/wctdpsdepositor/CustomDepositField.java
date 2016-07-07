@@ -8,6 +8,10 @@ public class CustomDepositField {
     String dcFieldLabel;
     String dcFieldType;
 
+    public CustomDepositField() {
+
+    }
+
     public CustomDepositField(String formFieldLabel, String fieldReference, String dcFieldLabel, String dcFieldType){
         this.formFieldLabel = formFieldLabel;
         this.fieldReference = fieldReference;

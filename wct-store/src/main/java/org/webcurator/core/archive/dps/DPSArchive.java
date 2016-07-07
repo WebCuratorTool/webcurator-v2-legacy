@@ -112,6 +112,7 @@ public class DPSArchive extends BaseArchive {
     private java.lang.String cmsSystem = "";
     private List<String> targetDCTypesOfCustomWebHarvest = new ArrayList<String>();
     private List<String> materialFlowsOfCustomWebHarvest = new ArrayList<String>();
+    private List<String> producerIdsOfCustomWebHarvest = new ArrayList<String>();
     private List<String> ieEntityTypesOfCustomWebHarvest = new ArrayList<String>();
     private List<String> DCTitleSourceOfCustomWebHarvest = new ArrayList<String>();
     private List<String> agenciesResponsibleForHtmlSerials = new ArrayList<String>();
@@ -372,6 +373,10 @@ public class DPSArchive extends BaseArchive {
         return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, materialFlowsOfCustomWebHarvest);
     }
 
+    private String getProducerIdsOfCustomTargetDCType(String targetDcType) {
+        return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, producerIdsOfCustomWebHarvest);
+    }
+
     private String getIeEntityTypeOfCustomTargetDCType(String targetDcType) {
         return locatePropertyAgainstTargetDCType(targetDcType, targetDCTypesOfCustomWebHarvest, ieEntityTypesOfCustomWebHarvest);
     }
@@ -591,6 +596,10 @@ public class DPSArchive extends BaseArchive {
         this.materialFlowsOfCustomWebHarvest = toList(materialFlowsOfCustomWebHarvest);
     }
 
+    public void setProducerIdsOfCustomWebHarvest(String producerIdsOfCustomWebHarvest) {
+        this.producerIdsOfCustomWebHarvest = toList(producerIdsOfCustomWebHarvest);
+    }
+
     public void setIeEntityTypesOfCustomWebHarvest(String ieEntityTypesOfCustomWebHarvest) {
         this.ieEntityTypesOfCustomWebHarvest = toList(ieEntityTypesOfCustomWebHarvest);
     }
@@ -756,6 +765,7 @@ public class DPSArchive extends BaseArchive {
                 // Get custom target DC type
                  String targetDcType = (String) attributes.get(HARVEST_TYPE);
                  materialFlowIdToUse = getMaterialFlowOfCustomTargetDCType(targetDcType);
+                producerIdToUse = getProducerIdsOfCustomTargetDCType(targetDcType);
                  ieEntityTypeToUse = getIeEntityTypeOfCustomTargetDCType(targetDcType);
                  dcTitleSourceToUse= getDCTitleSourceOfCustomTargetDCType(targetDcType);
                 if(dcTitleSourceToUse == null) dcTitleSourceToUse = "";

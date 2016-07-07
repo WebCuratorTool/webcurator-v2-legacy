@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>wct-parent</artifactId>
 		<groupId>org.webcurator</groupId>
-		<version>1.6.2</version>
+		<version>1.6.3</version>
 	</parent>
 
     <properties>
@@ -511,7 +511,7 @@
 		<dependency>
 			<groupId>org.webcurator</groupId>
 			<artifactId>wct-core</artifactId>
-			<version>1.6.2</version>
+			<version>1.6.3</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
