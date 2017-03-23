@@ -46,12 +46,8 @@ dpsArchive.htmlSerials.restrictAgencyType=true
 #### Custom Types
 Custom Types for Web Harvests, follow the same method as the htmlSerials.
 
-# If there are more than one value for each of these, separate them using comma. Make sure there is an equal number of
-# values for each attribute.
-# targetDCTypes
-# materialFlowsIds
-# ieEntityTypes
-# DCTitleSource ("TargetName" or "SeedUrl")
+If there are more than one value for each of these, separate them using comma. Make sure there is an equal number of
+values for each attribute.
 dpsArchive.webHarvest.customTargetDCTypes=eMonograph
 dpsArchive.webHarvest.customerMaterialFlowIds=11111
 dpsArchive.webHarvest.customerProducerIds=11111
