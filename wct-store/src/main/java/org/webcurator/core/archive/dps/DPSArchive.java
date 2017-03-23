@@ -121,6 +121,7 @@ public class DPSArchive extends BaseArchive {
     private List<String> producerIdsOfHtmlSerials = new ArrayList<String>();
     private List<String> ieEntityTypesOfHtmlSerials = new ArrayList<String>();
     private List<String> customDepositFormURLsForHtmlSerialIngest;
+    private boolean restrictHTMLSerialAgenciesToHTMLSerialTypes;
 //    private Map<String, Map<String, String>> customDepositFormFieldMaps = new HashMap<String, Map<String, String>>();
     private CustomDepositFormMapping customDepositFormMapping;
 
@@ -227,7 +228,7 @@ public class DPSArchive extends BaseArchive {
              * Do not show custom form if you do not belong to the agency responsible for HTML serials.
              * But if you do belong, then show an "invalid/error" page. 
              */
-            if (isAgencyResponsibleForHtmlSerials) {
+            if (isAgencyResponsibleForHtmlSerials && restrictHTMLSerialAgenciesToHTMLSerialTypes) {
                 response.setCustomDepositFormRequired(true);
                 response.setUrlForCustomDepositForm("/wct-store/customDepositForms/rosetta_custom_deposit_form_invalid_dctype.jsp");
             }
@@ -586,6 +587,10 @@ public class DPSArchive extends BaseArchive {
 
     public void setCustomDepositFormURLsForHtmlSerialIngest(String customDepositFormURLsForHtmlSerialIngest) {
         this.customDepositFormURLsForHtmlSerialIngest = toList(customDepositFormURLsForHtmlSerialIngest);
+    }
+
+    public void setRestrictHTMLSerialAgenciesToHTMLSerialTypes(boolean restrictHTMLSerialAgenciesToHTMLSerialTypes) {
+        this.restrictHTMLSerialAgenciesToHTMLSerialTypes = restrictHTMLSerialAgenciesToHTMLSerialTypes;
     }
 
     public void setTargetDCTypesOfCustomWebHarvest(String targetDCTypesOfCustomWebHarvest) {

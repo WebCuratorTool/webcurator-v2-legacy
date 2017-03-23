@@ -307,6 +307,10 @@
 			<value>${dpsArchive.webHarvest.customDCTitleSource}</value>
 		</property>
 
+		<property name="restrictHTMLSerialAgenciesToHTMLSerialTypes">
+			<value>${dpsArchive.htmlSerials.restrictAgencyType}</value>
+		</property>
+
  	</bean>
 
 	<!--
@@ -331,11 +335,13 @@
 							<property name="formFieldLabel" value="customDepositForm_bibliographicCitation"/>
 							<property name="fieldReference" value="DctermsBibliographicCitation"/>
 							<property name="dcFieldLabel" value="bibliographicCitation"/>
+							<property name="mandatory" value="true"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_dctermsAvailable"/>
 							<property name="fieldReference" value="DctermsAvailable"/>
 							<property name="dcFieldLabel" value="available"/>
+							<property name="mandatory" value="true"/>
 						</bean>
 					</list>
 				</entry>
@@ -346,36 +352,42 @@
 							<property name="fieldReference" value="dctermsBibliographicCitation"/>
 							<property name="dcFieldLabel" value="bibliographicCitation"/>
 							<property name="dcFieldType" value="dcterms"/>
+							<property name="mandatory" value="false"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_issue"/>
 							<property name="fieldReference" value="dctermsIssued"/>
 							<property name="dcFieldLabel" value="issue"/>
 							<property name="dcFieldType" value="dcterms"/>
+							<property name="mandatory" value="false"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_number"/>
 							<property name="fieldReference" value="dctermsAaccrualPeriodicity"/>
 							<property name="dcFieldLabel" value="accrualPeriodicity"/>
 							<property name="dcFieldType" value="dcterms"/>
+							<property name="mandatory" value="false"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_year"/>
 							<property name="fieldReference" value="dcDate"/>
 							<property name="dcFieldLabel" value="date"/>
 							<property name="dcFieldType" value="dc"/>
+							<property name="mandatory" value="false"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_month"/>
 							<property name="fieldReference" value="dctermsAvailable"/>
 							<property name="dcFieldLabel" value="available"/>
 							<property name="dcFieldType" value="dcterms"/>
+							<property name="mandatory" value="false"/>
 						</bean>
 						<bean class="nz.govt.natlib.ndha.wctdpsdepositor.CustomDepositField">
 							<property name="formFieldLabel" value="customDepositForm_day"/>
 							<property name="fieldReference" value="dcCoverage"/>
 							<property name="dcFieldLabel" value="coverage"/>
 							<property name="dcFieldType" value="dc"/>
+							<property name="mandatory" value="false"/>
 						</bean>
 					</list>
 				</entry>

@@ -7,6 +7,7 @@ public class CustomDepositField {
     String fieldReference;
     String dcFieldLabel;
     String dcFieldType;
+    boolean mandatory;
 
     public CustomDepositField() {
 
@@ -17,6 +18,7 @@ public class CustomDepositField {
         this.fieldReference = fieldReference;
         this.dcFieldLabel = dcFieldLabel;
         this.dcFieldType = dcFieldType;
+        mandatory = false;
     }
 
     public String getFormFieldLabel() {
@@ -49,5 +51,13 @@ public class CustomDepositField {
 
     public void setDcFieldType(String dcFieldType) {
         this.dcFieldType = dcFieldType;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
     }
 }

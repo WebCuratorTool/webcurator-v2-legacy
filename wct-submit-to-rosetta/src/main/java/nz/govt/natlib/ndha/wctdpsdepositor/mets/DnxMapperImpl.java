@@ -315,10 +315,10 @@ public class DnxMapperImpl implements DnxMapper {
                     if(ieDc.getValue(DublinCore.DC_NAMESPACE, field.getDcFieldLabel()) != null){
                         ieDc.removeElemet(DublinCore.DC_NAMESPACE, field.getDcFieldLabel());
                     }
-                    addAdditionalDcElement(dc, field.getDcFieldLabel(), ieDc);
+                    addAdditionalDcElement(dc, field.getDcFieldLabel(), ieDc, field.isMandatory());
                 }
                 else if(field.getDcFieldType().equals("dcterms")){
-                    addAdditionalDcTermsElement(dc, field.getDcFieldLabel(), ieDc);
+                    addAdditionalDcTermsElement(dc, field.getDcFieldLabel(), ieDc, field.isMandatory());
                 }
             }
         }
@@ -349,16 +349,16 @@ public class DnxMapperImpl implements DnxMapper {
         }
     }
 
-    private void addAdditionalDcElement(DublinCore dc, String key, DublinCore ieDc) {
+    private void addAdditionalDcElement(DublinCore dc, String key, DublinCore ieDc, boolean isMandatory) {
         String value = dc.getDcValue(key);
-        if (StringUtils.isBlank(value))
+        if (StringUtils.isBlank(value) && isMandatory)
             throw new RuntimeException("The DC/DCTERMS element " + key + " was not speficied for the HTML Serial Deposit.");
         addDcElement(ieDc, key, value);
     }
 
-    private void addAdditionalDcTermsElement(DublinCore dc, String key, DublinCore ieDc) {
+    private void addAdditionalDcTermsElement(DublinCore dc, String key, DublinCore ieDc, boolean isMandatory) {
         String value = dc.getDctermsValue(key);
-        if (StringUtils.isBlank(value))
+        if (StringUtils.isBlank(value) && isMandatory)
             throw new RuntimeException("The DC/DCTERMS element " + key + " was not speficied for the HTML Serial Deposit.");
         addDcTermsElement(ieDc, key, value);
     }
