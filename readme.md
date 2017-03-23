@@ -1,127 +1,68 @@
-# WCT 1.6.2 GA
+# WCT 1.6.3 GA
 
-This is the WCT 1.6.2 GA version.
-
-## Obtaining the source files
-The WCT code is now stored in a GIT repository on sourceforge - available from the "code" link on the main 
-WCT sourceforge project page.
-
-The previous versions of WCT are available via the "Legacy Code" link, if needed.  This is still a CVS
-repository.
-
+This is the WCT 1.6.3 GA version.
 
 ### Before installing
 Please ensure the user that WCT uses to login to your database has the correct permissions to create temporary tables.
 Failure to grant this will result in problems during the purge process.
 
 
-### WCT new features and changes for v1.6.2
-
-#### UI new features and improvements
-* Import https urls
-* Configurable Rosetta access rights
-* Submit-to-Rosetta compatibility with newer Rosetta versions
-
-#### Bug fixes
-* Quality Review tool uses original seed url
-* Pruning and importing for warc files fixed
-* Indexing breaking for compressed warcs
-* Duplicate schedules when saving annotations
-* No strippedcrawl.log generated on non-windows os
-
-#### Development related
-* Git stripping carriage returns
-* Build process special characters
-* Code repository moved to Github
-
+### WCT changes for v1.6.3
 
 ---
-Import https urls
+Alma compatibility upgrades for Submit to Rosetta module
 ---
-The import functionality on the Tree View screen for a harvest, now allows https URLs. Previously the javascript 
-validation on the page only allowed http URLs.
+Changes required by the National Library of New Zealand to be compatible with archiving to a Rosetta DPS integrated with
+Alma (library cataloguing and workflow management system from Ex Libris). All changes have been implemented as backward
+compatible as possible. The exposure of these changes and their configuration are through the files wct-das.properties,
+wct-das.xml inside WCT-Store.
 
 
----
-Configurable Rosetta access rights
----
-The Rosetta access codes that are used in the Submit-to-Rosetta module are now configurable via the 
-wct-das.properties file in the wct-store app. These codes are used in the mets.xml when a harvest is 
-archived to Rosetta.
+#### Setting Mets CMS section
+The section used in the DNX TechMD for the CMS data is now configurable. The CMS section can be set to either of the
+following inside wct-das.properties
 
-#OMS Codes (Rosetta)
-dpsArchive.dnx_open_access=xxxx
-dpsArchive.dnx_published_restricted=xxxx
-dpsArchive.dnx_unpublished_restricted_location=xxxx
-dpsArchive.dnx_unpublished_restricted_person=xxxx
+dpsArchive.cmsSection=objectIdentifier
+dpsArchive.cmsSystem=ALMA
+
+dpsArchive.cmsSection=CMS
+dpsArchive.cmsSystem=ilsdb
 
 
----
-Submit-to-Rosetta compatibility with newer Rosetta versions
----
-Later versions of Rosetta system complained when performing xsd validation on the mets.xml file submitted
-by WCT when archiving a harvest. The structure map schema used by WCT was old. As Rosetta auto generates
-structure maps for deposits that are missing them, structure map generation was removed from the WCT process.
-Allowing the version of Rosetta you are archiving to to generate the appropriate structure map.
+#### Preset producer ID for custom deposit forms
+The Producer ID can now be preset for deposits that use a custom form, particularly useful if only one Producer is used
+and saves the user having to input their Rosetta password each time to search for one. If no Producer ID is set in
+wct-das.properties then it will revert to the old process of loading a list of available Producers from Rosetta.
+
+dpsArchive.htmlSerials.producerIds=11111
 
 
----
-Quality Review tool uses original seed url
----
-The harvest quality review tools were not available previously if the original target seed URL was modified.
-Now the target seed URL can be changed, and the QR tool will always look for the original URL of the Target Instance instead.
+#### Toggle HTML Serial agencies using non HTML Serial entity types
+Used when a user is under an HTML Serial agency but wants to submit a custom type
+
+dpsArchive.htmlSerials.restrictAgencyType=true
 
 
----
-Pruning and importing for warc files fixed
----
-Pruning and importing on warcs in the Tree View screen was encountering a bug. When parsing a warc, the
-input stream was over-reading the number of bytes in the warc-info header, causing unexpected characters to 
-be read when trying to access the next record. This was mainly visible when trying to import and prune.
+#### Custom Types
+Custom Types for Web Harvests, follow the same method as the htmlSerials.
+
+# If there are more than one value for each of these, separate them using comma. Make sure there is an equal number of
+# values for each attribute.
+# targetDCTypes
+# materialFlowsIds
+# ieEntityTypes
+# DCTitleSource ("TargetName" or "SeedUrl")
+dpsArchive.webHarvest.customTargetDCTypes=eMonograph
+dpsArchive.webHarvest.customerMaterialFlowIds=11111
+dpsArchive.webHarvest.customerProducerIds=11111
+dpsArchive.webHarvest.customIeEntityTypes=HTMLMonoIE
+dpsArchive.webHarvest.customDCTitleSource=TargetName
 
 
----
-Indexing breaking for compressed warcs
----
-Harvesting as compressed warc was breaking the indexing of a harvest. The Heritrix class handling the reading of 
-the compressed warc was missing the functionality to move to the next record. The Heritrix library included has
-been recompiled to include a fix.
+#### Set source of Mets DC Title for custom types
+For custom entity tpes, the field of which the Mets DC Title gets populated with for the mets.xml can now be set. The available fields are the Target
+Seed Url or the Target Name. This is switched in wct-das.properties.
 
+dpsArchive.webHarvest.customDCTitleSource=TargetName
 
----
-Duplicate schedules when saving annotations
----
-When creating/editing a Target - if a schedule is created/edited without saving the Target, and then the Target is 
-saved whilst adding an annotation, WCT creates target instances for that schedule but the Target remains in a state
-where it contains a cache of new a schedule(s). So if the Target is then saved via the bottom save button, another
-group of target instances will be generated for the new schedule(s).
-This bug has now been fixed. If a schedule already has target instances generated (at Annotations tab), then WCT 
-will flag this to prevent any duplicates from being generated.
-
-
----
-No strippedcrawl.log generated on non-windows os
----
-WCT was hard-coded to use a Windows file path separator when saving this log file. Now system specific file path
-separator is used.
-
-
----
-Git stripping carriage returns
----
-Only affected JUnit tests for Submit-to-Rosetta module. The tests read in an arc file which originally 
-contained a mix of lines ending in carriage returns + line feeds and line feeds. Once the project was
-moved to git, the carriage returns were stripped out, invalidating the character offset values in the 
-arc file. The arc file is now stored in the test class as a string, in order to preserve all formatting. 
-
-
----
-Build process special characters
----
-All non-utf8 characters have been converted to utf8, and project POM files changed to build as utf8.
-
-
----
-Code repository moved to Github
----
-Code repository moved to Github, along with all old content that possible to take from Sourceforge.
+dpsArchive.webHarvest.customDCTitleSource=SeedUrl
