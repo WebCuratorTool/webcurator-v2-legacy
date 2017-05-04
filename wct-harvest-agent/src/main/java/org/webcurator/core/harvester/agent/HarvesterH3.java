@@ -63,6 +63,7 @@ public class HarvesterH3 implements Harvester {
     private HarvesterStatusDTO status = null;
     /** the current active harvest. */
     private CrawlJob job = null;
+    private Job h3job = null;
     /** the list of directories that the arcs are in. */
     private List<File> harvestDigitalAssetsDirs = null;
     /** the harvest directory. */
@@ -98,6 +99,8 @@ public class HarvesterH3 implements Harvester {
         String keyStorePassword = "";
         String userName = "admin";
         String password = "admin";
+//        String userName = "ben";
+//        String password = "password";
 
 
         try {
@@ -143,27 +146,23 @@ public class HarvesterH3 implements Harvester {
     	}
 
         heritrix.rescanJobDirectory();
-//        status.setHarvesterState(heritrix.getStatus());
-        if (job != null) {
-            status.setJobName(job.getJobName());
-            status.setStatus(job.getStatus());
+        h3job = heritrix.job(h3job.shortName).job;
+        if (h3job != null) {
+            status.setJobName(h3job.shortName);
+            status.setStatus(h3job.crawlControllerState);
 
-            StatisticsTracking st = job.getStatisticsTracking();
-            if (st != null) {
-            	if (st.getCrawlerTotalElapsedTime() > 0) {
-	                status.setCurrentURIs(st.currentProcessedDocsPerSec());
-	                status.setCurrentKBs(st.currentProcessedKBPerSec());
-	                status.setAverageURIs(st.processedDocsPerSec());
-	                status.setAverageKBs(st.processedKBPerSec());
-	                status.setElapsedTime(st.getCrawlerTotalElapsedTime());
-	                status.setDataDownloaded(st.totalBytesWritten());
-	                if (st instanceof StatisticsTracker) {
-	                    StatisticsTracker statsTrack = (StatisticsTracker) st;
-	                    status.setUrlsDownloaded(statsTrack.successfullyFetchedCount());
-	                    status.setUrlsQueued(statsTrack.queuedUriCount());
-	                    status.setUrlsFailed(statsTrack.failedFetchAttempts());
-	                }
-            	}
+            if (h3job.elapsedReport.elapsedMilliseconds > 0) {
+                status.setCurrentURIs(h3job.rateReport.currentDocsPerSecond);
+                status.setCurrentKBs(h3job.rateReport.currentKiBPerSec);
+                status.setAverageURIs(h3job.rateReport.averageDocsPerSecond);
+                status.setAverageKBs(h3job.rateReport.averageKiBPerSec);
+                status.setElapsedTime(h3job.elapsedReport.elapsedMilliseconds);
+                //TODO - total bytes written
+//	                status.setDataDownloaded(st.totalBytesWritten());
+                status.setUrlsDownloaded(h3job.uriTotalsReport.downloadedUriCount);
+                status.setUrlsQueued(h3job.uriTotalsReport.queuedUriCount);
+                //TODO - failed URIs
+//                    status.setUrlsFailed(statsTrack.failedFetchAttempts());
             }
         }
 
@@ -289,31 +288,30 @@ public class HarvesterH3 implements Harvester {
 
     /** @see Harvester#getHarvestLogDir(). */
     public File getHarvestLogDir() {
-    	if (log.isDebugEnabled()) {
-    		log.debug("Getting the harvest log directory for " + name);
-    	}
+        if (log.isDebugEnabled()) {
+            log.debug("Getting the harvest log directory for " + name);
+        }
 
         if (harvestLogsDir != null) {
             return harvestLogsDir;
         }
 
-        XMLSettingsHandler settings = getSettingsHandler();
-        CrawlOrder order = settings.getOrder();
+        if (h3job != null && h3job.crawlLogFilePath != null) {
 
-        try {
-            String subDirName = (String) order.getAttribute(CrawlOrder.ATTR_LOGS_PATH);
-            File dir = getHarvestDir();
+            try {
+                String subDirName = "logs";
+                File dir = getHarvestDir();
 
-            if (dir != null) {
-                harvestLogsDir = new File(dir.getAbsolutePath() + File.separator + subDirName);
-                return harvestLogsDir;
+                if (dir != null) {
+                    harvestLogsDir = new File(dir.getAbsolutePath() + File.separator + subDirName);
+                    return harvestLogsDir;
+                }
+            } catch (Exception e) {
+                if (log.isErrorEnabled()) {
+                    log.error("Failed to get log directory " + name + ": " + e.getMessage(), e);
+                }
+                throw new HarvesterException("Failed to get log directory " + name + ": " + e.getMessage(), e);
             }
-        }
-        catch (Exception e) {
-        	if (log.isErrorEnabled()) {
-        		log.error("Failed to get log directory " + name + ": " + e.getMessage(), e);
-        	}
-            throw new HarvesterException("Failed to get log directory " + name + ": " + e.getMessage(), e);
         }
 
         return null;
@@ -329,9 +327,11 @@ public class HarvesterH3 implements Harvester {
             return harvestDir;
         }
 
-        if (job != null) {
-            harvestDir = job.getDirectory();
-            return job.getDirectory();
+        if (h3job != null && h3job.crawlLogFilePath != null) {
+            String crawlLogFilePath = h3job.crawlLogFilePath;
+            String harvestDirPath = crawlLogFilePath.substring(0, crawlLogFilePath.indexOf("logs")-1);
+            harvestDir = new File(harvestDirPath);
+            return harvestDir;
         }
 
         return null;
@@ -339,26 +339,27 @@ public class HarvesterH3 implements Harvester {
 
     /** @see Harvester#pause(). */
     public void pause() {
-        if (job != null && job.getStatus().equals(CrawlJob.STATUS_RUNNING)) {
+        if (h3job != null && h3job.crawlControllerState.equals("RUNNING")) {
             if (log.isDebugEnabled()) {
-                log.debug("pausing job " + job.getJobName() + " on " + name);
+                log.debug("pausing job " + h3job.shortName + " on " + name);
             }
-//            heritrix.getJobHandler().pauseJob();
+            h3job = heritrix.pauseJob(h3job.shortName).job;
             heritrix.rescanJobDirectory();
-
         }
     }
 
     /** @see Harvester#resume(). */
     public void resume() {
-        if (job != null && job.getStatus().equals(CrawlJob.STATUS_PAUSED)) {
+        if (h3job != null && h3job.statusDescription.equals("Active: PAUSED")) {
             if (log.isDebugEnabled()) {
-                log.debug("resuming job " + job.getJobName() + " on " + name);
+                log.debug("resuming job " + h3job.shortName + " on " + name);
             }
 
             // Re-initialise the job as the profile overrides may have been changed.
-            job.getSettingsHandler().initialize();
-            job.kickUpdate();
+            //TODO - find our whether this is possible in H3???
+//            job.getSettingsHandler().initialize();
+//            job.kickUpdate();
+            h3job = heritrix.unpauseJob(h3job.shortName).job;
 
 //            heritrix.getJobHandler().resumeJob();
             heritrix.rescanJobDirectory();
@@ -488,6 +489,7 @@ public class HarvesterH3 implements Harvester {
 
 
             //TODO - HarvesterH3 will need to poll H3 instance regularly to get updates, status changes etc
+            h3job = jobStatus;
 //            CrawlJob tmpJob = null;
 //            CrawlJobHandler cjw = heritrix.getJobHandler();
 //            Iterator it = cjw.getPendingJobs().iterator();
@@ -520,6 +522,7 @@ public class HarvesterH3 implements Harvester {
             JobResult crawlStarted = heritrix.waitForJobState(aJobName, Heritrix3Wrapper.CrawlControllerState.RUNNING, 50, 1000);
             if(crawlStarted != null && crawlStarted.job.statusDescription.equals("Active: RUNNING")){
                 started = true;
+                h3job = crawlStarted.job;
             }
 
         }
@@ -543,31 +546,42 @@ public class HarvesterH3 implements Harvester {
     /** @see Harvester#stop(). */
     public void stop() {
 
-        try{
-            //TODO - get job
-            Job preTeardownJob = heritrix.job("TI55555").job;
-            Job postTeardownJob = null;
-            String jobName = "TI55555";
+        try {
+            if(h3job != null) {
 
-            //TODO - if pausing or stopping then wait
-            if(preTeardownJob.crawlControllerState.equals(Heritrix3Wrapper.CrawlControllerState.PAUSING)){
-                heritrix.waitForJobState(jobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 50, 1000);
+                //TODO - get job
+//                String jobName = "TI55555";
+                String jobName = h3job.shortName;
+                Job preTeardownJob = heritrix.job(jobName).job;
+                Job postTeardownJob = null;
 
-            }
-
-            //TODO - if status is in (RUNNING, PAUSED)
-            if(preTeardownJob.availableActions.contains("terminate")){
-                postTeardownJob = heritrix.teardownJob(jobName).job;
-                EngineResult er = heritrix.rescanJobDirectory();
-            }
-
-
-
-
-            if (job != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("stopping job " + job.getJobName() + " on " + name);
+                //TODO - if pausing or stopping then wait
+                if (preTeardownJob.crawlControllerState.equals(Heritrix3Wrapper.CrawlControllerState.PAUSING)) {
+                    heritrix.waitForJobState(jobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 50, 1000);
                 }
+
+                //TODO - if status is in (RUNNING, PAUSED)
+                if (preTeardownJob.availableActions.contains("terminate")) {
+                    postTeardownJob = heritrix.teardownJob(jobName).job;
+                    EngineResult er = heritrix.rescanJobDirectory();
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("stopping job " + h3job.shortName + " on " + name);
+                    }
+
+                    //TODO - What to do with any data in preTeardownJob
+                    h3job = postTeardownJob;
+                }
+
+
+                if (aborted) {
+                    deregister();
+                }
+            }
+
+
+            if (h3job != null) {
+
     //            heritrix.getJobHandler().deleteJob(job.getUID());
 //                heritrix.rescanJobDirectory();
             }
@@ -577,9 +591,7 @@ public class HarvesterH3 implements Harvester {
     //            log.info("Stopped harvester " + name + " " + heritrix.getStatus());
     //        }
 
-            if (aborted) {
-                deregister();
-            }
+
         } catch (UnsupportedEncodingException e) {
             if (log.isErrorEnabled()) {
                 log.error("Failed to stop harvest " + name + ": " + e.getMessage(), e);
@@ -613,8 +625,45 @@ public class HarvesterH3 implements Harvester {
     public static void main(String[] args) {
         Harvester H3 = new HarvesterH3();
 
+        // START
         H3.start(new File("/crawler-beans.cxml"), "TI55555");
 
-        H3.stop();
+        HarvesterStatusDTO statusDTO = null;
+
+        // Get Harvest log dir
+        File logDir = H3.getHarvestLogDir();
+        System.out.println("Log Dir check 1)" + logDir.getAbsolutePath());
+
+        // PAUSE
+        while(true){
+            statusDTO = H3.getStatus();
+            if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())){
+                H3.pause();
+                break;
+            }
+        }
+
+        // UNPAUSE
+        while(true){
+            statusDTO = H3.getStatus();
+            if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.PAUSED.toString())){
+                H3.resume();
+                break;
+            }
+        }
+
+        // Get Harvest log dir
+        logDir = H3.getHarvestLogDir();
+        System.out.println("Log Dir check 2)" + logDir.getAbsolutePath());
+
+        // STOP
+        while(true){
+            statusDTO = H3.getStatus();
+            if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
+                H3.stop();
+                break;
+            }
+        }
+
     }
 }
