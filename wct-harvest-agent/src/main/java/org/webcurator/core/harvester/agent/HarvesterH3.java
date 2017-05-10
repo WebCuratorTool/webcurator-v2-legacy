@@ -225,7 +225,7 @@ public class HarvesterH3 implements Harvester {
         }
 
         XMLSettingsHandler settings = getSettingsHandler();
-
+        //TODO - Look at using H3 scripting console to look at warc writer bean
         try {
             MapType writers = (MapType) settings.getOrder().getAttribute(CrawlOrder.ATTR_WRITE_PROCESSORS);
             Object obj = null;
@@ -623,47 +623,58 @@ public class HarvesterH3 implements Harvester {
 	}
 
     public static void main(String[] args) {
-        Harvester H3 = new HarvesterH3();
+        try {
 
-        // START
-        H3.start(new File("/crawler-beans.cxml"), "TI55555");
+            Harvester H3 = new HarvesterH3();
 
-        HarvesterStatusDTO statusDTO = null;
+            // START
+            H3.start(new File("/crawler-beans.cxml"), "TI55555");
+            System.out.println("Started crawl");
+            HarvesterStatusDTO statusDTO = null;
 
-        // Get Harvest log dir
-        File logDir = H3.getHarvestLogDir();
-        System.out.println("Log Dir check 1)" + logDir.getAbsolutePath());
-
-        // PAUSE
-        while(true){
-            statusDTO = H3.getStatus();
-            if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())){
-                H3.pause();
-                break;
+            // Get Harvest log dir
+            File logDir = H3.getHarvestLogDir();
+            System.out.println("Log Dir check 1)" + logDir.getAbsolutePath());
+            System.out.println("Retrieved harvest log dir");
+            // PAUSE
+            while(true){
+                statusDTO = H3.getStatus();
+                Thread.sleep(2000);
+                if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())){
+                    H3.pause();
+                    System.out.println("Pausing crawl");
+                    break;
+                }
             }
-        }
 
-        // UNPAUSE
-        while(true){
-            statusDTO = H3.getStatus();
-            if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.PAUSED.toString())){
-                H3.resume();
-                break;
+            // UNPAUSE
+            while(true){
+                statusDTO = H3.getStatus();
+                Thread.sleep(2000);
+                if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.PAUSED.toString())){
+                    System.out.println("Paused crawl");
+                    H3.resume();
+                    System.out.println("Resuming crawl");
+                    break;
+                }
             }
-        }
 
-        // Get Harvest log dir
-        logDir = H3.getHarvestLogDir();
-        System.out.println("Log Dir check 2)" + logDir.getAbsolutePath());
+            // Get Harvest log dir
+            logDir = H3.getHarvestLogDir();
+            System.out.println("Log Dir check 2)" + logDir.getAbsolutePath());
 
-        // STOP
-        while(true){
-            statusDTO = H3.getStatus();
-            if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
-                H3.stop();
-                break;
+            // STOP
+            while(true){
+                statusDTO = H3.getStatus();
+                Thread.sleep(2000);
+                if(statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
+                    H3.stop();
+                    break;
+                }
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
     }
+
 }
