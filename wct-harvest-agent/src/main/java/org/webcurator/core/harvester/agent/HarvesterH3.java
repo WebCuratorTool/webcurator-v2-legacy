@@ -29,6 +29,7 @@ import org.archive.crawler.settings.MapType;
 import org.archive.crawler.settings.XMLSettingsHandler;
 import org.archive.crawler.writer.ARCWriterProcessor;
 import org.archive.crawler.writer.WARCWriterProcessor;
+import org.netarchivesuite.heritrix3wrapper.jaxb.ConfigFile;
 import org.netarchivesuite.heritrix3wrapper.jaxb.Job;
 import org.webcurator.core.harvester.agent.exception.HarvesterException;
 import org.webcurator.core.harvester.util.AlertLogger;
@@ -179,39 +180,31 @@ public class HarvesterH3 implements Harvester {
             return harvestDigitalAssetsDirs;
         }
 
-        XMLSettingsHandler settings = getSettingsHandler();
-
         List<File> outputDirs = new ArrayList<File>();
-        try {
-            MapType writers = (MapType) settings.getOrder().getAttribute(CrawlOrder.ATTR_WRITE_PROCESSORS);
-            Object obj = null;
-            Iterator it = writers.iterator(null);
 
-            while (it.hasNext()) {
-                obj = it.next();
-                if (obj instanceof ARCWriterProcessor) {
-                    ARCWriterProcessor processor = (ARCWriterProcessor) obj;
-                    outputDirs.addAll(processor.getOutputDirs());
+        if (h3job != null) {
+
+            try {
+                String subDirName = "warcs";
+                File dir = getHarvestDir();
+
+                if (dir != null) {
+                    outputDirs.add(new File(dir.getAbsolutePath() + File.separator + subDirName));
                 }
 
-                if (obj instanceof WARCWriterProcessor) {
-                    WARCWriterProcessor processor = (WARCWriterProcessor) obj;
-                    outputDirs.addAll(processor.getOutputDirs());
+                if(outputDirs != null && !outputDirs.isEmpty()) {
+                    harvestDigitalAssetsDirs = outputDirs;
                 }
-            }
 
-            if (outputDirs != null && !outputDirs.isEmpty()) {
-                harvestDigitalAssetsDirs = outputDirs;
+            } catch (Exception e) {
+                if (log.isErrorEnabled()) {
+                    log.error("Failed to get archive directories " + name + ": " + e.getMessage(), e);
+                }
+                throw new HarvesterException("Failed to get archive directories " + name + ": " + e.getMessage(), e);
             }
+        }
 
-            return outputDirs;
-        }
-        catch (Exception e) {
-        	if (log.isErrorEnabled()) {
-        		log.error("Failed to get archive directories " + name + ": " + e.getMessage(), e);
-        	}
-            throw new HarvesterException("Failed to get archive directories " + name + ": " + e.getMessage(), e);
-        }
+        return outputDirs;
     }
 
     /** @see Harvester#isHarvestCompressed(). */
@@ -219,71 +212,72 @@ public class HarvesterH3 implements Harvester {
     	if (log.isDebugEnabled()) {
     		log.debug("Getting the harvest compressed flag for " + name);
     	}
-
-        if (compressed != null) {
-            return compressed.booleanValue();
-        }
-
-        XMLSettingsHandler settings = getSettingsHandler();
-        //TODO - Look at using H3 scripting console to look at warc writer bean
-        try {
-            MapType writers = (MapType) settings.getOrder().getAttribute(CrawlOrder.ATTR_WRITE_PROCESSORS);
-            Object obj = null;
-            Iterator it = writers.iterator(null);
-            boolean found = false;
-            while (it.hasNext()) {
-                obj = it.next();
-                if (obj instanceof ARCWriterProcessor) {
-                	ARCWriterProcessor processor = (ARCWriterProcessor) obj;
-                	compressed = new Boolean(processor.isCompressed());
-                	found = true;
-                	break;
-                }
-                if (obj instanceof WARCWriterProcessor) {
-                	WARCWriterProcessor processor = (WARCWriterProcessor) obj;
-                	compressed = new Boolean(processor.isCompressed());
-                	found = true;
-                	break;
-                }
-            }
-
-            if(!found)
-            {
-	            if (log.isErrorEnabled()) {
-	        		log.error("Failed to find ARCWriterProcessor or WARCWriterProcessor");
-	        	}
-	            throw new HarvesterException("Failed to find ARCWriterProcessor or WARCWriterProcessor");
-            }
-        }
-        catch (Exception e) {
-        	if (log.isErrorEnabled()) {
-        		log.error("Failed to get compressed flag " + name + ": " + e.getMessage(), e);
-        	}
-            throw new HarvesterException("Failed to get compressed flag " + name + ": " + e.getMessage(), e);
-        }
-
-        return compressed;
+        return false;
+//        if (compressed != null) {
+//            return compressed.booleanValue();
+//        }
+//
+//        XMLSettingsHandler settings = getSettingsHandler();
+//        //TODO - Look at using H3 scripting console to look at warc writer bean
+//        try {
+//            MapType writers = (MapType) settings.getOrder().getAttribute(CrawlOrder.ATTR_WRITE_PROCESSORS);
+//            Object obj = null;
+//            Iterator it = writers.iterator(null);
+//            boolean found = false;
+//            while (it.hasNext()) {
+//                obj = it.next();
+//                if (obj instanceof ARCWriterProcessor) {
+//                	ARCWriterProcessor processor = (ARCWriterProcessor) obj;
+//                	compressed = new Boolean(processor.isCompressed());
+//                	found = true;
+//                	break;
+//                }
+//                if (obj instanceof WARCWriterProcessor) {
+//                	WARCWriterProcessor processor = (WARCWriterProcessor) obj;
+//                	compressed = new Boolean(processor.isCompressed());
+//                	found = true;
+//                	break;
+//                }
+//            }
+//
+//            if(!found)
+//            {
+//	            if (log.isErrorEnabled()) {
+//	        		log.error("Failed to find ARCWriterProcessor or WARCWriterProcessor");
+//	        	}
+//	            throw new HarvesterException("Failed to find ARCWriterProcessor or WARCWriterProcessor");
+//            }
+//        }
+//        catch (Exception e) {
+//        	if (log.isErrorEnabled()) {
+//        		log.error("Failed to get compressed flag " + name + ": " + e.getMessage(), e);
+//        	}
+//            throw new HarvesterException("Failed to get compressed flag " + name + ": " + e.getMessage(), e);
+//        }
+//
+//        return compressed;
     }
 
 	/**
 	 * @return
 	 */
 	private XMLSettingsHandler getSettingsHandler() {
-		XMLSettingsHandler settings = job.getSettingsHandler();
-        if (settings == null || settings.getOrder() == null) {
-            File profile = new File(job.getDirectory() + File.separator + PROFILE_NAME);
-            try {
-                settings = new XMLSettingsHandler(profile);
-                settings.initialize();
-            }
-            catch (InvalidAttributeValueException e) {
-            	if (log.isErrorEnabled()) {
-            		log.error("Failed to get settings for job " + name + ": " + e.getMessage(), e);
-            	}
-                throw new HarvesterException("Failed to get settings for job " + name + ": " + e.getMessage(), e);
-            }
-        }
-		return settings;
+//		XMLSettingsHandler settings = job.getSettingsHandler();
+//        if (settings == null || settings.getOrder() == null) {
+//            File profile = new File(job.getDirectory() + File.separator + PROFILE_NAME);
+//            try {
+//                settings = new XMLSettingsHandler(profile);
+//                settings.initialize();
+//            }
+//            catch (InvalidAttributeValueException e) {
+//            	if (log.isErrorEnabled()) {
+//            		log.error("Failed to get settings for job " + name + ": " + e.getMessage(), e);
+//            	}
+//                throw new HarvesterException("Failed to get settings for job " + name + ": " + e.getMessage(), e);
+//            }
+//        }
+//		return settings;
+        return null;
 	}
 
     /** @see Harvester#getHarvestLogDir(). */
@@ -296,7 +290,7 @@ public class HarvesterH3 implements Harvester {
             return harvestLogsDir;
         }
 
-        if (h3job != null && h3job.crawlLogFilePath != null) {
+        if (h3job != null) {
 
             try {
                 String subDirName = "logs";
@@ -313,7 +307,6 @@ public class HarvesterH3 implements Harvester {
                 throw new HarvesterException("Failed to get log directory " + name + ": " + e.getMessage(), e);
             }
         }
-
         return null;
     }
 
@@ -327,9 +320,16 @@ public class HarvesterH3 implements Harvester {
             return harvestDir;
         }
 
-        if (h3job != null && h3job.crawlLogFilePath != null) {
-            String crawlLogFilePath = h3job.crawlLogFilePath;
-            String harvestDirPath = crawlLogFilePath.substring(0, crawlLogFilePath.indexOf("logs")-1);
+        List<ConfigFile> configFiles = h3job.configFiles;
+        ConfigFile warcWriter = null; //TODO - do lambda here
+        for(ConfigFile config : configFiles){
+            if(config.key.equals("warcWriter.directory")){
+                warcWriter = config;
+                break;
+            }
+        }
+        if (h3job != null && warcWriter != null) {
+            String harvestDirPath = warcWriter.path;
             harvestDir = new File(harvestDirPath);
             return harvestDir;
         }
@@ -361,77 +361,78 @@ public class HarvesterH3 implements Harvester {
 //            job.kickUpdate();
             h3job = heritrix.unpauseJob(h3job.shortName).job;
 
-//            heritrix.getJobHandler().resumeJob();
-            heritrix.rescanJobDirectory();
+            EngineResult er = heritrix.rescanJobDirectory();
+//            System.out.println("sdfkdsg");
         }
     }
 
     /** @see Harvester#restrictBandwidth(int). */
     public void restrictBandwidth(int aBandwidthLimit) {
-        try {
-        	XMLSettingsHandler settings = job.getSettingsHandler();
-        	if (settings == null) {
-        		if (log.isInfoEnabled()) {
-        			log.info("Attempted to restrict bandwidth on " + name + ". No settings available.");
-        		}
-        		return;
-        	}
-
-        	CrawlerSettings cs = null;
-            try {
-				cs = settings.getSettingsObject(null);
-			}
-            catch (RuntimeException e) {
-            	if (log.isInfoEnabled()) {
-        			log.info("Attempted to restrict bandwidth on " + name + ". Failed to get Crawler Settings.");
-        		}
-        		return;
-			}
-
-            BdbFrontier frontier = (BdbFrontier) cs.getModule(BdbFrontier.ATTR_NAME);
-
-            frontier.setAttribute(new Attribute(BdbFrontier.ATTR_MAX_OVERALL_BANDWIDTH_USAGE, new Integer(aBandwidthLimit)));
-            settings.writeSettingsObject(cs);
-            if (log.isDebugEnabled()) {
-                log.debug("Attempting to restrict bandwidth on " + job.getDisplayName() + " to " + aBandwidthLimit);
-            }
-
-            // Check that the job is in a state where we can set the bandwidth
-            if (CrawlJob.STATUS_ABORTED.equals(job.getStatus()) ||
-                CrawlJob.STATUS_DELETED.equals(job.getStatus()) ||
-                CrawlJob.STATUS_MISCONFIGURED.equals(job.getStatus()) ||
-                job.getStatus().startsWith(CrawlJob.STATUS_FINISHED)) {
-                if (log.isInfoEnabled()) {
-                    log.info("Job " + job.getDisplayName() + " is in the state " + job.getStatus() + ". Ignoring bandwidth restriction.");
-                }
-                return;
-            }
-
-            while (!job.isRunning()) {
-                Thread.sleep(1000);
-                // Need to check again just incase the job has now failed/finished
-                if (CrawlJob.STATUS_ABORTED.equals(job.getStatus()) ||
-                    CrawlJob.STATUS_DELETED.equals(job.getStatus()) ||
-                    CrawlJob.STATUS_MISCONFIGURED.equals(job.getStatus()) ||
-                    job.getStatus().startsWith(CrawlJob.STATUS_FINISHED)) {
-                    if (log.isInfoEnabled()) {
-                        log.info("The Job " + job.getDisplayName() + " is in the state " + job.getStatus() + ". Ignoring bandwidth restriction.");
-                    }
-                    return;
-                }
-            }
-
-            job.kickUpdate();
-            if (log.isDebugEnabled()) {
-                log.debug("Restricted the bandwidth for Job " + job.getDisplayName() + " to " + aBandwidthLimit + " KB.");
-            }
-        }
-        catch (Exception e) {
-        	if (log.isErrorEnabled()) {
-        		log.error("Failed to restrict bandwidth " + name + ": " + e.getMessage(), e);
-        	}
-            throw new HarvesterException("Failed to restrict bandwidth " + name + ": " + e.getMessage(), e);
-        }
+        //TODO - see if this can be done via the scripting console.
+//        try {
+//        	XMLSettingsHandler settings = job.getSettingsHandler();
+//        	if (settings == null) {
+//        		if (log.isInfoEnabled()) {
+//        			log.info("Attempted to restrict bandwidth on " + name + ". No settings available.");
+//        		}
+//        		return;
+//        	}
+//
+//        	CrawlerSettings cs = null;
+//            try {
+//				cs = settings.getSettingsObject(null);
+//			}
+//            catch (RuntimeException e) {
+//            	if (log.isInfoEnabled()) {
+//        			log.info("Attempted to restrict bandwidth on " + name + ". Failed to get Crawler Settings.");
+//        		}
+//        		return;
+//			}
+//
+//            BdbFrontier frontier = (BdbFrontier) cs.getModule(BdbFrontier.ATTR_NAME);
+//
+//            frontier.setAttribute(new Attribute(BdbFrontier.ATTR_MAX_OVERALL_BANDWIDTH_USAGE, new Integer(aBandwidthLimit)));
+//            settings.writeSettingsObject(cs);
+//            if (log.isDebugEnabled()) {
+//                log.debug("Attempting to restrict bandwidth on " + job.getDisplayName() + " to " + aBandwidthLimit);
+//            }
+//
+//            // Check that the job is in a state where we can set the bandwidth
+//            if (CrawlJob.STATUS_ABORTED.equals(job.getStatus()) ||
+//                CrawlJob.STATUS_DELETED.equals(job.getStatus()) ||
+//                CrawlJob.STATUS_MISCONFIGURED.equals(job.getStatus()) ||
+//                job.getStatus().startsWith(CrawlJob.STATUS_FINISHED)) {
+//                if (log.isInfoEnabled()) {
+//                    log.info("Job " + job.getDisplayName() + " is in the state " + job.getStatus() + ". Ignoring bandwidth restriction.");
+//                }
+//                return;
+//            }
+//
+//            while (!job.isRunning()) {
+//                Thread.sleep(1000);
+//                // Need to check again just incase the job has now failed/finished
+//                if (CrawlJob.STATUS_ABORTED.equals(job.getStatus()) ||
+//                    CrawlJob.STATUS_DELETED.equals(job.getStatus()) ||
+//                    CrawlJob.STATUS_MISCONFIGURED.equals(job.getStatus()) ||
+//                    job.getStatus().startsWith(CrawlJob.STATUS_FINISHED)) {
+//                    if (log.isInfoEnabled()) {
+//                        log.info("The Job " + job.getDisplayName() + " is in the state " + job.getStatus() + ". Ignoring bandwidth restriction.");
+//                    }
+//                    return;
+//                }
+//            }
+//
+//            job.kickUpdate();
+//            if (log.isDebugEnabled()) {
+//                log.debug("Restricted the bandwidth for Job " + job.getDisplayName() + " to " + aBandwidthLimit + " KB.");
+//            }
+//        }
+//        catch (Exception e) {
+//        	if (log.isErrorEnabled()) {
+//        		log.error("Failed to restrict bandwidth " + name + ": " + e.getMessage(), e);
+//        	}
+//            throw new HarvesterException("Failed to restrict bandwidth " + name + ": " + e.getMessage(), e);
+//        }
     }
 
     /** @see Harvester#getName(). */
@@ -450,7 +451,7 @@ public class HarvesterH3 implements Harvester {
                 log.info("Launched harvester " + name);
             }
 
-            //TODO - update cxml file and build
+            // Update cxml file and build
             if(jobStatus.statusDescription.equals("Unbuilt")){
                 // Update cxml file
                 String destDirPath = jobStatus.primaryConfig.replace("" + File.separator + "crawler-beans.cxml", "");
@@ -467,7 +468,7 @@ public class HarvesterH3 implements Harvester {
 
 
 
-            //TODO - if built successfully then launch
+            // If built successfully then launch
             if(jobStatus.statusDescription.equals("Ready")){
                 jobStatus = heritrix.launchJob(aJobName).job;
                 jobStatus = heritrix.waitForJobState(aJobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 5, 1000).job;
@@ -477,7 +478,7 @@ public class HarvesterH3 implements Harvester {
                 throw new HarvesterException("Failed to start harvester " + name + ": Could not launch H3 job.");
             }
 
-            //TODO  - if launched and paused, one last status check, then unpause
+            // If launched and paused, one last status check, then unpause
             if(jobStatus.statusDescription.equals("Active: PAUSED")){
                 jobStatus = heritrix.unpauseJob(aJobName).job;
 
@@ -634,7 +635,7 @@ public class HarvesterH3 implements Harvester {
 
             // Get Harvest log dir
             File logDir = H3.getHarvestLogDir();
-            System.out.println("Log Dir check 1)" + logDir.getAbsolutePath());
+            System.out.println("Log Dir check 1) " + logDir.getAbsolutePath());
             System.out.println("Retrieved harvest log dir");
             // PAUSE
             while(true){
@@ -661,7 +662,9 @@ public class HarvesterH3 implements Harvester {
 
             // Get Harvest log dir
             logDir = H3.getHarvestLogDir();
-            System.out.println("Log Dir check 2)" + logDir.getAbsolutePath());
+            System.out.println("Log Dir check 2) " + logDir.getAbsolutePath());
+            List<File> assetsDir = H3.getHarvestDigitalAssetsDirs();
+            System.out.println("Asset Dir check) " + assetsDir.get(0).getAbsolutePath());
 
             // STOP
             while(true){
