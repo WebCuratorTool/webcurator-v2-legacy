@@ -550,18 +550,17 @@ public class HarvesterH3 implements Harvester {
         try {
             if(h3job != null) {
 
-                //TODO - get job
-//                String jobName = "TI55555";
+                // Get job
                 String jobName = h3job.shortName;
                 Job preTeardownJob = heritrix.job(jobName).job;
                 Job postTeardownJob = null;
 
-                //TODO - if pausing or stopping then wait
+                // If pausing or stopping then wait
                 if (preTeardownJob.crawlControllerState.equals(Heritrix3Wrapper.CrawlControllerState.PAUSING)) {
                     heritrix.waitForJobState(jobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 50, 1000);
                 }
 
-                //TODO - if status is in (RUNNING, PAUSED)
+                // If status is in (RUNNING, PAUSED)
                 if (preTeardownJob.availableActions.contains("terminate")) {
                     postTeardownJob = heritrix.teardownJob(jobName).job;
                     EngineResult er = heritrix.rescanJobDirectory();
