@@ -27,6 +27,7 @@ import org.webcurator.core.harvester.coordinator.HarvestAgentListener;
 import org.webcurator.core.reader.LogProvider;
 import org.webcurator.core.store.DigitalAssetStore;
 import org.webcurator.domain.model.core.ArcHarvestResultDTO;
+import org.webcurator.domain.model.core.HarvestResultDTO;
 import org.webcurator.domain.model.core.LogFilePropertiesDTO;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
@@ -84,10 +85,9 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         try {
             super.initiateHarvest(aJob, aProfile, aSeeds);
-
+            //TODO - what to do with profile and seeds files when harvests aborted? Where are these files actually created?
             File profile = createProfile(aJob, aProfile);
             createSeedsFile(profile, aSeeds);
-
             harvester = getHarvester(aJob);
             harvester.start(profile, aJob);
             harvester.setAlertThreshold(alertThreshold);
@@ -132,7 +132,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         File harvestDir = null;
         Harvester harvester = getHarvester(aJob);
         if (harvester != null) {
-            harvestDir = harvester.getHarvestDir();
+            // Remove base dir of job
+            harvestDir = harvester.getHarvestDir().getParentFile();
             harvester.deregister();
         }
 
@@ -145,6 +146,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         	}
         }
 
+        //TODO - at this point the harvester is gone, do we need the final stats here??
         harvestCoordinatorNotifier.heartbeat(getStatus());
     }
 
@@ -309,6 +311,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
     /** @see HarvestAgent#getStatus(). */
     public HarvestAgentStatusDTO getStatus() {
+        //TODO - done
         HarvestAgentStatusDTO status = new HarvestAgentStatusDTO();
         status.setHost(host);
         status.setPort(port);
@@ -592,15 +595,17 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
      */
     private void createSeedsFile(File aProfile, String aSeeds) {
         try {
-            XMLSettingsHandler settings = new XMLSettingsHandler(aProfile);
-            settings.initialize();
+//            XMLSettingsHandler settings = new XMLSettingsHandler(aProfile);
+//            settings.initialize();
 
-            CrawlerSettings cs = settings.getSettingsObject(null);
-            // We can use the crawl scope ATTR_NAME as all the scopes extend CrawlScope
-            CrawlScope scope = (CrawlScope) cs.getModule(CrawlScope.ATTR_NAME);
+//            CrawlerSettings cs = settings.getSettingsObject(null);
+//            // We can use the crawl scope ATTR_NAME as all the scopes extend CrawlScope
+//            CrawlScope scope = (CrawlScope) cs.getModule(CrawlScope.ATTR_NAME);
 
-            String seedsfile = (String) scope.getAttribute(CrawlScope.ATTR_SEEDS);
-            File seeds = new File(aProfile.getParent() + File.separator + seedsfile);
+//            String seedsfile = (String) scope.getAttribute(CrawlScope.ATTR_SEEDS);
+            //TODO - work out how to get seeds and profile into H3 job dir, tricky as we haven't created the job yet
+            String seedsFile = "seeds.txt";
+            File seeds = new File(aProfile.getParent() + File.separator + seedsFile);
 
             try {
             	//TODO determine why this file might exist (as sometimes it does) and fix it
@@ -749,18 +754,14 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " <context:annotation-config/>\n" +
                 "\n" +
                 "<!-- \n" +
-                "  OVERRIDES\n" +
-                "   Values elsewhere in the configuration may be replaced ('overridden') \n" +
-                "   by a Properties map declared in a PropertiesOverrideConfigurer, \n" +
-                "   using a dotted-bean-path to address individual bean properties. \n" +
-                "   This allows us to collect a few of the most-often changed values\n" +
-                "   in an easy-to-edit format here at the beginning of the model\n" +
-                "   configuration.    \n" +
+                "  OVERRIDES   \n" +
                 " -->\n" +
                 " <!-- overrides from a text property list -->\n" +
                 " <bean id=\"simpleOverrides\" class=\"org.springframework.beans.factory.config.PropertyOverrideConfigurer\">\n" +
                 "  <property name=\"properties\">\n" +
                 "   <value>\n" +
+                "# This Properties map is specified in the Java 'property list' text format\n" +
+                "# http://java.sun.com/javase/6/docs/api/java/util/Properties.html#load%28java.io.Reader%29\n" +
                 "\n" +
                 "metadata.operatorContactUrl=http://www.dia.govt.nz\n" +
                 "metadata.jobName=basic\n" +
@@ -776,12 +777,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " <bean id=\"longerOverrides\" class=\"org.springframework.beans.factory.config.PropertyOverrideConfigurer\">\n" +
                 "  <property name=\"properties\">\n" +
                 "   <props>\n" +
-                "    <prop key=\"seeds.textSource.value\">\n" +
                 "\n" +
-                "# URLS HERE\n" +
-                "http://localhost:8080/nlnzwebarchive/wayback/\n" +
-                "\n" +
-                "    </prop>\n" +
                 "   </props>\n" +
                 "  </property>\n" +
                 " </bean>\n" +
@@ -791,66 +787,24 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 "       <property name=\"operatorContactUrl\" value=\"[see override above]\"/>\n" +
                 "       <property name=\"jobName\" value=\"[see override above]\"/>\n" +
                 "       <property name=\"description\" value=\"[see override above]\"/>\n" +
-                "  <property name=\"robotsPolicyName\" value=\"ignore\"/>\n" +
-                "  <!-- <property name=\"operator\" value=\"\"/> -->\n" +
-                "  <!-- <property name=\"operatorFrom\" value=\"\"/> -->\n" +
-                "  <!-- <property name=\"organization\" value=\"\"/> -->\n" +
-                "  <!-- <property name=\"audience\" value=\"\"/> -->\n" +
-                "  <!-- <property name=\"userAgentTemplate\" \n" +
-                "         value=\"Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)\"/> -->\n" +
-                "       \n" +
-                " </bean>\n" +
-                " \n" +
-                " <!-- SEEDS: crawl starting points \n" +
-                "      ConfigString allows simple, inline specification of a moderate\n" +
-                "      number of seeds; see below comment for example of using an\n" +
-                "      arbitrarily-large external file. -->\n" +
-                " <bean id=\"seeds\" class=\"org.archive.modules.seeds.TextSeedModule\">\n" +
-                "     <property name=\"textSource\">\n" +
-                "      <bean class=\"org.archive.spring.ConfigString\">\n" +
-                "       <property name=\"value\">\n" +
-                "        <value>\n" +
-                "# [see override above]\n" +
-                "        </value>\n" +
-                "       </property>\n" +
-                "      </bean>\n" +
-                "     </property>\n" +
-                "<!-- <property name='sourceTagSeeds' value='false'/> -->\n" +
-                "<!-- <property name='blockAwaitingSeedLines' value='-1'/> -->\n" +
+                "  <property name=\"robotsPolicyName\" value=\"ignore\"/>       \n" +
                 " </bean>\n" +
                 " \n" +
                 " <!-- SEEDS ALTERNATE APPROACH: specifying external seeds.txt file in\n" +
                 "      the job directory, similar to the H1 approach. \n" +
                 "      Use either the above, or this, but not both. -->\n" +
-                " <!-- \n" +
+                "\n" +
                 " <bean id=\"seeds\" class=\"org.archive.modules.seeds.TextSeedModule\">\n" +
                 "  <property name=\"textSource\">\n" +
                 "   <bean class=\"org.archive.spring.ConfigFile\">\n" +
-                "    <property name=\"path\" value=\"seeds.txt\" />\n" +
+                "    <property name=\"path\" value=\"/seeds.txt\" />\n" +
                 "   </bean>\n" +
                 "  </property>\n" +
                 "  <property name='sourceTagSeeds' value='false'/>\n" +
                 "  <property name='blockAwaitingSeedLines' value='-1'/>\n" +
                 " </bean>\n" +
-                "  -->\n" +
                 " \n" +
                 " <bean id=\"acceptSurts\" class=\"org.archive.modules.deciderules.surt.SurtPrefixedDecideRule\">\n" +
-                "  <!-- <property name=\"decision\" value=\"ACCEPT\"/> -->\n" +
-                "  <!-- <property name=\"seedsAsSurtPrefixes\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"alsoCheckVia\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"surtsSourceFile\" value=\"\" /> -->\n" +
-                "  <!-- <property name=\"surtsDumpFile\" value=\"${launchId}/surts.dump\" /> -->\n" +
-                "  <!-- <property name=\"surtsSource\">\n" +
-                "        <bean class=\"org.archive.spring.ConfigString\">\n" +
-                "         <property name=\"value\">\n" +
-                "          <value>\n" +
-                "           # example.com\n" +
-                "           # http://www.example.edu/path1/\n" +
-                "           # +http://(org,example,\n" +
-                "          </value>\n" +
-                "         </property> \n" +
-                "        </bean>\n" +
-                "       </property> -->\n" +
                 " </bean>\n" +
                 "\n" +
                 " <!-- SCOPE: rules for which discovered URIs to crawl; order is very \n" +
@@ -912,13 +866,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " \n" +
                 " <!-- \n" +
                 "   PROCESSING CHAINS\n" +
-                "    Much of the crawler's work is specified by the sequential \n" +
-                "    application of swappable Processor modules. These Processors\n" +
-                "    are collected into three 'chains'. The CandidateChain is applied \n" +
-                "    to URIs being considered for inclusion, before a URI is enqueued\n" +
-                "    for collection. The FetchChain is applied to URIs when their \n" +
-                "    turn for collection comes up. The DispositionChain is applied \n" +
-                "    after a URI is fetched and analyzed/link-extracted.\n" +
                 "  -->\n" +
                 "  \n" +
                 " <!-- CANDIDATE CHAIN --> \n" +
@@ -926,20 +873,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " <bean id=\"candidateScoper\" class=\"org.archive.crawler.prefetch.CandidateScoper\">\n" +
                 " </bean>\n" +
                 " <bean id=\"preparer\" class=\"org.archive.crawler.prefetch.FrontierPreparer\">\n" +
-                "  <!-- <property name=\"preferenceDepthHops\" value=\"-1\" /> -->\n" +
-                "  <!-- <property name=\"preferenceEmbedHops\" value=\"1\" /> -->\n" +
-                "  <!-- <property name=\"canonicalizationPolicy\"> \n" +
-                "        <ref bean=\"canonicalizationPolicy\" />\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"queueAssignmentPolicy\"> \n" +
-                "        <ref bean=\"queueAssignmentPolicy\" />\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"uriPrecedencePolicy\"> \n" +
-                "        <ref bean=\"uriPrecedencePolicy\" />\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"costAssignmentPolicy\"> \n" +
-                "        <ref bean=\"costAssignmentPolicy\" />\n" +
-                "       </property> -->\n" +
                 " </bean>\n" +
                 " <!-- now, processors are assembled into ordered CandidateChain bean -->\n" +
                 " <bean id=\"candidateProcessors\" class=\"org.archive.modules.CandidateChain\">\n" +
@@ -971,58 +904,12 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 "  <!-- <property name=\"digestContent\" value=\"true\" /> -->\n" +
                 "  <!-- <property name=\"digestAlgorithm\" value=\"sha1\" /> -->\n" +
                 " </bean>\n" +
-                " <!-- <bean id=\"fetchWhois\" class=\"org.archive.modules.fetcher.FetchWhois\">\n" +
-                "       <property name=\"specialQueryTemplates\">\n" +
-                "        <map>\n" +
-                "         <entry key=\"whois.verisign-grs.com\" value=\"domain %s\" />\n" +
-                "         <entry key=\"whois.arin.net\" value=\"z + %s\" />\n" +
-                "         <entry key=\"whois.denic.de\" value=\"-T dn %s\" />\n" +
-                "        </map>\n" +
-                "       </property> \n" +
-                "      </bean> -->\n" +
+                "\n" +
                 " <bean id=\"fetchHttp\" class=\"org.archive.modules.fetcher.FetchHTTP\">\n" +
-                "  <!-- <property name=\"useHTTP11\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"maxLengthBytes\" value=\"0\" /> -->\n" +
-                "  <!-- <property name=\"timeoutSeconds\" value=\"1200\" /> -->\n" +
-                "  <!-- <property name=\"maxFetchKBSec\" value=\"0\" /> -->\n" +
-                "  <!-- <property name=\"defaultEncoding\" value=\"ISO-8859-1\" /> -->\n" +
-                "  <!-- <property name=\"shouldFetchBodyRule\"> \n" +
-                "        <bean class=\"org.archive.modules.deciderules.AcceptDecideRule\"/>\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"soTimeoutMs\" value=\"20000\" /> -->\n" +
-                "  <!-- <property name=\"sendIfModifiedSince\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"sendIfNoneMatch\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"sendConnectionClose\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"sendReferer\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"sendRange\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"ignoreCookies\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"sslTrustLevel\" value=\"OPEN\" /> -->\n" +
-                "  <!-- <property name=\"acceptHeaders\"> \n" +
-                "        <list>\n" +
-                "         <value>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</value>\n" +
-                "        </list>\n" +
-                "       </property>\n" +
-                "  -->\n" +
-                "  <!-- <property name=\"httpBindAddress\" value=\"\" /> -->\n" +
-                "  <!-- <property name=\"httpProxyHost\" value=\"\" /> -->\n" +
-                "  <!-- <property name=\"httpProxyPort\" value=\"0\" /> -->\n" +
-                "  <!-- <property name=\"httpProxyUser\" value=\"\" /> -->\n" +
-                "  <!-- <property name=\"httpProxyPassword\" value=\"\" /> -->\n" +
-                "  <!-- <property name=\"digestContent\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"digestAlgorithm\" value=\"sha1\" /> -->\n" +
                 " </bean>\n" +
                 " <bean id=\"extractorHttp\" class=\"org.archive.modules.extractor.ExtractorHTTP\">\n" +
                 " </bean>\n" +
                 " <bean id=\"extractorHtml\" class=\"org.archive.modules.extractor.ExtractorHTML\">\n" +
-                "  <!-- <property name=\"extractJavascript\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"extractValueAttributes\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"ignoreFormActionUrls\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"extractOnlyFormGets\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"treatFramesAsEmbedLinks\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"ignoreUnexpectedHtml\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"maxElementLength\" value=\"1024\" /> -->\n" +
-                "  <!-- <property name=\"maxAttributeNameLength\" value=\"1024\" /> -->\n" +
-                "  <!-- <property name=\"maxAttributeValueLength\" value=\"16384\" /> -->\n" +
                 " </bean>\n" +
                 " <bean id=\"extractorCss\" class=\"org.archive.modules.extractor.ExtractorCSS\">\n" +
                 " </bean> \n" +
@@ -1064,33 +951,12 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 "  <!-- <property name=\"prefix\" value=\"IAH\" /> -->\n" +
                 "  <!-- <property name=\"suffix\" value=\"${HOSTNAME}\" /> -->\n" +
                 "  <property name=\"maxFileSizeBytes\" value=\"50000000\" />\n" +
-                "  <!-- <property name=\"poolMaxActive\" value=\"1\" /> -->\n" +
-                "  <!-- <property name=\"MaxWaitForIdleMs\" value=\"500\" /> -->\n" +
-                "  <!-- <property name=\"skipIdenticalDigests\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"maxTotalBytesToWrite\" value=\"0\" /> -->\n" +
-                "  <!-- <property name=\"directory\" value=\"${launchId}\" /> -->\n" +
-                "  <!-- <property name=\"storePaths\">\n" +
-                "        <list>\n" +
-                "         <value>warcs</value>\n" +
-                "        </list>\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"template\" value=\"${prefix}-${timestamp17}-${serialno}-${heritrix.pid}~${heritrix.hostname}~${heritrix.port}\" /> -->\n" +
-                "  <!-- <property name=\"writeRequests\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"writeMetadata\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"writeRevisitForIdenticalDigests\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"writeRevisitForNotModified\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"startNewFilesOnCheckpoint\" value=\"true\" /> -->\n" +
                 " </bean>\n" +
                 " <bean id=\"candidates\" class=\"org.archive.crawler.postprocessor.CandidatesProcessor\">\n" +
                 "  <!-- <property name=\"seedsRedirectNewSeeds\" value=\"true\" /> -->\n" +
                 "  <!-- <property name=\"processErrorOutlinks\" value=\"false\" /> -->\n" +
                 " </bean>\n" +
                 " <bean id=\"disposition\" class=\"org.archive.crawler.postprocessor.DispositionProcessor\">\n" +
-                "  <!-- <property name=\"delayFactor\" value=\"5.0\" /> -->\n" +
-                "  <!-- <property name=\"minDelayMs\" value=\"3000\" /> -->\n" +
-                "  <!-- <property name=\"respectCrawlDelayUpToSeconds\" value=\"300\" /> -->\n" +
-                "  <!-- <property name=\"maxDelayMs\" value=\"30000\" /> -->\n" +
-                "  <!-- <property name=\"maxPerHostBandwidthUsageKbSec\" value=\"0\" /> -->\n" +
                 " </bean>\n" +
                 " <!-- <bean id=\"rescheduler\" class=\"org.archive.crawler.postprocessor.ReschedulingProcessor\">\n" +
                 "       <property name=\"rescheduleDelaySeconds\" value=\"-1\" />\n" +
@@ -1114,43 +980,11 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " <!-- CRAWLCONTROLLER: Control interface, unifying context -->\n" +
                 " <bean id=\"crawlController\" \n" +
                 "   class=\"org.archive.crawler.framework.CrawlController\">\n" +
-                "  <!-- <property name=\"maxToeThreads\" value=\"25\" /> -->\n" +
-                "  <!-- <property name=\"pauseAtStart\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"runWhileEmpty\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"recorderInBufferBytes\" value=\"524288\" /> -->\n" +
-                "  <!-- <property name=\"recorderOutBufferBytes\" value=\"16384\" /> -->\n" +
-                "  <!-- <property name=\"scratchDir\" value=\"scratch\" /> -->\n" +
                 " </bean>\n" +
                 " \n" +
                 " <!-- FRONTIER: Record of all URIs discovered and queued-for-collection -->\n" +
                 " <bean id=\"frontier\" \n" +
                 "   class=\"org.archive.crawler.frontier.BdbFrontier\">\n" +
-                "  <!-- <property name=\"queueTotalBudget\" value=\"-1\" /> -->\n" +
-                "  <!-- <property name=\"balanceReplenishAmount\" value=\"3000\" /> -->\n" +
-                "  <!-- <property name=\"errorPenaltyAmount\" value=\"100\" /> -->\n" +
-                "  <!-- <property name=\"precedenceFloor\" value=\"255\" /> -->\n" +
-                "  <!-- <property name=\"queuePrecedencePolicy\">\n" +
-                "        <bean class=\"org.archive.crawler.frontier.precedence.BaseQueuePrecedencePolicy\" />\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"snoozeLongMs\" value=\"300000\" /> -->\n" +
-                "  <!-- <property name=\"retryDelaySeconds\" value=\"900\" /> -->\n" +
-                "  <!-- <property name=\"maxRetries\" value=\"30\" /> -->\n" +
-                "  <!-- <property name=\"recoveryLogEnabled\" value=\"true\" /> -->\n" +
-                "  <!-- <property name=\"maxOutlinks\" value=\"6000\" /> -->\n" +
-                "  <!-- <property name=\"extractIndependently\" value=\"false\" /> -->\n" +
-                "  <!-- <property name=\"outbound\">\n" +
-                "        <bean class=\"java.util.concurrent.ArrayBlockingQueue\">\n" +
-                "         <constructor-arg value=\"200\"/>\n" +
-                "         <constructor-arg value=\"true\"/>\n" +
-                "        </bean>\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"inbound\">\n" +
-                "        <bean class=\"java.util.concurrent.ArrayBlockingQueue\">\n" +
-                "         <constructor-arg value=\"40000\"/>\n" +
-                "         <constructor-arg value=\"true\"/>\n" +
-                "        </bean>\n" +
-                "       </property> -->\n" +
-                "  <!-- <property name=\"dumpPendingAtClose\" value=\"false\" /> -->\n" +
                 " </bean>\n" +
                 " \n" +
                 " <!-- URI UNIQ FILTER: Used by frontier to remember already-included URIs --> \n" +
@@ -1219,30 +1053,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " </property>\n" +
                 "</bean>\n" +
                 "\n" +
-                "<!--\n" +
-                "   EXAMPLE SETTINGS OVERLAY SHEET-ASSOCIATION\n" +
-                "   A SheetAssociation says certain URIs should have certain overlay Sheets\n" +
-                "   applied. This example applies two sheets to URIs matching two SURT-prefixes.\n" +
-                "   New associations may also be added mid-crawl using the scripting facility.\n" +
-                "  -->\n" +
-                "\n" +
-                "<!--\n" +
-                "<bean class='org.archive.crawler.spring.SurtPrefixesSheetAssociation'>\n" +
-                " <property name='surtPrefixes'>\n" +
-                "  <list>\n" +
-                "   <value>http://(org,example,</value>\n" +
-                "   <value>http://(com,example,www,)/</value>\n" +
-                "  </list>\n" +
-                " </property>\n" +
-                " <property name='targetSheetNames'>\n" +
-                "  <list>\n" +
-                "   <value>veryPolite</value>\n" +
-                "   <value>smallBudget</value>\n" +
-                "  </list>\n" +
-                " </property>\n" +
-                "</bean>\n" +
-                "-->\n" +
-                "\n" +
                 " <!-- \n" +
                 "   OPTIONAL BUT RECOMMENDED BEANS\n" +
                 "  -->\n" +
@@ -1263,26 +1073,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " </bean>\n" +
                 " \n" +
                 " <!-- \n" +
-                "   OPTIONAL BEANS\n" +
-                "    Uncomment and expand as needed, or if non-default alternate \n" +
-                "    implementations are preferred.\n" +
-                "  -->\n" +
-                " \n" +
-                " <!-- DISK SPACE MONITOR: \n" +
-                "      Pauses the crawl if disk space at monitored paths falls below minimum threshold -->\n" +
-                " <!-- \n" +
-                " <bean id=\"diskSpaceMonitor\" class=\"org.archive.crawler.monitor.DiskSpaceMonitor\">\n" +
-                "   <property name=\"pauseThresholdMiB\" value=\"500\" />\n" +
-                "   <property name=\"monitorConfigPaths\" value=\"true\" />\n" +
-                "   <property name=\"monitorPaths\">\n" +
-                "     <list>\n" +
-                "       <value>PATH</value>\n" +
-                "     </list>\n" +
-                "   </property>\n" +
-                " </bean>\n" +
-                " -->\n" +
-                " \n" +
-                " <!-- \n" +
                 "   REQUIRED STANDARD BEANS\n" +
                 "    It will be very rare to replace or reconfigure the following beans.\n" +
                 "  -->\n" +
@@ -1290,23 +1080,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " <!-- STATISTICSTRACKER: standard stats/reporting collector -->\n" +
                 " <bean id=\"statisticsTracker\" \n" +
                 "   class=\"org.archive.crawler.reporting.StatisticsTracker\" autowire=\"byName\">\n" +
-                "  <!-- <property name=\"reports\">\n" +
-                "        <list>\n" +
-                "         <bean id=\"crawlSummaryReport\" class=\"org.archive.crawler.reporting.CrawlSummaryReport\" />\n" +
-                "         <bean id=\"seedsReport\" class=\"org.archive.crawler.reporting.SeedsReport\" />\n" +
-                "         <bean id=\"hostsReport\" class=\"org.archive.crawler.reporting.HostsReport\">\n" +
-                "     \t\t<property name=\"maxSortSize\" value=\"-1\" />\n" +
-                "     \t\t<property name=\"suppressEmptyHosts\" value=\"false\" />\n" +
-                "         </bean>\n" +
-                "         <bean id=\"sourceTagsReport\" class=\"org.archive.crawler.reporting.SourceTagsReport\" />\n" +
-                "         <bean id=\"mimetypesReport\" class=\"org.archive.crawler.reporting.MimetypesReport\" />\n" +
-                "         <bean id=\"responseCodeReport\" class=\"org.archive.crawler.reporting.ResponseCodeReport\" />\n" +
-                "         <bean id=\"processorsReport\" class=\"org.archive.crawler.reporting.ProcessorsReport\" />\n" +
-                "         <bean id=\"frontierSummaryReport\" class=\"org.archive.crawler.reporting.FrontierSummaryReport\" />\n" +
-                "         <bean id=\"frontierNonemptyReport\" class=\"org.archive.crawler.reporting.FrontierNonemptyReport\" />\n" +
-                "         <bean id=\"toeThreadsReport\" class=\"org.archive.crawler.reporting.ToeThreadsReport\" />\n" +
-                "        </list>\n" +
-                "       </property> -->\n" +
                 " </bean>\n" +
                 " \n" +
                 " <!-- CRAWLERLOGGERMODULE: shared logging facility -->\n" +
@@ -1344,9 +1117,23 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 " \n" +
                 "</beans>\n";
 
-        ha.initiateHarvest("T6666", profileText, "http://localhost:8080/nlnzwebarchive/wayback/");
+        ha.setHarvestCoordinatorNotifier(new HarvestAgentListener() {
+            @Override
+            public void heartbeat(HarvestAgentStatusDTO aStatus) {}
 
+            @Override
+            public void harvestComplete(HarvestResultDTO aResult) {}
 
+            @Override
+            public void notification(Long aTargetInstanceOid, int notificationCategory, String aMessageType) {}
+        });
+
+        ha.initiateHarvest("T6666", profileText, "http://localhost:8080/wct/");
+        try {Thread.sleep(5000);}catch (InterruptedException e){}
+
+//        ha.stop("T6666");
+//        ha.abort("T6666");
+        System.out.println("Finished HarvestAgentH3 test");
     }
 
 }

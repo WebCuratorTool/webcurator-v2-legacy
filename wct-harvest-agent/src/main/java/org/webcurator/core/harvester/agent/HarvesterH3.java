@@ -321,7 +321,7 @@ public class HarvesterH3 implements Harvester {
         }
 
         List<ConfigFile> configFiles = h3job.configFiles;
-        ConfigFile warcWriter = null; //TODO - do lambda here
+        ConfigFile warcWriter = null;
         for(ConfigFile config : configFiles){
             if(config.key.equals("warcWriter.directory")){
                 warcWriter = config;
@@ -454,10 +454,12 @@ public class HarvesterH3 implements Harvester {
             // Update cxml file and build
             if(jobStatus.statusDescription.equals("Unbuilt")){
                 // Update cxml file
-                String destDirPath = jobStatus.primaryConfig.replace("" + File.separator + "crawler-beans.cxml", "");
-                File srcFile = aProfile.getAbsoluteFile();
-                File destDir = new File(destDirPath);
-                Heritrix3Wrapper.copyFileAs(srcFile, destDir, "crawler-beans.cxml");
+                String destDir = jobStatus.primaryConfig.replace("" + File.separator + "crawler-beans.cxml", "");
+                String srcDir = aProfile.getPath().substring(0, aProfile.getPath().lastIndexOf(File.separator));
+                Heritrix3Wrapper.copyFileAs(aProfile, new File(destDir), "crawler-beans.cxml");
+                // Update seeds file
+                File srcSeedsFile = new File(srcDir + File.separator + "seeds.txt");
+                Heritrix3Wrapper.copyFileAs(srcSeedsFile, new File(destDir), "seeds.txt");
                 // Build H3 job
                 jobStatus = heritrix.buildJobConfiguration(aJobName).job;
             }
@@ -524,6 +526,9 @@ public class HarvesterH3 implements Harvester {
             if(crawlStarted != null && crawlStarted.job.statusDescription.equals("Active: RUNNING")){
                 started = true;
                 h3job = crawlStarted.job;
+                // Pre-load dir vars
+                getHarvestLogDir();
+                getHarvestDigitalAssetsDirs();
             }
 
         }
@@ -580,11 +585,11 @@ public class HarvesterH3 implements Harvester {
             }
 
 
-            if (h3job != null) {
+//            if (h3job != null) {
 
     //            heritrix.getJobHandler().deleteJob(job.getUID());
 //                heritrix.rescanJobDirectory();
-            }
+//            }
 
     //        heritrix.stopCrawling();
     //        if (log.isInfoEnabled()) {
