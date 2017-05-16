@@ -152,19 +152,22 @@ public class HarvesterH3 implements Harvester {
             status.setJobName(h3job.shortName);
             status.setStatus(h3job.crawlControllerState);
 
-            if (h3job.elapsedReport.elapsedMilliseconds > 0) {
-                status.setCurrentURIs(h3job.rateReport.currentDocsPerSecond);
-                status.setCurrentKBs(h3job.rateReport.currentKiBPerSec);
-                status.setAverageURIs(h3job.rateReport.averageDocsPerSecond);
-                status.setAverageKBs(h3job.rateReport.averageKiBPerSec);
-                status.setElapsedTime(h3job.elapsedReport.elapsedMilliseconds);
-                //TODO - total bytes written
+            if(h3job.crawlControllerState != null){
+                if (h3job.elapsedReport.elapsedMilliseconds > 0) {
+                    status.setCurrentURIs(h3job.rateReport.currentDocsPerSecond);
+                    status.setCurrentKBs(h3job.rateReport.currentKiBPerSec);
+                    status.setAverageURIs(h3job.rateReport.averageDocsPerSecond);
+                    status.setAverageKBs(h3job.rateReport.averageKiBPerSec);
+                    status.setElapsedTime(h3job.elapsedReport.elapsedMilliseconds);
+                    //TODO - total bytes written
 //	                status.setDataDownloaded(st.totalBytesWritten());
-                status.setUrlsDownloaded(h3job.uriTotalsReport.downloadedUriCount);
-                status.setUrlsQueued(h3job.uriTotalsReport.queuedUriCount);
-                //TODO - failed URIs
+                    status.setUrlsDownloaded(h3job.uriTotalsReport.downloadedUriCount);
+                    status.setUrlsQueued(h3job.uriTotalsReport.queuedUriCount);
+                    //TODO - failed URIs
 //                    status.setUrlsFailed(statsTrack.failedFetchAttempts());
+                }
             }
+
         }
 
         return status;

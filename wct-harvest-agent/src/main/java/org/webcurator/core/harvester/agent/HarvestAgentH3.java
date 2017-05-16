@@ -44,7 +44,7 @@ import java.util.*;
  */
 public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider {
     /** The name of the profile file. */
-    private static final String PROFILE_NAME = "order.xml";
+    private static final String PROFILE_NAME = "crawler-beans.cxml";
     /** The name of the base harvest directory. */
     private String baseHarvestDirectory = "";
     /** the name of the harvest agent. */
@@ -215,6 +215,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         log.info("Performing Harvest Completion for job " + aJob);
 
+        //TODO - what does old heritrix do for this last heartbeat
         harvestCoordinatorNotifier.heartbeat(getStatus());
 
         // If aborted, tidy up and cancel.
@@ -272,7 +273,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         // Send the reports to the DAS.
         if (aFailureStep <= FAILED_ON_SEND_RPTS) {
 	        try {
-	        	File[] fileList = getFileArray(harvester.getHarvestDir(), NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_REPORTS)), NotEmptyFileFilter.notEmpty(new ExactNameFilter(PROFILE_NAME)));
+                File reportsDir = new File(harvester.getHarvestDir().getPath() + File.separator + "reports");
+	        	File[] fileList = getFileArray(reportsDir, NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_REPORTS)), NotEmptyFileFilter.notEmpty(new ExactNameFilter(PROFILE_NAME)));
                 log.debug("Sending harvest reports to digital asset store for job " + aJob);
                 for(int i=0;i<fileList.length;i++) {
                 	digitalAssetStore.save(aJob, Constants.DIR_REPORTS, fileList[i]);
@@ -311,7 +313,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
     /** @see HarvestAgent#getStatus(). */
     public HarvestAgentStatusDTO getStatus() {
-        //TODO - done
+        //TODO - might need adjustment for when harvest has stopped/gone
         HarvestAgentStatusDTO status = new HarvestAgentStatusDTO();
         status.setHost(host);
         status.setPort(port);
@@ -413,8 +415,20 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         logsDir = harvester.getHarvestDir();
         fileList = logsDir.listFiles();
         for(File f: fileList) {
-            if (f.getName().endsWith(Constants.EXTN_REPORTS) || f.getName().equals(PROFILE_NAME)) {
+            if (f.getName().equals(PROFILE_NAME)) {
                 logFiles.add(f.getName());
+                break;
+            }
+        }
+
+        // Reports are stored in their own dir with H3, and are not written until harvest finished/stopped.
+        File reportsDir = new File(logsDir.getPath() + File.separator + "reports");
+        fileList = reportsDir.listFiles();
+        if(fileList != null){
+            for(File f: fileList) {
+                if (f.getName().endsWith(Constants.EXTN_REPORTS)) {
+                    logFiles.add(f.getName());
+                }
             }
         }
 
@@ -442,7 +456,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         logsDir = harvester.getHarvestDir();
         fileList = logsDir.listFiles();
         for(File f: fileList) {
-            if (f.getName().endsWith(Constants.EXTN_REPORTS) || f.getName().equals(PROFILE_NAME)) {
+            if (f.getName().equals(PROFILE_NAME)) {
         		LogFilePropertiesDTO lf = new LogFilePropertiesDTO();
         		lf.setName(f.getName());
         		lf.setPath(f.getAbsolutePath());
@@ -451,6 +465,23 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         		logFiles.add(lf);
             }
         }
+
+        // Reports are stored in their own dir with H3
+        File reportsDir = new File(logsDir.getPath() + File.separator + "reports");
+        fileList = reportsDir.listFiles();
+        if(fileList != null){
+            for(File f: fileList) {
+                if (f.getName().endsWith(Constants.EXTN_REPORTS)) {
+                    LogFilePropertiesDTO lf = new LogFilePropertiesDTO();
+                    lf.setName(f.getName());
+                    lf.setPath(f.getAbsolutePath());
+                    lf.setLengthString(HarvesterStatusUtil.formatData(f.length()));
+                    lf.setLastModifiedDate(new Date(f.lastModified()));
+                    logFiles.add(lf);
+                }
+            }
+        }
+
         LogFilePropertiesDTO[] result = new LogFilePropertiesDTO[logFiles.size()];
         int i = 0;
         for(LogFilePropertiesDTO r: logFiles) {
@@ -603,7 +634,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 //            CrawlScope scope = (CrawlScope) cs.getModule(CrawlScope.ATTR_NAME);
 
 //            String seedsfile = (String) scope.getAttribute(CrawlScope.ATTR_SEEDS);
-            //TODO - work out how to get seeds and profile into H3 job dir, tricky as we haven't created the job yet
             String seedsFile = "seeds.txt";
             File seeds = new File(aProfile.getParent() + File.separator + seedsFile);
 
@@ -701,7 +731,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         if (log.isDebugEnabled()) {
     		log.debug("updating profile overrides for " + aJob);
     	}
-
+        //TODO - as is this is now redundant as the profile is copied over to H3 job dir.
+        //TODO - updating the profile is possible with H3, but would require more work so out of scope for now.
         createProfile(aJob, aProfile);
 	}
 
@@ -727,7 +758,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             if (log.isDebugEnabled()) {
                 log.debug("Failed to complete purge of aborted instance data: " + e.getMessage());
             }
-		}				
+		}
+
 	}
 
 
@@ -1129,10 +1161,32 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         });
 
         ha.initiateHarvest("T6666", profileText, "http://localhost:8080/wct/");
-        try {Thread.sleep(5000);}catch (InterruptedException e){}
+        try {Thread.sleep(50000);}catch (InterruptedException e){}
 
+        //************
+        // Done testing
+        //************
 //        ha.stop("T6666");
 //        ha.abort("T6666");
+//        List<File> logFiles = ha.getLogFileNames("T6666");
+//        LogFilePropertiesDTO[] logProps = ha.getLogFileAttributes("T6666");
+//        File logFile = ha.getLogFile("T6666", "nonfatal-errors.log");
+//        ha.completeHarvest("T6666", 0); //TODO - can't be completely tested until HA can talk to DAS
+//        ha.pause("T6666");
+//        ha.resume("T6666");
+//        ha.updateProfileOverrides("T6666", "");
+        ha.stop("T6666");
+        String[] tiS = {"T6666"};
+        ha.purgeAbortedTargetInstances(tiS);
+
+
+
+        //************
+        // Still testing
+        //************
+
+        //TODO - getStatus could need work
+//        ha.getStatus();
         System.out.println("Finished HarvestAgentH3 test");
     }
 
