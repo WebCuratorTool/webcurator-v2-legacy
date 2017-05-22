@@ -32,9 +32,7 @@ import org.webcurator.domain.model.core.LogFilePropertiesDTO;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -133,7 +131,9 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         Harvester harvester = getHarvester(aJob);
         if (harvester != null) {
             // Remove base dir of job
-            harvestDir = harvester.getHarvestDir().getParentFile();
+            if(harvester.getHarvestDir() != null){
+                harvestDir = harvester.getHarvestDir().getParentFile();
+            }
             harvester.deregister();
         }
 
@@ -604,6 +604,27 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         }
         catch (IOException e) {
             throw new HarvestAgentException("Failed while creating the job profile " + order.getAbsolutePath() + " " + e.getMessage(), e);
+        }
+
+        // Load default H3 profile if it exists
+        File defaultProfile = new File(baseHarvestDirectory + File.separator + "defaultH3Profile.cxml");
+        StringBuilder defaultProfileText = new StringBuilder();
+        try {
+            if (defaultProfile.exists()) {
+                BufferedReader reader = new BufferedReader(new FileReader(defaultProfile));
+                String line = null;
+                while((line = reader.readLine()) != null){
+                    defaultProfileText.append(line);
+                    defaultProfileText.append("\r\n");
+                }
+                reader.close();
+                aProfile = defaultProfileText.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            throw new HarvestAgentException("Failed to write the job profile " + order.getAbsolutePath() + " " + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new HarvestAgentException("Failed to write the job profile " + order.getAbsolutePath() + " " + e.getMessage(), e);
         }
 
         try {
@@ -1176,8 +1197,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 //        ha.resume("T6666");
 //        ha.updateProfileOverrides("T6666", "");
         ha.stop("T6666");
-        String[] tiS = {"T6666"};
-        ha.purgeAbortedTargetInstances(tiS);
+//        String[] tiS = {"T6666"};
+//        ha.purgeAbortedTargetInstances(tiS);
 
 
 

@@ -323,20 +323,24 @@ public class HarvesterH3 implements Harvester {
             return harvestDir;
         }
 
-        List<ConfigFile> configFiles = h3job.configFiles;
-        ConfigFile warcWriter = null;
-        for(ConfigFile config : configFiles){
-            if(config.key.equals("warcWriter.directory")){
-                warcWriter = config;
-                break;
+        if(h3job != null){
+            ConfigFile warcWriter = null;
+            if(h3job.configFiles != null){
+                List<ConfigFile> configFiles = h3job.configFiles;
+                for(ConfigFile config : configFiles){
+                    if(config.key.equals("warcWriter.directory")){
+                        warcWriter = config;
+                        break;
+                    }
+                }
+            }
+
+            if (warcWriter != null) {
+                String harvestDirPath = warcWriter.path;
+                harvestDir = new File(harvestDirPath);
+                return harvestDir;
             }
         }
-        if (h3job != null && warcWriter != null) {
-            String harvestDirPath = warcWriter.path;
-            harvestDir = new File(harvestDirPath);
-            return harvestDir;
-        }
-
         return null;
     }
 
