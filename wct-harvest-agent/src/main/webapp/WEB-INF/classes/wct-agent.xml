@@ -57,29 +57,50 @@
 		<property name="port" value="${digitalAssetStore.port}"/>
 	</bean>
 	<bean id="heartbeatJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="group" value="HeartBeatGroup"/>
-		<property name="name" value="HeartBeat"/>
-		<property name="jobClass" value="org.webcurator.core.harvester.agent.schedule.HarvestAgentHeartBeatJob"/>
-		<property name="jobDataAsMap">
-    		<map>
-      			<entry key="harvestAgent" value-ref="harvestAgent"/>
-      			<entry key="notifier" value-ref="harvestCoordinatorNotifier"/>
-    		</map>
-	  	</property>
-	</bean>		
+	<property name="group" value="HeartBeatGroup"/>
+	<property name="name" value="HeartBeat"/>
+	<property name="jobClass" value="org.webcurator.core.harvester.agent.schedule.HarvestAgentHeartBeatJob"/>
+	<property name="jobDataAsMap">
+		<map>
+			<entry key="harvestAgent" value-ref="harvestAgent"/>
+			<entry key="notifier" value-ref="harvestCoordinatorNotifier"/>
+		</map>
+	</property>
+</bean>
 	<bean id="heartbeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="group" value="HeartBeatTriggerGroup"/>
 		<property name="name" value="HeartBeatTrigger"/>
 		<property name="jobDetail" ref="heartbeatJob"/>
 		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${heartbeatTrigger.startDelay}"/>
+		<property name="startDelay" value="${heartbeatTrigger.startDelay}"/>
 		<!-- repeat every xx milliseconds -->
-  		<property name="repeatInterval" value="${heartbeatTrigger.repeatInterval}"/>
-	</bean>	
+		<property name="repeatInterval" value="${heartbeatTrigger.repeatInterval}"/>
+	</bean>
+	<bean id="h3pollJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="group" value="H3PollGroup"/>
+		<property name="name" value="H3Poll"/>
+		<property name="jobClass" value="org.webcurator.core.harvester.agent.schedule.HarvestAgentH3PollJob"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="harvestAgent" value-ref="harvestAgent"/>
+				<entry key="notifier" value-ref="harvestCoordinatorNotifier"/>
+			</map>
+		</property>
+	</bean>
+	<bean id="h3pollTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="H3PollTriggerGroup"/>
+		<property name="name" value="H3PollTrigger"/>
+		<property name="jobDetail" ref="h3pollJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+		<property name="startDelay" value="${h3pollTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds -->
+		<property name="repeatInterval" value="${h3pollTrigger.repeatInterval}"/>
+	</bean>
 	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="triggers">
 			<list>
 		    	<ref bean="heartbeatTrigger"/>
+				<ref bean="h3pollTrigger"/>
 		    	<ref bean="checkProcessorTrigger"/>
 		    </list>
 		</property>
