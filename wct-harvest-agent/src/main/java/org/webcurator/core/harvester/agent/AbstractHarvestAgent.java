@@ -39,7 +39,8 @@ public abstract class AbstractHarvestAgent implements HarvestAgent {
      * @see org.webcurator.core.harvester.agent.HarvestAgent#initiateHarvest(java.lang.String, java.lang.String, java.lang.String)
      */
     public void initiateHarvest(String aJob, String aProfile, String aSeeds) {        
-        Harvester harvester = new HarvesterHeritrix(aJob);        
+        Harvester harvester = new HarvesterH3(aJob);
+//        Harvester harvester = new HarvesterHeritrix(aJob);
         harvesters.put(aJob, harvester);
     }
 

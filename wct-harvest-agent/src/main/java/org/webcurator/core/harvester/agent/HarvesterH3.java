@@ -30,7 +30,9 @@ import org.archive.crawler.settings.XMLSettingsHandler;
 import org.archive.crawler.writer.ARCWriterProcessor;
 import org.archive.crawler.writer.WARCWriterProcessor;
 import org.netarchivesuite.heritrix3wrapper.jaxb.ConfigFile;
+import org.netarchivesuite.heritrix3wrapper.jaxb.Engine;
 import org.netarchivesuite.heritrix3wrapper.jaxb.Job;
+import org.netarchivesuite.heritrix3wrapper.jaxb.JobShort;
 import org.webcurator.core.harvester.agent.exception.HarvesterException;
 import org.webcurator.core.harvester.util.AlertLogger;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
@@ -142,32 +144,46 @@ public class HarvesterH3 implements Harvester {
 
     /** @see Harvester#getStatus(). */
     public HarvesterStatusDTO getStatus() {
-    	if (log.isDebugEnabled()) {
-    		log.debug("Getting current status for " + name);
-    	}
+        if (log.isDebugEnabled()) {
+            log.debug("Getting current status for " + name);
+        }
 
-        heritrix.rescanJobDirectory();
-        h3job = heritrix.job(h3job.shortName).job;
         if (h3job != null) {
-            status.setJobName(h3job.shortName);
-            status.setStatus(h3job.crawlControllerState);
+            // Get update of job from H3 engine
+            heritrix.rescanJobDirectory();
+            h3job = heritrix.job(h3job.shortName).job;
+            if (h3job != null) {
 
-            if(h3job.crawlControllerState != null){
-                if (h3job.elapsedReport.elapsedMilliseconds > 0) {
-                    status.setCurrentURIs(h3job.rateReport.currentDocsPerSecond);
-                    status.setCurrentKBs(h3job.rateReport.currentKiBPerSec);
-                    status.setAverageURIs(h3job.rateReport.averageDocsPerSecond);
-                    status.setAverageKBs(h3job.rateReport.averageKiBPerSec);
-                    status.setElapsedTime(h3job.elapsedReport.elapsedMilliseconds);
-                    //TODO - total bytes written
-//	                status.setDataDownloaded(st.totalBytesWritten());
-                    status.setUrlsDownloaded(h3job.uriTotalsReport.downloadedUriCount);
-                    status.setUrlsQueued(h3job.uriTotalsReport.queuedUriCount);
-                    //TODO - failed URIs
-//                    status.setUrlsFailed(statsTrack.failedFetchAttempts());
+                status.setJobName(h3job.shortName);
+                status.setStatus(h3job.crawlControllerState);
+
+                if (h3job.crawlControllerState != null) {
+
+                    //TODO - this should be more generic impl, rather than using old heritrix 1.14.1 statuses
+                    if(h3job.crawlControllerState.equals("NASCENT") && !h3job.isLaunchable){
+                        status.setStatus("Could not launch job - Fatal InitializationException");
+                    }
+
+                    if (h3job.elapsedReport.elapsedMilliseconds > 0) {
+                        status.setCurrentURIs(h3job.rateReport.currentDocsPerSecond);
+                        status.setCurrentKBs(h3job.rateReport.currentKiBPerSec);
+                        status.setAverageURIs(h3job.rateReport.averageDocsPerSecond);
+                        status.setAverageKBs(h3job.rateReport.averageKiBPerSec);
+                        status.setElapsedTime(h3job.elapsedReport.elapsedMilliseconds);
+                        //TODO - total bytes written
+                        //	                status.setDataDownloaded(st.totalBytesWritten());
+                        status.setUrlsDownloaded(h3job.uriTotalsReport.downloadedUriCount);
+                        status.setUrlsQueued(h3job.uriTotalsReport.queuedUriCount);
+                        //TODO - failed URIs
+                        //                    status.setUrlsFailed(statsTrack.failedFetchAttempts());
+                    }
                 }
             }
-
+            else{
+                //TODO - If job no longer exits in H3 engine, then maybe remove from this HarvestH3 object
+                System.out.println("HarvesterH3 - job no longer exsts in H3 engine");
+//            status = null;
+            }
         }
 
         return status;
@@ -189,10 +205,22 @@ public class HarvesterH3 implements Harvester {
 
             try {
                 String subDirName = "warcs";
-                File dir = getHarvestDir();
+                getHarvestDir();
 
-                if (dir != null) {
-                    outputDirs.add(new File(dir.getAbsolutePath() + File.separator + subDirName));
+                ConfigFile warcBase = null;
+                if(h3job.configFiles != null){
+                    List<ConfigFile> configFiles = h3job.configFiles;
+                    for(ConfigFile config : configFiles){
+                        if(config.key.equals("warcWriter.directory")){
+                            warcBase = config;
+                            break;
+                        }
+                    }
+                }
+
+                if (warcBase != null) {
+                    String harvestWarcsPath = warcBase.path;
+                    outputDirs.add(new File(harvestWarcsPath + File.separator + subDirName));
                 }
 
                 if(outputDirs != null && !outputDirs.isEmpty()) {
@@ -294,13 +322,22 @@ public class HarvesterH3 implements Harvester {
         }
 
         if (h3job != null) {
-
             try {
-                String subDirName = "logs";
-                File dir = getHarvestDir();
+                getHarvestDir();
+                ConfigFile logsBase = null;
+                if(h3job.configFiles != null){
+                    List<ConfigFile> configFiles = h3job.configFiles;
+                    for(ConfigFile config : configFiles){
+                        if(config.key.equals("loggerModule.path")){
+                            logsBase = config;
+                            break;
+                        }
+                    }
+                }
 
-                if (dir != null) {
-                    harvestLogsDir = new File(dir.getAbsolutePath() + File.separator + subDirName);
+                if (logsBase != null) {
+                    String harvestLogsPath = logsBase.path;
+                    harvestLogsDir = new File(harvestLogsPath);
                     return harvestLogsDir;
                 }
             } catch (Exception e) {
@@ -324,22 +361,29 @@ public class HarvesterH3 implements Harvester {
         }
 
         if(h3job != null){
-            ConfigFile warcWriter = null;
+            ConfigFile jobBase = null;
             if(h3job.configFiles != null){
                 List<ConfigFile> configFiles = h3job.configFiles;
                 for(ConfigFile config : configFiles){
-                    if(config.key.equals("warcWriter.directory")){
-                        warcWriter = config;
+                    if(config.name.equals("job base")){
+                        jobBase = config;
                         break;
                     }
                 }
             }
 
-            if (warcWriter != null) {
-                String harvestDirPath = warcWriter.path;
+            if (jobBase != null) {
+                String harvestDirPath = jobBase.path;
                 harvestDir = new File(harvestDirPath);
                 return harvestDir;
             }
+
+            if(h3job.primaryConfig != null){
+                String harvestDirPath = new File(h3job.primaryConfig).getParent();
+                harvestDir = new File(harvestDirPath);
+                return harvestDir;
+            }
+
         }
         return null;
     }
@@ -367,9 +411,6 @@ public class HarvesterH3 implements Harvester {
 //            job.getSettingsHandler().initialize();
 //            job.kickUpdate();
             h3job = heritrix.unpauseJob(h3job.shortName).job;
-
-            EngineResult er = heritrix.rescanJobDirectory();
-//            System.out.println("sdfkdsg");
         }
     }
 
@@ -469,6 +510,9 @@ public class HarvesterH3 implements Harvester {
                 Heritrix3Wrapper.copyFileAs(srcSeedsFile, new File(destDir), "seeds.txt");
                 // Build H3 job
                 jobStatus = heritrix.buildJobConfiguration(aJobName).job;
+                // Set h3Job now, in case of any errors we can still deregister
+                h3job = jobStatus;
+                getHarvestDir();
             }
             else{
                 log.error("Failed to start harvester " + name + ": Could not build H3 job.");
@@ -544,13 +588,14 @@ public class HarvesterH3 implements Harvester {
         		log.error("Failed to start harvester " + name + ": " + e.getMessage(), e);
         	}
 
-        	try {
-				deregister();
-			} catch (Throwable ex) {
-				if (log.isWarnEnabled()) {
-					log.warn("Failed to deregister harvester " + name + ": " + ex.getMessage(), ex);
-				}
-			}
+//        	try {
+//				deregister();
+//                h3job = null;
+//			} catch (Throwable ex) {
+//				if (log.isWarnEnabled()) {
+//					log.warn("Failed to deregister harvester " + name + ": " + ex.getMessage(), ex);
+//				}
+//			}
 
             throw new HarvesterException("Failed to start harvester " + name + ": " + e.getMessage(), e);
         }
@@ -574,7 +619,7 @@ public class HarvesterH3 implements Harvester {
 
                 // If status is in (RUNNING, PAUSED)
                 if (preTeardownJob.availableActions.contains("terminate")) {
-                    postTeardownJob = heritrix.teardownJob(jobName).job;
+                    postTeardownJob = heritrix.terminateJob(jobName).job;
                     EngineResult er = heritrix.rescanJobDirectory();
 
                     if (log.isDebugEnabled()) {
@@ -586,9 +631,9 @@ public class HarvesterH3 implements Harvester {
                 }
 
 
-                if (aborted) {
-                    deregister();
-                }
+//                if (aborted) {
+//                    deregister();
+//                }
             }
 
 
@@ -625,6 +670,27 @@ public class HarvesterH3 implements Harvester {
     /** @see Harvester#deregister(). */
     public void deregister() {    	
 //    	Heritrix.unregisterMBean(Heritrix.getMBeanServer(), heritrix.getMBeanName());
+        if(h3job != null) {
+
+            // Get job
+            String jobName = h3job.shortName;
+            Job preTeardownJob = heritrix.job(jobName).job;
+            Job postTeardownJob = null;
+
+            // If job can be torn down
+            //TODO - do we need to wait for job to finish terminating, if aborted
+//            JobResult crawlStarted = heritrix.waitForJobState(jobName, Heritrix3Wrapper.CrawlControllerState.RUNNING, 50, 1000);
+            if (preTeardownJob.availableActions.contains("teardown")) {
+                postTeardownJob = heritrix.teardownJob(jobName).job;
+
+                if (log.isDebugEnabled()) {
+                    //TODO - some check to make sure teardown successful
+//                    if(postTeardownJob.crawlExitStatus)
+                    log.debug("H3 job " + h3job.shortName + " being torn down");
+                }
+//                h3job = null;
+            }
+        }
     }
 
 	/**

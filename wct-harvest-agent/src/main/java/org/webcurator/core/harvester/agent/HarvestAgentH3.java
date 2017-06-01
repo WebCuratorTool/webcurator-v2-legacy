@@ -94,10 +94,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             if (log.isErrorEnabled()) {
                 log.error("Failed to initiate harvest for " + aJob + " : " + e.getMessage(), e);
             }
-
             abort(aJob);
-
-            throw new HarvestAgentException("Failed to initiate harvest for " + aJob + " : " + e.getMessage(), e);
+//            throw new HarvestAgentException("Failed to initiate harvest for " + aJob + " : " + e.getMessage(), e);
         }
 
         harvestCoordinatorNotifier.heartbeat(getStatus());
@@ -113,7 +111,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             harvester.abort();
         }
 
-        tidy(aJob);
+//        tidy(aJob);
     }
 
     /**
@@ -130,10 +128,14 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         File harvestDir = null;
         Harvester harvester = getHarvester(aJob);
         if (harvester != null) {
-            // Remove base dir of job
-            if(harvester.getHarvestDir() != null){
-                harvestDir = harvester.getHarvestDir().getParentFile();
+            // If build failed then we want to leave harvest dir there for troubleshooting
+            if(!harvester.getStatus().getStatus().equals("Could not launch job - Fatal InitializationException")){
+                // Remove base dir of job
+                if(harvester.getHarvestDir() != null){
+                    harvestDir = harvester.getHarvestDir();
+                }
             }
+
             harvester.deregister();
         }
 
@@ -208,7 +210,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
 
 
-
     /** @see HarvestAgent#completeHarvest(String, int). */
     public int completeHarvest(String aJob, int aFailureStep) {
         Harvester harvester = getHarvester(aJob);
@@ -238,14 +239,17 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             log.debug("Getting digital assets to send to store for job " + aJob);
 
 	        try {
-	            File[] fileList = getFileArray( das, new NegateFilter(new ExtensionFileFilter(Constants.EXTN_OPEN_ARC)));
-	            int numberOfFiles = fileList.length;
+                // BE AWARE - if a harvest is stopped before any warcs are written then a null pointer exception can be thrown
+                // when getting the file list of the warc dir, because the warc dir may not exist -causing an infinite loop.
+                File[] fileList = getFileArray( das, new NegateFilter(new ExtensionFileFilter(Constants.EXTN_OPEN_ARC)));
+                int numberOfFiles = fileList.length;
 
-	            for(int i=0; i<numberOfFiles; i++) {
-	            	log.debug("Sending ARC " + (i+1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
-	            	digitalAssetStore.save(aJob, fileList[i]);
-	            	log.debug("Finished sending ARC " + (i+1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
-	            }
+                for(int i=0; i<numberOfFiles; i++) {
+                    log.debug("Sending ARC " + (i+1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
+                    digitalAssetStore.save(aJob, fileList[i]);
+                    log.debug("Finished sending ARC " + (i+1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
+                }
+
 	        }
 	        catch (Exception e) {
                 log.error("Failed to send harvest result to digital asset store for job " + aJob + ": " + e.getMessage(), e);
@@ -273,7 +277,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         // Send the reports to the DAS.
         if (aFailureStep <= FAILED_ON_SEND_RPTS) {
 	        try {
-                File reportsDir = new File(harvester.getHarvestDir().getPath() + File.separator + "reports");
+                String harvestLogsDir = harvester.getHarvestLogDir().getParent();
+                File reportsDir = new File(harvestLogsDir + File.separator + "reports");
 	        	File[] fileList = getFileArray(reportsDir, NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_REPORTS)), NotEmptyFileFilter.notEmpty(new ExactNameFilter(PROFILE_NAME)));
                 log.debug("Sending harvest reports to digital asset store for job " + aJob);
                 for(int i=0;i<fileList.length;i++) {
@@ -381,10 +386,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 		if (harvester != null) {
 			File logsDir = harvester.getHarvestLogDir();
 			file = new File(logsDir.getAbsolutePath() + File.separator + aFileName);
-			if (!file.exists()) {
-				logsDir = harvester.getHarvestDir();
-				file = new File(logsDir.getAbsolutePath() + File.separator + aFileName);
-			}
 
 			if (!file.exists()) {
 				return null;
@@ -412,15 +413,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             }
         }
 
-        logsDir = harvester.getHarvestDir();
-        fileList = logsDir.listFiles();
-        for(File f: fileList) {
-            if (f.getName().equals(PROFILE_NAME)) {
-                logFiles.add(f.getName());
-                break;
-            }
-        }
-
         // Reports are stored in their own dir with H3, and are not written until harvest finished/stopped.
         File reportsDir = new File(logsDir.getPath() + File.separator + "reports");
         fileList = reportsDir.listFiles();
@@ -444,19 +436,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         File[] fileList = logsDir.listFiles();
         for(File f: fileList) {
             if (f.getName().endsWith(Constants.EXTN_LOGS)) {
-        		LogFilePropertiesDTO lf = new LogFilePropertiesDTO();
-        		lf.setName(f.getName());
-        		lf.setPath(f.getAbsolutePath());
-        		lf.setLengthString(HarvesterStatusUtil.formatData(f.length()));
-        		lf.setLastModifiedDate(new Date(f.lastModified()));
-        		logFiles.add(lf);
-            }
-        }
-
-        logsDir = harvester.getHarvestDir();
-        fileList = logsDir.listFiles();
-        for(File f: fileList) {
-            if (f.getName().equals(PROFILE_NAME)) {
         		LogFilePropertiesDTO lf = new LogFilePropertiesDTO();
         		lf.setName(f.getName());
         		lf.setPath(f.getAbsolutePath());
@@ -703,10 +682,13 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             it = das.iterator();
             while (it.hasNext()) {
                 dir = (File) it.next();
-                fileList = dir.listFiles();
-                for(File f: fileList) {
-                    if (f.getName().endsWith(Constants.EXTN_OPEN_ARC)) {
-                        found = true;
+                // Sometimes warc dir might not exist if harvest stopped before any warcs generated.
+                if(dir.exists()){
+                    fileList = dir.listFiles();
+                    for(File f: fileList) {
+                        if (f.getName().endsWith(Constants.EXTN_OPEN_ARC)) {
+                            found = true;
+                        }
                     }
                 }
             }
