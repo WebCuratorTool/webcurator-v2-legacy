@@ -208,6 +208,16 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
     	return results;
     }
 
+    private boolean dirsExist(List<File> baseDirs) {
+        boolean atleastOneDirExists = false;
+        for(File baseDir: baseDirs) {
+            if(baseDir.exists()){
+                atleastOneDirExists = true;
+            }
+        }
+        return atleastOneDirExists;
+    }
+
 
 
     /** @see HarvestAgent#completeHarvest(String, int). */
@@ -252,7 +262,13 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
 	        }
 	        catch (Exception e) {
-                log.error("Failed to send harvest result to digital asset store for job " + aJob + ": " + e.getMessage(), e);
+                if(dirsExist(das)){
+                    log.error("Failed to send harvest result to digital asset store for job " + aJob + ": " + e.getMessage(), e);
+                }
+                else{
+                    log.error("Failed to find harvest path for job " + aJob + ": " + e.getMessage(), e);
+                }
+
 	            return FAILED_ON_SEND_ARCS;
 	        }
         }
@@ -315,6 +331,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         tidy(aJob);
         return NO_FAILURES;
     }
+
 
     /** @see HarvestAgent#getStatus(). */
     public HarvestAgentStatusDTO getStatus() {

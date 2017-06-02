@@ -82,8 +82,7 @@ public class HarvestAgentH3PollJob extends QuartzJobBean {
                     }
 
                     // Schedule the job completion process to be run.
-                    else if (jobStatus.equals(Heritrix3Wrapper.CrawlControllerState.FINISHED.toString())
-                            || jobStatus.equals("Could not launch job - Fatal InitializationException")) {
+                    else if (jobStatus.equals("Finished") || jobStatus.equals("Could not launch job - Fatal InitializationException")) {
                         if(log.isDebugEnabled()){
                             log.debug("HarvestAgentH3PollJob - job FINISHED: " + job.getJobName() + ". status: " + jobStatus);
                         }

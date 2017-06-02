@@ -159,9 +159,12 @@ public class HarvesterH3 implements Harvester {
 
                 if (h3job.crawlControllerState != null) {
 
-                    //TODO - this should be more generic impl, rather than using old heritrix 1.14.1 statuses
+                    //TODO - these status conversions should be more generic, rather than using old heritrix 1.14.1 statuses
                     if(h3job.crawlControllerState.equals("NASCENT") && !h3job.isLaunchable){
                         status.setStatus("Could not launch job - Fatal InitializationException");
+                    }
+                    else if(h3job.crawlControllerState.equals("FINISHED") || h3job.crawlControllerState.equals("STOPPING")){
+                        status.setStatus("Finished");
                     }
 
                     if (h3job.elapsedReport.elapsedMilliseconds > 0) {
