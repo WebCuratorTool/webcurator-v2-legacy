@@ -94,7 +94,13 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             if (log.isErrorEnabled()) {
                 log.error("Failed to initiate harvest for " + aJob + " : " + e.getMessage(), e);
             }
-            abort(aJob);
+            try{
+                abort(aJob);
+            }
+            catch(Exception ex){
+                log.error("Failed to abort initilization of harvest for " + aJob + " : " + ex.getMessage(), ex);
+            }
+
 //            throw new HarvestAgentException("Failed to initiate harvest for " + aJob + " : " + e.getMessage(), e);
         }
 

@@ -181,6 +181,14 @@ public class HarvesterH3 implements Harvester {
                         //                    status.setUrlsFailed(statsTrack.failedFetchAttempts());
                     }
                 }
+                else{
+                    for(String entry : h3job.jobLogTail){
+                        if(entry.contains("SEVERE Invalid property")){
+                            status.setStatus("Could not launch job - Fatal InitializationException");
+                            break;
+                        }
+                    }
+                }
             }
             else{
                 //TODO - If job no longer exits in H3 engine, then maybe remove from this HarvestH3 object
@@ -616,8 +624,10 @@ public class HarvesterH3 implements Harvester {
                 Job postTeardownJob = null;
 
                 // If pausing or stopping then wait
-                if (preTeardownJob.crawlControllerState.equals(Heritrix3Wrapper.CrawlControllerState.PAUSING)) {
-                    heritrix.waitForJobState(jobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 50, 1000);
+                if(preTeardownJob.crawlControllerState != null){
+                    if (preTeardownJob.crawlControllerState.equals(Heritrix3Wrapper.CrawlControllerState.PAUSING)) {
+                        heritrix.waitForJobState(jobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 50, 1000);
+                    }
                 }
 
                 // If status is in (RUNNING, PAUSED)
@@ -652,10 +662,11 @@ public class HarvesterH3 implements Harvester {
     //        }
 
 
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             if (log.isErrorEnabled()) {
                 log.error("Failed to stop harvest " + name + ": " + e.getMessage(), e);
             }
+            throw new HarvesterException("Failed to stop harvest " + name, e);
         }
     }
 
