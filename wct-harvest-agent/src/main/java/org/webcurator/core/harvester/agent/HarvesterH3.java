@@ -173,8 +173,7 @@ public class HarvesterH3 implements Harvester {
                         status.setAverageURIs(h3job.rateReport.averageDocsPerSecond);
                         status.setAverageKBs(h3job.rateReport.averageKiBPerSec);
                         status.setElapsedTime(h3job.elapsedReport.elapsedMilliseconds);
-                        //TODO - total bytes written
-                        //	                status.setDataDownloaded(st.totalBytesWritten());
+                        status.setDataDownloaded(h3job.sizeTotalsReport.total);
                         status.setUrlsDownloaded(h3job.uriTotalsReport.downloadedUriCount);
                         status.setUrlsQueued(h3job.uriTotalsReport.queuedUriCount);
                         //TODO - failed URIs
