@@ -102,9 +102,6 @@ public class HarvesterH3 implements Harvester {
         String keyStorePassword = "";
         String userName = "admin";
         String password = "admin";
-//        String userName = "ben";
-//        String password = "password";
-
 
         try {
             heritrix = Heritrix3Wrapper.getInstance(hostname, port, keystoreFile, keyStorePassword, userName, password);
