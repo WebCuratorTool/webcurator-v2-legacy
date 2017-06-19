@@ -3,31 +3,73 @@
 This is an experimental Harvest Agent implementation that interfaces with Heritrix 3.x. Below are some basic instructions
 for getting it up and running.
 
-### New Harvest Agent dependencies
-* org.netarchivesuite.heritrix3-wrapper
-* com.sun.xml.bind.jaxb-impl
-* com.sun.xml.bind.jaxb-core
-* Java 7
-
-Heritrix 3.x and the Harvest Agent module can be run from the same or different servers. To run Heritrix with the
-default settings used in the Harvest Agent:
+### Running Heritrix 3.x
+Download your distribution or compile from source, and place the Heritrix dir on the same server that the Harvest Agent
+will be running from. Running them on separate servers has not been tested.
+Ensure that the Heritrix jobs directory has the correct permissions assigned so that the Harvest Agent can copy any
+harvest assets, logs and reports from it.
+To run Heritrix with the default settings used in the Harvest Agent:
 * ./<path_to_bin>/heritrix -a admin
 
-Set Heritrix 3.x hostname, port and credentials in HarvesterH3() constructor and recompile if not using the defaults.
-The defaults are:
+### Compile Harvest Agent
+If not using the default settings above to run Heritrix, then you will need to configure the hostname, port or credentials in
+the HarvesterH3() constructor in Harvest Agent and recompile. The defaults are:
 * hostname: localhost
 * port: 8443
 * userName: admin
 * password: admin
+The following new dependencies should be downloaded automatically and used when building with maven
+* org.netarchivesuite.heritrix3-wrapper
+* com.sun.xml.bind.jaxb-impl
+* com.sun.xml.bind.jaxb-core
+The heritrix3-wrapper used to interface with Heritrix3 requires Java 7, so ensure you have an appropriate Java 7 jdk/jre
+available and configured when compiling.
+The Harvest Agent will also need to be running inside Apache Tomcat configured with Java 7. If you run all three WCT
+modules on one server inside the same Tomcat container, then you have two options as WCT is only officially built and
+tested with Java 6.
+* Run all three WCT modules inside a Tomcat container with Java 7
+* Setup an additional Tomcat instance configure with Java 7 and differet ports for just the Harvest Agent.
 
-Name your Heritrix 3.x Harvester in wct-agent.properties to show in the UI
+### Configure Harvest Agent
+Name your Heritrix 3.x harvester in wct-agent.properties to show in the UI
 * harvestAgent.name=${agent.name}
 
-Place a your default Heritrix 3.x profile cxml file in the baseHarvestDirectory specified in wct-agent.properties
 
-The Heritrix version under a Target Instance will still show Heritrix 1.14.1, as this is taken from the old Heritrix jar
-dependency. If WCT-Core is recompiled from this branch then it will try to read the version from the Harvest Agent
-instead.
+### Configure Heritrix 3.x Profile
+Place a Heritrix 3.x Profile called "defaultH3Profile.cxml" in the baseHarvestDirectory specified in
+wct-agent.properties. defaultH3Profile.cxml is read from the filesystem at the initiation of each harvest, and can be
+updated without restarting the Harvest Agent.
+Either take the pre-configured profile located in wct-harvest-agent/build/ and replace the
+metadata.operatorContactUrl with your own. Or generate your own profile, replacing the seeds bean with the following:
+<bean id="seeds" class="org.archive.modules.seeds.TextSeedModule">
+  <property name="textSource">
+   <bean class="org.archive.spring.ConfigFile">
+    <property name="path" value="seeds.txt" />
+   </bean>
+  </property>
+  <property name='sourceTagSeeds' value='false'/>
+  <property name='blockAwaitingSeedLines' value='-1'/>
+ </bean>
+This is required because the new Harvest Agent implementation takes the seeds sent from the Core and writes them to a
+seeds.txt file in the new Heritrix job directory.
+
+
+### Additional Notes
+This Harvest Agent implementation handles the creation and cleanup up jobs within the Heritrix 3.x instance. You should
+active job directories within Heritrix while a harvest is running and waiting to be completed. Once the harvest is
+complete and WCT has transferred the assets, logs and reports to the Store then the Heritrix job is torn down and
+directory deleted. The only occasions where a Heritrix job directory will not be cleaned up is if a job fails to
+build/start or an error has occurred during the harvest. This allows you to investigate the Heritrix job log to
+determine the cause.
+
+If you run multiple Harvest Agents with WCT, then you may wish to run a combination of the old Harvest Agent and this
+new implementation. To ensure your harvests go to the desired Harvest Agents, then you will want to use the
+'Harvest Now' function on the Target Instance to direct to the correct harvester. Otherwise WCT will handle the
+allocation from the harvester pool.
+
+Please note the Heritrix version under a Target Instance will still show as "Heritrix v1.14.1", this is hardwired in
+WCT-Core to be taken from the old Heritrix dependency. There is a fix committed in this branch, if you want to recompile
+the WCT-Core module.
 
 
 ### Troubleshooting
