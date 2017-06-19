@@ -113,7 +113,9 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 		// Update the harvesterStatus with current versions
 		Environment env = EnvironmentFactory.getEnv();
 		harvesterStatusDto.setApplicationVersion(env.getApplicationVersion());
-		harvesterStatusDto.setHeritrixVersion(env.getHeritrixVersion());
+		if(harvesterStatusDto.getHeritrixVersion() == null){
+			harvesterStatusDto.setHeritrixVersion(env.getHeritrixVersion());
+		}
 	}
 
 	private void doHeartbeatLaunchFailed(TargetInstance ti) {

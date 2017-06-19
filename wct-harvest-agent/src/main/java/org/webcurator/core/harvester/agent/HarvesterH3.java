@@ -147,12 +147,14 @@ public class HarvesterH3 implements Harvester {
 
         if (h3job != null) {
             // Get update of job from H3 engine
-            heritrix.rescanJobDirectory();
+            EngineResult engineResult = heritrix.rescanJobDirectory();
             h3job = heritrix.job(h3job.shortName).job;
             if (h3job != null) {
 
                 status.setJobName(h3job.shortName);
                 status.setStatus(h3job.crawlControllerState);
+                String heritrixBuild = engineResult.engine.heritrixVersion;
+                status.setHeritrixVersion("Heritrix " + heritrixBuild.substring(0, heritrixBuild.indexOf("-")));
 
                 if (h3job.crawlControllerState != null) {
 
