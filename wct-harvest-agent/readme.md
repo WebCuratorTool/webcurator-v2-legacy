@@ -74,4 +74,4 @@ WCT-Core module.
 * In order to interface with Heritrix 3.x outside of WCT, you can either use the UI if accessing from the same host, or
 use CURL with the Heritrix API.
 * If running on Solaris with Java 7 and you get openssl errors when the Harvest Agent tries to connect the Heritrix 3.x,
-try running Tomcat with Java 8.
+try running Heritrix 3.x with Java 8.
