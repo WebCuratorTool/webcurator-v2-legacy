@@ -589,8 +589,17 @@ public class DPSArchive extends BaseArchive {
         this.customDepositFormURLsForHtmlSerialIngest = toList(customDepositFormURLsForHtmlSerialIngest);
     }
 
-    public void setRestrictHTMLSerialAgenciesToHTMLSerialTypes(boolean restrictHTMLSerialAgenciesToHTMLSerialTypes) {
-        this.restrictHTMLSerialAgenciesToHTMLSerialTypes = restrictHTMLSerialAgenciesToHTMLSerialTypes;
+    /**
+     Method takes String argument and converts to Boolean if not empty. This allows setting to be optional
+     in wct-das.properties, as a blank String value will just be passed through if it is missing.
+     */
+    public void setRestrictHTMLSerialAgenciesToHTMLSerialTypes(String restrictHTMLSerialAgenciesToHTMLSerialTypes) {
+        if(restrictHTMLSerialAgenciesToHTMLSerialTypes.isEmpty()){
+            this.restrictHTMLSerialAgenciesToHTMLSerialTypes = true;
+        }
+        else{
+            this.restrictHTMLSerialAgenciesToHTMLSerialTypes = Boolean.parseBoolean(restrictHTMLSerialAgenciesToHTMLSerialTypes);
+        }
     }
 
     public void setTargetDCTypesOfCustomWebHarvest(String targetDCTypesOfCustomWebHarvest) {

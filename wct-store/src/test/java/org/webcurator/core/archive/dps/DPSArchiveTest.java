@@ -90,7 +90,7 @@ public class DPSArchiveTest {
 		archiver.setCustomDepositFormURLsForHtmlSerialIngest(customFormUrls);
 		archiver.setTargetDCTypesOfHtmlSerials("HTML Serial Type 1 - eJournals, HTML Serial Type 2 - Manuscripts , HTML Serial Type 3 - Blogs    ");
 		archiver.setAgenciesResponsibleForHtmlSerials("   Electronic Journals   ,  Electronic Serials     ");
-		archiver.setRestrictHTMLSerialAgenciesToHTMLSerialTypes(true);
+		archiver.setRestrictHTMLSerialAgenciesToHTMLSerialTypes("true");
 		criteria = new CustomDepositFormCriteriaDTO();
 		criteria.setAgencyName("eLectroniC SeRials");
 		criteria.setTargetType("some target DC type");
