@@ -75,3 +75,5 @@ WCT-Core module.
 use CURL with the Heritrix API.
 * If running on Solaris with Java 7 and you get openssl errors when the Harvest Agent tries to connect the Heritrix 3.x,
 try running Heritrix 3.x with Java 8.
+* If running Apache Tomcat with 32bit Java 7, you may experience issues with larger harvests copying between the Harvest
+Agent and the Store on completion of a crawl. This was resolved by running Apache Tomcat with 64bit Java 7.
