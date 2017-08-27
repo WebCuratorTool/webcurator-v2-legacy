@@ -49,7 +49,7 @@ public class MemoryChecker extends AbstractChecker {
 			if (log.isWarnEnabled()) {
 				log.warn("The used memory is above the warning threshold " + warnThreshold + "KB and is " + memUsedKB + "KB");
 			}
-			onSetWarning();
+			onSetWarning(); // The actions of this function are now considered bad practice
 			notify(LEVEL_WARNING, "The used memory is above the warning threshold " + warnThreshold + "KB and is " + memUsedKB + "KB");
 		}
 		else if (memUsedKB >= errorThreshold && !aboveErrorThreshold) {
@@ -57,7 +57,7 @@ public class MemoryChecker extends AbstractChecker {
 			if (log.isErrorEnabled()) {
 				log.error("The used memory is above the error threshold " + errorThreshold + "KB and is " + memUsedKB + "KB");
 			}
-			onSetError();
+			onSetError(); // The actions of this function are now considered bad practice
 			notify(LEVEL_ERROR, "The used memory is above the error threshold " + errorThreshold + "KB and is " + memUsedKB + "KB");
 		}
 		else if (memUsedKB < warnThreshold && aboveWarnThreshold) {
@@ -81,9 +81,9 @@ public class MemoryChecker extends AbstractChecker {
 	{
 		if(log.isWarnEnabled())
 		{
-			log.warn("Warning Threshold reached: Attempting Garbage Collection");
+			log.warn("Warning Threshold reached");
 		}
-		System.gc(); //have a go at garbage collection to attempt to reduce memory usage
+//		System.gc(); //have a go at garbage collection to attempt to reduce memory usage
 	}
 	
 	/** Take some action when passing the error threshold */
@@ -91,9 +91,9 @@ public class MemoryChecker extends AbstractChecker {
 	{
 		if(log.isErrorEnabled())
 		{
-			log.error("Error Threshold reached: Attempting Garbage Collection");
+			log.error("Error Threshold reached");
 		}
-		System.gc(); //have a go at garbage collection to attempt to reduce memory usage
+//		System.gc(); //have a go at garbage collection to attempt to reduce memory usage
 	}
 
 	/** Take some action when leaving the warning threshold */
