@@ -15,6 +15,8 @@
  */
 package org.webcurator.core.harvester.agent.schedule;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
@@ -33,6 +35,9 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
     HarvestAgent harvestAgent;
     /** The notifier to use to send data to the WCT. */
     HarvestCoordinatorNotifier notifier;
+
+    /** the logger. */
+    private Log log = LogFactory.getLog(getClass());
     
     /** Default Constructor. */
     public HarvestAgentHeartBeatJob() {
@@ -45,7 +50,8 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
     	try {
 			triggerState = aJobContext.getScheduler().getTriggerState(null, "HeartBeatTriggerGroup");
 			aJobContext.getScheduler().pauseTriggerGroup("HeartBeatTriggerGroup");
-			
+
+            log.info("HarvestAgentHeartBeatJob executing");
 			HarvestAgentStatusDTO status = harvestAgent.getStatus();        
 			notifier.heartbeat(status);  
 			

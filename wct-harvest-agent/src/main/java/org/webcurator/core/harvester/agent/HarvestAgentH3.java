@@ -182,6 +182,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
     private List<File> getFileList(File baseDir, FileFilter... filters) {
     	List<File> l = new LinkedList<File>();
         File[] files = baseDir.listFiles();
+        //TODO - What if no warcs are generated? This throws null pointer otherwise
         for(File f: files) {
         	for(FileFilter filter : filters) {
         		if(filter.accepts(f)) {
@@ -235,6 +236,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         //TODO - what does old heritrix do for this last heartbeat
         harvestCoordinatorNotifier.heartbeat(getStatus());
 
+        //TODO  - if a harvest gets aborted/stopped before complete has finished, this will throw a null pointer exception
         // If aborted, tidy up and cancel.
         if (harvester.isAborted()) {
             tidy(aJob);
@@ -333,6 +335,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 	        }
         }
 
+        log.info("Cleaning up for job " + aJob);
         log.debug("Cleaning up for job " + aJob);
         tidy(aJob);
         return NO_FAILURES;

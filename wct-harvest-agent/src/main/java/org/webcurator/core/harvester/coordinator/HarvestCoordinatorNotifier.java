@@ -53,6 +53,7 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
             if (log.isDebugEnabled()) {
                 log.debug("WCT: Start of heartbeat");
             }
+            log.info("WCT: Start of heartbeat");
             
             WCTSoapCall call = new WCTSoapCall(host, port, service, "heartbeat");
             call.regTypes(HarvestAgentStatusDTO.class, HarvesterStatusDTO.class);
@@ -61,6 +62,7 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
             if (log.isDebugEnabled()) {
                 log.debug("WCT: End of heartbeat");
             }
+            log.info("WCT: End of heartbeat");
         }
         catch(Exception ex) {
             if (log.isErrorEnabled()) {

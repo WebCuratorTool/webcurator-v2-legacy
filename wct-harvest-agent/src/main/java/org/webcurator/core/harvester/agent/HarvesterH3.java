@@ -518,6 +518,7 @@ public class HarvesterH3 implements Harvester {
                 File srcSeedsFile = new File(srcDir + File.separator + "seeds.txt");
                 Heritrix3Wrapper.copyFileAs(srcSeedsFile, new File(destDir), "seeds.txt");
                 // Build H3 job
+                log.info("Building H3 job " + aJobName + ".....");
                 jobStatus = heritrix.buildJobConfiguration(aJobName).job;
                 // Set h3Job now, in case of any errors we can still deregister
                 h3job = jobStatus;
@@ -532,6 +533,7 @@ public class HarvesterH3 implements Harvester {
 
             // If built successfully then launch
             if(jobStatus.statusDescription.equals("Ready")){
+                log.info("Launching H3 job " + aJobName + ".....");
                 jobStatus = heritrix.launchJob(aJobName).job;
                 jobStatus = heritrix.waitForJobState(aJobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 5, 1000).job;
             }
@@ -586,6 +588,7 @@ public class HarvesterH3 implements Harvester {
             if(crawlStarted != null && crawlStarted.job.statusDescription.equals("Active: RUNNING")){
                 started = true;
                 h3job = crawlStarted.job;
+                log.info("H3 job " + aJobName + " has started.");
                 // Pre-load dir vars
                 getHarvestLogDir();
                 getHarvestDigitalAssetsDirs();

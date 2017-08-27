@@ -75,10 +75,7 @@ public class HarvestAgentH3PollJob extends QuartzJobBean {
                     if (jobStatus.equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
                         //TODO - unsure if needed
 //                    agent.loadSettings((String) handback);
-                        if(log.isDebugEnabled()){
-                            log.debug("HarvestAgentH3PollJob - job RUNNING: " + job.getJobName() + ". status: " + jobStatus);
-                        }
-
+                        log.info("HarvestAgentH3PollJob - job RUNNING: " + job.getJobName() + ". status: " + jobStatus);
                     }
 
                     // Schedule the job completion process to be run.
