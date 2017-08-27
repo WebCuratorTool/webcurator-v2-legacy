@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>wct-parent</artifactId>
 		<groupId>org.webcurator</groupId>
-		<version>1.6.3</version>
+		<version>1.7.0</version>
 	</parent>
 
     <properties>
@@ -485,7 +485,7 @@
 		<dependency>
 			<groupId>org.webcurator</groupId>
 			<artifactId>wct-core</artifactId>
-			<version>1.6.3</version>
+			<version>1.7.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -505,6 +505,21 @@
 			<artifactId>heritrix3-wrapper</artifactId>
 			<version>1.0.3</version>
 			<scope>compile</scope>
+
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>log4j-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
