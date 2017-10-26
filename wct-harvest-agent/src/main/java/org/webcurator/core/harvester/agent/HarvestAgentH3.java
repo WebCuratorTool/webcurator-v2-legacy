@@ -149,8 +149,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         if (harvestDir != null) {
             boolean deleted = FileUtils.deleteDir(harvestDir);
-        	if (!deleted && log.isDebugEnabled()) {
-        		log.debug("Unable to delete harvest directory "+harvestDir.getAbsolutePath());
+        	if (!deleted) {
+        		log.error("Unable to delete harvest directory "+harvestDir.getAbsolutePath());
         	}
         }
 
@@ -254,7 +254,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         // Send the ARC files to the DAS.
         if (aFailureStep <= FAILED_ON_SEND_ARCS) {
-            log.debug("Getting digital assets to send to store for job " + aJob);
+            log.info("Getting digital assets to send to store for job " + aJob);
 
 	        try {
                 // BE AWARE - if a harvest is stopped before any warcs are written then a null pointer exception can be thrown
@@ -285,7 +285,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         if (aFailureStep <= FAILED_ON_SEND_LOGS) {
 	        try {
 	            File[] fileList = getFileArray(harvester.getHarvestLogDir(), NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_LOGS)));
-                log.debug("Sending harvest logs to digital asset store for job " + aJob);
+                log.info("Sending harvest logs to digital asset store for job " + aJob);
                 for(int i=0;i<fileList.length;i++) {
                 	digitalAssetStore.save(aJob, Constants.DIR_LOGS, fileList[i]);
                 }
@@ -304,7 +304,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
                 String harvestLogsDir = harvester.getHarvestLogDir().getParent();
                 File reportsDir = new File(harvestLogsDir + File.separator + "reports");
 	        	File[] fileList = getFileArray(reportsDir, NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_REPORTS)), NotEmptyFileFilter.notEmpty(new ExactNameFilter(PROFILE_NAME)));
-                log.debug("Sending harvest reports to digital asset store for job " + aJob);
+                log.info("Sending harvest reports to digital asset store for job " + aJob);
                 for(int i=0;i<fileList.length;i++) {
                 	digitalAssetStore.save(aJob, Constants.DIR_REPORTS, fileList[i]);
                 }
@@ -320,7 +320,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         // Send the result to the server.
         if (aFailureStep <= FAILED_ON_SEND_RESULT) {
 	        try {
-                log.debug("Sending harvest result to WCT for job " + aJob);
+                log.info("Sending harvest result to WCT for job " + aJob);
                 ahr = new ArcHarvestResultDTO();
                 ahr.setCreationDate(new Date());
 	            ahr.setTargetInstanceOid(new Long(aJob));
@@ -336,7 +336,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         }
 
         log.info("Cleaning up for job " + aJob);
-        log.debug("Cleaning up for job " + aJob);
         tidy(aJob);
         return NO_FAILURES;
     }
