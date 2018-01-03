@@ -2,7 +2,6 @@ language: java
 
 jdk:
   - oraclejdk8
-  - oraclejdk7
 
 install: ./install_maven_dependencies.sh
 script: mvn clean install -Dmaven.test.skip=true
