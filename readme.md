@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DIA-NZ/webcurator.svg?branch=master)](https://travis-ci.org/DIA-NZ/webcurator)
+
 # WCT 1.6.3 GA
 
 This is the WCT 1.6.3 GA version.
