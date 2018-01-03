@@ -21,7 +21,7 @@ public class OldProfileOverridesTest extends BaseWCTTest<ProfileOverrides> {
 	public OldProfileOverridesTest()
 	{
 		super(ProfileOverrides.class, 
-			"src/test/java/org/webcurator/domain/model/core/oldprofileoverridestest.xml");
+			"src/test/java/org/webcurator/domain/model/core/OldProfileOverridesTest.xml");
 	}
 	
 	public void setUp() throws Exception {

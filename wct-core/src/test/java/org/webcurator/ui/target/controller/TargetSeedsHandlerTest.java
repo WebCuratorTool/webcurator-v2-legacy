@@ -24,7 +24,6 @@ import org.webcurator.test.BaseWCTTest;
 import org.webcurator.ui.admin.command.CreateUserCommand;
 import org.webcurator.ui.target.TargetEditorContext;
 import org.webcurator.ui.target.command.SeedsCommand;
-import org.webcurator.ui.target.command.TargetAccessCommand;
 import org.webcurator.ui.target.command.TargetGeneralCommand;
 import org.webcurator.ui.target.validator.TargetGeneralValidator;
 import org.webcurator.ui.target.validator.TargetSeedsValidator;
@@ -398,7 +397,8 @@ public class TargetSeedsHandlerTest extends BaseWCTTest<TargetSeedsHandler> {
 		assertEquals(3, target.getSeeds().size());
 		
 		SeedsCommand command = (SeedsCommand)mav.getModel().get("command");
-		assertEquals("6012,6010", command.getSelectedSeed());
+		String selectedSeedActual = command.getSelectedSeed();
+		assertTrue("6012,6010".equals(selectedSeedActual) || "6010,6012".equals(selectedSeedActual));
 		command.setActionCmd(SeedsCommand.ACTION_LINK_NEW_CONFIRM);
 		command.setLinkPermIdentity(new String[]{"7000"});
 

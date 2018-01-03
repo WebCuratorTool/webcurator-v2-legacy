@@ -18,12 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -591,6 +586,7 @@ public class TargetManagerImplTest {
 	@Test
 	public final void testSaveTargetGroupSendNotificationsAddedParents() {
 		AbstractTargetDTO mockAbstractTargetDTO = mock(AbstractTargetDTO.class);
+		when(mockAbstractTargetDTO.getName()).thenReturn(new Random().nextInt() + "");
 		Set<AbstractTargetDTO> changeSet = Sets.newHashSet(mockAbstractTargetDTO);
 		when(targetDao.getAncestorDTOs(anyLong())).thenReturn(changeSet);
 		when(targetGroup15000.isNew()).thenReturn(true);
@@ -609,6 +605,7 @@ public class TargetManagerImplTest {
 	@Test
 	public final void testSaveTargetGroupSendNotificationsRemovedParents() {
 		AbstractTargetDTO mockAbstractTargetDTO = mock(AbstractTargetDTO.class);
+		when(mockAbstractTargetDTO.getName()).thenReturn(new Random().nextInt() + "");
 		Set<AbstractTargetDTO> changeSet = Sets.newHashSet(mockAbstractTargetDTO);
 		Set<AbstractTargetDTO> emptyChangeSet = Sets.newHashSet();
 		when(targetDao.getAncestorDTOs(anyLong())).thenReturn(changeSet).thenReturn(emptyChangeSet);
@@ -616,7 +613,8 @@ public class TargetManagerImplTest {
 		underTest.setSendGroupUpdateNotifications(true);
 		when(targetGroup15000.getState()).thenReturn(1);
 		when(targetGroup15000.getOriginalState()).thenReturn(1);
-		
+
+
 		underTest.save(targetGroup15000);
 		verify(targetDao, times(2)).getAncestorDTOs(anyLong());
 		verify(targetDao).save(targetGroup15000, true, null);
@@ -1363,6 +1361,7 @@ public class TargetManagerImplTest {
 	@Test
 	public final void testSaveTargetSendNotificationsAddedParents() {
 		AbstractTargetDTO mockAbstractTargetDTO = mock(AbstractTargetDTO.class);
+		when(mockAbstractTargetDTO.getName()).thenReturn(new Random().nextInt() + "");
 		Set<AbstractTargetDTO> changeSet = Sets.newHashSet(mockAbstractTargetDTO);
 		when(targetDao.getAncestorDTOs(anyLong())).thenReturn(changeSet);
 		when(target4000.isNew()).thenReturn(true);
@@ -1381,6 +1380,7 @@ public class TargetManagerImplTest {
 	@Test
 	public final void testSaveTargetSendNotificationsRemovedParents() {
 		AbstractTargetDTO mockAbstractTargetDTO = mock(AbstractTargetDTO.class);
+		when(mockAbstractTargetDTO.getName()).thenReturn(new Random().nextInt() + "");
 		Set<AbstractTargetDTO> changeSet = Sets.newHashSet(mockAbstractTargetDTO);
 		Set<AbstractTargetDTO> emptyChangeSet = Sets.newHashSet();
 		when(targetDao.getAncestorDTOs(anyLong())).thenReturn(changeSet).thenReturn(emptyChangeSet);
