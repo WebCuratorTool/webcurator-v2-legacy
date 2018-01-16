@@ -31,7 +31,7 @@ public class AddMembersControllerTest extends BaseWCTTest<AddMembersController>{
 	public AddMembersControllerTest()
 	{
 		super(AddMembersController.class,
-				"src/test/java/org/webcurator/ui/groups/controller/addmemberscontrollertest.xml");
+				"src/test/java/org/webcurator/ui/groups/controller/AddMembersControllerTest.xml");
 	}
 	
 	public void setUp() throws Exception 

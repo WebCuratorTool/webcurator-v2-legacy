@@ -41,15 +41,14 @@ public class TargetSeedsHandlerTest extends BaseWCTTest<TargetSeedsHandler> {
 	public TargetSeedsHandlerTest()
 	{
 		super(TargetSeedsHandler.class,
-		"src/test/java/org/webcurator/ui/target/controller/targetseedshandlertest.xml");
+		"src/test/java/org/webcurator/ui/target/controller/TargetSeedsHandlerTest.xml");
 	}
 	
 	private List<Tab> getTabList(TargetManager targetManager)
 	{
 		List<Tab> tabs = new ArrayList<Tab>();
 		
-		Tab tabGeneral = new Tab();
-		tabGeneral.setCommandClass(TargetGeneralCommand.class);
+		Tab tabGeneral = new Tab(); tabGeneral.setCommandClass(TargetGeneralCommand.class);
 		tabGeneral.setJsp("../target-general.jsp");
 		tabGeneral.setPageId("GENERAL");
 		tabGeneral.setTitle("general");

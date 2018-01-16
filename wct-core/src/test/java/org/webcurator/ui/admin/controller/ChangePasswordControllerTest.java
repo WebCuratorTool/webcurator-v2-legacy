@@ -27,7 +27,7 @@ public class ChangePasswordControllerTest extends BaseWCTTest<ChangePasswordCont
 	public ChangePasswordControllerTest()
 	{
 		super(ChangePasswordController.class,
-				"src/test/java/org/webcurator/ui/admin/controller/createusercontrollertest.xml");
+				"src/test/java/org/webcurator/ui/admin/controller/CreateUserControllerTest.xml");
 	}
 	
 	@Test

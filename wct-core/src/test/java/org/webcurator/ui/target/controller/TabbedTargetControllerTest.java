@@ -39,7 +39,7 @@ public class TabbedTargetControllerTest extends BaseWCTTest<TabbedTargetControll
 
 	public TabbedTargetControllerTest()
 	{
-		super(TabbedTargetController.class, "src/test/java/org/webcurator/ui/target/controller/tabbedtargetcontrollertest.xml");
+		super(TabbedTargetController.class, "src/test/java/org/webcurator/ui/target/controller/TabbedTargetControllerTest.xml");
 	}
 	TargetManager manager;
 	AuthorityManagerImpl authorityManager;

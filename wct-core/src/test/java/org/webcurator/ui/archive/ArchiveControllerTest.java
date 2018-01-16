@@ -28,7 +28,7 @@ public class ArchiveControllerTest extends BaseWCTTest<ArchiveController>{
 	public ArchiveControllerTest()
 	{
 		super(ArchiveController.class,
-				"src/test/java/org/webcurator/ui/archive/archivecontrollertest.xml");
+				"src/test/java/org/webcurator/ui/archive/ArchiveControllerTest.xml");
 	}
 	
 	@Test

@@ -28,7 +28,7 @@ public class MembersRemovedEventPropagatorTest extends BaseWCTTest<MembersRemove
 	public MembersRemovedEventPropagatorTest()
 	{
 		super(MembersRemovedEventPropagator.class, 
-				"src/test/java/org/webcurator/core/targets/membersremovedeventpropagatortest.xml",
+				"src/test/java/org/webcurator/core/targets/MembersRemovedEventPropagatorTest.xml",
 				false);
 	}
 	

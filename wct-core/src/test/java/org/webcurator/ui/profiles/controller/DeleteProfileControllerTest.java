@@ -24,7 +24,7 @@ public class DeleteProfileControllerTest extends BaseWCTTest<DeleteProfileContro
 	public DeleteProfileControllerTest()
 	{
 		super(DeleteProfileController.class,
-				"src/test/java/org/webcurator/ui/profiles/controller/profilelistcontrollertest.xml");
+				"src/test/java/org/webcurator/ui/profiles/controller/ProfileListControllerTest.xml");
 	}
 	
 	

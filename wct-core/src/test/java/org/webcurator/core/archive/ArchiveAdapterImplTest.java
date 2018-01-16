@@ -20,7 +20,7 @@ public class ArchiveAdapterImplTest extends BaseWCTTest<ArchiveAdapterImpl>{
 	public ArchiveAdapterImplTest()
 	{
 		super(ArchiveAdapterImpl.class,
-				"src/test/java/org/webcurator/core/archive/archiveadapterimpltest.xml");
+				"src/test/java/org/webcurator/core/archive/ArchiveAdapterImplTest.xml");
 	}
 	
 	public void setUp() throws Exception 

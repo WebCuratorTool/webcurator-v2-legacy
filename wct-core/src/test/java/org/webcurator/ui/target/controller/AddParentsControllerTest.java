@@ -28,7 +28,7 @@ public class AddParentsControllerTest extends BaseWCTTest<AddParentsController>{
 	public AddParentsControllerTest()
 	{
 		super(AddParentsController.class,
-				"src/test/java/org/webcurator/ui/target/controller/addparentscontrollertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/AddParentsControllerTest.xml");
 	}
 	
 	public void setUp() throws Exception 

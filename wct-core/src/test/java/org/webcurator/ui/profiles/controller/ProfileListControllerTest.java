@@ -26,7 +26,7 @@ public class ProfileListControllerTest extends BaseWCTTest<ProfileListController
 	public ProfileListControllerTest()
 	{
 		super(ProfileListController.class,
-				"src/test/java/org/webcurator/ui/profiles/controller/profilelistcontrollertest.xml");
+				"src/test/java/org/webcurator/ui/profiles/controller/ProfileListControllerTest.xml");
 	}
 	
 	private void performTestGetView(int scope, String privilege, boolean showInactive)

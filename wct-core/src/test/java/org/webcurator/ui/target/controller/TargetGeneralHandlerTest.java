@@ -34,7 +34,7 @@ public class TargetGeneralHandlerTest extends BaseWCTTest<TargetGeneralHandler>{
 	public TargetGeneralHandlerTest()
 	{
 		super(TargetGeneralHandler.class,
-		"src/test/java/org/webcurator/ui/target/controller/targetgeneralhandlertest.xml");
+		"src/test/java/org/webcurator/ui/target/controller/TargetGeneralHandlerTest.xml");
 	}
 	
 	

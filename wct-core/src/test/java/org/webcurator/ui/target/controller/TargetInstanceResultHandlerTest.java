@@ -43,7 +43,7 @@ public class TargetInstanceResultHandlerTest extends BaseWCTTest<TargetInstanceR
 	public TargetInstanceResultHandlerTest()
 	{
 		super(TargetInstanceResultHandler.class,
-				"src/test/java/org/webcurator/ui/target/controller/targetinstanceresulthandlertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/TargetInstanceResultHandlerTest.xml");
 		
 	}
 	

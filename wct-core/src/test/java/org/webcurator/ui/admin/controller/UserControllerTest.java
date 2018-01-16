@@ -22,7 +22,7 @@ public class UserControllerTest extends BaseWCTTest<UserController>{
 	public UserControllerTest()
 	{
 		super(UserController.class,
-				"src/test/java/org/webcurator/ui/admin/controller/createusercontrollertest.xml");
+				"src/test/java/org/webcurator/ui/admin/controller/CreateUserControllerTest.xml");
 	}
 	
 	@Test

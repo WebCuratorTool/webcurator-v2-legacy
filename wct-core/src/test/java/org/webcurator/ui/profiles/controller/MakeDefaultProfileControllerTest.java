@@ -23,7 +23,7 @@ public class MakeDefaultProfileControllerTest extends BaseWCTTest<MakeDefaultPro
 	public MakeDefaultProfileControllerTest()
 	{
 		super(MakeDefaultProfileController.class,
-				"src/test/java/org/webcurator/ui/profiles/controller/profilelistcontrollertest.xml");
+				"src/test/java/org/webcurator/ui/profiles/controller/ProfileListControllerTest.xml");
 	}
 	
 	private ModelAndView performTestHandle(String defaultAgency, Long profileOid)

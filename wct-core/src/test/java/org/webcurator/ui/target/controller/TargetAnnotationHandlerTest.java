@@ -43,7 +43,7 @@ public class TargetAnnotationHandlerTest extends BaseWCTTest<TargetAnnotationHan
 	public TargetAnnotationHandlerTest()
 	{
 		super(TargetAnnotationHandler.class,
-				"src/test/java/org/webcurator/ui/target/controller/targetannotationhandlertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/TargetAnnotationHandlerTest.xml");
 		
 	}
 
