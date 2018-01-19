@@ -13,7 +13,7 @@
         <property name="order" value="150"/>
     </bean>
 
-	<bean id="harvestAgent" class="org.webcurator.core.harvester.agent.HarvestAgentHeritrix" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="harvestAgent" class="org.webcurator.core.harvester.agent.HarvestAgentH3" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- name of the directory where the temporary harvest data is stored -->
 		<property name="baseHarvestDirectory" value="${harvestAgent.baseHarvestDirectory}"/>
 		<!-- agent host name or ip address that the core knows about -->
@@ -57,25 +57,25 @@
 		<property name="port" value="${digitalAssetStore.port}"/>
 	</bean>
 	<bean id="heartbeatJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="group" value="HeartBeatGroup"/>
-		<property name="name" value="HeartBeat"/>
-		<property name="jobClass" value="org.webcurator.core.harvester.agent.schedule.HarvestAgentHeartBeatJob"/>
-		<property name="jobDataAsMap">
-    		<map>
-      			<entry key="harvestAgent" value-ref="harvestAgent"/>
-      			<entry key="notifier" value-ref="harvestCoordinatorNotifier"/>
-    		</map>
-	  	</property>
-	</bean>		
+	<property name="group" value="HeartBeatGroup"/>
+	<property name="name" value="HeartBeat"/>
+	<property name="jobClass" value="org.webcurator.core.harvester.agent.schedule.HarvestAgentHeartBeatJob"/>
+	<property name="jobDataAsMap">
+		<map>
+			<entry key="harvestAgent" value-ref="harvestAgent"/>
+			<entry key="notifier" value-ref="harvestCoordinatorNotifier"/>
+		</map>
+	</property>
+</bean>
 	<bean id="heartbeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="group" value="HeartBeatTriggerGroup"/>
 		<property name="name" value="HeartBeatTrigger"/>
 		<property name="jobDetail" ref="heartbeatJob"/>
 		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${heartbeatTrigger.startDelay}"/>
+		<property name="startDelay" value="${heartbeatTrigger.startDelay}"/>
 		<!-- repeat every xx milliseconds -->
-  		<property name="repeatInterval" value="${heartbeatTrigger.repeatInterval}"/>
-	</bean>	
+		<property name="repeatInterval" value="${heartbeatTrigger.repeatInterval}"/>
+	</bean>
 	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="triggers">
 			<list>

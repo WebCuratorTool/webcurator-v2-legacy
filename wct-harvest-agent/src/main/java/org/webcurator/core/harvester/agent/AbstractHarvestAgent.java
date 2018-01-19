@@ -17,6 +17,7 @@ package org.webcurator.core.harvester.agent;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The AbstractHarvestAgent implements the methods from HarvestAgent that can be 
@@ -25,21 +26,22 @@ import java.util.Iterator;
  */
 public abstract class AbstractHarvestAgent implements HarvestAgent {
     /** Map of harvesters. */
-    protected HashMap<String, Harvester> harvesters = null;
+    protected ConcurrentHashMap<String, Harvester> harvesters = null;
     /** Memory Warning flag */
     protected boolean memoryWarning = false;
     
     /** Default Constructor. */
     public AbstractHarvestAgent() {
         super();
-        harvesters = new HashMap<String, Harvester>();       
+        harvesters = new ConcurrentHashMap<>();
     }
 
     /**
      * @see org.webcurator.core.harvester.agent.HarvestAgent#initiateHarvest(java.lang.String, java.lang.String, java.lang.String)
      */
     public void initiateHarvest(String aJob, String aProfile, String aSeeds) {        
-        Harvester harvester = new HarvesterHeritrix(aJob);        
+        Harvester harvester = new HarvesterH3(aJob);
+//        Harvester harvester = new HarvesterHeritrix(aJob);
         harvesters.put(aJob, harvester);
     }
 

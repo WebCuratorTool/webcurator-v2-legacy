@@ -90,6 +90,7 @@ public class HarvestBandwidthManagerImpl implements HarvestBandwidthManager {
 			Calendar now = Calendar.getInstance();
 			now.add(Calendar.MILLISECOND, (aMillisBeforeNow * -1));
 			String time = BandwidthRestriction.TIMEONLY_FORMAT.format(now.getTime());
+			log.info("getGlobalMaxBandwidth - Parsing date for the bandwidth restriction, time: " + time);
 			Date date = BandwidthRestriction.FULLDATE_FORMAT.parse(BandwidthRestriction.DEFAULT_DATE + time);
 			String day = BandwidthRestriction.FULLDAY_FORMAT.format(now.getTime()).toUpperCase();
 
@@ -172,7 +173,7 @@ public class HarvestBandwidthManagerImpl implements HarvestBandwidthManager {
 	public synchronized void checkForBandwidthTransition() {
 
 		long currBW = getCurrentGlobalMaxBandwidth();
-		log.debug("Checking bandwidth. prev = {} curr = {}", previousMaxGlobalBandwidth, currBW);
+		log.info("Checking bandwidth. prev = {} curr = {}", previousMaxGlobalBandwidth, currBW);
 
 		if (currBW != previousMaxGlobalBandwidth) {
 			log.info("Found bandwidth transition from {} to {} re-calulating bandwidth settings.", previousMaxGlobalBandwidth,
@@ -188,6 +189,7 @@ public class HarvestBandwidthManagerImpl implements HarvestBandwidthManager {
 		try {
 			Calendar now = Calendar.getInstance();
 			String time = BandwidthRestriction.TIMEONLY_FORMAT.format(now.getTime());
+			log.info("isHarvestOptimizationAllowed - Parsing date for the bandwidth restriction, time: " + time);
 			Date date = BandwidthRestriction.FULLDATE_FORMAT.parse(BandwidthRestriction.DEFAULT_DATE + time);
 			String day = BandwidthRestriction.FULLDAY_FORMAT.format(now.getTime()).toUpperCase();
 

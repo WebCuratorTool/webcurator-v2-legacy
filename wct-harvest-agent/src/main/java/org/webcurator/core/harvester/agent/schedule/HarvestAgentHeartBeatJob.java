@@ -15,13 +15,20 @@
  */
 package org.webcurator.core.harvester.agent.schedule;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.netarchivesuite.heritrix3wrapper.Heritrix3Wrapper;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.SchedulerException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.webcurator.core.harvester.agent.HarvestAgent;
 import org.webcurator.core.harvester.coordinator.HarvestCoordinatorNotifier;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
+import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
+
+import java.util.Map;
 
 /**
  * The HarvestAgentHeartBeatJob is a scheduled job that triggers the sending of 
@@ -33,6 +40,9 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
     HarvestAgent harvestAgent;
     /** The notifier to use to send data to the WCT. */
     HarvestCoordinatorNotifier notifier;
+
+    /** the logger. */
+    private Log log = LogFactory.getLog(getClass());
     
     /** Default Constructor. */
     public HarvestAgentHeartBeatJob() {
@@ -45,18 +55,68 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
     	try {
 			triggerState = aJobContext.getScheduler().getTriggerState(null, "HeartBeatTriggerGroup");
 			aJobContext.getScheduler().pauseTriggerGroup("HeartBeatTriggerGroup");
-			
+
+            log.info("HarvestAgentHeartBeatJob executing");
 			HarvestAgentStatusDTO status = harvestAgent.getStatus();        
-			notifier.heartbeat(status);  
+			notifier.heartbeat(status);
+
+            /* H3 polling begin*/
+
+            Map<String, HarvesterStatusDTO> harvestStatus = status.getHarvesterStatus();
+
+            for(Map.Entry<String, HarvesterStatusDTO> entry : harvestStatus.entrySet()) {
+                HarvesterStatusDTO job = entry.getValue();
+                String jobStatus = job.getStatus();
+
+                if(jobStatus != null) {
+                    // When the agent moves into the running state grab the settings we need at
+                    // Job completion as some of these may no longer be available when the job is finished.
+                    if (jobStatus.equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
+                        log.info("HeartBeatJob-H3Poll - job RUNNING: " + job.getJobName() + ". status: " + jobStatus);
+                    }
+
+                    // Schedule the job completion process to be run.
+                    else if (jobStatus.equals("Finished") || jobStatus.equals("Could not launch job - Fatal InitializationException")) {
+                        if(log.isDebugEnabled()){
+                            log.debug("HeartBeatJob:H3Poll - job FINISHED: " + job.getJobName() + ". status: " + jobStatus);
+                        }
+                        SchedulerUtil.scheduleHarvestCompleteJob(job.getJobName());
+                        log.info("HeartBeatJob-H3Poll - Scheduling Harvest Complete Job for: " + job.getJobName());
+                    } else {
+                        log.info("HeartBeatJob-H3Poll - job: " + job.getJobName() + ". status: " + jobStatus);
+                    }
+                }
+            }
+
+            /* H3 polling end*/
 			
 			aJobContext.getScheduler().resumeTriggerGroup("HeartBeatTriggerGroup");
-		} 
+		}
+        catch (ObjectAlreadyExistsException ex){
+            log.error("Failed to start harvest complete job: " + ex.getMessage());
+            // Resume trigger group, other thread will suspend forever
+            try {
+                aJobContext.getScheduler().resumeTriggerGroup("HeartBeatTriggerGroup");
+            } catch (SchedulerException e) {
+                e.printStackTrace();
+                log.error("Failed to resume Trigger Group - HeartBeatTriggerGroup: " + e.getMessage());
+                throw new JobExecutionException("Failed to resume Trigger Group - HeartBeatTriggerGroup: " + e.getMessage());
+            }
+        }
     	catch (SchedulerException e) {
     		e.printStackTrace();
     		if (e.getCause() != null)
     			e.getCause().printStackTrace();
+            log.error("Heartbeat failed controlling the scheduler. (triggerState is: " + triggerState + ")");
 			throw new JobExecutionException("Heartbeat failed controlling the scheduler. (triggerState is: " + triggerState + ")");
 		}
+        catch (Exception e){
+            e.printStackTrace();
+            if (e.getCause() != null)
+                e.getCause().printStackTrace();
+            log.error("Heartbeat job failed", e);
+            throw new JobExecutionException(e);
+        }
     }
 
     /**

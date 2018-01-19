@@ -42,8 +42,9 @@ public class ScheduleJob extends QuartzJobBean {
 		try {
 			aContext.getScheduler().pauseTriggerGroup("ProcessScheduleTriggerGroup");
 
-			harvestCoordinator.processSchedule();					
-		} 
+			log.info("Starting processSchedule");
+			harvestCoordinator.processSchedule();
+		}
 		catch (Exception e) {
 			// Dont throw an exception here as this will stop the scheduling job running.
 			if (log.isErrorEnabled()) {

@@ -660,15 +660,16 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 
 	private void queueScheduledInstances() {
 		List<QueuedTargetInstanceDTO> theQueue = targetInstanceDao.getQueue();
-		log.debug("Start: Processing " + theQueue.size() + " entries from the queue.");
+		log.info("Start: Processing " + theQueue.size() + " entries from the queue.");
 
 		QueuedTargetInstanceDTO ti = null;
 		Iterator<QueuedTargetInstanceDTO> it = theQueue.iterator();
 		while (it.hasNext()) {
 			ti = it.next();
+			log.info("Processing queue entry: " + ti.toString());
 			harvestOrQueue(ti);
 		}
-		log.debug("Finished: Processing {} entries from the queue.", theQueue.size());
+		log.info("Finished: Processing {} entries from the queue.", theQueue.size());
 	}
 
 	void queueOptimisableInstances() {
@@ -678,7 +679,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 			List<QueuedTargetInstanceDTO> upcomingJobs = targetInstanceDao.getUpcomingJobs(harvestOptimizationLookAheadHours
 					* HOUR_MILLISECONDS);
 			int upcomingJobCount = upcomingJobs.size();
-			log.debug("Start: Attempting to optimize {} entries from the queue.", upcomingJobCount);
+			log.info("Start: Attempting to optimize {} entries from the queue.", upcomingJobCount);
 			for (QueuedTargetInstanceDTO qti : upcomingJobs) {
 				if(loadAndStartOptimizable(qti)) {
 					optimizedJobCount++;
@@ -686,7 +687,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 					optimizationUnavailableCount++;
 				}
 			}
-			log.debug(MessageFormat.format(
+			log.info(MessageFormat.format(
 					"Finished: Processed {0} of {1} upcoming jobs, of which {2} were not eligible/configured for optimization",
 					(optimizedJobCount + optimizationUnavailableCount), upcomingJobCount, optimizationUnavailableCount));
 		}
@@ -742,7 +743,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		Long tiOid = aTargetInstance.getOid();
 		if (!harvestAgentManager.lock(tiOid))
 			return;
-		log.debug("Obtained lock for ti " + tiOid);
+		log.info("Obtained lock for ti " + tiOid);
 
 		if (TargetInstance.STATE_SCHEDULED.equals(aTargetInstance.getState())) {
 			ti = loadTargetInstance(tiOid);
@@ -754,7 +755,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		}
 		// release the lock
 		harvestAgentManager.unLock(tiOid);
-		log.debug("Released lock for ti " + tiOid);
+		log.info("Released lock for ti " + tiOid);
 	}
 
 	private void queueApprovedHarvest(QueuedTargetInstanceDTO queuedTargetInstance, TargetInstance ti, Long tiOid) {
@@ -769,11 +770,12 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 					if (ti == null) {
 						ti = loadTargetInstance(tiOid);
 					}
-
+					log.info("Allocating TI " + tiOid + " to agent " + agent.getName());
 					processed = harvestTargetInstance(agent, ti);
 				}
 			} else {
 				processed = true;
+				log.info("Re-queueing TI " + tiOid);
 				// if not already queued set the target instance to the
 				// queued state.
 				if (!queuedTargetInstance.getState().equals(TargetInstance.STATE_QUEUED)) {
