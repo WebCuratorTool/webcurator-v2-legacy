@@ -28,7 +28,7 @@ public class GroupSearchControllerTest extends BaseWCTTest<GroupSearchController
 	public GroupSearchControllerTest()
 	{
 		super(GroupSearchController.class,
-				"src/test/java/org/webcurator/ui/groups/controller/groupsearchcontrollertest.xml");
+				"src/test/java/org/webcurator/ui/groups/controller/GroupSearchControllerTest.xml");
 	}
 	
 	@Test

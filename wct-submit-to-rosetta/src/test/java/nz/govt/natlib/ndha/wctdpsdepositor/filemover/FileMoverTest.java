@@ -22,6 +22,7 @@
 
 package nz.govt.natlib.ndha.wctdpsdepositor.filemover;
 
+import nz.govt.natlib.ndha.common.FixityUtils;
 import nz.govt.natlib.ndha.wctdpsdepositor.Constants;
 import nz.govt.natlib.ndha.wctdpsdepositor.WctDepositParameter;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.ArchiveFile;
@@ -33,6 +34,8 @@ import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -79,7 +82,15 @@ public class FileMoverTest {
     }
 
     private List<ArchiveFile> populateListWithOneArchiveFile() {
-        ArchiveFile af = new FileSystemArchiveFile(Constants.LOG_FILE_MIME_TYPE, Constants.LOG_FILE_FIXITY, Constants.LOG_FILE_NAME, TEST_DIRECTORY);
+        String fullPath = TEST_DIRECTORY + "/" + Constants.LOG_FILE_NAME;
+        File archiveFile = new File(fullPath);
+        String originalMd5;
+        try {
+            originalMd5 = FixityUtils.calculateMD5(archiveFile);
+        } catch (FileNotFoundException fnfe) {
+            throw new RuntimeException("FileNotFoundException thrown by MD5 fixity utility.", fnfe);
+        }
+        ArchiveFile af = new FileSystemArchiveFile(Constants.LOG_FILE_MIME_TYPE, originalMd5, Constants.LOG_FILE_NAME, TEST_DIRECTORY);
         List<ArchiveFile> files = new ArrayList<ArchiveFile>();
         files.add(af);
         return files;

@@ -14,7 +14,7 @@ public class BusinessObjectFactoryTest extends BaseWCTTest<BusinessObjectFactory
 	public BusinessObjectFactoryTest()
 	{
 		super(BusinessObjectFactory.class,
-				"src/test/java/org/webcurator/domain/model/core/businessobjectfactorytest.xml");
+				"src/test/java/org/webcurator/domain/model/core/BusinessObjectFactoryTest.xml");
 	}
 	
 	public void setUp() throws Exception {

@@ -35,7 +35,7 @@ public class BrowseHelperTest extends BaseWCTTest<BrowseHelper> {
 
 	public BrowseHelperTest()
 	{
-		super(BrowseHelper.class, "src/test/java/org/webcurator/ui/tools/controller/browsehelpertest.xml");
+		super(BrowseHelper.class, "src/test/java/org/webcurator/ui/tools/controller/BrowseHelperTest.xml");
 		
 	}
 	

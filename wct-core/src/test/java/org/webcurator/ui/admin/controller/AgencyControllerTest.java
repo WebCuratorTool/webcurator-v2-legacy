@@ -30,7 +30,7 @@ public class AgencyControllerTest extends BaseWCTTest<AgencyController>{
 	public AgencyControllerTest()
 	{
 		super(AgencyController.class,
-				"src/test/java/org/webcurator/ui/admin/controller/agencycontrollertest.xml");
+				"src/test/java/org/webcurator/ui/admin/controller/AgencyControllerTest.xml");
 	}
 	
 	/**
