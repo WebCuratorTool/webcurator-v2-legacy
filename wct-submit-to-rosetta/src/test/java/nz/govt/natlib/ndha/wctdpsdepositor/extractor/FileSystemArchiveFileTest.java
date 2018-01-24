@@ -25,6 +25,8 @@ package nz.govt.natlib.ndha.wctdpsdepositor.extractor;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+
+import nz.govt.natlib.ndha.common.FixityUtils;
 import org.junit.Test;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
@@ -57,9 +59,19 @@ public class FileSystemArchiveFileTest {
 
     @Test
     public void test_that_toStream_returns_contents_of_file() throws IOException {
+
+        String fullPath = TEST_DIRECTORY + "/" + FILE_NAME;
+        File preArchiveFile = new File(fullPath);
+        String originalMd5;
+        try {
+            originalMd5 = FixityUtils.calculateMD5(preArchiveFile);
+        } catch (FileNotFoundException fnfe) {
+            throw new RuntimeException("FileNotFoundException thrown by MD5 fixity utility.", fnfe);
+        }
+
         InputStream is = null;
         try {
-            FileSystemArchiveFile af = new FileSystemArchiveFile("mime", FIXITY, FILE_NAME, TEST_DIRECTORY);
+            FileSystemArchiveFile af = new FileSystemArchiveFile("mime", originalMd5, FILE_NAME, TEST_DIRECTORY);
             is = af.toStream();
 
             String valueFromStream = buildStringFromStream(is);
