@@ -4,4 +4,4 @@ jdk:
   - oraclejdk8
 
 install: ./install_maven_dependencies.sh
-script: mvn clean install -Dmaven.test.skip=true
+script: mvn clean install -Dmaven.test.skip=false

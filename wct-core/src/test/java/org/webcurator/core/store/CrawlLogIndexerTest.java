@@ -25,10 +25,12 @@ public class CrawlLogIndexerTest extends BaseWCTTest<CrawlLogIndexer>{
 	private Long hrOid = 54321L;
 	private Long tiOid = 12345L;
 	private int harvestNumber = 1;
+
+	private final String tmpDir = System.getProperty("java.io.tmpdir");
 	
-	private final File baseFolder = new File("/temp/CrawlLogIndexerTest");
-	private final File archiveFolder = new File("/temp/CrawlLogIndexerTest/1");
-	private final File logsFolder = new File("/temp/CrawlLogIndexerTest/logs");
+	private final File baseFolder = new File(tmpDir + "/CrawlLogIndexerTest");
+	private final File archiveFolder = new File(tmpDir + "/CrawlLogIndexerTest/1");
+	private final File logsFolder = new File(tmpDir + "/CrawlLogIndexerTest/logs");
 	
 	@SuppressWarnings("unused")
 	private class CrawlLogRunner implements Runnable

@@ -40,7 +40,7 @@ public class TargetInstanceGeneralHandlerTest extends BaseWCTTest<TargetInstance
 	public TargetInstanceGeneralHandlerTest()
 	{
 		super(TargetInstanceGeneralHandler.class, 
-				"src/test/java/org/webcurator/ui/target/controller/targetinstancegeneralhandlertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/TargetInstanceGeneralHandlerTest.xml");
 	}
 	
 	public void setUp() throws Exception 

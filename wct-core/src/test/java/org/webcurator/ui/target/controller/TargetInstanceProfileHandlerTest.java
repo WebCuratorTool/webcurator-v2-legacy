@@ -36,7 +36,7 @@ public class TargetInstanceProfileHandlerTest extends BaseWCTTest<TargetInstance
 	public TargetInstanceProfileHandlerTest()
 	{
 		super(TargetInstanceProfileHandler.class, 
-				"src/test/java/org/webcurator/ui/target/controller/targetinstanceprofilehandlertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/TargetInstanceProfileHandlerTest.xml");
 	}
 	
 	

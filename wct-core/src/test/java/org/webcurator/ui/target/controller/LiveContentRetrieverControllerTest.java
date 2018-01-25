@@ -24,7 +24,7 @@ public class LiveContentRetrieverControllerTest extends BaseWCTTest<LiveContentR
 	public LiveContentRetrieverControllerTest()
 	{
 		super(LiveContentRetrieverController.class, 
-				"src/test/java/org/webcurator/ui/target/controller/logreadercontrollertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/LogReaderControllerTest.xml");
 	}
 	
 	

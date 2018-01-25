@@ -29,7 +29,7 @@ public class TargetSchedulesHandlerTest extends BaseWCTTest<TargetSchedulesHandl
 	public TargetSchedulesHandlerTest()
 	{
 		super(TargetSchedulesHandler.class,
-				"src/test/java/org/webcurator/ui/target/controller/targetscheduleshandlertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/TargetSchedulesHandlerTest.xml");
 	}
 	
 	public void setUp() throws Exception 
