@@ -32,7 +32,7 @@ public class SiteControllerTest extends BaseWCTTest<SiteController>{
 
 	public SiteControllerTest()
 	{
-		super(SiteController.class, "src/test/java/org/webcurator/ui/site/controller/sitecontrollertest.xml");
+		super(SiteController.class, "src/test/java/org/webcurator/ui/site/controller/SiteControllerTest.xml");
 	}
 	AuthorityManagerImpl authorityManager;
 	

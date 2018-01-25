@@ -25,7 +25,7 @@ public class LogReaderControllerTest extends BaseWCTTest<LogReaderController>{
 	public LogReaderControllerTest()
 	{
 		super(LogReaderController.class, 
-				"src/test/java/org/webcurator/ui/target/controller/logreadercontrollertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/LogReaderControllerTest.xml");
 	}
 	
 	public void setUp() throws Exception 

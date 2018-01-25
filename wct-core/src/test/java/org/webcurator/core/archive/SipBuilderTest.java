@@ -20,7 +20,7 @@ public class SipBuilderTest extends BaseWCTTest<SipBuilder>{
 	public SipBuilderTest()
 	{
 		super(SipBuilder.class,
-				"src/test/java/org/webcurator/core/archive/sipbuildertest.xml");
+				"src/test/java/org/webcurator/core/archive/SipBuilderTest.xml");
 	}
 	
 	@Test

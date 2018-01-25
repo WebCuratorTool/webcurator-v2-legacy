@@ -30,7 +30,7 @@ public class TargetInstanceLogsHandlerTest extends BaseWCTTest<TargetInstanceLog
 	public TargetInstanceLogsHandlerTest()
 	{
 		super(TargetInstanceLogsHandler.class,
-				"src/test/java/org/webcurator/ui/target/controller/targetinstancelogshandlertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/TargetInstanceLogsHandlerTest.xml");
 	}
 	
 	public void setUp() throws Exception 

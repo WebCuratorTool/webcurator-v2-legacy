@@ -20,7 +20,7 @@ public class TargetInstanceManagerImplTest extends BaseWCTTest<TargetInstanceMan
 	public TargetInstanceManagerImplTest()
 	{
 		super(TargetInstanceManagerImpl.class, 
-				"src/test/java/org/webcurator/core/scheduler/targetinstancemanagerimpltest.xml");
+				"src/test/java/org/webcurator/core/scheduler/TargetInstanceManagerImplTest.xml");
 	}
 	
 	public void setUp() throws Exception {

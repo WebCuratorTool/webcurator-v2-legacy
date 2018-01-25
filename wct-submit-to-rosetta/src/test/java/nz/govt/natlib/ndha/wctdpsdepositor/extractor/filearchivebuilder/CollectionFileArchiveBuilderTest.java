@@ -22,6 +22,8 @@
 
 package nz.govt.natlib.ndha.wctdpsdepositor.extractor.filearchivebuilder;
 
+import nz.govt.natlib.ndha.common.FixityUtils;
+import nz.govt.natlib.ndha.wctdpsdepositor.Constants;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.FileSystemArchiveFile;
 import nz.govt.natlib.ndha.wctdpsdepositor.extractor.filefinder.CollectionFileArchiveBuilder;
 import static org.hamcrest.core.Is.is;
@@ -32,6 +34,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +57,16 @@ public class CollectionFileArchiveBuilderTest {
 
     @Test
     public void test_file_system_archive_built() throws IOException {
-        FileSystemArchiveFile archiveFile = builder.createFileFrom("test/xml", "5b8e0ef130911c544e406f99cb5eb90a", FILE_NAME);
+        String fullPath = TEST_DIRECTORY + "/" + FILE_NAME;
+        File preArchiveFile = new File(fullPath);
+        String originalMd5;
+        try {
+            originalMd5 = FixityUtils.calculateMD5(preArchiveFile);
+        } catch (FileNotFoundException fnfe) {
+            throw new RuntimeException("FileNotFoundException thrown by MD5 fixity utility.", fnfe);
+        }
+
+        FileSystemArchiveFile archiveFile = builder.createFileFrom("test/xml", originalMd5, FILE_NAME);
         assertThat(archiveFile.toStream(), is(instanceOf(FileInputStream.class)));
     }
 

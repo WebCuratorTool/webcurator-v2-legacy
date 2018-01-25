@@ -28,7 +28,7 @@ public class QualityReviewToolControllerTest extends BaseWCTTest<QualityReviewTo
 
 	public QualityReviewToolControllerTest()
 	{
-		super(QualityReviewToolController.class, "src/test/java/org/webcurator/ui/tools/controller/qualityreviewtoolcontrollertest.xml");
+		super(QualityReviewToolController.class, "src/test/java/org/webcurator/ui/tools/controller/QualityReviewToolControllerTest.xml");
 	}
 	AuthorityManagerImpl authorityManager;
 	

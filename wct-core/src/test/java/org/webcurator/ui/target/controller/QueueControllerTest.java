@@ -78,7 +78,7 @@ public class QueueControllerTest extends BaseWCTTest<QueueController> {
 	private BindException errors;
 
 	public QueueControllerTest() {
-		super(QueueController.class, "src/test/java/org/webcurator/ui/target/controller/queuecontrollertest.xml");
+		super(QueueController.class, "src/test/java/org/webcurator/ui/target/controller/QueueControllerTest.xml");
 
 	}
 

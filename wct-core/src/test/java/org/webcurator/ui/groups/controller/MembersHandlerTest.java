@@ -33,7 +33,7 @@ public class MembersHandlerTest extends BaseWCTTest<MembersHandler> {
 
 	public MembersHandlerTest() {
 		super(MembersHandler.class, 
-				"src/test/java/org/webcurator/ui/groups/controller/membershandlertest.xml");
+				"src/test/java/org/webcurator/ui/groups/controller/MembersHandlerTest.xml");
 	}
 
 	public void setUp() throws Exception 

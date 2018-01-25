@@ -32,7 +32,7 @@ import org.webcurator.ui.util.TabConfig;
 public class MoveTargetsControllerTest extends BaseWCTTest<MoveTargetsController> {
 
 	public MoveTargetsControllerTest() {
-		super(MoveTargetsController.class, "src/test/java/org/webcurator/ui/groups/controller/movetargetscontrollertest.xml");
+		super(MoveTargetsController.class, "src/test/java/org/webcurator/ui/groups/controller/MoveTargetsControllerTest.xml");
 	}
 
 	private TargetManager tm = null;

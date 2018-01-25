@@ -37,7 +37,7 @@ public class TreeToolControllerTest extends BaseWCTTest<TreeToolController> {
 	public TreeToolControllerTest() {
 		super(
 				TreeToolController.class,
-				"src/test/java/org/webcurator/ui/tools/controller/treetoolcontrollertest.xml");
+				"src/test/java/org/webcurator/ui/tools/controller/TreeToolControllerTest.xml");
 
 	}
 

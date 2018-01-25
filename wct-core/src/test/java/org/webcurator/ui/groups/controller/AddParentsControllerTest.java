@@ -33,7 +33,7 @@ public class AddParentsControllerTest extends BaseWCTTest<AddParentsController> 
 	private TargetManager tm = null;
 	
 	public AddParentsControllerTest() {
-		super(AddParentsController.class, "src/test/java/org/webcurator/ui/groups/controller/addparentscontrollertest.xml");
+		super(AddParentsController.class, "src/test/java/org/webcurator/ui/groups/controller/AddParentsControllerTest.xml");
 	}
 	
 	public void setUp() throws Exception 

@@ -42,7 +42,7 @@ public class HarvestNowControllerTest extends BaseWCTTest<HarvestNowController> 
 	public HarvestNowControllerTest()
 	{
 		super(HarvestNowController.class,
-				"src/test/java/org/webcurator/ui/target/controller/harvestnowcontrollertest.xml");
+				"src/test/java/org/webcurator/ui/target/controller/HarvestNowControllerTest.xml");
 		
 	}
 	
