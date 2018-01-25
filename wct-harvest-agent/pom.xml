@@ -311,21 +311,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-			<version>1.2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>net.sf</groupId>
 			<artifactId>jargs</artifactId>
 			<version>1.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.anotherbigidea</groupId>
-			<artifactId>javaswf</artifactId>
-			<version>CVS-SNAPSHOT-1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
