@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
+
+    <bean id="WCTHarvestAgentConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:wct-agent.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="order" value="150"/>
+    </bean>
+
+	<bean id="harvestAgent" class="org.webcurator.core.harvester.agent.HarvestAgentHeritrix" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<!-- name of the directory where the temporary harvest data is stored -->
+		<property name="baseHarvestDirectory" value="${harvestAgent.baseHarvestDirectory}"/>
+		<!-- agent host name or ip address that the core knows about -->
+		<property name="host" value="${harvestAgent.host}"/>
+		<!-- the max number of harvest to be run concurrently on this agent -->
+		<property name="maxHarvests" value="${harvestAgent.maxHarvests}"/>
+		<!-- the port the agent is listening on for http connections -->
+		<property name="port" value="${harvestAgent.port}"/>
+		<!-- the name of the agent. must be unique -->
+		<property name="name" value="${harvestAgent.name}"/>
+		<!-- the note to send with the harvest result. -->
+		<property name="provenanceNote" value="${harvestAgent.provenanceNote}"/>
+		<!-- the number of alerts that occur before a notification is sent  -->
+		<property name="alertThreshold" value="${harvestAgent.alertThreshold}"/>
+		<!-- the list of agency names that can use this agent -->
+		<property name="allowedAgencies">
+			<list></list>
+		</property>		
+		<property name="digitalAssetStore">
+			<ref bean="digitalAssetStore"></ref>
+		</property>
+		<property name="harvestCoordinatorNotifier">
+			<ref bean="harvestCoordinatorNotifier"></ref>
+		</property>
+	</bean>
+	<bean id="harvestCoordinatorNotifier" class="org.webcurator.core.harvester.coordinator.HarvestCoordinatorNotifier" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<!-- the name of the core harvest agent listener web service -->
+		<property name="service" value="${harvestCoordinatorNotifier.service}"/>
+		<!-- the host name or ip address of the core -->
+		<property name="host" value="${harvestCoordinatorNotifier.host}"/>
+		<!-- the port that the core is listening on for http connections -->
+		<property name="port" value="${harvestCoordinatorNotifier.port}"/>
+		<property name="agent" ref="harvestAgent"/>
+	</bean>	
+	<bean id="digitalAssetStore" class="org.webcurator.core.store.DigitalAssetStoreSOAPClient" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<!-- the name of the digital asset store web service -->
+		<property name="service" value="${digitalAssetStore.service}" />
+		<!-- the host name or ip address of the digital asset store -->
+		<property name="host" value="${digitalAssetStore.host}"/>
+		<!-- the port that the digital asset store is listening on for http connections -->
+		<property name="port" value="${digitalAssetStore.port}"/>
+	</bean>
+	<bean id="heartbeatJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<property name="group" value="HeartBeatGroup"/>
+	<property name="name" value="HeartBeat"/>
+	<property name="jobClass" value="org.webcurator.core.harvester.agent.schedule.HarvestAgentHeartBeatJob"/>
+	<property name="jobDataAsMap">
+		<map>
+			<entry key="harvestAgent" value-ref="harvestAgent"/>
+			<entry key="notifier" value-ref="harvestCoordinatorNotifier"/>
+		</map>
+	</property>
+</bean>
+	<bean id="heartbeatTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="HeartBeatTriggerGroup"/>
+		<property name="name" value="HeartBeatTrigger"/>
+		<property name="jobDetail" ref="heartbeatJob"/>
+		<!-- delay before running the job measured in milliseconds -->
+		<property name="startDelay" value="${heartbeatTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds -->
+		<property name="repeatInterval" value="${heartbeatTrigger.repeatInterval}"/>
+	</bean>
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="triggers">
+			<list>
+		    	<ref bean="heartbeatTrigger"/>
+		    	<ref bean="checkProcessorTrigger"/>
+		    </list>
+		</property>
+	</bean>
+	<bean id="logReader"
+		class="org.webcurator.core.reader.LogReaderImpl" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="logProvider">
+			<ref bean="harvestAgent" />
+		</property>
+	</bean>
+	<bean id="harvestCompleteConfig"
+		class="org.webcurator.core.harvester.agent.schedule.HarvestCompleteConfig"
+		abstract="false" singleton="true" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<!-- number of retries before increasing the wait time for level 1 to level 2 -->
+		<property name="levelRetryBand" value="${harvestCompleteConfig.levelRetryBand}" />
+		<!-- number of seconds to wait after a failure to complete a harvest (level 1) -->
+		<property name="waitOnFailureLevelOneSecs" value="${harvestCompleteConfig.waitOnFailureLevelOneSecs}" />
+		<!-- number of seconds to wait after a failure to complete a harvest (level 2) -->
+		<property name="waitOnFailureLevelTwoSecs" value="${harvestCompleteConfig.waitOnFailureLevelTwoSecs}" />
+		<!-- number of seconds to wait after the harvester says it is finished -->
+		<property name="waitOnCompleteSeconds" value="${harvestCompleteConfig.waitOnCompleteSeconds}" />
+	</bean>
+	<bean id="memoryChecker"
+		class="org.webcurator.core.check.MemoryChecker" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<!-- The amount of memory in KB that can be used before a warning notification is sent  -->
+		<property name="warnThreshold" value="${memoryChecker.warnThreshold}"/>
+		<!-- The amount of memory in KB that can be used before an error notification is sent  -->		
+		<property name="errorThreshold" value="${memoryChecker.errorThreshold}"/>
+		<property name="checkType" value="Memory"/>
+		<property name="notificationSubject" value="Agent"/>
+		<property name="notifier">
+			<ref bean="harvestCoordinatorNotifier" />
+		</property>
+	</bean>
+	<!-- the following memory checker replaces the one above where Harvest Agents are to stop processing new harvests 
+	     when memory exceeds the warning level, and restart processing new harvests when memory drops below the warning level -->
+	<!-- bean id="memoryChecker"
+		class="org.webcurator.core.check.HarvestAgentMemoryChecker" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="warnThreshold" value="${memoryChecker.warnThreshold}"/>
+		<property name="errorThreshold" value="${memoryChecker.errorThreshold}"/>
+		<property name="checkType" value="Memory"/>
+		<property name="notificationSubject" value="Agent"/>
+		<property name="notifier">
+			<ref bean="harvestCoordinatorNotifier" />
+		</property>
+		<property name="harvestAgent">
+			<ref bean="harvestAgent"/>
+		</property>
+	</bean -->
+	<bean id="processorCheck"
+		class="org.webcurator.core.check.ProcessorCheck" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">		
+		<!-- the pattern and command properties can be set the default setup is for linux sar -u -->
+		<!--  for a solaris box use this pattern to get the processor data for linux remove this line -->
+		<property name="pattern" value="(?m)\w+:\w+:\w+\s+\S+\s+\S+\s+\S+\s+(\S+)$"/>
+		<!-- The minimum percentage of processor available before a warning notification is sent  -->		
+		<property name="warnThreshold" value="${processorCheck.warnThreshold}"/>
+		<!-- The minimum percentage of processor available before an error notification is sent  -->		
+		<property name="errorThreshold" value="${processorCheck.errorThreshold}"/>
+		<property name="checkType" value="Processor"/>
+		<property name="notificationSubject" value="Agent"/>
+		<property name="notifier">
+			<ref bean="harvestCoordinatorNotifier" />
+		</property>
+	</bean>
+	<bean id="diskSpaceChecker"
+		class="org.webcurator.core.check.DiskSpaceChecker" abstract="false"
+		singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<!-- the percentage of disk used before a warning notification is sent -->
+		<constructor-arg index="0" value="${diskSpaceChecker.warnThreshold}"/>
+		<!-- the percentage of disk used before an error notification is sent -->		
+		<constructor-arg index="1" value="${diskSpaceChecker.errorThreshold}"/>
+		<property name="checkType" value="Disk Space"/>
+		<property name="notificationSubject" value="Agent"/>
+		<property name="notifier">
+			<ref bean="harvestCoordinatorNotifier" />
+		</property>
+		<!-- List of disk mounts to check -->
+		<constructor-arg index="2">
+			<list>
+				<value>/</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="checkProcessor"
+			class="org.webcurator.core.check.CheckProcessor" abstract="false"
+			singleton="true" lazy-init="default" autowire="default"
+			dependency-check="default">
+			<property name="checks">
+				<list>
+					<ref bean="memoryChecker"/>
+					<!--<ref bean="processorCheck"/>-->
+					<ref bean="diskSpaceChecker"/>								
+				</list>
+			</property>
+	</bean>
+	<bean id="checkProcessorJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="checkProcessor"/>
+		</property>
+		<property name="targetMethod" value="check"/>
+	</bean>
+		<bean id="checkProcessorTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="group" value="CheckProcessorTriggerGroup"/>
+		<property name="name" value="CheckProcessorTrigger"/>
+		<property name="jobDetail" ref="checkProcessorJob"/>
+		<!-- start delay measured in milliseconds -->
+  		<property name="startDelay" value="${checkProcessorTrigger.startDelay}"/>
+		<!-- repeat every xx milliseconds -->
+  		<property name="repeatInterval" value="${checkProcessorTrigger.repeatInterval}"/>
+	</bean>			
+</beans>

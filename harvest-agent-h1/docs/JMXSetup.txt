@@ -1,0 +1,37 @@
+References 
+1) http://mc4j.org/confluence/display/MC4J/Tomcat
+2) http://java.sun.com/j2se/1.5.0/docs/guide/management/security-windows.html
+
+Steps
+
+1) edit catalina.bat section where JAVA_OPTS is set.  append -Dcom.sun.management.jmxremote.port=9004
+
+2) create a jmxremote.password file by copying the file jmxremote.password.template this file will be 
+in your JRE's \lib\management directory. 
+NOTE: you can use the property -Dcom.sun.management.jmxremote.password.file to point to a different location.
+
+3) add the following two lines that define the passwords for the monitorRole and the ControlRole
+monitorRole  apassword
+controlRole  apassword
+
+4) change the properties of the jmxremote.password so it can only be read by the person starting the JVM
+for unix use chmod 600 jmxremote.password
+on windows this only works on NTFS nor FAT file systems
+a) Right-click on the jmxremote.password file and select the Properties option.
+b) Select the Security tab
+c) Select the Advanced button in the Security tab
+d) Select the Owner tab to check if the file owner matches the user under which the VM is running.
+if not then set the user running the VM as the owner
+e) Select the Permission tab to set the permissions: 
+If there are permission entries inherited from a parent directory that allow users or groups other 
+than the owner access to the file, then clear the "Inherit from parent the permission entries that 
+apply to child objects" checkbox
+f) At this point it will prompt you to ask if the inherited permissions should be copied from the 
+parent or removed. Press the Copy button.
+g) Then remove all permission entries that grant access to users or groups other than the file 
+owner by clicking the user or group and press the Remove button for all users and groups except 
+the file owner. Now there should be a single permission entry which grants Full Control to the owner.
+h) Press OK to apply the file security change. The password file is now secure and can only be 
+accessed by the owner
+
+
