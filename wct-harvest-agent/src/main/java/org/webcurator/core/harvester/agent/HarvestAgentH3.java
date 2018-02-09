@@ -17,12 +17,11 @@ package org.webcurator.core.harvester.agent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.archive.crawler.framework.CrawlScope;
-import org.archive.crawler.settings.CrawlerSettings;
-import org.archive.crawler.settings.XMLSettingsHandler;
 import org.archive.util.FileUtils;
 import org.webcurator.core.common.Constants;
 import org.webcurator.core.harvester.agent.exception.HarvestAgentException;
+import org.webcurator.core.harvester.agent.filter.*;
+import org.webcurator.core.harvester.agent.filter.FileFilter;
 import org.webcurator.core.harvester.coordinator.HarvestAgentListener;
 import org.webcurator.core.reader.LogProvider;
 import org.webcurator.core.store.DigitalAssetStore;

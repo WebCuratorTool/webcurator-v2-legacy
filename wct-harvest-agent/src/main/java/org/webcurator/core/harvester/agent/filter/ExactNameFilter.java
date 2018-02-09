@@ -13,19 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.webcurator.core.harvester.agent;
+package org.webcurator.core.harvester.agent.filter;
+
+import org.webcurator.core.harvester.agent.filter.FileFilter;
 
 import java.io.File;
 
-public class NegateFilter implements FileFilter {
-	private FileFilter delegate;
+public class ExactNameFilter implements FileFilter {
 	
-	public NegateFilter(FileFilter delegate) { 
-		this.delegate = delegate;
-	}
+	private String exactName; 
 	
-	public boolean accepts(File f) { 
-		return !delegate.accepts(f);
+	public ExactNameFilter(String exactName) { 
+		this.exactName = exactName;
 	}
 
+	public boolean accepts(File f) {
+		return f.getName().equals(exactName);
+	}
+	
+	
+	
 }

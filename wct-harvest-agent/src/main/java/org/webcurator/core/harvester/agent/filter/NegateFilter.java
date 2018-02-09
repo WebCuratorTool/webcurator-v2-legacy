@@ -13,27 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.webcurator.core.harvester.agent;
+package org.webcurator.core.harvester.agent.filter;
+
+import org.webcurator.core.harvester.agent.filter.FileFilter;
 
 import java.io.File;
 
-public class AndFileFilter implements FileFilter {
-
-	private FileFilter[] fileFilters;
+public class NegateFilter implements FileFilter {
+	private FileFilter delegate;
 	
-	public AndFileFilter(FileFilter... fileFilters) { 
-		this.fileFilters = fileFilters;
+	public NegateFilter(FileFilter delegate) { 
+		this.delegate = delegate;
 	}
 	
-	
-	public boolean accepts(File f) {
-		for(FileFilter filter: fileFilters) {
-			if(!filter.accepts(f)) {
-				return false;
-			}
-		}
-		return true;
+	public boolean accepts(File f) { 
+		return !delegate.accepts(f);
 	}
 
-	
 }

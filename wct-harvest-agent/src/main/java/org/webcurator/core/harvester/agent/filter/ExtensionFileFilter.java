@@ -13,7 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.webcurator.core.harvester.agent;
+package org.webcurator.core.harvester.agent.filter;
+
+import org.webcurator.core.harvester.agent.filter.FileFilter;
 
 import java.io.File;
 
