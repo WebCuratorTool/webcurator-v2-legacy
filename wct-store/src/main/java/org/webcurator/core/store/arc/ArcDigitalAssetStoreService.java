@@ -1432,9 +1432,21 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
         this.wsEndPoint = wsEndPoint;
     }
 
+    // Skips status line in the ArchiveRecord stream
+    // checks if it starts with HTTP and ends with CRLF
     private void skipStatusLine(ArchiveRecord record) throws IOException {
         if (record.available() > 0) {
             int i;
+            char[] proto = new char[4];
+            for (int c = 0; c < 4; c++) {
+                if ((i = record.read()) == -1) {
+                    throw new IOException("Malformed HTTP Status-Line");
+                }
+                proto[c] = (char)i;
+            }
+            if (!"HTTP".equals(new String(proto))) {
+                throw new IOException("Malformed HTTP Status-Line");
+            }
             char c0 = '0';
             char c1;
             while ((i = record.read()) != -1) {
