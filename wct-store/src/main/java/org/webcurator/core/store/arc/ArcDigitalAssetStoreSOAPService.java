@@ -135,7 +135,7 @@ public class ArcDigitalAssetStoreSOAPService extends ServletEndpointSupport impl
 		return header;
 	}
 	
-	/** @see DigitalAssetStoreSOAP#copyAndPrune(String, int, int, List). */
+	/** @see DigitalAssetStoreSOAP#copyAndPrune(String, int, int, List, List) */
 	public HarvestResultDTO copyAndPrune(String targetInstanceName, int orgHarvestResultNum, int newHarvestResultNum, List<String> urisToDelete, List<HarvestResourceDTO> hrsToImport) throws DigitalAssetStoreException {
         return service.copyAndPrune(targetInstanceName, orgHarvestResultNum, newHarvestResultNum, urisToDelete, hrsToImport);
 	}
@@ -168,7 +168,7 @@ public class ArcDigitalAssetStoreSOAPService extends ServletEndpointSupport impl
 		service.initiateRemoveIndexes(harvestResult);
 	}
 		
-	/** @see DigitalAssetStoreSOAP#abortIndexing(Long). */
+	/** @see DigitalAssetStoreSOAP#checkIndexing(Long) (Long). */
 	public Boolean checkIndexing(Long harvestResultOid) throws DigitalAssetStoreException {
 		log.info("ArcDigitalAssetStoreSOAPService: checkIndexing");
 		return service.checkIndexing(harvestResultOid);

@@ -173,10 +173,18 @@
 			<version>1.0</version>
 			<scope>compile</scope>
 		</dependency>
+        <!--
 		<dependency>
 			<groupId>org.archive</groupId>
 			<artifactId>aheritrix</artifactId>
 			<version>1.14.1</version>
+			<scope>compile</scope>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.netpreserve.commons</groupId>
+			<artifactId>webarchive-commons</artifactId>
+			<version>1.1.8</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
