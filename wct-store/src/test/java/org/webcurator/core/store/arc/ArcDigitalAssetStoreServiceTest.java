@@ -135,7 +135,7 @@ public class ArcDigitalAssetStoreServiceTest extends BaseWCTStoreTest<ArcDigital
 
 		Header[] headers = testInstance.getHeaders(new Long(targetInstanceOid).toString(), harvestResultNumber, dto);
 		assertTrue(headers != null);
-		assertTrue(headers.length == 5);
+		assertTrue(headers.length == 4);
 	}
 
 	/**

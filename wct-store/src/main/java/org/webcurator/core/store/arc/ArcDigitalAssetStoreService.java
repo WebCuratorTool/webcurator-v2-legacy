@@ -256,6 +256,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             if (record instanceof ARCRecord) {
                 ((ARCRecord) record).skipHttpHeader();
             } else {
+                skipStatusLine(record);
                 skipHeaders(record);
             }
 
@@ -346,6 +347,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             if (record instanceof ARCRecord) {
                 ((ARCRecord) record).skipHttpHeader();
             } else {
+                skipStatusLine(record);
                 skipHeaders(record);
             }
 
@@ -446,6 +448,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                 headers = ((ARCRecord) record).getHttpHeaders();
             } else {
                 log.debug("Reading the headers");
+                skipStatusLine(record);
                 headers = HttpParser.parseHeaders(record,
                         WARCConstants.DEFAULT_ENCODING);
             }
@@ -1427,6 +1430,21 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
      */
     public void setWsEndPoint(WebServiceEndPoint wsEndPoint) {
         this.wsEndPoint = wsEndPoint;
+    }
+
+    private void skipStatusLine(ArchiveRecord record) throws IOException {
+        if (record.available() > 0) {
+            int i;
+            char c0 = '0';
+            char c1;
+            while ((i = record.read()) != -1) {
+                c1 = (char)i;
+                if (c0 == '\r' && c1 == '\n') {
+                    break;
+                }
+                c0 = c1;
+            }
+        }
     }
 
     private void skipHeaders(ArchiveRecord record) throws IOException {
