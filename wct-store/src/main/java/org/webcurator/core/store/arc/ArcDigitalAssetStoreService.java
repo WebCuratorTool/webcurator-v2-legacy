@@ -65,6 +65,7 @@ import org.archive.io.warc.WARCRecordInfo;
 import org.archive.io.warc.WARCWriter;
 import org.archive.io.warc.WARCWriterPoolSettings;
 import org.archive.io.warc.WARCWriterPoolSettingsData;
+import org.archive.uid.UUIDGenerator;
 import org.archive.util.anvl.ANVLRecord;
 import org.webcurator.core.archive.Archive;
 import org.webcurator.core.archive.ArchiveFile;
@@ -307,7 +308,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             }
         }
 
-        // 5. Return the result.
         return dest;
     }
 
@@ -513,6 +513,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             String impArcSuffix = null;
             String impArcType = null;
             String impArcCompressed = null;
+            String strippedImpArcFilename = null;
             List<String> impArcHeader = new ArrayList<String>();
 
             // Copy them into the destination directory.
@@ -530,8 +531,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                 // use the prefix and suffix off the original file
                 String prefixSuffixRegex = "[-][12][0-9][0-9][0-9][01][0-9][0-3][0-9][0-5][0-9][0-5][0-9][0-5][0-9][-][0-9]*[-]";
 
-                String filename = reader.getStrippedFileName();
-                String[] prefixSuffix = filename.split(prefixSuffixRegex);
+                strippedImpArcFilename = reader.getStrippedFileName();
+                String[] prefixSuffix = strippedImpArcFilename.split(prefixSuffixRegex);
 
                 String prefix;
                 String suffix;
@@ -540,8 +541,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     suffix = prefixSuffix[1];
                 } else {
                     prefix = ARCWriter.DEFAULT_PREFIX;
-                    suffix = filename.substring(filename.lastIndexOf("-") + 1,
-                            filename.length());
+                    suffix = strippedImpArcFilename.substring(strippedImpArcFilename.lastIndexOf("-") + 1,
+                            strippedImpArcFilename.length());
 
                 }
                 compressed = reader.isCompressed();
@@ -578,8 +579,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     }
 
                     // Create an ARC Writer
-                    // TODO here and elsewhere: check if template should be null?
-                    WriterPoolSettings settings = new WriterPoolSettingsData(prefix, null,
+                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l);
                     ARCWriter writer = new ARCWriter(aint, settings);
 
@@ -698,9 +698,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     archiveRecordsIt.next();
 
                     // Create a WARC Writer
-                    // TODO check here (and elseshere?) if generator should be null
-                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(prefix, null,
-                            ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l, null);
+                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
+                            ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l, new UUIDGenerator());
                     WARCWriter writer = new WARCWriter(aint, settings);
 
                     // Iterate through all the records, skipping deleted or
@@ -749,23 +748,27 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                         WARCRecordInfo warcRecordInfo = new WARCRecordInfo();
                         switch (WARCConstants.WARCRecordType.valueOf(WARCType)) {
                             case warcinfo:
-                                warcRecordInfo.setUrl(header.getUrl());
                                 warcRecordInfo.setType(WARCConstants.WARCRecordType.warcinfo);
                                 break;
                             case response:
                                 warcRecordInfo.setType(WARCConstants.WARCRecordType.response);
+                                warcRecordInfo.setUrl(header.getUrl());
                                 break;
                             case metadata:
                                 warcRecordInfo.setType(WARCConstants.WARCRecordType.metadata);
+                                warcRecordInfo.setUrl(header.getUrl());
                                 break;
                             case request:
                                 warcRecordInfo.setType(WARCConstants.WARCRecordType.request);
+                                warcRecordInfo.setUrl(header.getUrl());
                                 break;
                             case resource:
                                 warcRecordInfo.setType(WARCConstants.WARCRecordType.resource);
+                                warcRecordInfo.setUrl(header.getUrl());
                                 break;
                             case revisit:
                                 warcRecordInfo.setType(WARCConstants.WARCRecordType.revisit);
+                                warcRecordInfo.setUrl(header.getUrl());
                                 break;
                             default:
                                 if (log.isWarnEnabled()) {
@@ -838,8 +841,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                 }
                 if (impArcType.equals("ARC")) {
                     // Create an ARC Writer
-                    // TODO There's no way to pass the original ARC file suffix to the writer, is this a big issue?
-                    WriterPoolSettings settings = new WriterPoolSettingsData(impArcPrefix, null,
+                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressit, dirs, impArcHeader);
                     ARCWriter arcWriter = new ARCWriter(aint, settings);
                     for (Iterator<HarvestResourceDTO> it = hrsToImport
@@ -858,10 +860,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 
                 } else {
                     // Create a WARC Writer
-                    // TODO There's no way to pass the original ARC file suffix to the writer, is this a big issue?
-                    // TODO Can the template param in settings be null?
-                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(impArcPrefix, null,
-                            WARCReader.DEFAULT_MAX_WARC_FILE_SIZE, compressit, dirs, impArcHeader, null);
+                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
+                            WARCReader.DEFAULT_MAX_WARC_FILE_SIZE, compressit, dirs, impArcHeader, new UUIDGenerator());
                     WARCWriter warcWriter = new WARCWriter(aint, settings);
                     for (Iterator<HarvestResourceDTO> it = hrsToImport
                             .iterator(); it.hasNext(); ) {
@@ -1432,7 +1432,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
         this.wsEndPoint = wsEndPoint;
     }
 
-    // Skips status line in the ArchiveRecord stream
+    // Moves the ArchiveRecord stream past the HTTP status line;
     // checks if it starts with HTTP and ends with CRLF
     private void skipStatusLine(ArchiveRecord record) throws IOException {
         if (record.available() > 0) {
