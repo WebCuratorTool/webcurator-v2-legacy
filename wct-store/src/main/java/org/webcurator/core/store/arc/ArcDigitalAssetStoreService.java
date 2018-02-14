@@ -509,8 +509,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             boolean compressed = false;
             AtomicInteger aint = new AtomicInteger();
 
-            String impArcPrefix = null;
-            String impArcSuffix = null;
             String impArcType = null;
             String impArcCompressed = null;
             String strippedImpArcFilename = null;
@@ -528,30 +526,10 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                 // Get the reader for this ARC File
                 ArchiveReader reader = ArchiveReaderFactory.get(arcFiles[i]);
 
-                // use the prefix and suffix off the original file
-                String prefixSuffixRegex = "[-][12][0-9][0-9][0-9][01][0-9][0-3][0-9][0-5][0-9][0-5][0-9][0-5][0-9][-][0-9]*[-]";
-
+                // Use the original filename
                 strippedImpArcFilename = reader.getStrippedFileName();
-                String[] prefixSuffix = strippedImpArcFilename.split(prefixSuffixRegex);
 
-                String prefix;
-                String suffix;
-                if (prefixSuffix.length == 2) {
-                    prefix = prefixSuffix[0];
-                    suffix = prefixSuffix[1];
-                } else {
-                    prefix = ARCWriter.DEFAULT_PREFIX;
-                    suffix = strippedImpArcFilename.substring(strippedImpArcFilename.lastIndexOf("-") + 1,
-                            strippedImpArcFilename.length());
-
-                }
                 compressed = reader.isCompressed();
-                if (impArcPrefix == null) {
-                    impArcPrefix = prefix;
-                }
-                if (impArcSuffix == null) {
-                    impArcSuffix = suffix;
-                }
                 if (impArcCompressed == null) {
                     impArcCompressed = compressed ? "true" : "false";
                 }
@@ -579,7 +557,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     }
 
                     // Create an ARC Writer
-                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
+                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename + newHarvestResultNum, "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l);
                     ARCWriter writer = new ARCWriter(aint, settings);
 
@@ -698,7 +676,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     archiveRecordsIt.next();
 
                     // Create a WARC Writer
-                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
+                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename + newHarvestResultNum, "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l, new UUIDGenerator());
                     WARCWriter writer = new WARCWriter(aint, settings);
 
@@ -785,43 +763,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 
                         writer.writeRecord(warcRecordInfo);
 
-                        /* old H 1.14.1 WARCWriter API
-                        if (WARCType.equals(WARCConstants.WARCRecordType.warcinfo)) {
-                            writer.writeWarcinfoRecord(header.getDate(),
-                                    header.getMimetype(), recordId,
-                                    namedFields, record, contentLength);
-                        } else if (WARCType.equals(WARCConstants.WARCRecordType.response)) {
-                            writer.writeResponseRecord(header.getUrl(),
-                                    header.getDate(), header.getMimetype(),
-                                    recordId, namedFields, record,
-                                    contentLength);
-                        } else if (WARCType.equals(WARCConstants.WARCRecordType.metadata)) {
-                            writer.writeMetadataRecord(header.getUrl(),
-                                    header.getDate(), header.getMimetype(),
-                                    recordId, namedFields, record,
-                                    contentLength);
-                        } else if (WARCType.equals(WARCConstants.WARCRecordType.request)) {
-                            writer.writeRequestRecord(header.getUrl(),
-                                    header.getDate(), header.getMimetype(),
-                                    recordId, namedFields, record,
-                                    contentLength);
-                        } else if (WARCType.equals(WARCConstants.WARCRecordType.resource)) {
-                            writer.writeResourceRecord(header.getUrl(),
-                                    header.getDate(), header.getMimetype(),
-                                    recordId, namedFields, record,
-                                    contentLength);
-                        } else if (WARCType.equals(WARCConstants.WARCRecordType.revisit)) {
-                            writer.writeRevisitRecord(header.getUrl(),
-                                    header.getDate(), header.getMimetype(),
-                                    recordId, namedFields, record,
-                                    contentLength);
-                        } else {
-                            if (log.isWarnEnabled()) {
-                                log.warn("Ignoring unrecognised type for WARCRecord: "
-                                        + WARCType);
-                            }
-                        }
-                        */
                     }
 
                     writer.close();
@@ -841,7 +782,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                 }
                 if (impArcType.equals("ARC")) {
                     // Create an ARC Writer
-                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
+                    // Somewhat arbitrarily uses the last filename from the list of original filenames
+                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename + "-new", "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressit, dirs, impArcHeader);
                     ARCWriter arcWriter = new ARCWriter(aint, settings);
                     for (Iterator<HarvestResourceDTO> it = hrsToImport
@@ -860,7 +802,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 
                 } else {
                     // Create a WARC Writer
-                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename, "${prefix}",
+                    // Somewhat arbitrarily uses the last filename from the list of original filenames
+                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename +"-new", "${prefix}",
                             WARCReader.DEFAULT_MAX_WARC_FILE_SIZE, compressit, dirs, impArcHeader, new UUIDGenerator());
                     WARCWriter warcWriter = new WARCWriter(aint, settings);
                     for (Iterator<HarvestResourceDTO> it = hrsToImport
@@ -873,30 +816,8 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                             URI recordId = new URI("urn:uuid:"
                                     + hr.getTempFileName());
                             ANVLRecord namedFields = new ANVLRecord();
-                            // WARC-Type, reader-identifier, WARC-Date,
-                            // absolute-offset, Content-Length, WARC-Record-ID,
-                            // WARC-IP-Address, WARC-Payload-Digest,
-                            // WARC-Target-URI, Content-Type
-                            // namedFields.addLabelValue(WARCConstants.HEADER_KEY_TYPE,
-                            // WARCConstants.RESPONSE);
-                            // namedFields.addLabelValue("reader-identifier",
-                            // warcWriter.someMethod()?);
-                            // namedFields.addLabelValue(WARCConstants.HEADER_KEY_DATE,
-                            // dtNow.toString());
-                            // namedFields.addLabelValue(WARCConstants.ABSOLUTE_OFFSET_KEY,
-                            // new Long(warcWriter.getPosition()).toString());
-                            // namedFields.addLabelValue(WARCConstants.CONTENT_LENGTH,
-                            // String.valueOf(hr.getLength()));
-                            // namedFields.addLabelValue(WARCConstants.HEADER_KEY_ID,
-                            // "<"+recordId+">");
                             namedFields.addLabelValue(
                                     WARCConstants.HEADER_KEY_IP, "0.0.0.0");
-                            // namedFields.addLabelValue(WARCConstants.HEADER_KEY_PAYLOAD_DIGEST,
-                            // "sha1:");
-                            // namedFields.addLabelValue(WARCConstants.HEADER_KEY_URI,
-                            // hr.getName());
-                            // namedFields.addLabelValue(WARCConstants.CONTENT_TYPE,
-                            // hr.getContentType());
                             WARCRecordInfo warcRecordInfo = new WARCRecordInfo();
                             warcRecordInfo.setUrl(hr.getName());
                             warcRecordInfo.setCreate14DigitDate(writerDF.format(dtNow));
@@ -905,6 +826,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                             warcRecordInfo.setExtraHeaders(namedFields);
                             warcRecordInfo.setContentStream(new java.io.FileInputStream(fin));
                             warcRecordInfo.setContentLength(hr.getLength());
+
                             warcWriter.writeRecord(warcRecordInfo);
                         }
                     }
