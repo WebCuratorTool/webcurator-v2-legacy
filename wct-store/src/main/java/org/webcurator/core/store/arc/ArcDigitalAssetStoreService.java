@@ -557,7 +557,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     }
 
                     // Create an ARC Writer
-                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename + newHarvestResultNum, "${prefix}",
+                    WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename + "-" + newHarvestResultNum, "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l);
                     ARCWriter writer = new ARCWriter(aint, settings);
 
@@ -676,7 +676,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                     archiveRecordsIt.next();
 
                     // Create a WARC Writer
-                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename + newHarvestResultNum, "${prefix}",
+                    WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename + "-" + newHarvestResultNum, "${prefix}",
                             ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, l, new UUIDGenerator());
                     WARCWriter writer = new WARCWriter(aint, settings);
 
