@@ -58,6 +58,10 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
     private String host = "";
     /** the harvest agent control port. */
     private int port = 0;
+    /** the harvest agent service endpoint. */
+    private String service = "";
+    /** the harvest agent log reader service endpoint. */
+    private String logReaderService = "";
     /** the max number of harvests for this agent. */
     private int maxHarvests = 0; 
     /** the provenance note to use for a complete harvest. */
@@ -318,6 +322,8 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
         HarvestAgentStatusDTO status = new HarvestAgentStatusDTO();
         status.setHost(host);
         status.setPort(port);
+        status.setService(service);
+        status.setLogReaderService(logReaderService);
         status.setName(name);
         status.setMaxHarvests(maxHarvests);    
         status.setAllowedAgencies(allowedAgencies);
@@ -504,6 +510,20 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
      */
     public void setPort(int aPort) {
         this.port = aPort;
+    }
+
+    /**
+     * @param aService The service to set.
+     */
+    public void setService(String aService) {
+        this.service = aService;
+    }
+
+    /**
+     * @param aLogReaderService The log reader service to set.
+     */
+    public void setLogReaderService(String aLogReaderService) {
+        this.logReaderService = aLogReaderService;
     }
 
     /**

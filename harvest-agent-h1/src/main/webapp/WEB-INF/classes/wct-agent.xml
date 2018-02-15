@@ -22,6 +22,10 @@
 		<property name="maxHarvests" value="${harvestAgent.maxHarvests}"/>
 		<!-- the port the agent is listening on for http connections -->
 		<property name="port" value="${harvestAgent.port}"/>
+		<!-- the name of the harvest agent web service -->
+		<property name="service" value="${harvestAgent.service}"/>
+		<!-- the name of the harvest agent log reader web service -->
+		<property name="logReaderService" value="${harvestAgent.logReaderService}"/>
 		<!-- the name of the agent. must be unique -->
 		<property name="name" value="${harvestAgent.name}"/>
 		<!-- the note to send with the harvest result. -->
