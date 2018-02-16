@@ -15,7 +15,7 @@
 	<modules>
 		<module>wct-core</module>
 		<module>wct-submit-to-rosetta</module>
-		<module>wct-harvest-agent</module>
+		<module>harvest-agent-h3</module>
 		<module>harvest-agent-h1</module>
 		<module>wct-store</module>
 		<module>wct-assembly</module>

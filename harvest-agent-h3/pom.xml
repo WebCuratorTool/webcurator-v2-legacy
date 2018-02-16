@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>wct-harvest-agent</artifactId>
+	<artifactId>harvest-agent-h3</artifactId>
 	<packaging>war</packaging>
-	<name>Web Curator Tool Harvest Agent</name>
+	<name>Harvest Agent - Heritrix 3.x</name>
 
 	<parent>
 		<artifactId>wct-parent</artifactId>
@@ -16,7 +16,7 @@
     </properties>
 
 	<build>
-		<finalName>wct-harvest-agent</finalName>
+		<finalName>harvest-agent-h3</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -126,7 +126,7 @@
 				<configuration>
 					<jettyXml>${project.build.directory}/jetty-jmx.xml</jettyXml>
 					<webApp>
-						<contextPath>/wct-harvest-agent</contextPath>
+						<contextPath>/harvest-agent-h3</contextPath>
 						<resourceBases>
 							<resourceBase>${project.build.directory}/filtered</resourceBase>
 							<resourceBase>src/main/webapp</resourceBase>
@@ -196,12 +196,12 @@
 			<version>1.0</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.archive</groupId>
-			<artifactId>aheritrix</artifactId>
-			<version>1.14.1</version>
-			<scope>compile</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.archive</groupId>-->
+			<!--<artifactId>aheritrix</artifactId>-->
+			<!--<version>1.14.1</version>-->
+			<!--<scope>compile</scope>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>axis</groupId>
 			<artifactId>axis</artifactId>

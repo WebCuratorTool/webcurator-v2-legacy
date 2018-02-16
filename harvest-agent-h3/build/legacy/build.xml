@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="wct-harvest-agent" default="all">
+<project name="harvest-agent-h3" default="all">
     <property file="./build.properties" />
 	<property name="target" value="${root}/target"/>
 	<property name="xdoclet.force" value="true"/>
