@@ -510,7 +510,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             AtomicInteger aint = new AtomicInteger();
 
             String impArcType = null;
-            String impArcCompressed = null;
             String strippedImpArcFilename = null;
             List<String> impArcHeader = new ArrayList<String>();
 
@@ -530,9 +529,6 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                 strippedImpArcFilename = reader.getStrippedFileName();
 
                 compressed = reader.isCompressed();
-                if (impArcCompressed == null) {
-                    impArcCompressed = compressed ? "true" : "false";
-                }
 
                 Iterator<ArchiveRecord> archiveRecordsIt = reader.iterator();
 
@@ -774,17 +770,12 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
             // add any imported content to a new arc or warc file as
             // appropriate..
             if (!hrsToImport.isEmpty()) {
-                boolean compressit;
-                if (impArcCompressed.equals("true")) {
-                    compressit = true;
-                } else {
-                    compressit = false;
-                }
                 if (impArcType.equals("ARC")) {
                     // Create an ARC Writer
-                    // Somewhat arbitrarily uses the last filename from the list of original filenames
+                    // Somewhat arbitrarily use the last filename from the list of original filenames
+                    // Compress the file if the (last) original file was compressed
                     WriterPoolSettings settings = new WriterPoolSettingsData(strippedImpArcFilename + "-new", "${prefix}",
-                            ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressit, dirs, impArcHeader);
+                            ARCReader.DEFAULT_MAX_ARC_FILE_SIZE, compressed, dirs, impArcHeader);
                     ARCWriter arcWriter = new ARCWriter(aint, settings);
                     for (Iterator<HarvestResourceDTO> it = hrsToImport
                             .iterator(); it.hasNext(); ) {
@@ -802,9 +793,10 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
 
                 } else {
                     // Create a WARC Writer
-                    // Somewhat arbitrarily uses the last filename from the list of original filenames
+                    // Somewhat arbitrarily use the last filename from the list of original filenames
+                    // Compress the file if the (last) original file was compressed
                     WARCWriterPoolSettings settings = new WARCWriterPoolSettingsData(strippedImpArcFilename +"-new", "${prefix}",
-                            WARCReader.DEFAULT_MAX_WARC_FILE_SIZE, compressit, dirs, impArcHeader, new UUIDGenerator());
+                            WARCReader.DEFAULT_MAX_WARC_FILE_SIZE, compressed, dirs, impArcHeader, new UUIDGenerator());
                     WARCWriter warcWriter = new WARCWriter(aint, settings);
                     for (Iterator<HarvestResourceDTO> it = hrsToImport
                             .iterator(); it.hasNext(); ) {
