@@ -42,19 +42,20 @@ public class LogReaderSOAPClient implements LogReader {
     private String host;
     /** the port to communicate on. */
     private int port;
-    /** the name of the service. */
+    /** the name of the log reader service. */
     private String service;
+
 
     /**
      * Constructor to initialise the host, port and service.
      * @param aHost the name of the host
      * @param aPort the port number
-     * @param aService the service name
+     * @param aLogReaderService the service name
      */
-    public LogReaderSOAPClient(String aHost, int aPort, String aService) {
+    public LogReaderSOAPClient(String aHost, int aPort, String aLogReaderService) {
         host = aHost;
         port = aPort;
-        service = aService;
+        service = aLogReaderService;
     }
     
 	/* (non-Javadoc)

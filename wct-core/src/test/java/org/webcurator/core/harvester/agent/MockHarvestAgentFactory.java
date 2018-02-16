@@ -6,7 +6,7 @@ public class MockHarvestAgentFactory implements HarvestAgentFactory {
 
 	static MockHarvestAgent agent = null;
 	
-	public HarvestAgent getHarvestAgent(String host, int port) {
+	public HarvestAgent getHarvestAgent(String host, int port, String service) {
 		
 		return getMockHarvestAgent();
 	}
@@ -20,7 +20,7 @@ public class MockHarvestAgentFactory implements HarvestAgentFactory {
 		return agent;
 	}
 
-	public LogReader getLogReader(String host, int port) {
+	public LogReader getLogReader(String host, int port, String service) {
 		// TODO Auto-generated method stub
 		return new MockLogReader();
 	}

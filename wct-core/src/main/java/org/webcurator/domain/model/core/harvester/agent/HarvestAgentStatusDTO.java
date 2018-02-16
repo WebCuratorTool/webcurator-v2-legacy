@@ -33,6 +33,10 @@ public class HarvestAgentStatusDTO {
     private String host;
     /** the port of the harvest agent. */
     private int port;
+    /** the service of the harvest agent. */
+    private String service;
+    /** the log reader service of the harvest agent. */
+    private String logReaderService;
     /** This list of allowed Agencies. */
     private ArrayList<String> allowedAgencies = new ArrayList<String>();
     /** the max number of harvests this agent can manage. */
@@ -192,6 +196,34 @@ public class HarvestAgentStatusDTO {
      */
     public void setPort(int aPort) {
         this.port = aPort;
+    }
+
+    /**
+     * @return Returns the service.
+     */
+    public String getService() {
+        return service;
+    }
+
+    /**
+     * @param aService The service to set.
+     */
+    public void setService(String aService) {
+        this.service = aService;
+    }
+
+    /**
+     * @return Returns the log reader service.
+     */
+    public String getLogReaderService() {
+        return logReaderService;
+    }
+
+    /**
+     * @param aLogReaderService The service to set.
+     */
+    public void setLogReaderService(String aLogReaderService) {
+        this.logReaderService = aLogReaderService;
     }
 
     /**

@@ -25,16 +25,20 @@ import org.webcurator.core.util.WCTSoapCall;
  * @author nwaight
  */
 public class HarvestAgentFactoryImpl implements HarvestAgentFactory {
-    /** @see org.webcurator.core.harvester.agent.HarvestAgentFactory#getHarvestAgent(String, int). */
-    public HarvestAgent getHarvestAgent(String aHost, int aPort) {        
+    /** @see org.webcurator.core.harvester.agent.HarvestAgentFactory#getHarvestAgent(String, int, String). */
+    public HarvestAgent getHarvestAgent(String aHost, int aPort, String aService) {
     	HarvestAgentSOAPClient ha = new HarvestAgentSOAPClient();
     	ha.setHost(aHost);
     	ha.setPort(aPort);
+        ha.setService(aService);
     	return ha;
     }
     
-    /** @see org.webcurator.core.harvester.agent.HarvestAgentFactory#getHarvestAgent(String, int). */
-    public LogReader getLogReader(String aHost, int aPort) {        
-        return new LogReaderSOAPClient(aHost, aPort, WCTSoapCall.AGENT_LOG_READER);
+    /** @see org.webcurator.core.harvester.agent.HarvestAgentFactory#getHarvestAgent(String, int, String). */
+    public LogReader getLogReader(String aHost, int aPort, String aLogReaderService) {
+        if(aLogReaderService.isEmpty() || aLogReaderService.equals("")){
+            aLogReaderService = WCTSoapCall.AGENT_LOG_READER;
+        }
+        return new LogReaderSOAPClient(aHost, aPort, aLogReaderService);
     }
 }
