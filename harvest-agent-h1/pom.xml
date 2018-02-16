@@ -126,7 +126,7 @@
 				<configuration>
 					<jettyXml>${project.build.directory}/jetty-jmx.xml</jettyXml>
 					<webApp>
-						<contextPath>/wct-harvest-agent</contextPath>
+						<contextPath>/harvest-agent-h1</contextPath>
 						<resourceBases>
 							<resourceBase>${project.build.directory}/filtered</resourceBase>
 							<resourceBase>src/main/webapp</resourceBase>
