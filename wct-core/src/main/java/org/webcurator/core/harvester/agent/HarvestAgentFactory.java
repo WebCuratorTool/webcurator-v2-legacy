@@ -29,7 +29,7 @@ public interface HarvestAgentFactory {
      * @param aPort the port
      * @return the Harvest Agent
      */
-    HarvestAgent getHarvestAgent(String aHost, int aPort);
+    HarvestAgent getHarvestAgent(String aHost, int aPort, String aService);
     
     /**
      * Return an instance of the log reader running on the specified host and port
@@ -37,5 +37,5 @@ public interface HarvestAgentFactory {
      * @param aPort the port
      * @return the log reader
      */
-    LogReader getLogReader(String aHost, int aPort);
+    LogReader getLogReader(String aHost, int aPort, String aLogReaderService);
 }
