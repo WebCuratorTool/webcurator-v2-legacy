@@ -818,6 +818,7 @@ public class ArcDigitalAssetStoreService implements DigitalAssetStore,
                             warcRecordInfo.setExtraHeaders(namedFields);
                             warcRecordInfo.setContentStream(new java.io.FileInputStream(fin));
                             warcRecordInfo.setContentLength(hr.getLength());
+                            warcRecordInfo.setType(WARCConstants.WARCRecordType.response);
 
                             warcWriter.writeRecord(warcRecordInfo);
                         }
