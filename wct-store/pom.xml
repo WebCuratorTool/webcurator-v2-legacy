@@ -473,6 +473,13 @@
 			<artifactId>wct-core</artifactId>
 			<version>1.7.0</version>
 			<scope>compile</scope>
+            <!-- Prevent aheritrix.jar being dragged in from wct-core -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.archive</groupId>
+					<artifactId>aheritrix</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>wsdl4j</groupId>
@@ -501,6 +508,11 @@
 				<exclusion>
 					<artifactId>jboss-saaj</artifactId>
 					<groupId>jboss-saaj</groupId>
+				</exclusion>
+				<exclusion>
+					<!-- Prevent aheritrix.jar being dragged in from wct-submit-to-rosetta -->
+					<groupId>org.archive</groupId>
+					<artifactId>aheritrix</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
