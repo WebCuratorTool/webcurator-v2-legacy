@@ -168,12 +168,11 @@
 			<version>2.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.archive</groupId>
-			<artifactId>aheritrix</artifactId>
-			<version>1.14.1</version>
+			<groupId>org.netpreserve.commons</groupId>
+			<artifactId>webarchive-commons</artifactId>
+			<version>1.1.8</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
@@ -184,6 +183,13 @@
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock</artifactId>
 			<version>2.4.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
 
