@@ -174,9 +174,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.archive</groupId>
-			<artifactId>aheritrix</artifactId>
-			<version>1.14.1</version>
+			<groupId>org.netpreserve.commons</groupId>
+			<artifactId>webarchive-commons</artifactId>
+			<version>1.1.8</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -465,6 +465,13 @@
 			<artifactId>wct-core</artifactId>
 			<version>1.7.0</version>
 			<scope>compile</scope>
+            <!-- Prevent aheritrix.jar being dragged in from wct-core and conflicting with webarchive-commons -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.archive</groupId>
+					<artifactId>aheritrix</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>wsdl4j</groupId>
