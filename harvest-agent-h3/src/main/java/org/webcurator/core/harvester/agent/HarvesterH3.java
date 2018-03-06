@@ -93,18 +93,10 @@ public class HarvesterH3 implements Harvester {
     public HarvesterH3(String aHarvesterName) throws HarvesterException {
         super();
         log = LogFactory.getLog(HarvesterH3.class);
-
         name = aHarvesterName;
 
-        String hostname = "localhost";
-        int port = 8443;
-        File keystoreFile = null;
-        String keyStorePassword = "";
-        String userName = "admin";
-        String password = "admin";
-
         try {
-            heritrix = Heritrix3Wrapper.getInstance(hostname, port, keystoreFile, keyStorePassword, userName, password);
+            heritrix = getH3WrapperInstance();
         }
         catch (Exception e) {
         	if (log.isErrorEnabled()) {
@@ -124,7 +116,7 @@ public class HarvesterH3 implements Harvester {
         super();
         name = "HarvesterH3-" + System.currentTimeMillis();
         try {
-            heritrix = Heritrix3Wrapper.getInstance("localhost", 8443, null, "", "admin", "admin");
+            heritrix = getH3WrapperInstance();
         }
         catch (Exception e) {
         	if (log.isErrorEnabled()) {
@@ -137,6 +129,28 @@ public class HarvesterH3 implements Harvester {
         	log.debug("Created new harvester " + name);
         }
         status = new HarvesterStatusDTO(name);
+    }
+
+    private static Heritrix3Wrapper getH3WrapperInstance(){
+        String hostname = "localhost";
+        int port = 8443;
+        File keystoreFile = null;
+        String keyStorePassword = "";
+        String userName = "admin";
+        String password = "admin";
+
+        return Heritrix3Wrapper.getInstance(hostname, port, keystoreFile, keyStorePassword, userName, password);
+    }
+
+    public static List<HarvesterStatusDTO> getAllStatuses(){
+        Heritrix3Wrapper h3 = getH3WrapperInstance();
+
+        EngineResult engineResult = h3.rescanJobDirectory();
+        Engine engine = engineResult.engine;
+        List<JobShort> existingH3Jobs = engine.jobs;
+
+        return new ArrayList<>();
+
     }
 
     /** @see Harvester#getStatus(). */
