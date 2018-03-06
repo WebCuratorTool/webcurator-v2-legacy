@@ -76,7 +76,15 @@ public interface HarvestCoordinator extends HarvestAgentListener, HarvestCoordin
      * @return a list of harvest agent status's
      */
     HashMap<String, HarvestAgentStatusDTO> getHarvestAgents();
-    
+
+    /**
+     * Send recover harvest information to Harvest Agent
+     * @param host
+     * @param port
+     * @param service
+     */
+    void recoverHarvests(String host, int port, String service);
+
     /**
      * Allocate the target instance to the specified harvest agent.
      * @param aTargetInstance the target instance to harvest.

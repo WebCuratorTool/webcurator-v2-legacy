@@ -30,7 +30,15 @@ public interface HarvestAgentListener {
      * Gets the current status of a <code>HarvestAgent</code>. 
      * @param aStatus the current agent status
      */
-    void heartbeat(HarvestAgentStatusDTO aStatus);   
+    void heartbeat(HarvestAgentStatusDTO aStatus);
+
+    /**
+     *
+     * @param haHost
+     * @param haPort
+     * @param haService
+     */
+    void requestRecovery(String haHost, int haPort, String haService);
     
     /** 
      * Gets the result of a complete harvest.

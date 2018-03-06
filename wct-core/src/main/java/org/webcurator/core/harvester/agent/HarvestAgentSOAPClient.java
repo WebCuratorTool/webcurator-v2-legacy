@@ -16,6 +16,7 @@
 package org.webcurator.core.harvester.agent;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 import javax.xml.rpc.ServiceException;
 
@@ -77,6 +78,26 @@ public class HarvestAgentSOAPClient implements HarvestAgent, HarvestAgentConfig 
                 log.error("Failed to create the SOAP call initiateHarvest : " + e.getMessage(), e);
             }
             throw new WCTRuntimeException("Failed to create the SOAP call initiateHarvest : " + e.getMessage(), e);
+        }
+    }
+
+    public void recoverHarvests(List<String> activeJobs) {
+        try {
+            WCTSoapCall call = new WCTSoapCall(host, port, service, "recoverHarvests");
+            Object[] data = {activeJobs};
+            call.invoke(data);
+        }
+        catch (RemoteException e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to invoke recoverHarvests on the SOAP service : " + e.getMessage(), e);
+            }
+            throw new WCTRuntimeException("Failed to invoke recoverHarvests on the SOAP service : " + e.getMessage(), e);
+        }
+        catch (ServiceException e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to create the SOAP call recoverHarvests : " + e.getMessage(), e);
+            }
+            throw new WCTRuntimeException("Failed to create the SOAP call recoverHarvests : " + e.getMessage(), e);
         }
     }
 
@@ -196,7 +217,7 @@ public class HarvestAgentSOAPClient implements HarvestAgent, HarvestAgentConfig 
     }
 
     /**
-     * @see org.webcurator.core.harvester.agent.HarvestAgent#completeHarvest(java.lang.String)
+     * @see org.webcurator.core.harvester.agent.HarvestAgent#completeHarvest(java.lang.String, int)
      */
     public int completeHarvest(String aJob, int aFailureStep) {
     	throw new WCTRuntimeException("completeHarvest is not supported from the client");

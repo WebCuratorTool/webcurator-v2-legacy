@@ -365,6 +365,12 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 	}
 
 	@Override
+	public void recoverHarvests(String haHost, int haPort, String haService, List<String> activeJobs){
+		HarvestAgent agent  = harvestAgentFactory.getHarvestAgent(haHost, haPort, haService);
+		agent.recoverHarvests(activeJobs);
+	}
+
+	@Override
 	public boolean lock(Long tiOid) {
 		return targetInstanceLocks.add(tiOid);
 	}

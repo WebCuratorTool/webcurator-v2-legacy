@@ -57,6 +57,11 @@ public class HarvestAgentListenerSOAPService extends ServletEndpointSupport impl
 		hc.heartbeat(aStatus);
 	}
 
+	public void requestRecovery(String haHost, int haPort, String haService) {
+		log.info("Received recovery request from {}:{}", haHost, haPort);
+		hc.recoverHarvests(haHost, haPort, haService);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
