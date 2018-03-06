@@ -5,6 +5,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 
+import java.util.List;
+
 public class MockHarvestAgent implements HarvestAgent {
 
 	private static Log log = LogFactory.getLog(MockHarvestAgent.class);
@@ -35,7 +37,12 @@ public class MockHarvestAgent implements HarvestAgent {
 		log.debug("initiate harvest - "+job);
 	}
 
-	public void loadSettings(String job) 
+	@Override
+	public void recoverHarvests(List<String> activeJobs) {
+		// Placeholder - not used with Heritrix 1x
+	}
+
+	public void loadSettings(String job)
 	{
 		log.debug("load settings - "+job);
 	}
