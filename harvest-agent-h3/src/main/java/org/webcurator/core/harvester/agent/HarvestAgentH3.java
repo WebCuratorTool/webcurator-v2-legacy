@@ -115,13 +115,46 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
      * If found attempt recovery.
      * @see HarvestAgent#recoverHarvests(java.util.List).
      */
-    public void recoverHarvests(List<String> activeJobs){
-        log.info("Received Recover Harvests action from Core");
-        List<HarvesterStatusDTO> jobStatusList = HarvesterH3.getAllStatuses();
-        int activeJobsCount = activeJobs.size();
-        log.info("Active Jobs received from Core: " + activeJobsCount);
-        for(String jobName : activeJobs){
-            log.info("Checking job " + jobName + " for recovery");
+    public void recoverHarvests(List<String> activeCoreJobs){
+        try {
+            if (!activeCoreJobs.isEmpty()) {
+                log.info("Checking for harvests to recover. Active jobs received from Core: " + activeCoreJobs.size());
+                Map<String, String> activeH3JobNames = HarvesterH3.getActiveH3JobNames();
+
+                // Check this H3 instance has active jobs
+                if(!activeH3JobNames.isEmpty()){
+                    // Look for matches between Core and H3 jobs
+                    for (String jobName : activeCoreJobs) {
+                        log.info("Checking job " + jobName + " for recovery");
+                        if(activeH3JobNames.containsKey(jobName)){
+                            // then attempt to recover
+                            Harvester harvester = null;
+                            // get status of h3 job
+                            String h3JobState = activeH3JobNames.get(jobName);
+                            // If I want to include aborted Core jobs then activeCoreJobs needs to be a Map
+                            // with name and status
+
+                            if(h3JobState.equals("RUNNING") || h3JobState.equals("PAUSED") || h3JobState.equals("FINISHED")){
+                                log.info("Harves Agent recovering job " + jobName + " from H3 in state: " + h3JobState);
+                                super.initiateHarvest(jobName, "", "");
+                                harvester = getHarvester(jobName);
+                                harvester.recover();
+                                harvester.setAlertThreshold(alertThreshold);
+                            }
+                        }
+                    }
+                }
+                else{
+                    log.info("No harvests to recover from H3 instance.");
+                }
+            } else {
+                log.info("No harvests to recover from Core.");
+            }
+        }
+        catch (Exception e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to recover harvests: " + e.getMessage(), e);
+            }
         }
     }
 

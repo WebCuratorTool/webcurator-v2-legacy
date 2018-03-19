@@ -17,18 +17,8 @@ package org.webcurator.core.harvester.agent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.archive.crawler.Heritrix;
 import org.archive.crawler.admin.CrawlJob;
-import org.archive.crawler.admin.CrawlJobHandler;
-import org.archive.crawler.admin.StatisticsTracker;
-import org.archive.crawler.datamodel.CrawlOrder;
-import org.archive.crawler.framework.StatisticsTracking;
-import org.archive.crawler.frontier.BdbFrontier;
-import org.archive.crawler.settings.CrawlerSettings;
-import org.archive.crawler.settings.MapType;
 import org.archive.crawler.settings.XMLSettingsHandler;
-import org.archive.crawler.writer.ARCWriterProcessor;
-import org.archive.crawler.writer.WARCWriterProcessor;
 import org.netarchivesuite.heritrix3wrapper.jaxb.ConfigFile;
 import org.netarchivesuite.heritrix3wrapper.jaxb.Engine;
 import org.netarchivesuite.heritrix3wrapper.jaxb.Job;
@@ -39,15 +29,8 @@ import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
 
 import org.netarchivesuite.heritrix3wrapper.*;
 
-import javax.management.Attribute;
-import javax.management.InvalidAttributeValueException;
 import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * The HarvesterH3 is an implementation of the harvester interface
@@ -142,14 +125,19 @@ public class HarvesterH3 implements Harvester {
         return Heritrix3Wrapper.getInstance(hostname, port, keystoreFile, keyStorePassword, userName, password);
     }
 
-    public static List<HarvesterStatusDTO> getAllStatuses(){
+    public static Map<String, String> getActiveH3JobNames(){
         Heritrix3Wrapper h3 = getH3WrapperInstance();
 
         EngineResult engineResult = h3.rescanJobDirectory();
         Engine engine = engineResult.engine;
-        List<JobShort> existingH3Jobs = engine.jobs;
+        Map<String, String> activeH3JobNames = new HashMap<>();
+        for(JobShort job : engine.jobs){
+            if(job.crawlControllerState != null){
+                activeH3JobNames.put(job.shortName, job.crawlControllerState);
+            }
+        }
 
-        return new ArrayList<>();
+        return activeH3JobNames;
 
     }
 
@@ -625,6 +613,20 @@ public class HarvesterH3 implements Harvester {
 
             throw new HarvesterException("Failed to start harvester " + name + ": " + e.getMessage(), e);
         }
+    }
+
+    /** @see Harvester#recover(). */
+    public void recover(){
+       try{
+           h3job = heritrix.job(name).job;
+       }
+       catch (Exception e) {
+           if (log.isErrorEnabled()) {
+               log.error("Failed to recover harvester " + name + ": " + e.getMessage(), e);
+           }
+           h3job = null;
+           throw new HarvesterException("Failed to recover harvester " + name + ": " + e.getMessage(), e);
+       }
     }
 
     /** @see Harvester#stop(). */
