@@ -119,7 +119,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         try {
             if (!activeCoreJobs.isEmpty()) {
                 log.info("Checking for harvests to recover. Active jobs received from Core: " + activeCoreJobs.size());
-                Map<String, String> activeH3JobNames = HarvesterH3.getActiveH3JobNames();
+                Map<String, String> activeH3JobNames = getActiveH3Jobs();
 
                 // Check this H3 instance has active jobs
                 if(!activeH3JobNames.isEmpty()){
@@ -860,4 +860,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 		}
 
 	}
+
+    public Map<String, String> getActiveH3Jobs(){
+        return HarvesterH3.getActiveH3JobNames();
+    }
 }
