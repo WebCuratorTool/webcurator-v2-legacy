@@ -3,9 +3,7 @@ package org.webcurator.core.harvester.agent;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,7 +50,8 @@ public class HarvestAgentH3Test {
         h3Jobs.put("job02", "FINISHED");
         h3Jobs.put("job03", "PAUSED");
 
-        when(hah3Spy.getActiveH3Jobs()).thenReturn(h3Jobs);
+        // stubbing getActiveH3Jobs method for spying
+        doReturn(h3Jobs).when(hah3Spy).getActiveH3Jobs();
 
         // Test Harvest Agent H3 recoverHarvests()
         hah3Spy.recoverHarvests(coreJobs);
