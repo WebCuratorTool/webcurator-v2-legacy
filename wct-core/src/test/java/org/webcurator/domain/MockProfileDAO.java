@@ -277,6 +277,7 @@ public class MockProfileDAO implements ProfileDAO {
 				profile.getStatus(),
 			    profile.getRequiredLevel(),
 			    profile.getOwningAgency(),
+			    profile.getHarvesterType(),
 			    profile.isDefaultProfile());
 	}
 	

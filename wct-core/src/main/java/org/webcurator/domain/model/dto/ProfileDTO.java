@@ -65,6 +65,7 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param aRequiredLevel	The privilege level required by a user before they cna assign this profile to a target. 
 	 * @param anAgency			The agency that owns this profile.
 	 * @param defaultProfile	True if this is the default profile; otherwise false.
+	 * @param harvesterType		The type of harvester.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -72,6 +73,7 @@ public class ProfileDTO implements AgencyOwnable {
 				      int aStatus,
 				      int aRequiredLevel,
 				      Agency anAgency,
+				      String harvesterType,
 				      boolean defaultProfile) {
 		oid = anOid;
 		name = aName;
@@ -80,6 +82,7 @@ public class ProfileDTO implements AgencyOwnable {
 		requiredLevel = aRequiredLevel;
 		owningAgency = anAgency;
 		this.defaultProfile = defaultProfile;
+		this.harvesterType = harvesterType;
 		this.origOid = null;
 	}
 
@@ -93,6 +96,7 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param anAgency			The agency that owns this profile.
 	 * @param defaultProfile	True if this is the default profile; otherwise false.
 	 * @param origOid			The original database OID for a locked profile.
+	 * @param harvesterType		The type of harvester.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -100,6 +104,7 @@ public class ProfileDTO implements AgencyOwnable {
 				      int aStatus,
 				      int aRequiredLevel,
 				      Agency anAgency,
+					  String harvesterType,
 				      boolean defaultProfile,
 				      Long origOid) {
 		oid = anOid;
@@ -110,6 +115,7 @@ public class ProfileDTO implements AgencyOwnable {
 		owningAgency = anAgency;
 		this.defaultProfile = defaultProfile;
 		this.origOid = origOid;
+		this.harvesterType = harvesterType;
 	}
 
 	/**
