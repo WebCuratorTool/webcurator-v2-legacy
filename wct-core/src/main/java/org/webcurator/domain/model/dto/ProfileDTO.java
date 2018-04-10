@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.dto;
 
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.domain.AgencyOwnable;
 import org.webcurator.domain.model.auth.Agency;
 
@@ -51,6 +52,9 @@ public class ProfileDTO implements AgencyOwnable {
 	
 	/** The original Oid for this Profile */
 	private Long origOid;
+
+	/** Which crawler is this? */
+	private String harvesterType;
 
 	/**
 	 * Constructor for the DTO.
@@ -226,5 +230,20 @@ public class ProfileDTO implements AgencyOwnable {
 	public void setOrigOid(Long origOid) {
 		this.origOid = origOid;
 	}
-	
+
+	/**
+	 *
+	 * @return Returns the type of the crawler
+	 */
+	public String getHarvesterType() {
+		return harvesterType;
+	}
+
+	/**
+	 *
+	 * @param harvesterType The crawler type
+	 */
+	public void setHarvesterType(String harvesterType) {
+		this.harvesterType = harvesterType;
+	}
 }

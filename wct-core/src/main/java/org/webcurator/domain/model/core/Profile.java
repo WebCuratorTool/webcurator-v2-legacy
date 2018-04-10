@@ -98,6 +98,9 @@ public class Profile implements AgencyOwnable {
 	
 	/** The original OID for this profile before it was locked */
 	private Long origOid;
+
+	/** What type of harvester is being configured by this profile? */
+	private String harvesterType;
 		
     /**
      * Get a clone of the profile with a null OID.
@@ -115,6 +118,7 @@ public class Profile implements AgencyOwnable {
 		theClone.setStatus(status);
 		theClone.setVersion(version);
 		theClone.setOrigOid(origOid);
+		theClone.setHarvesterType(harvesterType);
 		
 		return theClone;
 	}
@@ -313,4 +317,23 @@ public class Profile implements AgencyOwnable {
 	public Long getOrigOid() {
 		return this.origOid;
 	}
+
+
+	/**
+	 *
+	 * @return The harvester type
+	 * @hibernate.property column="P_HARVESTER_TYPE"
+	 */
+	public String getHarvesterType() {
+		return harvesterType;
+	}
+
+	/**
+	 *
+	 * @param harvesterType The harvester type
+	 */
+	public void setHarvesterType(String harvesterType) {
+		this.harvesterType = harvesterType;
+	}
+
 }
