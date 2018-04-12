@@ -1,64 +1,6 @@
--- Uncomment the following if starting from an existing DB. You will need to leave the
--- line for the new SEED_HISTORY table commented out if you are installing over a
--- database older than 1.4.1.
 
---alter table DB_WCT.ABSTRACT_TARGET drop foreign key FK_AT_DUBLIN_CORE_OID;
---alter table DB_WCT.ABSTRACT_TARGET drop foreign key FK_T_PROF_OVERRIDE_OID;
---alter table DB_WCT.ABSTRACT_TARGET drop foreign key FKB6DD784E5C2C497;
---alter table DB_WCT.ABSTRACT_TARGET drop foreign key FKB6DD784E3A83A603;
---alter table DB_WCT.ABSTRACT_TARGET drop foreign key FK_AT_RR_OID;
---alter table DB_WCT.ANNOTATIONS drop foreign key FK_NOTE_USER_OID;
---alter table DB_WCT.ARC_HARVEST_FILE drop foreign key FK_AHR_ARC_HARVEST_RESULT_ID;
---alter table DB_WCT.ARC_HARVEST_RESOURCE drop foreign key FK6D84FEB12FF8F14B;
---alter table DB_WCT.ARC_HARVEST_RESULT drop foreign key FKE39C5380C88A38D9;
---alter table DB_WCT.ARC_HARVEST_RESULT drop foreign key FK_HR_RR_OID;
---alter table DB_WCT.GROUP_MEMBER drop foreign key FK_GM_PARENT_ID;
---alter table DB_WCT.GROUP_MEMBER drop foreign key FK_GM_CHILD_ID;
---alter table DB_WCT.HARVEST_RESOURCE drop foreign key FK5BA2B04431A1C148;
---alter table DB_WCT.HARVEST_RESULT drop foreign key FK_HR_CREATED_BY_ID;
---alter table DB_WCT.HARVEST_RESULT drop foreign key FK_HRC_TARGET_INSTANCE_ID;
---alter table DB_WCT.HR_MODIFICATION_NOTE drop foreign key FKA908CCC03E1474AF;
---alter table DB_WCT.PERMISSION drop foreign key FKFE0FB1CFEE52493C;
---alter table DB_WCT.PERMISSION drop foreign key FKFE0FB1CFA1E5D89A;
---alter table DB_WCT.PERMISSION drop foreign key FK_PE_SITE_ID;
---alter table DB_WCT.PERMISSION_EXCLUSION drop foreign key FK2DB3C33EB558CEC7;
---alter table DB_WCT.PERMISSION_TEMPLATE drop foreign key FK_TEMPLATE_AGENCY_OID;
---alter table DB_WCT.PERMISSION_URLPATTERN drop foreign key PU_FK_1;
---alter table DB_WCT.PERMISSION_URLPATTERN drop foreign key PU_FK_2;
---alter table DB_WCT.PO_EXCLUSION_URI drop foreign key FKFF4AB0FBBC3C926;
---alter table DB_WCT.PO_INCLUSION_URI drop foreign key FK6C665549BC3C926;
---alter table DB_WCT.PROFILE drop foreign key FK_P_AGENCY_OID;
---alter table DB_WCT.PROFILE_BASIC_CREDENTIALS drop foreign key FKE72A5AF5BD9AB61;
---alter table DB_WCT.PROFILE_CREDENTIALS drop foreign key FK317A252682C63D7F;
---alter table DB_WCT.PROFILE_FORM_CREDENTIALS drop foreign key FK6B1303D750209B71;
---alter table DB_WCT.REJECTION_REASON drop foreign key FK_RR_AGENCY_OID;
---alter table DB_WCT.ROLE_PRIVILEGE drop foreign key FK_PRIV_ROLE_OID;
---alter table DB_WCT.SCHEDULE drop foreign key FK50C8297BE49544D;
---alter table DB_WCT.SCHEDULE drop foreign key FK_S_OWNER_OID;
---alter table DB_WCT.SCHEDULE drop foreign key FK_S_TARGET_ID;
---alter table DB_WCT.SEED drop foreign key FK_SEED_TARGET_ID;
---alter table DB_WCT.SEED_HISTORY drop foreign key FK_SEED_HISTORY_TI_OID;
---alter table DB_WCT.SEED_PERMISSION drop foreign key FK9659805D68A4F4BA;
---alter table DB_WCT.SEED_PERMISSION drop foreign key FK_SP_PERMISSION_ID;
---alter table DB_WCT.SIP_PART_ELEMENT drop foreign key FK4998B1F5F51BBD3F;
---alter table DB_WCT.SITE drop foreign key FK_OWNING_AGENCY_ID;
---alter table DB_WCT.SITE_AUTH_AGENCY drop foreign key FKDF808D84C049BBEB;
---alter table DB_WCT.SITE_AUTH_AGENCY drop foreign key FK_SA_AGENT_ID;
---alter table DB_WCT.TARGET drop foreign key FK931165917947B83E;
---alter table DB_WCT.TARGET_GROUP drop foreign key FKB444963161DABD5F;
---alter table DB_WCT.TARGET_INSTANCE drop foreign key FK_TI_TARGET_ID;
---alter table DB_WCT.TARGET_INSTANCE drop foreign key FK_TI_USER_ID;
---alter table DB_WCT.TARGET_INSTANCE drop foreign key FK_TI_PROF_OVERRIDE_OID;
---alter table DB_WCT.TARGET_INSTANCE drop foreign key FK_TI_SCHEDULE_ID;
---alter table DB_WCT.TARGET_INSTANCE_ORIG_SEED drop foreign key FKD47ACFF36748402E;
---alter table DB_WCT.TASK drop foreign key FK_TASK_AGENCY_OID;
---alter table DB_WCT.URL_PATTERN drop foreign key FK_UP_SITE_ID;
---alter table DB_WCT.URL_PERMISSION_MAPPING drop foreign key FK_UPM_URL_PATTERN_ID;
---alter table DB_WCT.URL_PERMISSION_MAPPING drop foreign key FK_UPM_PERMISSION_ID;
---alter table DB_WCT.USER_ROLE drop foreign key FK_USERROLE_TO_ROLE;
---alter table DB_WCT.USER_ROLE drop foreign key FK_USERROLE_TO_USER;
---alter table DB_WCT.WCTROLE drop foreign key FK_ROLE_AGENCY_OID;
---alter table DB_WCT.WCTUSER drop foreign key FK_USER_AGENCY_OID;
+
+set foreign_key_checks=0;
 
 drop table if exists DB_WCT.PERMISSION;
 drop table if exists DB_WCT.PERMISSION_EXCLUSION;
@@ -112,15 +54,21 @@ drop table if exists DB_WCT.HEATMAP_CONFIG;
 drop view if exists DB_WCT.ABSTRACT_TARGET_SCHEDULE_VIEW;
 drop view if exists DB_WCT.URL_PERMISSION_MAPPING_VIEW;
 drop view if exists DB_WCT.ABSTRACT_TARGET_GROUPTYPE_VIEW;
+drop table if exists DB_WCT.FLAG;
+drop table if exists DB_WCT.INDICATOR_CRITERIA;
+drop table if exists DB_WCT.INDICATOR_REPORT_LINE;
+drop table if exists DB_WCT.INDICATOR;
 
-create table DB_WCT.ABSTRACT_TARGET (AT_OID bigint not null, AT_DESC text, AT_NAME varchar(191), AT_OWNER_ID bigint, AT_PROF_OVERRIDE_OID bigint, AT_STATE integer, T_PROFILE_ID bigint, AT_OBJECT_TYPE integer, AT_CREATION_DATE TIMESTAMP NULL, AT_REFERENCE varchar(255), AT_PROFILE_NOTE varchar(255), AT_DUBLIN_CORE_OID bigint, AT_ACCESS_ZONE integer default 0 not null, AT_DISPLAY_TARGET bit default 1 not null, AT_DISPLAY_NOTE text, AT_DISPLAY_CHG_REASON text, AT_RR_OID bigint, primary key (AT_OID));
-create table DB_WCT.AGENCY (AGC_OID bigint not null, AGC_NAME varchar(80) not null unique, AGC_ADDRESS varchar(255) not null, AGC_LOGO_URL varchar(255), AGC_URL varchar(255), AGC_EMAIL varchar(80), AGC_FAX varchar(20), AGC_PHONE varchar(20), primary key (AGC_OID));
+set foreign_key_checks=1;
+
+create table DB_WCT.ABSTRACT_TARGET (AT_OID bigint not null, AT_DESC text, AT_NAME varchar(191), AT_OWNER_ID bigint, AT_PROF_OVERRIDE_OID bigint, AT_STATE integer, T_PROFILE_ID bigint, AT_OBJECT_TYPE integer, AT_CREATION_DATE TIMESTAMP NULL, AT_REFERENCE varchar(255), AT_PROFILE_NOTE varchar(255), AT_DUBLIN_CORE_OID bigint, AT_ACCESS_ZONE integer default 0 not null, AT_DISPLAY_TARGET bit default 1 not null, AT_DISPLAY_NOTE text, AT_DISPLAY_CHG_REASON text, AT_RR_OID bigint, AT_CRAWLS bigint, AT_REFERENCE_CRAWL_OID bigint, AT_AUTO_PRUNE boolean not null default false, AT_AUTO_DENOTE_REFERENCE_CRAWL boolean not null default false, AT_REQUEST_TO_ARCHIVISTS varchar(4000), primary key (AT_OID));
+create table DB_WCT.AGENCY (AGC_OID bigint not null, AGC_NAME varchar(80) not null unique, AGC_ADDRESS varchar(255) not null, AGC_LOGO_URL varchar(255), AGC_URL varchar(255), AGC_EMAIL varchar(80), AGC_FAX varchar(20), AGC_PHONE varchar(20), AGC_SHOW_TASKS boolean not null default true, AGC_DEFAULT_DESC_TYPE varchar(50) default "", primary key (AGC_OID));
 create table DB_WCT.ANNOTATIONS (AN_OID bigint not null, AN_DATE datetime not null, AN_NOTE text not null, AN_USER_OID bigint not null, AN_OBJ_OID bigint not null, AN_OBJ_TYPE text not null, AN_ALERTABLE bit not null default 0, primary key (AN_OID));
 create table DB_WCT.ARC_HARVEST_FILE (AHF_OID bigint not null, AHF_COMPRESSED bit not null, AHF_NAME varchar(100) not null unique, AHF_ARC_HARVEST_RESULT_ID bigint, primary key (AHF_OID));
 create table DB_WCT.ARC_HARVEST_RESOURCE (AHRC_HARVEST_RESOURCE_OID bigint not null, AHRC_RESOURCE_LENGTH bigint not null, AHRC_RESOURCE_OFFSET bigint not null, AHRC_ARC_FILE_NAME varchar(100) not null, AHRC_COMPRESSED_YN bit not null, primary key (AHRC_HARVEST_RESOURCE_OID));
 create table DB_WCT.ARC_HARVEST_RESULT (AHRS_HARVEST_RESULT_OID bigint not null, primary key (AHRS_HARVEST_RESULT_OID));
 create table DB_WCT.AUTHORISING_AGENT (AA_OID bigint not null, AA_NAME varchar(191) unique, AA_ADRESS text, AA_CONTACT varchar(255), AA_EMAIL varchar(255), AA_PHONE_NUMBER varchar(32), AA_DESC text, primary key (AA_OID));
-create table DB_WCT.BANDWIDTH_RESTRICTIONS (BR_OID bigint not null, BR_BANDWIDTH bigint not null, BR_DAY varchar(9) not null, BR_END_TIME datetime not null, BR_START_TIME datetime not null, primary key (BR_OID));
+create table DB_WCT.BANDWIDTH_RESTRICTIONS (BR_OID bigint not null, BR_BANDWIDTH bigint not null, BR_DAY varchar(9) not null, BR_END_TIME datetime not null, BR_START_TIME datetime not null, BR_OPTIMIZATION_ALLOWED boolean not null default false, primary key (BR_OID));
 create table DB_WCT.DUBLIN_CORE (DC_OID bigint not null, DC_CONTRIBUTOR varchar(255), DC_COVERAGE varchar(255), DC_CREATOR varchar(255), DC_DESCRIPTION text, DC_FORMAT varchar(255), DC_IDENTIFIER varchar(255), DC_IDENTIFIER_ISBN varchar(13), DC_IDENTIFIER_ISSN varchar(9), DC_LANGUAGE varchar(255), DC_PUBLISHER varchar(255), DC_RELATION varchar(255), DC_SOURCE varchar(255), DC_SUBJECT text, DC_TITLE varchar(255), DC_TYPE varchar(50), primary key (DC_OID));
 create table DB_WCT.GROUP_MEMBER (AT_OID bigint not null, GM_CHILD_ID bigint, GM_PARENT_ID bigint, primary key (AT_OID));
 create table DB_WCT.HARVEST_RESOURCE (HRC_OID bigint not null, HRC_LENGTH bigint, HRC_NAME text not null, HRC_HARVEST_RESULT_OID bigint, HRC_STATUS_CODE integer not null, primary key (HRC_OID));
@@ -130,7 +78,7 @@ create table DB_WCT.HR_MODIFICATION_NOTE (HMN_HR_OID bigint not null, HMN_NOTE t
 create table DB_WCT.NOTIFICATION (NOT_OID bigint not null, NOT_MESSAGE text, NOT_USR_OID bigint not null, NOT_SENDER varchar(80) not null, NOT_SENT_DATE timestamp, NOT_SUBJECT varchar(255) not null, primary key (NOT_OID));
 create table DB_WCT.PERMISSION (PE_OID bigint not null, PE_ACCESS_STATUS varchar(255), PE_APPROVED_YN bit, PE_AVAILABLE_YN bit, PE_COPYRIGHT_STATEMENT text, PE_COPYRIGHT_URL text, PE_CREATION_DATE TIMESTAMP NULL, PE_END_DATE TIMESTAMP NULL, PE_NOTES text, PE_OPEN_ACCESS_DATE TIMESTAMP NULL, PE_PERMISSION_GRANTED_DATE TIMESTAMP NULL, PE_PERMISSION_REQUESTED_DATE TIMESTAMP NULL, PE_SPECIAL_REQUIREMENTS text, PE_START_DATE TIMESTAMP NULL, PE_STATUS integer, PE_AUTH_AGENT_ID bigint, PE_SITE_ID bigint, PE_QUICK_PICK bit, PE_DISPLAY_NAME varchar(32), PE_OWNING_AGENCY_ID bigint, PE_FILE_REFERENCE varchar(255), primary key (PE_OID));
 create table DB_WCT.PERMISSION_EXCLUSION (PEX_OID bigint not null, PEX_REASON varchar(255), PEX_URL text, PEX_PERMISSION_OID bigint, PEX_INDEX integer, primary key (PEX_OID));
-create table DB_WCT.PERMISSION_TEMPLATE (PRT_OID bigint not null, PRT_AGC_OID bigint not null, PRT_TEMPLATE_TEXT text not null, PRT_TEMPLATE_NAME varchar(80) not null, PRT_TEMPLATE_TYPE varchar(40) not null, PRT_TEMPLATE_DESC varchar(255), PRT_TEMPLATE_SUBJECT varchar(255), PRT_TEMPLATE_OVERWRITE_FROM bit not null default 0, PRT_TEMPLATE_FROM varchar(255), PRT_TEMPLATE_CC text, PRT_TEMPLATE_BCC text, primary key (PRT_OID));
+create table DB_WCT.PERMISSION_TEMPLATE (PRT_OID bigint not null, PRT_AGC_OID bigint not null, PRT_TEMPLATE_TEXT text not null, PRT_TEMPLATE_NAME varchar(80) not null, PRT_TEMPLATE_TYPE varchar(40) not null, PRT_TEMPLATE_DESC varchar(255), PRT_TEMPLATE_SUBJECT varchar(255), PRT_TEMPLATE_OVERWRITE_FROM bit not null default 0, PRT_TEMPLATE_FROM varchar(255), PRT_TEMPLATE_CC text, PRT_TEMPLATE_BCC text, PRT_TEMPLATE_REPLY_TO varchar(255), primary key (PRT_OID));
 create table DB_WCT.PERMISSION_URLPATTERN (PU_PERMISSION_ID bigint not null, PU_URLPATTERN_ID bigint not null, primary key (PU_URLPATTERN_ID, PU_PERMISSION_ID));
 create table DB_WCT.PO_EXCLUSION_URI (PEU_PROF_OVER_OID bigint not null, PEU_FILTER varchar(255), PEU_IX integer not null, primary key (PEU_PROF_OVER_OID, PEU_IX));
 create table DB_WCT.PO_INCLUSION_URI (PEU_PROF_OVER_OID bigint not null, PEU_FILTER varchar(255), PEU_IX integer not null, primary key (PEU_PROF_OVER_OID, PEU_IX));
@@ -148,9 +96,9 @@ create table DB_WCT.SEED_PERMISSION (SP_SEED_ID bigint not null, SP_PERMISSION_I
 create table DB_WCT.SIP_PART_ELEMENT (SPE_TARGET_INSTANCE_OID bigint not null, SPE_VALUE text, SPE_KEY varchar(191) not null, primary key (SPE_TARGET_INSTANCE_OID, SPE_KEY));
 create table DB_WCT.SITE (ST_OID bigint not null, ST_TITLE varchar(191) not null unique, ST_DESC text, ST_LIBRARY_ORDER_NO varchar(32), ST_NOTES text, ST_PUBLISHED bit not null, ST_ACTIVE bit not null, ST_OWNING_AGENCY_ID bigint, ST_CREATION_DATE datetime, primary key (ST_OID));
 create table DB_WCT.SITE_AUTH_AGENCY (SA_SITE_ID bigint not null, SA_AGENT_ID bigint not null, primary key (SA_SITE_ID, SA_AGENT_ID));
-create table DB_WCT.TARGET (T_AT_OID bigint not null, T_RUN_ON_APPROVAL bit, T_EVALUATION_NOTE text, T_SELECTION_DATE TIMESTAMP NULL, T_SELECTION_NOTE text, T_SELECTION_TYPE varchar(255), T_HARVEST_TYPE varchar(255), T_USE_AQA bit not null default 0, primary key (T_AT_OID));
+create table DB_WCT.TARGET (T_AT_OID bigint not null, T_RUN_ON_APPROVAL bit, T_EVALUATION_NOTE text, T_SELECTION_DATE TIMESTAMP NULL, T_SELECTION_NOTE text, T_SELECTION_TYPE varchar(255), T_HARVEST_TYPE varchar(255), T_USE_AQA bit not null default 0, T_ALLOW_OPTIMIZE boolean not null default false, primary key (T_AT_OID));
 create table DB_WCT.TARGET_GROUP (TG_AT_OID bigint not null, TG_SIP_TYPE integer, TG_START_DATE DATE, TG_END_DATE DATE, TG_OWNERSHIP_METADATA varchar(255), TG_TYPE varchar(255), primary key (TG_AT_OID));
-create table DB_WCT.TARGET_INSTANCE (TI_OID bigint not null, TI_VERSION integer not null, TI_SCHEDULE_ID bigint, TI_TARGET_ID bigint, TI_PRIORITY integer not null, TI_SCHEDULED_TIME TIMESTAMP not null, TI_STATE varchar(50) not null, TI_BANDWIDTH_PERCENT integer, TI_ALLOCATED_BANDWIDTH bigint, TI_START_TIME datetime, TI_OWNER_ID bigint, TI_DISPLAY_ORDER integer, TI_PROF_OVERRIDE_OID bigint, TI_PURGED bit not null, TI_ARCHIVE_ID varchar(40) unique, TI_REFERENCE varchar(255), TI_HARVEST_SERVER varchar(255), TI_DISPLAY_TARGET_INSTANCE bit default 1 not null, TI_DISPLAY_NOTE text, TI_FLAGGED bit default 0 not null, TI_PROFILE_ID bigint, TI_ARCHIVED_TIME datetime, TI_FIRST_FROM_TARGET bit not null default 0, TI_DISPLAY_CHG_REASON text, TI_USE_AQA bit not null default 0, primary key (TI_OID));
+create table DB_WCT.TARGET_INSTANCE (TI_OID bigint not null, TI_VERSION integer not null, TI_SCHEDULE_ID bigint, TI_TARGET_ID bigint, TI_PRIORITY integer not null, TI_SCHEDULED_TIME TIMESTAMP not null, TI_STATE varchar(50) not null, TI_BANDWIDTH_PERCENT integer, TI_ALLOCATED_BANDWIDTH bigint, TI_START_TIME datetime, TI_OWNER_ID bigint, TI_DISPLAY_ORDER integer, TI_PROF_OVERRIDE_OID bigint, TI_PURGED bit not null, TI_ARCHIVE_ID varchar(40) unique, TI_REFERENCE varchar(255), TI_HARVEST_SERVER varchar(255), TI_DISPLAY_TARGET_INSTANCE bit default 1 not null, TI_DISPLAY_NOTE text, TI_FLAGGED bit default 0 not null, TI_PROFILE_ID bigint, TI_ARCHIVED_TIME datetime, TI_FIRST_FROM_TARGET bit not null default 0, TI_DISPLAY_CHG_REASON text, TI_USE_AQA bit not null default 0, TI_ALLOW_OPTIMIZE boolean not null default false, TI_FLAG_OID bigint, TI_RECOMMENDATION varchar(255), primary key (TI_OID));
 create table DB_WCT.TARGET_INSTANCE_ORIG_SEED (TIOS_TI_OID bigint not null, TIOS_SEED varchar(1024));
 create table DB_WCT.TASK (TSK_OID bigint not null, TSK_USR_OID bigint, TSK_MESSAGE text, TSK_SENDER varchar(80) not null, TSK_SENT_DATE timestamp, TSK_SUBJECT varchar(255) not null, TSK_PRIVILEGE varchar(40), TSK_AGC_OID bigint not null, TSK_MSG_TYPE varchar(40) not null, TSK_RESOURCE_OID bigint not null, TSK_RESOURCE_TYPE varchar(80) not null, primary key (TSK_OID));
 create table DB_WCT.URL_PATTERN (UP_OID bigint not null, UP_PATTERN text, UP_SITE_ID bigint, primary key (UP_OID));
@@ -161,23 +109,26 @@ create table DB_WCT.WCTROLE (ROL_OID bigint not null, ROL_DESCRIPTION varchar(25
 create table DB_WCT.WCTUSER (USR_OID bigint not null, USR_ACTIVE bit not null, USR_ADDRESS varchar(200), USR_EMAIL varchar(100) not null, USR_EXTERNAL_AUTH bit not null, USR_FIRSTNAME varchar(50) not null, USR_FORCE_PWD_CHANGE bit not null, USR_LASTNAME varchar(50) not null, USR_NOTIFICATIONS_BY_EMAIL bit not null, USR_PASSWORD varchar(255), USR_PHONE varchar(16), USR_TITLE varchar(10), USR_USERNAME varchar(80) not null unique, USR_AGC_OID bigint not null, USR_DEACTIVATE_DATE TIMESTAMP NULL, USR_TASKS_BY_EMAIL bit not null, USR_NOTIFY_ON_GENERAL bit not null, USR_NOTIFY_ON_WARNINGS bit not null, primary key (USR_OID));
 create table DB_WCT.WCT_LOGON_DURATION (LOGDUR_OID bigint not null, LOGDUR_DURATION bigint, LOGDUR_LOGON_TIME TIMESTAMP not null, LOGDUR_LOGOUT_TIME TIMESTAMP NULL, LOGDUR_USERNAME varchar(80), LOGDUR_USER_OID bigint not null, LOGDUR_USER_REALNAME varchar(100), LOGDUR_SESSION_ID varchar(32) not null, primary key (LOGDUR_OID));
 create table DB_WCT.HEATMAP_CONFIG (HM_OID bigint not null, HM_NAME varchar(255) not null, HM_COLOR varchar(255) not null, HM_THRESHOLD_LOWEST integer not null, HM_DISPLAY_NAME varchar(255) not null, primary key (HM_OID));
+create table DB_WCT.FLAG (F_OID bigint not null, F_NAME varchar(255) not null, F_RGB varchar(6) not null, F_COMPLEMENT_RGB varchar(6) not null, F_AGC_OID bigint not null, primary key (F_OID));
+create table DB_WCT.INDICATOR_CRITERIA (IC_OID bigint not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE double precision, IC_LOWER_LIMIT_PERCENTAGE double precision, IC_UPPER_LIMIT double precision, IC_LOWER_LIMIT double precision, IC_AGC_OID bigint not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bit not null, IC_ENABLE_REPORT bit not null);
+create table DB_WCT.INDICATOR (I_OID bigint not null, I_IC_OID bigint not null, I_TI_OID bigint not null, I_NAME varchar(255) not null, I_FLOAT_VALUE double precision, I_UPPER_LIMIT_PERCENTAGE double precision, I_LOWER_LIMIT_PERCENTAGE double precision, I_UPPER_LIMIT double precision, I_LOWER_LIMIT double precision, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID bigint not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bit not null, I_INDEX integer, I_DATE TIMESTAMP(6) not null);
+create table DB_WCT.INDICATOR_REPORT_LINE (IRL_OID bigint, IRL_I_OID bigint, IRL_LINE varchar(1024), IRL_INDEX integer);
+create table DB_WCT.ID_GENERATOR ( IG_TYPE varchar(255),  IG_VALUE integer ) ;
+
+-- NOTE: constraints are not enforced in MySQL, but they are in MariaDB starting with 10.2.1.
 alter table DB_WCT.ABSTRACT_TARGET add unique key AT_NAME_AND_TYPE (AT_NAME, AT_OBJECT_TYPE);
 alter table DB_WCT.ABSTRACT_TARGET add index FK_AT_DUBLIN_CORE_OID (AT_DUBLIN_CORE_OID), add constraint FK_AT_DUBLIN_CORE_OID foreign key (AT_DUBLIN_CORE_OID) references DB_WCT.DUBLIN_CORE (DC_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FK_T_PROF_OVERRIDE_OID (AT_PROF_OVERRIDE_OID), add constraint FK_T_PROF_OVERRIDE_OID foreign key (AT_PROF_OVERRIDE_OID) references DB_WCT.PROFILE_OVERRIDES (PO_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FKB6DD784E5C2C497 (AT_OWNER_ID), add constraint FKB6DD784E5C2C497 foreign key (AT_OWNER_ID) references DB_WCT.WCTUSER (USR_OID);
 alter table DB_WCT.ABSTRACT_TARGET add index FKB6DD784E3A83A603 (T_PROFILE_ID), add constraint FKB6DD784E3A83A603 foreign key (T_PROFILE_ID) references DB_WCT.PROFILE (P_OID);
---MySQL parses check constraints but does not implement them
 alter table DB_WCT.ABSTRACT_TARGET add constraint CHK_ACCESS_ZONE check (AT_ACCESS_ZONE in (0,1,2));
 alter table DB_WCT.ABSTRACT_TARGET add index FK_AT_RR_OID (AT_RR_OID), add constraint FK_AT_RR_OID foreign key (AT_RR_OID) references DB_WCT.REJECTION_REASON (RR_OID);
 alter table DB_WCT.ANNOTATIONS add index FK_NOTE_USER_OID (AN_USER_OID), add constraint FK_NOTE_USER_OID foreign key (AN_USER_OID) references DB_WCT.WCTUSER (USR_OID);
 alter table DB_WCT.ARC_HARVEST_FILE add index FK_AHR_ARC_HARVEST_RESULT_ID (AHF_ARC_HARVEST_RESULT_ID), add constraint FK_AHR_ARC_HARVEST_RESULT_ID foreign key (AHF_ARC_HARVEST_RESULT_ID) references DB_WCT.ARC_HARVEST_RESULT (AHRS_HARVEST_RESULT_OID);
 alter table DB_WCT.ARC_HARVEST_RESOURCE add index FK6D84FEB12FF8F14B (AHRC_HARVEST_RESOURCE_OID), add constraint FK6D84FEB12FF8F14B foreign key (AHRC_HARVEST_RESOURCE_OID) references DB_WCT.HARVEST_RESOURCE (HRC_OID);
 alter table DB_WCT.ARC_HARVEST_RESULT add index FKE39C5380C88A38D9 (AHRS_HARVEST_RESULT_OID), add constraint FKE39C5380C88A38D9 foreign key (AHRS_HARVEST_RESULT_OID) references DB_WCT.HARVEST_RESULT (HR_OID);
---MySQL parses check constraints but does not implement them
 alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_DAY check (br_day IN ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'));
---MySQL parses check constraints but does not implement them
 alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_END_TIME check (br_end_time >= TO_DATE('1972-11-09 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND br_end_time <= TO_DATE('1972-11-09 23:59:59', 'YYYY-MM-DD HH24:MI:SS'));
---MySQL parses check constraints but does not implement them
 alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_START_TIME check (br_start_time >= TO_DATE('1972-11-09 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND br_start_time <= TO_DATE('1972-11-09 23:59:59', 'YYYY-MM-DD HH24:MI:SS'));
 alter table DB_WCT.GROUP_MEMBER add index FK_GM_PARENT_ID (GM_PARENT_ID), add constraint FK_GM_PARENT_ID foreign key (GM_PARENT_ID) references DB_WCT.TARGET_GROUP (TG_AT_OID);
 alter table DB_WCT.GROUP_MEMBER add index FK_GM_CHILD_ID (GM_CHILD_ID), add constraint FK_GM_CHILD_ID foreign key (GM_CHILD_ID) references DB_WCT.ABSTRACT_TARGET (AT_OID);
@@ -230,8 +181,14 @@ alter table DB_WCT.WCTAUDIT add index FK_AUD_USER_OID (AUD_USER_OID), add constr
 alter table DB_WCT.WCTAUDIT add index FK_AUD_AGENCY_OID (AUD_AGENCY_OID), add constraint FK_AUD_AGENCY_OID foreign key (AUD_AGENCY_OID) references DB_WCT.AGENCY (AGC_OID);
 alter table DB_WCT.WCTROLE add index FK_ROLE_AGENCY_OID (ROL_AGENCY_OID), add constraint FK_ROLE_AGENCY_OID foreign key (ROL_AGENCY_OID) references DB_WCT.AGENCY (AGC_OID);
 alter table DB_WCT.WCTUSER add index FK_USER_AGENCY_OID (USR_AGC_OID), add constraint FK_USER_AGENCY_OID foreign key (USR_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+alter table DB_WCT.FLAG add constraint FK_F_AGENCY_OID foreign key (F_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+alter table DB_WCT.TARGET_INSTANCE add constraint FK_F_OID foreign key (TI_FLAG_OID) references DB_WCT.FLAG (F_OID);
+alter table DB_WCT.INDICATOR_CRITERIA add constraint FK_IC_AGENCY_OID foreign key (IC_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+alter table DB_WCT.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) references DB_WCT.TARGET_INSTANCE (TI_OID) on delete cascade;
+alter table DB_WCT.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references DB_WCT.INDICATOR_CRITERIA (IC_OID);
+alter table DB_WCT.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
+alter table DB_WCT.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references DB_WCT.INDICATOR (I_OID);
 
-create table DB_WCT.ID_GENERATOR ( IG_TYPE varchar(255),  IG_VALUE integer ) ;
 
 create view DB_WCT.URL_PERMISSION_MAPPING_VIEW as 
  SELECT upm.upm_oid, upm.upm_domain, p.pe_oid, p.pe_end_date, p.pe_owning_agency_id, up.up_pattern, st.st_active
@@ -257,27 +214,9 @@ create view DB_WCT.ABSTRACT_TARGET_GROUPTYPE_VIEW as
    FROM DB_WCT.ABSTRACT_TARGET a
    LEFT JOIN DB_WCT.TARGET_GROUP tg ON a.at_oid = tg.tg_at_oid;  
 
--- WCT 1.6 UPGRADE   
-drop table if exists DB_WCT.FLAG;
-drop table if exists DB_WCT.INDICATOR_CRITERIA;
-drop table if exists DB_WCT.INDICATOR_REPORT_LINE;
-drop table if exists DB_WCT.INDICATOR;
 
-alter table DB_WCT.TARGET_INSTANCE add column TI_FLAG_OID bigint;
-alter table DB_WCT.TARGET_INSTANCE add column TI_RECOMMENDATION varchar(255);
-create table DB_WCT.FLAG (F_OID bigint not null, F_NAME varchar(255) not null, F_RGB varchar(6) not null, F_COMPLEMENT_RGB varchar(6) not null, F_AGC_OID bigint not null, primary key (F_OID));
-alter table DB_WCT.FLAG add constraint FK_F_AGENCY_OID foreign key (F_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
-alter table DB_WCT.TARGET_INSTANCE add constraint FK_F_OID foreign key (TI_FLAG_OID) references DB_WCT.FLAG (F_OID);
-create table DB_WCT.INDICATOR_CRITERIA (IC_OID bigint not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE double precision, IC_LOWER_LIMIT_PERCENTAGE double precision, IC_UPPER_LIMIT double precision, IC_LOWER_LIMIT double precision, IC_AGC_OID bigint not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bit not null, IC_ENABLE_REPORT bit not null);
-alter table DB_WCT.INDICATOR_CRITERIA add constraint FK_IC_AGENCY_OID foreign key (IC_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
-create table DB_WCT.INDICATOR (I_OID bigint not null, I_IC_OID bigint not null, I_TI_OID bigint not null, I_NAME varchar(255) not null, I_FLOAT_VALUE double precision, I_UPPER_LIMIT_PERCENTAGE double precision, I_LOWER_LIMIT_PERCENTAGE double precision, I_UPPER_LIMIT double precision, I_LOWER_LIMIT double precision, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID bigint not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bit not null, I_INDEX integer, I_DATE TIMESTAMP(6) not null);
-alter table DB_WCT.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) references DB_WCT.TARGET_INSTANCE (TI_OID) on delete cascade;
-alter table DB_WCT.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references DB_WCT.INDICATOR_CRITERIA (IC_OID);
-alter table DB_WCT.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
-create table DB_WCT.INDICATOR_REPORT_LINE (IRL_OID bigint, IRL_I_OID bigint, IRL_LINE varchar(1024), IRL_INDEX integer);
-alter table DB_WCT.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references DB_WCT.INDICATOR (I_OID);
-alter table DB_WCT.ABSTRACT_TARGET add column AT_CRAWLS bigint;
-alter table DB_WCT.ABSTRACT_TARGET add column AT_REFERENCE_CRAWL_OID bigint;
-alter table DB_WCT.ABSTRACT_TARGET add column AT_AUTO_PRUNE boolean not null default false;
-alter table DB_WCT.ABSTRACT_TARGET add column AT_AUTO_DENOTE_REFERENCE_CRAWL boolean not null default false;
-alter table DB_WCT.ABSTRACT_TARGET add column AT_REQUEST_TO_ARCHIVISTS varchar(4000);
+
+-- Fixed data
+insert into DB_WCT.HEATMAP_CONFIG (HM_OID, HM_NAME, HM_DISPLAY_NAME, HM_COLOR, HM_THRESHOLD_LOWEST) values (1, "low","Low","8FBC8F",1);
+insert into DB_WCT.HEATMAP_CONFIG (HM_OID, HM_NAME, HM_DISPLAY_NAME, HM_COLOR, HM_THRESHOLD_LOWEST) values (2, "medium","Medium","F0E68C",7);
+insert into DB_WCT.HEATMAP_CONFIG (HM_OID, HM_NAME, HM_DISPLAY_NAME, HM_COLOR, HM_THRESHOLD_LOWEST) values (3, "high","High","FF6347",12);
