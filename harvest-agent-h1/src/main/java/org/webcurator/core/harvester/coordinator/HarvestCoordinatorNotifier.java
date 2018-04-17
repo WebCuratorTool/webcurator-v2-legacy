@@ -71,6 +71,11 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
         }
     }
 
+    @Override
+    public void requestRecovery(String haHost, int haPort, String haService) {
+        // Placeholder - not used with Heritrix 1x
+    }
+
     /* (non-Javadoc)
      * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#harvestComplete(org.webcurator.core.model.HarvestResult)
      */

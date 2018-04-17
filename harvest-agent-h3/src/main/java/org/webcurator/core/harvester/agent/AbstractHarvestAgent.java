@@ -17,6 +17,7 @@ package org.webcurator.core.harvester.agent;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -41,9 +42,13 @@ public abstract class AbstractHarvestAgent implements HarvestAgent {
      */
     public void initiateHarvest(String aJob, String aProfile, String aSeeds) {        
         Harvester harvester = new HarvesterH3(aJob);
-//        Harvester harvester = new HarvesterHeritrix(aJob);
         harvesters.put(aJob, harvester);
     }
+
+    /**
+     * @see org.webcurator.core.harvester.agent.HarvestAgent#recoverHarvests(java.util.List)
+     */
+    public void recoverHarvests(List<String> activeJobs){}
 
     /**
      * @see org.webcurator.core.harvester.agent.HarvestAgent#restrictBandwidth(java.lang.String, int)

@@ -51,6 +51,7 @@
 		<!-- the port that the core is listening on for http connections -->
 		<property name="port" value="${harvestCoordinatorNotifier.port}"/>
 		<property name="agent" ref="harvestAgent"/>
+		<property name="attemptRecovery" value="${harvestAgent.attemptHarvestRecovery}"/>
 	</bean>	
 	<bean id="digitalAssetStore" class="org.webcurator.core.store.DigitalAssetStoreSOAPClient" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- the name of the digital asset store web service -->

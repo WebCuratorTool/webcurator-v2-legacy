@@ -42,6 +42,8 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
     private int port = 8080;
     /** the name of the soap call for the harvest agent listener. */
     private String service = WCTSoapCall.WCT_HARVEST_LISTENER;
+    /** Flag used to control a harvest recovery attempt on startup. */
+    public String attemptRecovery = "false";
     /** the logger. */
     private static Log log = LogFactory.getLog(HarvestCoordinatorNotifier.class);
     
@@ -53,8 +55,7 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
             if (log.isDebugEnabled()) {
                 log.debug("WCT: Start of heartbeat");
             }
-            log.info("WCT: Start of heartbeat");
-            
+
             WCTSoapCall call = new WCTSoapCall(host, port, service, "heartbeat");
             call.regTypes(HarvestAgentStatusDTO.class, HarvesterStatusDTO.class);
             call.invoke(aStatus);
@@ -62,11 +63,37 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
             if (log.isDebugEnabled()) {
                 log.debug("WCT: End of heartbeat");
             }
-            log.info("WCT: End of heartbeat");
         }
         catch(Exception ex) {
             if (log.isErrorEnabled()) {
                 log.error("Heartbeat Notification failed : " + ex.getMessage(), ex);
+            }
+        }
+    }
+
+    public void requestRecovery(String haHost, int haPort, String haService) {
+        try {
+
+            if(attemptRecovery()){
+                log.info("Harvest Agent attempting a recovery request");
+
+                if (log.isDebugEnabled()) {
+                    log.debug("WCT: Start of requestRecovery");
+                }
+
+                WCTSoapCall call = new WCTSoapCall(host, port, service, "requestRecovery");
+                Object[] data = {haHost, haPort, haService};
+                call.invoke(data);
+
+                if (log.isDebugEnabled()) {
+                    log.debug("WCT: End of requestRecovery");
+                }
+                setAttemptRecovery("false");
+            }
+        }
+        catch(Exception ex) {
+            if (log.isErrorEnabled()) {
+                log.error("Recovery Request failed : " + ex.getMessage(), ex);
             }
         }
     }
@@ -168,5 +195,23 @@ public class HarvestCoordinatorNotifier implements HarvestAgentListener, CheckNo
 	 */
 	public void setAgent(HarvestAgent agent) {
 		this.agent = agent;
-	}   
+	}
+
+    /**
+     * Return boolean value of attemptRecovery String
+     * @return boolean
+     */
+    public boolean attemptRecovery() {
+        if(attemptRecovery.equals("true")){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param attemptRecovery boolean flag
+     */
+    public void setAttemptRecovery(String attemptRecovery) {
+        this.attemptRecovery = attemptRecovery;
+    }
 }

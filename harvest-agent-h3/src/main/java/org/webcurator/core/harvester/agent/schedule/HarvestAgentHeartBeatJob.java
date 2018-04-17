@@ -40,7 +40,6 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
     HarvestAgent harvestAgent;
     /** The notifier to use to send data to the WCT. */
     HarvestCoordinatorNotifier notifier;
-
     /** the logger. */
     private Log log = LogFactory.getLog(getClass());
     
@@ -57,8 +56,10 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
 			aJobContext.getScheduler().pauseTriggerGroup("HeartBeatTriggerGroup");
 
             log.info("HarvestAgentHeartBeatJob executing");
-			HarvestAgentStatusDTO status = harvestAgent.getStatus();        
+			HarvestAgentStatusDTO status = harvestAgent.getStatus();
 			notifier.heartbeat(status);
+
+            notifier.requestRecovery(status.getHost(), status.getPort(), status.getService());
 
             /* H3 polling begin*/
 
@@ -132,4 +133,5 @@ public class HarvestAgentHeartBeatJob extends QuartzJobBean {
     public void setNotifier(HarvestCoordinatorNotifier notifier) {
         this.notifier = notifier;
     }
+
 }

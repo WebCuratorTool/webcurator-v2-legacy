@@ -205,6 +205,14 @@ public class MockHarvestCoordinator implements HarvestCoordinator {
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public void requestRecovery(String host, int port, String Service) {}
+
+	@Override
+	public void recoverHarvests(String host, int port, String Service) {
+		// TODO Auto-generated method stub
+	}
+
 	public void notification(Long targetInstanceOid, int notificationCategory,
 			String messageType) {
 		// TODO Auto-generated method stub
