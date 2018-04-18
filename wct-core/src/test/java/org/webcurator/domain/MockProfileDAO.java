@@ -200,6 +200,7 @@ public class MockProfileDAO implements ProfileDAO {
 			p.setStatus(profile.getStatus());
 			p.setVersion(profile.getVersion());
 			p.setOrigOid(profile.getOrigOid());
+			p.setHarvesterType(profile.getHarvesterType());
 		}
 		else
 		{
