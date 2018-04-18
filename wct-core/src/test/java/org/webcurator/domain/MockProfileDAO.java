@@ -347,6 +347,10 @@ public class MockProfileDAO implements ProfileDAO {
 					{
 						p.setOrigOid(getLong(child));
 					}
+					else if (child.getNodeName().equals("harvesterType"))
+					{
+						p.setHarvesterType(getString(child));
+					}
 				}
 			}
 			

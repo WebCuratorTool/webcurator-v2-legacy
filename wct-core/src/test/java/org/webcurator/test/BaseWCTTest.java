@@ -28,7 +28,6 @@ import org.springframework.web.context.MockWebApplicationContext;
 public class BaseWCTTest<T> {
 
 	protected static Log log = LogFactory.getLog(BaseWCTTest.class);
-//	private static String baseTestFile = "src/test/java/org/webcurator/test/BaseWCTTest.xml";
 	private static String baseTestFile = "src/test/java/org/webcurator/test/BaseWCTTest.xml";
 	private static int testCount = 0;
 	private static String testClassName = "";

@@ -888,6 +888,10 @@ public class MockTargetDAO implements TargetDAO {
 					{
 						p.setVersion(getInteger(child));
 					}
+					else if (child.getNodeName().equals("harvesterType"))
+					{
+						p.setHarvesterType(getString(child));
+					}
  				}
 			}
 			
