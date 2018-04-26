@@ -104,9 +104,9 @@ public class ProfileDTO implements AgencyOwnable {
 				      int aStatus,
 				      int aRequiredLevel,
 				      Agency anAgency,
-					  String harvesterType,
 				      boolean defaultProfile,
-				      Long origOid) {
+				      Long origOid,
+					  String harvesterType) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
