@@ -17,6 +17,8 @@ package org.webcurator.core.harvester.agent;
 
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 
+import java.util.List;
+
 /** 
  * The <code>HarvestAgent</code> is the interface used by the <code>HarvestCoordinator</code> to 
  * control the <code>HarvestAgent</code> and its individual Harvesters.
@@ -50,7 +52,13 @@ public interface HarvestAgent {
      * @param aSeeds the list of seeds to harvest
      */
     void initiateHarvest(String aJob, String aProfile, String aSeeds);
-    
+
+    /**
+     * recover Harvests on launch.
+     * @param activeJobs a list of active jobs within WCT Core
+     */
+    void recoverHarvests(List<String> activeJobs);
+
     /**
      * Update the profile with any new overrides.
      * @param aJob the unique id of the harvest job
@@ -135,5 +143,5 @@ public interface HarvestAgent {
      * Return the status of the HarvestAgent.
      * @return the status of the HarvestAgent
      */
-    HarvestAgentStatusDTO getStatus();    
+    HarvestAgentStatusDTO getStatus();
 }

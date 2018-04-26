@@ -19,6 +19,8 @@ import org.springframework.remoting.jaxrpc.ServletEndpointSupport;
 import org.webcurator.core.common.Constants;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 
+import java.util.List;
+
 /**
  * The <code>HarvestAgentSOAPService</code> is the class that is accessed by 
  * the remote Web Service client.  This class uses spring to lookup the 
@@ -48,6 +50,11 @@ public class HarvestAgentSOAPService extends ServletEndpointSupport implements H
      */
     public void initiateHarvest(String aJob, String aProfile, String aSeeds) {
         ha.initiateHarvest(aJob, aProfile, aSeeds);
+    }
+
+    @Override
+    public void recoverHarvests(List<String> activeJobs) {
+        // Placeholder - not used with Heritrix 1x
     }
 
     /**

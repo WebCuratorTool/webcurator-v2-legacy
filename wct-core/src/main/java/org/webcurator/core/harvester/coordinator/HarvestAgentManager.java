@@ -40,6 +40,8 @@ public interface HarvestAgentManager {
 
 	void initiateHarvest(HarvestAgentStatusDTO aHarvestAgent, TargetInstance aTargetInstance, String profile, String seedsString);
 
+	void recoverHarvests(String host, int port, String Service, List<String> activeJobs);
+
 	boolean lock(Long tiOid);
 
 	void unLock(Long tiOid);

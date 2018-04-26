@@ -5,6 +5,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 
+import java.util.List;
+
 public class MockHarvestAgent implements HarvestAgent {
 
 	private static Log log = LogFactory.getLog(MockHarvestAgent.class);
@@ -34,6 +36,8 @@ public class MockHarvestAgent implements HarvestAgent {
 	{
 		log.debug("initiate harvest - "+job);
 	}
+
+	public void recoverHarvests(List<String> activeJobs) {}
 
 	public void loadSettings(String job) 
 	{

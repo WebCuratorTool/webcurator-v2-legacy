@@ -114,7 +114,12 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
         
         harvestCoordinatorNotifier.heartbeat(getStatus());
     }
-    
+
+    @Override
+    public void recoverHarvests(List<String> activeJobs) {
+        // Placeholder - not used with Heritrix 1x
+    }
+
     /** @see org.webcurator.core.harvester.agent.HarvestAgent#abort(String). */
     public void abort(String aJob) {  
     	if (log.isDebugEnabled()) {

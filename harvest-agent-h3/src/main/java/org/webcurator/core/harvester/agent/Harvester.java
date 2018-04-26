@@ -68,7 +68,12 @@ public interface Harvester {
      * @param aJobName the name of the harvest
      */
     void start(File aProfile, String aJobName);
-    
+
+    /**
+     * Recover harvest by getting status from H3.
+     */
+    void recover();
+
     /**
      * Stop the harvester crawling.
      */

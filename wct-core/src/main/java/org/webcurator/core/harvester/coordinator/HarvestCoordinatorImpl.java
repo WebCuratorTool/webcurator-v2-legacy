@@ -41,6 +41,7 @@ import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.store.DigitalAssetStore;
 import org.webcurator.core.store.DigitalAssetStoreFactory;
 import org.webcurator.core.targets.TargetManager;
+import org.webcurator.domain.TargetInstanceCriteria;
 import org.webcurator.domain.TargetInstanceDAO;
 import org.webcurator.domain.model.auth.Privilege;
 import org.webcurator.domain.model.core.AbstractTarget;
@@ -121,6 +122,32 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 */
 	public void heartbeat(HarvestAgentStatusDTO aStatus) {
 		harvestAgentManager.heartbeat(aStatus);
+	}
+
+	public void requestRecovery(String haHost, int port, String haService) {}
+
+	/**
+	 * Execute search of Target Instances in 'Running' or 'Paused' states. Add any
+	 * active job names to List for Harvest Agent attempting recovery.
+	 *
+	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#recoverHarvests(java.lang.String, int, java.lang.String)
+	 * @param haHost harvest agent host requesting attempting recovery
+	 * @param haPort harvest agent port requesting attempting recovery
+	 * @param haService harvest agent service requesting attempting recovery
+	 */
+	public void recoverHarvests(String haHost, int haPort, String haService) {
+		TargetInstanceCriteria criteria = new TargetInstanceCriteria();
+		Set<String> states = new HashSet<String>();
+		states.add("Running");
+		states.add("Paused");
+		criteria.setStates(states);
+		List<TargetInstance> results = targetInstanceDao.findTargetInstances(criteria);
+		List<String> activeJobs = new ArrayList<String>();
+		for(TargetInstance ti : results){
+//			log.info("RecoverHarvests: sending data back for TI: " + ti.getJobName());
+			activeJobs.add(ti.getJobName());
+		}
+		harvestAgentManager.recoverHarvests(haHost, haPort, haService, activeJobs);
 	}
 
 	/**
