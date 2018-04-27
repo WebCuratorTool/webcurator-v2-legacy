@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.dto;
 
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.domain.AgencyOwnable;
 import org.webcurator.domain.model.auth.Agency;
 
@@ -52,6 +53,9 @@ public class ProfileDTO implements AgencyOwnable {
 	/** The original Oid for this Profile */
 	private Long origOid;
 
+	/** Which crawler is this? */
+	private String harvesterType;
+
 	/**
 	 * Constructor for the DTO.
 	 * @param anOid				The database OID of the profile.
@@ -61,6 +65,7 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param aRequiredLevel	The privilege level required by a user before they cna assign this profile to a target. 
 	 * @param anAgency			The agency that owns this profile.
 	 * @param defaultProfile	True if this is the default profile; otherwise false.
+	 * @param harvesterType		The type of harvester.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -68,6 +73,7 @@ public class ProfileDTO implements AgencyOwnable {
 				      int aStatus,
 				      int aRequiredLevel,
 				      Agency anAgency,
+				      String harvesterType,
 				      boolean defaultProfile) {
 		oid = anOid;
 		name = aName;
@@ -76,6 +82,7 @@ public class ProfileDTO implements AgencyOwnable {
 		requiredLevel = aRequiredLevel;
 		owningAgency = anAgency;
 		this.defaultProfile = defaultProfile;
+		this.harvesterType = harvesterType;
 		this.origOid = null;
 	}
 
@@ -89,6 +96,7 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param anAgency			The agency that owns this profile.
 	 * @param defaultProfile	True if this is the default profile; otherwise false.
 	 * @param origOid			The original database OID for a locked profile.
+	 * @param harvesterType		The type of harvester.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -97,7 +105,8 @@ public class ProfileDTO implements AgencyOwnable {
 				      int aRequiredLevel,
 				      Agency anAgency,
 				      boolean defaultProfile,
-				      Long origOid) {
+				      Long origOid,
+					  String harvesterType) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
@@ -106,6 +115,7 @@ public class ProfileDTO implements AgencyOwnable {
 		owningAgency = anAgency;
 		this.defaultProfile = defaultProfile;
 		this.origOid = origOid;
+		this.harvesterType = harvesterType;
 	}
 
 	/**
@@ -226,5 +236,20 @@ public class ProfileDTO implements AgencyOwnable {
 	public void setOrigOid(Long origOid) {
 		this.origOid = origOid;
 	}
-	
+
+	/**
+	 *
+	 * @return Returns the type of the crawler
+	 */
+	public String getHarvesterType() {
+		return harvesterType;
+	}
+
+	/**
+	 *
+	 * @param harvesterType The crawler type
+	 */
+	public void setHarvesterType(String harvesterType) {
+		this.harvesterType = harvesterType;
+	}
 }

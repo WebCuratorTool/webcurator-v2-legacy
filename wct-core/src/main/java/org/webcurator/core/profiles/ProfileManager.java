@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.webcurator.auth.AuthorityManager;
 import org.webcurator.core.exceptions.WCTInvalidStateRuntimeException;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.util.Auditor;
 import org.webcurator.core.util.AuthUtil;
 import org.webcurator.domain.ProfileDAO;
@@ -54,6 +55,7 @@ public class ProfileManager {
 		profile.setRequiredLevel(1);
 		profile.setStatus(Profile.STATUS_ACTIVE);
 		profile.setProfile(HeritrixProfile.create().toString());
+		profile.setHarvesterType(HarvesterType.HERITRIX3.name());
 		
 		profileDao.saveOrUpdate(profile);
 		auditor.audit(AuthUtil.getRemoteUserObject(), Profile.class.getName(), profile.getOid(), Auditor.ACTION_NEW_PROFILE, "A new profile " + profile.getName() + " has been created for " + profile.getOwningAgency().getName());
@@ -213,4 +215,5 @@ public class ProfileManager {
 	public void setAuditor(Auditor auditor) {
 		this.auditor = auditor;
 	}
+
 }

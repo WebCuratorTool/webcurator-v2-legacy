@@ -200,6 +200,7 @@ public class MockProfileDAO implements ProfileDAO {
 			p.setStatus(profile.getStatus());
 			p.setVersion(profile.getVersion());
 			p.setOrigOid(profile.getOrigOid());
+			p.setHarvesterType(profile.getHarvesterType());
 		}
 		else
 		{
@@ -277,6 +278,7 @@ public class MockProfileDAO implements ProfileDAO {
 				profile.getStatus(),
 			    profile.getRequiredLevel(),
 			    profile.getOwningAgency(),
+			    profile.getHarvesterType(),
 			    profile.isDefaultProfile());
 	}
 	
@@ -345,6 +347,10 @@ public class MockProfileDAO implements ProfileDAO {
 					else if(child.getNodeName().equals("origOid"))
 					{
 						p.setOrigOid(getLong(child));
+					}
+					else if (child.getNodeName().equals("harvesterType"))
+					{
+						p.setHarvesterType(getString(child));
 					}
 				}
 			}
