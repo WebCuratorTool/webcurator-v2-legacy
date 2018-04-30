@@ -124,6 +124,8 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>7.5.4.v20111024</version>
 				<configuration>
+					<stopKey>${agent.stopKey}</stopKey>
+					<stopPort>${agent.stopPort}</stopPort>
 					<jettyXml>${project.build.directory}/jetty-jmx.xml</jettyXml>
 					<webApp>
 						<contextPath>/harvest-agent-h3</contextPath>

@@ -244,6 +244,8 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>7.5.4.v20111024</version>
 				<configuration>
+					<stopKey>${core.stopKey}</stopKey>
+					<stopPort>${core.stopPort}</stopPort>
 					<webApp>
 						<contextPath>/wct</contextPath>
 						<jettyEnvXml>${project.build.directory}/jetty-env.xml</jettyEnvXml>
