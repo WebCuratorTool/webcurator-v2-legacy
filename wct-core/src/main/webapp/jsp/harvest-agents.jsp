@@ -86,6 +86,7 @@ HashMap agents = (HashMap) request.getAttribute(ManageHarvestAgentCommand.MDL_HA
 		<td class="tableHeadDark">Accept tasks</td>
 </authority:hasPrivilege>
 		<td class="tableHeadLite">Name</td>
+		<td class="tableHeadLite">Type</td>
 		<td class="tableHeadDark" colspan="2" align="center">Memory</td>
 		<td class="tableHeadLite" align="center">Updated</td>
 		<td class="tableHeadDark" colspan="2" align="center"><spring:message code="ui.label.harvestconfig.harvests"/></td>
@@ -98,6 +99,7 @@ HashMap agents = (HashMap) request.getAttribute(ManageHarvestAgentCommand.MDL_HA
 <authority:hasPrivilege privilege="<%=Privilege.MANAGE_WEB_HARVESTER%>" scope="<%=Privilege.SCOPE_ALL%>">
 		<td class="subHeadDark">&nbsp;</td>
 </authority:hasPrivilege>
+		<td class="subHeadLite">&nbsp;</td>
 		<td class="subHeadLite">&nbsp;</td>
 		<td class="subHeadDark" align="center">Avail</td>
 		<td class="subHeadDark" align="center">Used</td>
@@ -139,6 +141,7 @@ HashMap agents = (HashMap) request.getAttribute(ManageHarvestAgentCommand.MDL_HA
 				&nbsp;(Memory Warning)
 			</c:if>
 			</td>
+			<td class="tableRowLite" align="center"><c:out value="${agent.value.harvesterType}"/></td>
 			<td class="tableRowDark" align="center"><c:out value="${agent.value.memoryAvailableString}"/></td>
 			<td class="tableRowDark" align="center"><c:out value="${agent.value.memoryUsedString}"/></td>
 			<td class="tableRowLite" align="center"><wct:date value="${agent.value.lastUpdated}" type="fullDateTime"/></td>
