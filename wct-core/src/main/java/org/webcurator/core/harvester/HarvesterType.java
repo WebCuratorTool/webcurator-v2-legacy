@@ -29,6 +29,9 @@ package org.webcurator.core.harvester;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * The harvester type used to differentiate between the supported crawlers
@@ -39,5 +42,14 @@ package org.webcurator.core.harvester;
  * $Id$
  */
 public enum HarvesterType {
-    HERITRIX1, HERITRIX3
+    HERITRIX1, HERITRIX3;
+
+    public static List<String> getHarvesterTypeNames() {
+        List<String> names = new ArrayList<String>();
+        for (HarvesterType harvesterType : HarvesterType.values()) {
+            names.add(harvesterType.name());
+        }
+        return names;
+    }
+
 }
