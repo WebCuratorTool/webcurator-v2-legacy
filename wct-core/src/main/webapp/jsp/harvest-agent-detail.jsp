@@ -9,6 +9,7 @@
 <table border="0" cellpadding="1" cellspacing="0">
 	<tr>
 		<td class="tableHeadLite">Name</td>
+		<td class="tableHeadLite">Type</td>
 		<td class="tableHeadDark" colspan="2">
 			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
@@ -34,7 +35,8 @@
 		</td>		
 	</tr>	
 	<tr>	
-		<td class="subHeadLite" width="16%"><c:out value="${harvestAgent.name}"/></td>		
+		<td class="subHeadLite" width="16%"><c:out value="${harvestAgent.name}"/></td>
+		<td class="subHeadLite" width="8%"><c:out value="${harvestAgent.harvesterType}"/></td>
 		<td class="subHeadDark" width="7%" align="center"><c:out value="${harvestAgent.memoryAvailableString}"/></td>
 		<td class="subHeadLite" width="7%" align="center"><c:out value="${harvestAgent.memoryUsedString}"/></td>
 		<td class="subHeadDark" width="7%"><wct:date value="${harvestAgent.lastUpdated}" type="fullDateTime"/></td>

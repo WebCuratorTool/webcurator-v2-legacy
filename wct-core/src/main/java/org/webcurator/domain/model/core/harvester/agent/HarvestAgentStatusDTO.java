@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.HarvesterStatusUtil;
 
 /**
@@ -29,6 +30,8 @@ import org.webcurator.core.harvester.agent.HarvesterStatusUtil;
 public class HarvestAgentStatusDTO {
     /** the name of the harvest agent. */
     private String name;
+    /** the harvester type of the harvest agent. */
+    private String harvesterType;
     /** the host name of the harvest agent. */
     private String host;
     /** the port of the harvest agent. */
@@ -182,6 +185,20 @@ public class HarvestAgentStatusDTO {
      */
     public void setName(String aName) {
         this.name = aName;
+    }
+
+    /**
+    * @return Returns the harvester type.
+    */
+    public String getHarvesterType() {
+        return harvesterType;
+    }
+
+    /**
+    * @param aHarvesterType The harvester type to set.
+    */
+    public void setHarvesterType(String aHarvesterType) {
+        this.harvesterType = aHarvesterType;
     }
 
     /**

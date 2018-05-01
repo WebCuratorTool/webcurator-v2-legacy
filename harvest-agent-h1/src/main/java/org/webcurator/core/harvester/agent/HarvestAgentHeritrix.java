@@ -32,6 +32,7 @@ import org.archive.crawler.settings.CrawlerSettings;
 import org.archive.crawler.settings.XMLSettingsHandler;
 import org.archive.util.FileUtils;
 import org.webcurator.core.common.Constants;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.exception.HarvestAgentException;
 import org.webcurator.core.harvester.agent.filter.*;
 import org.webcurator.core.harvester.coordinator.HarvestAgentListener;
@@ -54,6 +55,8 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
     private String baseHarvestDirectory = "";
     /** the name of the harvest agent. */
     private String name = "";
+    /** the harvester type of the harvest agent. */
+    private HarvesterType harvesterType;
     /** the host name of the harvest agent. */
     private String host = "";
     /** the harvest agent control port. */
@@ -80,7 +83,8 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
     
     /** Default Constructor. */
     public HarvestAgentHeritrix() {
-        super();      
+        super();
+        harvesterType = HarvesterType.HERITRIX1;
         log = LogFactory.getLog(getClass());
     }
 
@@ -330,6 +334,7 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
         status.setService(service);
         status.setLogReaderService(logReaderService);
         status.setName(name);
+        status.setHarvesterType(harvesterType.name());
         status.setMaxHarvests(maxHarvests);    
         status.setAllowedAgencies(allowedAgencies);
         status.setMemoryAvailable(Runtime.getRuntime().freeMemory()/1024);
@@ -508,6 +513,13 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
      */
     public void setName(String aName) {
         this.name = aName;
+    }
+
+    /**
+     * @return Returns the harvester type.
+     */
+    public HarvesterType getHarvesterType() {
+        return harvesterType;
     }
 
     /**

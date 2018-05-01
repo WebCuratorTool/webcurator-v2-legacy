@@ -19,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.archive.util.FileUtils;
 import org.webcurator.core.common.Constants;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.exception.HarvestAgentException;
 import org.webcurator.core.harvester.agent.filter.*;
 import org.webcurator.core.harvester.agent.filter.FileFilter;
@@ -46,6 +47,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
     private String baseHarvestDirectory = "";
     /** the name of the harvest agent. */
     private String name = "";
+    /** the harvester type of the harvest agent. */
+    private HarvesterType harvesterType;
     /** the host name of the harvest agent. */
     private String host = "";
     /** the harvest agent control port. */
@@ -73,6 +76,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
     /** Default Constructor. */
     public HarvestAgentH3() {
         super();
+        harvesterType = HarvesterType.HERITRIX3;
         log = LogFactory.getLog(getClass());
     }
 
@@ -401,6 +405,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         status.setService(service);
         status.setLogReaderService(logReaderService);
         status.setName(name);
+        status.setHarvesterType(harvesterType.name());
         status.setMaxHarvests(maxHarvests);
         status.setAllowedAgencies(allowedAgencies);
         status.setMemoryAvailable(Runtime.getRuntime().freeMemory()/1024);
@@ -586,6 +591,13 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
      */
     public void setName(String aName) {
         this.name = aName;
+    }
+
+    /**
+    * @return Returns the harvester type.
+    */
+    public HarvesterType getHarvesterType() {
+        return harvesterType;
     }
 
     /**
