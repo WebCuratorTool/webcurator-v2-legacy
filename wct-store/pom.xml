@@ -102,6 +102,8 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>7.5.4.v20111024</version>
 				<configuration>
+					<stopKey>${das.stopKey}</stopKey>
+					<stopPort>${das.stopPort}</stopPort>
 					<webApp>
 						<contextPath>/wct-store</contextPath>
 						<resourceBases>
