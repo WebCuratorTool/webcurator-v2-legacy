@@ -102,6 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<td class="tableHead">Name</td>
 		<td class="tableHead">Default</td>
 		<td class="tableHead">Description</td>
+		<td class="tableHead">Type</td>
 		<td class="tableHead">Status</td>
 		<td class="tableHead">Agency</td>
 		<td class="tableHead">Action</td>
@@ -123,7 +124,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</authority:showControl>
 		    </td>
 		    <td class="tableRowLite"><c:out value="${profile.description}"/></td>    
-		    <td class="tableRowLite"><spring:message code="profile.state_${profile.status}"/></td>       
+		    <td class="tableRowLite"><c:out value="${profile.harvesterType}"/></td>
+		    <td class="tableRowLite"><spring:message code="profile.state_${profile.status}"/></td>
 		    <td class="tableRowLite"><c:out value="${profile.owningAgency.name}"/></td>    
 		    <td class="tableRowLite">
 		    <form action="curator/profiles/delete.html" method="post"> 
