@@ -4,6 +4,7 @@
 <%@taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
 
 <script language="javascript">
 <!--
@@ -21,6 +22,61 @@
 // -->
 </script>
 
+<script type="text/javascript">
+
+  function changeBaseProfileList(profilesList, harvesterTypeValueSelected) {
+//      alert(JSON.stringify(profilesList));
+//      alert("harvesterTypeValueSelected: " + harvesterTypeValueSelected);
+      // Change the base profile list to those profiles that match the selected harvester type.
+      var matchingProfiles = [];
+      $.each(profilesList, function(index, value) {
+        if (value.harvesterType == harvesterTypeValueSelected) {
+          matchingProfiles.push(value);
+        }
+      });
+//      alert(JSON.stringify(matchingProfiles));
+      $("#profileOid").html('');
+      $(matchingProfiles).each(function(i) {
+        $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
+      });
+  }
+
+  function toggleProvideOverrides(harvesterTypeValueSelected) {
+    if (harvesterTypeValueSelected == "HERITRIX1") {
+      $('#excludeFiltersRow').show();
+      $('#forceAcceptFiltersRow').show();
+      $('#excludedMimeTypesRow').show();
+    } else {
+      $('#excludeFiltersRow').hide();
+      $('#forceAcceptFiltersRow').hide();
+      $('#excludedMimeTypesRow').hide();
+    }
+  }
+
+  $(document).ready(function() {
+    var profilesList = [];
+    <c:forEach items="${profiles}" var="prf">
+      var jsProfile = {
+        name: "${prf.name}",
+        oid: "${prf.oid}",
+        harvesterType: "${prf.harvesterType}"
+      };
+      profilesList.push(jsProfile);
+    </c:forEach>
+    var selectedHarvesterTypeName = "<c:out value='${harvesterTypeName}' />";
+    $("#harvesterType option[value='" + selectedHarvesterTypeName + "']").prop('selected', true);
+    changeBaseProfileList(profilesList, selectedHarvesterTypeName);
+    toggleProvideOverrides(selectedHarvesterTypeName);
+
+    $('#harvesterType').change(function() {
+      var harvesterTypeValueSelected = this.value;
+      changeBaseProfileList(profilesList, harvesterTypeValueSelected);
+      toggleProvideOverrides(harvesterTypeValueSelected);
+    });
+
+  });
+</script>
+
 <% Object ownable = request.getAttribute("ownable");
    if(ownable instanceof AbstractTarget && 
       ((AbstractTarget)ownable).getObjectType() == AbstractTarget.TYPE_GROUP &&
@@ -33,11 +89,28 @@
 
 <table cellpadding="3" cellspacing="0" border="0">
   <tr>
+    <td class="subBoxTextHdr">Harvester Type:</td>
+    <td class="subBoxText">
+		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode && urlPrefix ne 'ti'}">
+        	<authority:show>
+		      <select name="harvesterType" id="harvesterType">
+		        <c:forEach items="${harvesterTypes}" var="hType">
+		          <option value="<c:out value="${hType}"/>"><c:out value="${hType}"/></option>
+		        </c:forEach>
+		      </select>
+		    </authority:show>
+		    <authority:dont>
+		      <c:out value="${harvesterTypeName}"/>
+		    </authority:dont>
+		</authority:showControl>
+    </td>
+  </tr>
+  <tr>
     <td class="subBoxTextHdr">Base Profile:</td>
     <td class="subBoxText">    
 		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode && urlPrefix ne 'ti'}">
         	<authority:show>
-		      <select name="profileOid">
+		      <select name="profileOid" id="profileOid">
 		        <c:forEach items="${profiles}" var="profile">
 		          <option value="<c:out value="${profile.oid}"/>" ${profile.oid == command.profileOid ? 'SELECTED' : '' }><c:out value="${profile.name}"/></option>
 		        </c:forEach>
@@ -121,26 +194,26 @@
     <td class="annotationsLiteRow">Maximum Hops</td>
     <td class="annotationsLiteRow"><input type="text" size="60" name="maxHops" value="<c:out value="${command.maxHops}"/>"/></td>
     <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxHops" ${command.overrideMaxHops ? 'checked' : ''}/></td>
-  </tr>  
-  
-  <tr>
+  </tr>
+
+  <tr id="excludeFiltersRow">
     <td class="annotationsLiteRow" valign="top">Exclude Filters</td>
     <td class="annotationsLiteRow" valign="top"><textarea name="excludeFilters" cols="62" rows="4"><c:out value="${command.excludeFilters}"/></textarea></td>
     <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideExcludeFilters" ${command.overrideExcludeFilters ? 'checked' : ''}/></td>
   </tr>  
   
-  <tr>
+  <tr id="forceAcceptFiltersRow">
     <td class="annotationsLiteRow" valign="top">Force Accept Filters</td>
     <td class="annotationsLiteRow" valign="top"><textarea name="forceAcceptFilters" cols="62" rows="4"><c:out value="${command.forceAcceptFilters}"/></textarea></td>
     <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideForceAcceptFilters" ${command.overrideForceAcceptFilters ? 'checked' : ''}/></td>
   </tr>  
   
-  <tr>
+  <tr id="excludedMimeTypesRow">
     <td class="annotationsLiteRow">Excluded MIME Types</td>
     <td class="annotationsLiteRow"><input type="text" size="60" name="excludedMimeTypes" value="<c:out value="${command.excludedMimeTypes}"/>"/></td>
     <td class="annotationsLiteRow"><input type="checkbox" name="overrideExcludedMimeTypes" ${command.overrideExcludedMimeTypes ? 'checked' : ''}/></td>
   </tr>  
-  
+
 </authority:show>
 <authority:dont>
 
@@ -179,21 +252,21 @@
     <td class="annotationsLiteRow"><c:out value="${command.maxHops}"/></td>
     <td class="annotationsLiteRow">${command.overrideMaxHops ? 'Yes' : 'No'}</td>
   </tr>  
-  <tr>
+  <tr id="excludeFiltersRow">
     <td class="annotationsLiteRow" valign="top">Exclude Filters</td>
     <td class="annotationsLiteRow" valign="top"><pre><c:out value="${command.excludeFilters}"/></pre></td>
     <td class="annotationsLiteRow" valign="top">${command.overrideExcludeFilters ? 'Yes' : 'No'}</td>
   </tr>  
-  <tr>
+  <tr id="forceAcceptFiltersRow">
     <td class="annotationsLiteRow" valign="top">Force Accept Filters</td>
     <td class="annotationsLiteRow" valign="top"><pre><c:out value="${command.forceAcceptFilters}"/></pre></td>
     <td class="annotationsLiteRow" valign="top">${command.overrideForceAcceptFilters ? 'Yes' : 'No'}</td>
   </tr>  
-  <tr>
+  <tr id="excludedMimeTypesRow">
     <td class="annotationsLiteRow">Excluded MIME Types</td>
     <td class="annotationsLiteRow"><c:out value="${command.excludedMimeTypes}"/></td>
     <td class="annotationsLiteRow">${command.overrideExcludedMimeTypes ? 'Yes' : 'No'}</td>
-  </tr>  
+  </tr>
 </authority:dont>
 </authority:showControl> 
   

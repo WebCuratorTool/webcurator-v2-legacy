@@ -27,6 +27,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.profiles.ProfileManager;
 import org.webcurator.domain.model.core.AbstractTarget;
 import org.webcurator.domain.model.core.Overrideable;
@@ -134,8 +135,11 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 		if(o.getProfile()!=null) {
 			profiles = profileManager.getAvailableProfiles(o.getProfile().getOid());
 			tmav.addObject("profileName", o.getProfile().getName());
+			tmav.addObject("harvesterTypeName", o.getProfile().getHarvesterType());
 		}
+		List<String> harvesterTypes = HarvesterType.getHarvesterTypeNames();
 		tmav.addObject("profiles", profiles);
+		tmav.addObject("harvesterTypes", harvesterTypes);
 		tmav.addObject("credentials", o.getProfileOverrides().getCredentials());
 		tmav.addObject("urlPrefix", credentialUrlPrefix);
 						
