@@ -99,6 +99,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  	</c:forEach>
 				  	</select>
 				  </td>
+				  <td>
+				  Type Filter:&nbsp;
+				  	<select name="defaultType" id="defaultType" onchange="document.getElementById('listForm').submit();">
+			  		<option id=""></option>
+					<c:forEach items="${types}" var="type">
+				  		<option id="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
+				  	</c:forEach>
+				  	</select>
+				  </td>
 			  </tr>
 		    </table>
 			</form>

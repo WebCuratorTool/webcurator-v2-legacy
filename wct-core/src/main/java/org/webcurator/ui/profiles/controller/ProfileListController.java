@@ -145,7 +145,7 @@ public class ProfileListController extends AbstractCommandController {
 		mav.addObject("profiles", profiles);
 		mav.addObject("agencies", agencies);
 		mav.addObject("types", HarvesterType.values());
-		mav.addObject("defaultType", HarvesterType.DEFAULT.name());
+		mav.addObject("defaultType", HarvesterType.DEFAULT);
 		return mav;
 	}
 
