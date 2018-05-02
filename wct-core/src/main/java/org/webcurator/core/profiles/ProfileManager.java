@@ -55,7 +55,7 @@ public class ProfileManager {
 		profile.setRequiredLevel(1);
 		profile.setStatus(Profile.STATUS_ACTIVE);
 		profile.setProfile(HeritrixProfile.create().toString());
-		profile.setHarvesterType(HarvesterType.HERITRIX3.name());
+		profile.setHarvesterType(HarvesterType.DEFAULT.name());
 		
 		profileDao.saveOrUpdate(profile);
 		auditor.audit(AuthUtil.getRemoteUserObject(), Profile.class.getName(), profile.getOid(), Auditor.ACTION_NEW_PROFILE, "A new profile " + profile.getName() + " has been created for " + profile.getOwningAgency().getName());

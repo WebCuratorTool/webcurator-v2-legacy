@@ -76,6 +76,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</form>
 			</fieldset>
 		</td>
+		<td>
+		Type to create:&nbsp;
+		<select name="createType" id="createType"> 
+			<c:forEach items="${types}" var="type">
+				<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
+			</c:forEach>
+		</select>
+		</td>
 		<td colspan="2" valign="top">
 			<a href="curator/profiles/profiles.html"><img src="images/create-new-btn-red.gif" alt="Create a new Profile" width="82" height="24" border="0" align="right" vspace="3" /></a>
 		</td>
