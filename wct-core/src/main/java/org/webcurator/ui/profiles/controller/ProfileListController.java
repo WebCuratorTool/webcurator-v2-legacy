@@ -29,6 +29,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 import org.webcurator.auth.AuthorityManager;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.profiles.ProfileManager;
 import org.webcurator.core.util.AuthUtil;
 import org.webcurator.core.agency.AgencyUserManager;
@@ -143,7 +144,9 @@ public class ProfileListController extends AbstractCommandController {
 		mav.addObject(Constants.GBL_CMD_DATA, command);
 		mav.addObject("profiles", profiles);
 		mav.addObject("agencies", agencies);
-		return mav;		
+		mav.addObject("types", HarvesterType.values());
+		mav.addObject("defaultType", HarvesterType.DEFAULT.name());
+		return mav;
 	}
 
 	/**

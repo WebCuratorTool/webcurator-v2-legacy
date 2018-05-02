@@ -60,6 +60,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  		<option value="${agency.oid}" ${command.defaultAgency eq agency.name ? 'SELECTED' : ''}>${agency.name}</option>
 				  				</c:forEach>
 			  				</select>
+							Type to import:&nbsp;
+				  			<select name="importType" id="importType"> 
+								<c:forEach items="${types}" var="type">
+							  		<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
+				  				</c:forEach>
+			  				</select>
 						</td>
 						</authority:hasPrivilege>
 						<td valign="bottom">

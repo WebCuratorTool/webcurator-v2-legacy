@@ -39,5 +39,7 @@ package org.webcurator.core.harvester;
  * $Id$
  */
 public enum HarvesterType {
-    HERITRIX1, HERITRIX3
+    HERITRIX1, HERITRIX3;
+
+    public static HarvesterType DEFAULT = HERITRIX3;
 }
