@@ -185,20 +185,23 @@ public class ProfileManager {
 	/**
 	 * Return a list of profile DTOs.
 	 * @param showInactive include inactive profiles
+	 * @param type filter by this harvester type (null means don't filter)
 	 * @return The list of profile DTOs.
 	 */
-	public List<ProfileDTO> getDTOs(boolean showInactive) {
-		return profileDao.getDTOs(showInactive);
+	public List<ProfileDTO> getDTOs(boolean showInactive, String type) {
+		return profileDao.getDTOs(showInactive, type);
 	}
-		
+
+
 	/**
 	 * Return a list of profile DTOs for an agency.
 	 * @param agency the agency whose profiles are required
 	 * @param showInactive include inactive profiles
+	 * @param type filter by this harvester type (null means don't filter)
 	 * @return The list of profile DTOs.
 	 */
-	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive) {
-		return profileDao.getAgencyDTOs(agency, showInactive);
+	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive, String type) {
+		return profileDao.getAgencyDTOs(agency, showInactive, type);
 	}
 		
 	/**

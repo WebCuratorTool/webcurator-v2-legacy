@@ -28,8 +28,11 @@ public class ProfileListCommand {
 	
 	/** True to show inactive profiles; otherwise false */
 	private boolean showInactive = false;
+
 	private String defaultAgency = "";
 	private String actionCommand = ACTION_LIST;
+	private String harvesterType = null;
+
 
 	/**
 	 * @return Returns the showInactive.
@@ -72,6 +75,12 @@ public class ProfileListCommand {
 	public void setActionCommand(String actionCommand) {
 		this.actionCommand = actionCommand;
 	}
-	
-	
+
+	public String getHarvesterType() {
+		return harvesterType;
+	}
+
+	public void setHarvesterType(String harvesterType) {
+		this.harvesterType = harvesterType;
+	}
 }

@@ -102,7 +102,7 @@ public class ProfileTargetsController extends AbstractFormController {
 		Profile currentProfile = profileManager.load(command.getProfileOid());
         User loggedInUser = AuthUtil.getRemoteUserObject();
         Agency usersAgency = loggedInUser.getAgency();
-        newprofiles = profileManager.getAgencyDTOs(usersAgency, false);
+        newprofiles = profileManager.getAgencyDTOs(usersAgency, false, null);
 
 		// get value of page size cookie
 		String currentPageSize = CookieUtils.getPageSize(request);

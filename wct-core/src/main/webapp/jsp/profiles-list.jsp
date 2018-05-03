@@ -106,7 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  </td>
 				  <td>
 				  Type Filter:&nbsp;
-				  	<select name="defaultType" id="defaultType" onchange="document.getElementById('listForm').submit();">
+				  	<select name="type" id="type" onchange="document.getElementById('listForm').submit();">
 			  		<option id=""></option>
 					<c:forEach items="${types}" var="type">
 				  		<option id="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>

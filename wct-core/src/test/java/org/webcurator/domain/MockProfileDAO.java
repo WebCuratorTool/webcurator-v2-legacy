@@ -91,7 +91,7 @@ public class MockProfileDAO implements ProfileDAO {
 	}
 
 	public List<ProfileDTO> getAllDTOs() {
-		return getDTOs(true);
+		return getDTOs(true, null);
 	}
 
 	public List<ProfileDTO> getAvailableProfiles(Agency anAgency, int level,
@@ -128,14 +128,14 @@ public class MockProfileDAO implements ProfileDAO {
 		return null;
 	}
 
-	public List<ProfileDTO> getDTOs(boolean showInactive) {
+	public List<ProfileDTO> getDTOs(boolean showInactive, String type) {
 		List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
 		Iterator<Profile> it = pOids.values().iterator();
 		while(it.hasNext())
 		{
 			Profile p = it.next();
-			if(p.getStatus() == Profile.STATUS_ACTIVE ||
-					showInactive == true)
+			if((p.getStatus() == Profile.STATUS_ACTIVE ||
+					showInactive == true) && (type == null || type.equals(p.getHarvesterType())))
 			{
 				profileDTOs.add(getProfileDTO(p));
 			}
@@ -143,14 +143,14 @@ public class MockProfileDAO implements ProfileDAO {
 		return profileDTOs;
 	}
 
-	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive) {
+	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive, String type) {
 		List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
 		Iterator<Profile> it = pOids.values().iterator();
 		while(it.hasNext())
 		{
 			Profile p = it.next();
 			if(p.getOwningAgency().equals(agency) && (p.getStatus() == Profile.STATUS_ACTIVE ||
-					showInactive == true))
+					showInactive == true) && (type == null || type.equals(p.getHarvesterType())))
 			{
 				profileDTOs.add(getProfileDTO(p));
 			}

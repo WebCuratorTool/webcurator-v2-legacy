@@ -77,22 +77,43 @@ public class ProfileDAOImpl extends BaseDAOImpl implements ProfileDAO {
 	}		
 
 	@SuppressWarnings("unchecked")
-	public List<ProfileDTO> getDTOs(boolean showInactive) {
+	public List<ProfileDTO> getDTOs(boolean showInactive, String type) {
 		if(showInactive) {
-			return getAllDTOs();
+		    if (type == null) {
+				return getAllDTOs();
+			} else {
+		    	// TODO filter by type
+				return null;
+			}
 		}
 		else {
-			return getHibernateTemplate().findByNamedQuery(Profile.QRY_GET_ACTIVE_DTOS);
+			if (type == null) {
+				return getHibernateTemplate().findByNamedQuery(Profile.QRY_GET_ACTIVE_DTOS);
+			} else {
+				// TODO filter by type
+				return null;
+			}
 		}
-	}		
-	
+	}
+
+
 	@SuppressWarnings("unchecked")
-	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive) {
+	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive, String type) {
 		if(showInactive) {
-			return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_AGENCY_DTOS, "agencyOid", agency.getOid());
+		    if (type == null) {
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_AGENCY_DTOS, "agencyOid", agency.getOid());
+			} else {
+				// TODO filter by type
+				return null;
+			}
 		}
 		else {
-			return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_ACTIVE_AGENCY_DTOS, "agencyOid", agency.getOid());
+		    if (type == null) {
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_ACTIVE_AGENCY_DTOS, "agencyOid", agency.getOid());
+			} else {
+				// TODO filter by type
+				return null;
+			}
 		}
 	}		
 	
