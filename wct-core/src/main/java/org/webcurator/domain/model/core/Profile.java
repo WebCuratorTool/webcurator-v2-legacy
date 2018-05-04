@@ -27,34 +27,48 @@ import org.webcurator.domain.model.auth.Agency;
  * @author bbeaumont
  * @hibernate.class table="PROFILE" lazy="false"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAllDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.status = 1 order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.status = 1 AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAvailableProfileDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid=:agencyOid AND p.status = 1 AND (p.requiredLevel <= :requiredLevel OR p.defaultProfile=:default OR p.oid=:currentProfileOid) ORDER BY p.name"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getDTO" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p where p.oid = :oid"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAgencyDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAgencyDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveAgencyDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.status = 1 order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveAgencyDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.status = 1 AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
  * @hibernate.query name="org.webcurator.domain.model.core.Profile.getLockedDTO" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.origOid = :origOid and p.version = :version"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.DTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.status = :status AND p.owningAgency.oid = :agencyOid AND p.harvesterType = :harvesterType"
  */
 public class Profile implements AgencyOwnable {
 	
 	/** Constant for named query to retrieve all DTOs for the profiles */
 	public static final String QRY_GET_ALL_DTOS = "org.webcurator.domain.model.core.Profile.getAllDTOs";
-	
+
+	public static final String QRY_GET_DTOS_BY_TYPE = "org.webcurator.domain.model.core.Profile.getDTOsByType";
+
 	/** Constant for named query to retrieve all active DTOs. */
 	public static final String QRY_GET_ACTIVE_DTOS = "org.webcurator.domain.model.core.Profile.getActiveDTOs";
-	
+
+	/** Constant for named query to retrieve all active DTOs for a specified harvester type. */
+	public static final String QRY_GET_ACTIVE_DTOS_BY_TYPE = "org.webcurator.domain.model.core.Profile.getActiveDTOsByType";
+
 	/** Constant for named query to retrieve all DTOs for a specified agency. */
 	public static final String QRY_GET_AGENCY_DTOS = "org.webcurator.domain.model.core.Profile.getAgencyDTOs";
+
+	/** Constant for named query to retrieve all DTOs for a specified agency. */
+	public static final String QRY_GET_AGENCY_DTOS_BY_TYPE = "org.webcurator.domain.model.core.Profile.getAgencyDTOsByType";
+
 	/** Constant for named query to retrieve all active DTOs for a specified agency. */
 	public static final String QRY_GET_ACTIVE_AGENCY_DTOS = "org.webcurator.domain.model.core.Profile.getActiveAgencyDTOs";
-	
+
+	/** Constant for named query to retrieve all active DTOs for a specified agency and harvester type. */
+	public static final String QRY_GET_ACTIVE_AGENCY_DTOS_BY_TYPE = "org.webcurator.domain.model.core.Profile.getActiveAgencyDTOsByType";
+
 	public static final String QRY_GET_AVAIL_DTOS = "org.webcurator.domain.model.core.Profile.getAvailableProfileDTOs";
 	
 	public static final String QRY_GET_DTO = "org.webcurator.domain.model.core.Profile.getDTO";
 
 	public static final String QRY_GET_LOCKED_DTO = "org.webcurator.domain.model.core.Profile.getLockedDTO";
 
-	public static final String QRY_GET_DTOS = "org.webcurator.domain.model.core.Profile.getDTOs";
 
 	/** Status constant for inactive profiles **/
 	public static final int STATUS_INACTIVE = 0;

@@ -106,10 +106,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  </td>
 				  <td>
 				  Type Filter:&nbsp;
-				  	<select name="type" id="type" onchange="document.getElementById('listForm').submit();">
-			  		<option id=""></option>
+				  	<select name="harvesterType" id="harvesterType" onchange="document.getElementById('listForm').submit();">
+			  		<option id="" ${command.harvesterType eq '' ? 'SELECTED' : ''}></option>
 					<c:forEach items="${types}" var="type">
-				  		<option id="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
+				  		<option id="${type}" ${command.harvesterType eq type ? 'SELECTED' : ''}>${type}</option>
 				  	</c:forEach>
 				  	</select>
 				  </td>

@@ -6,6 +6,7 @@ import java.util.*;
 //XML file imports
 import java.io.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -135,7 +136,7 @@ public class MockProfileDAO implements ProfileDAO {
 		{
 			Profile p = it.next();
 			if((p.getStatus() == Profile.STATUS_ACTIVE ||
-					showInactive == true) && (type == null || type.equals(p.getHarvesterType())))
+					showInactive == true) && (StringUtils.isEmpty(type) || type.equals(p.getHarvesterType())))
 			{
 				profileDTOs.add(getProfileDTO(p));
 			}
@@ -150,7 +151,7 @@ public class MockProfileDAO implements ProfileDAO {
 		{
 			Profile p = it.next();
 			if(p.getOwningAgency().equals(agency) && (p.getStatus() == Profile.STATUS_ACTIVE ||
-					showInactive == true) && (type == null || type.equals(p.getHarvesterType())))
+					showInactive == true) && (StringUtils.isEmpty(type) || type.equals(p.getHarvesterType())))
 			{
 				profileDTOs.add(getProfileDTO(p));
 			}

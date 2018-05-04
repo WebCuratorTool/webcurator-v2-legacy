@@ -31,7 +31,7 @@ public class ProfileListCommand {
 
 	private String defaultAgency = "";
 	private String actionCommand = ACTION_LIST;
-	private String harvesterType = null;
+	private String harvesterType = "";
 
 
 	/**
