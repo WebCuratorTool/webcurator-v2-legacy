@@ -151,6 +151,7 @@ public class ProfileListController extends AbstractCommandController {
 		mav.addObject(Constants.GBL_CMD_DATA, command);
 		mav.addObject("profiles", profiles);
 		mav.addObject("agencies", agencies);
+		mav.addObject("usersAgency", AuthUtil.getRemoteUserObject().getAgency());
 		mav.addObject("types", HarvesterType.values());
 		mav.addObject("defaultType", HarvesterType.DEFAULT);
 		return mav;

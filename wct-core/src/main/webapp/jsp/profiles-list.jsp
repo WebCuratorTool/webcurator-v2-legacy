@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							Import to agency:&nbsp;
 				  			<select name="importAgency" id="importAgency">
 								<c:forEach items="${agencies}" var="agency">
-							  		<option value="${agency.oid}" ${command.defaultAgency eq agency.name ? 'SELECTED' : ''}>${agency.name}</option>
+							  		<option value="${agency.oid}" ${usersAgency.name eq agency.name ? 'SELECTED' : ''}>${agency.name}</option>
 				  				</c:forEach>
 			  				</select>
 							Type to import:&nbsp;
