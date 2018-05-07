@@ -18,6 +18,7 @@ package org.webcurator.domain;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -77,22 +78,43 @@ public class ProfileDAOImpl extends BaseDAOImpl implements ProfileDAO {
 	}		
 
 	@SuppressWarnings("unchecked")
-	public List<ProfileDTO> getDTOs(boolean showInactive) {
+	public List<ProfileDTO> getDTOs(boolean showInactive, String type) {
 		if(showInactive) {
-			return getAllDTOs();
+		    if (StringUtils.isEmpty(type)) {
+				return getAllDTOs();
+			} else {
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_DTOS_BY_TYPE, "harvesterType", type);
+			}
 		}
 		else {
-			return getHibernateTemplate().findByNamedQuery(Profile.QRY_GET_ACTIVE_DTOS);
+			if (StringUtils.isEmpty(type)) {
+				return getHibernateTemplate().findByNamedQuery(Profile.QRY_GET_ACTIVE_DTOS);
+			} else {
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_ACTIVE_DTOS_BY_TYPE, "harvesterType", type);
+			}
 		}
-	}		
-	
+	}
+
+
 	@SuppressWarnings("unchecked")
-	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive) {
+	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive, String type) {
 		if(showInactive) {
-			return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_AGENCY_DTOS, "agencyOid", agency.getOid());
+		    if (StringUtils.isEmpty(type)) {
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_AGENCY_DTOS, "agencyOid", agency.getOid());
+			} else {
+				String[] names = {"agencyOid", "harvesterType"};
+				Object[] values = {agency.getOid(), type};
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_AGENCY_DTOS_BY_TYPE, names, values);
+			}
 		}
 		else {
-			return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_ACTIVE_AGENCY_DTOS, "agencyOid", agency.getOid());
+		    if (StringUtils.isEmpty(type)) {
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_ACTIVE_AGENCY_DTOS, "agencyOid", agency.getOid());
+			} else {
+		    	String[] names = {"agencyOid", "harvesterType"};
+		    	Object[] values = {agency.getOid(), type};
+				return getHibernateTemplate().findByNamedQueryAndNamedParam(Profile.QRY_GET_ACTIVE_AGENCY_DTOS_BY_TYPE, names, values);
+			}
 		}
 	}		
 	

@@ -44,6 +44,8 @@ import java.util.List;
 public enum HarvesterType {
     HERITRIX1, HERITRIX3;
 
+    public static HarvesterType DEFAULT = HERITRIX3;
+
     public static List<String> getHarvesterTypeNames() {
         List<String> names = new ArrayList<String>();
         for (HarvesterType harvesterType : HarvesterType.values()) {

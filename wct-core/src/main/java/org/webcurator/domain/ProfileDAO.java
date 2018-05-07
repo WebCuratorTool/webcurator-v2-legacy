@@ -50,17 +50,20 @@ public interface ProfileDAO extends BaseDAO {
 	/**
 	 * Gets the profile DTOs.
 	 * @param showInactive show inactive profiles.
+	 * @param type restrict selection to this harvester type (null means no restriction).
 	 * @return A list of profiles.
 	 */
-	public List<ProfileDTO> getDTOs(boolean showInactive);
+	public List<ProfileDTO> getDTOs(boolean showInactive, String type);
+
 
 	/**
 	 * Gets the profile DTOs for an Agency.
 	 * @param agency the agency whose profiles should be returned.
 	 * @param showInactive show inactive profiles.
+	 * @param type restrict selection to this harvester type (null means no restriction).
 	 * @return A list of profiles.
 	 */
-	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive);
+	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive, String type);
 
 	/**
 	 * Return the ProfileDTO for the specified profile oid.

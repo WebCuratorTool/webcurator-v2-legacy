@@ -113,13 +113,19 @@ public class ProfileController extends TabbedController {
 				
 				ModelAndView mav = new ModelAndView("profile-list");
 				ProfileListCommand command = new ProfileListCommand();
-				
+
+				// TODO This looks fishy... Should this really be ProfileListCommand.ACTION_FILTER?
 		        String defaultAgency = (String)req.getSession().getAttribute(ProfileListCommand.ACTION_FILTER);
 		        if(defaultAgency == null)
 		        {
 		        	defaultAgency = AuthUtil.getRemoteUserObject().getAgency().getName();
 		        }
 		        command.setDefaultAgency(defaultAgency);
+				String harvesterType = (String)req.getSession().getAttribute(ProfileListController.SESSION_HARVESTER_TYPE_FILTER);
+				if(harvesterType != null)
+				{
+					command.setHarvesterType(harvesterType);
+				}
 
 				List<Agency> agencies = new ArrayList<Agency>();
 				List<ProfileDTO> profiles = new ArrayList<ProfileDTO>();
@@ -128,13 +134,13 @@ public class ProfileController extends TabbedController {
 			        if (authorityManager.hasPrivilege(Privilege.VIEW_PROFILES, Privilege.SCOPE_ALL) || 
 			        		authorityManager.hasPrivilege(Privilege.MANAGE_PROFILES, Privilege.SCOPE_ALL)) {
 			        	agencies = agencyUserManager.getAgencies();
-				        profiles = profileManager.getDTOs(command.isShowInactive());
+				        profiles = profileManager.getDTOs(command.isShowInactive(), command.getHarvesterType());
 			        } else {
 			            User loggedInUser = AuthUtil.getRemoteUserObject();
 			            Agency usersAgency = loggedInUser.getAgency();
 			            agencies = new ArrayList<Agency>();
 			            agencies.add(usersAgency);
-				        profiles = profileManager.getAgencyDTOs(usersAgency, command.isShowInactive());
+				        profiles = profileManager.getAgencyDTOs(usersAgency, command.isShowInactive(), command.getHarvesterType());
 			        }
 			        
 				}

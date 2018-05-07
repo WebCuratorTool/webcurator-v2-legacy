@@ -240,6 +240,12 @@ a:hover { color:#007bff; font-weight:normal; text-decoration:underline;}
 	padding-right:10px;
 }
 
+#createType {
+	margin-top: 3px;
+	margin-right: 10px;
+	height: 20px;
+}
+
 .searchBoxLabel {
 	font-family: arial, sans-serif;
 	font-size: 11px;
@@ -985,3 +991,4 @@ input, textarea, select {
 .subGroupChild{
 	font-weight:bold;
 }
+
