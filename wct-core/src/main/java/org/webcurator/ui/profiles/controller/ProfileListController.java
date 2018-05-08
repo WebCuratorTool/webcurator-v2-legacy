@@ -15,6 +15,7 @@
  */
 package org.webcurator.ui.profiles.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.validation.BindException;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -99,12 +101,24 @@ public class ProfileListController extends AbstractCommandController {
 			profile.setName("Profile Imported on "+now.toString());
 			profile.setDescription("Imported");
 			String importAgency = req.getParameter("importAgency");
-			if(importAgency == null || importAgency.trim().equals("")) {
+			String importType = req.getParameter("importType");
+			if(StringUtils.isBlank(importAgency)) {
 				profile.setOwningAgency(AuthUtil.getRemoteUserObject().getAgency());
 			} else {
 				long agencyOid = Long.parseLong(importAgency);
 				Agency agency = agencyUserManager.getAgencyByOid(agencyOid);
 				profile.setOwningAgency(agency);
+			}
+			if (StringUtils.isBlank(importType)) {
+			    profile.setHarvesterType(HarvesterType.DEFAULT.name());
+			} else {
+				profile.setHarvesterType(importType);
+			}
+
+			// For now we only validate H3 profiles
+			if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
+				// TODO validate
+				// TODO figure out the errors object and how it communicates with Spring
 			}
 			// Save to the database
 			try {
@@ -177,4 +191,8 @@ public class ProfileListController extends AbstractCommandController {
     public void setAuthorityManager(AuthorityManager authorityManager) {
         this.authorityManager = authorityManager;
     }
+
+
+
+
 }
