@@ -32,6 +32,8 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.webcurator.auth.AuthorityManager;
+import org.webcurator.core.harvester.HarvesterType;
+import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.core.profiles.HeritrixProfile;
 import org.webcurator.core.profiles.ProfileManager;
 import org.webcurator.core.agency.AgencyUserManager;
@@ -90,11 +92,16 @@ public class ProfileController extends TabbedController {
 		if(authorityManager.hasPrivilege(profile, Privilege.MANAGE_PROFILES)) {
 			
 			// Get the Heritrix Profile out of the session.
-			HeritrixProfile heritrixProfile = (HeritrixProfile) req.getSession().getAttribute("heritrixProfile");
-			
-			// Set the XML String on the Profile object.
-			profile.setProfile( heritrixProfile.toString() );
-			
+			if (profile.isHeritrix1Profile()) {
+				HeritrixProfile heritrixProfile = (HeritrixProfile) req.getSession().getAttribute("heritrixProfile");
+				// Set the XML String on the Profile object.
+				profile.setProfile( heritrixProfile.toString());
+			} else if (profile.isHeritrix3Profile()) {
+				Heritrix3Profile heritrix3Profile = (Heritrix3Profile) req.getSession().getAttribute("heritrixProfile");
+				// Set the XML String on the Profile object.
+				profile.setProfile( heritrix3Profile.getProfileXml());
+			}
+
 			// Save to the database
 			try {
 				profileManager.saveOrUpdate(profile);
@@ -198,10 +205,7 @@ public class ProfileController extends TabbedController {
 		if(command.getProfileOid() != null) {
 			// Load the Profile.
 			Profile profile = profileManager.load(command.getProfileOid());
-			
-			// Extract the Heritrix Profile
-			HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profile.getProfile());
-			
+
 			if(DefaultCommand.MODE_COPY.equals(command.getMode())) {
 				
 				// Only allow copy if the user can view the profile in question
@@ -216,12 +220,20 @@ public class ProfileController extends TabbedController {
 					newProfile.setOwningAgency(AuthUtil.getRemoteUserObject().getAgency());
 					newProfile.setOrigOid(null);
 					newProfile.setStatus(Profile.STATUS_ACTIVE);
-					newProfile.setProfile(heritrixProfile.toString());
 					newProfile.setDefaultProfile(false);
 					
 					// Set the items in the session.
+					if (newProfile.isHeritrix1Profile()) {
+						// Extract the Heritrix Profile
+						HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profile.getProfile());
+						newProfile.setProfile(heritrixProfile.toString());
+						req.getSession().setAttribute("heritrixProfile", heritrixProfile);
+					} else if (newProfile.isHeritrix3Profile()) {
+						Heritrix3Profile heritrix3Profile = new Heritrix3Profile(profile.getProfile());
+						newProfile.setProfile(heritrix3Profile.getProfileXml());
+						req.getSession().setAttribute("heritrixProfile", heritrix3Profile);
+					}
 					req.getSession().setAttribute("profile", newProfile);
-					req.getSession().setAttribute("heritrixProfile", heritrixProfile);
 				}
 			}
 			else if(DefaultCommand.MODE_EDIT.equals(command.getMode())) {
@@ -233,7 +245,15 @@ public class ProfileController extends TabbedController {
 					// Set the items in the session.
 					allowed = true;
 					req.getSession().setAttribute("profile", profile);
-					req.getSession().setAttribute("heritrixProfile", heritrixProfile);
+					// Set the items in the session.
+					if (profile.isHeritrix1Profile()) {
+						// Extract the Heritrix Profile
+						HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profile.getProfile());
+						req.getSession().setAttribute("heritrixProfile", heritrixProfile);
+					} else if (profile.isHeritrix3Profile()) {
+						Heritrix3Profile heritrix3Profile = new Heritrix3Profile(profile.getProfile());
+						req.getSession().setAttribute("heritrixProfile", heritrix3Profile);
+					}
 				}
 			}
 			else if(DefaultCommand.MODE_EXPORT.equals(command.getMode())) {
@@ -276,8 +296,15 @@ public class ProfileController extends TabbedController {
 			
 				Profile profile = new Profile();
 				profile.setOwningAgency(AuthUtil.getRemoteUserObject().getAgency());
+				// Determine harvester type from the tab config view name
+				if (getTabConfig().getViewName().equals("profile")) {
+					profile.setHarvesterType(HarvesterType.HERITRIX1.name());
+					req.getSession().setAttribute("heritrixProfile", HeritrixProfile.create());
+				} else if (getTabConfig().getViewName().equals("profileH3")) {
+					profile.setHarvesterType(HarvesterType.HERITRIX3.name());
+					req.getSession().setAttribute("heritrixProfile", new Heritrix3Profile());
+				}
 				req.getSession().setAttribute("profile", profile);
-				req.getSession().setAttribute("heritrixProfile", HeritrixProfile.create());
 			}
 		}
 		req.getSession().setAttribute(Constants.GBL_SESS_EDIT_MODE, true);

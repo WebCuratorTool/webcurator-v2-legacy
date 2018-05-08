@@ -1451,7 +1451,18 @@
 						<bean class="org.webcurator.ui.profiles.controller.ProfileGeneralHandler"/>
 					</property>
 				</bean>
-
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="SCOPE" />
+					<property name="title" value="scope" />
+					<property name="jsp" value="../profileH3-scope.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.profiles.command.Heritrix3ProfileCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.profiles.validator.Heritrix3ProfileValidator" />
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.Heritrix3ProfileHandler"/>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>

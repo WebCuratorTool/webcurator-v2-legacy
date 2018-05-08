@@ -48,6 +48,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(20L, profileOptions.getMaxPathDepth());
         assertEquals(20L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
+        assertFalse(profileOptions.isIgnoreRobotsTxt());
         assertFalse(profileOptions.isIgnoreCookies());
         assertEquals("ISO-8859-1", profileOptions.getDefaultEncoding());
         assertEquals(1000000000L, profileOptions.getMaxFileSize());
@@ -65,6 +66,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(20L, profileOptions.getMaxPathDepth());
         assertEquals(200L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
+        assertTrue(profileOptions.isIgnoreRobotsTxt());
         assertFalse(profileOptions.isIgnoreCookies());
         assertEquals("ISO-8859-1", profileOptions.getDefaultEncoding());
         assertEquals(1000000000L, profileOptions.getMaxFileSize());
@@ -81,6 +83,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         long modifiedMaxPathDepth = 150;
         long modifiedMaxHops = 50;
         long modifiedMaxTransitiveHops = 5;
+        boolean modifiedIgnoreRobots = true;
         boolean modifiedIgnoreCookies = true;
         String modifiedDefaultEncoding = "UTF-8";
         long modifiedMaxFileSize = 999999999;
@@ -96,6 +99,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOptions.setMaxPathDepth(modifiedMaxPathDepth);
         profileOptions.setMaxHops(modifiedMaxHops);
         profileOptions.setMaxTransitiveHops(modifiedMaxTransitiveHops);
+        profileOptions.setIgnoreRobotsTxt(modifiedIgnoreRobots);
         profileOptions.setIgnoreCookies(modifiedIgnoreCookies);
         profileOptions.setDefaultEncoding(modifiedDefaultEncoding);
         profileOptions.setMaxFileSize(modifiedMaxFileSize);
@@ -112,6 +116,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(modifiedMaxPathDepth, modifiedProfileOptions.getMaxPathDepth());
         assertEquals(modifiedMaxHops, modifiedProfileOptions.getMaxHops());
         assertEquals(modifiedMaxTransitiveHops, modifiedProfileOptions.getMaxTransitiveHops());
+        assertTrue(modifiedProfileOptions.isIgnoreRobotsTxt());
         assertTrue(modifiedProfileOptions.isIgnoreCookies());
         assertEquals(modifiedDefaultEncoding, modifiedProfileOptions.getDefaultEncoding());
         assertEquals(modifiedMaxFileSize, modifiedProfileOptions.getMaxFileSize());

@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.core;
 
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.domain.AgencyOwnable;
 import org.webcurator.domain.model.auth.Agency;
 
@@ -353,4 +354,11 @@ public class Profile implements AgencyOwnable {
 		this.harvesterType = harvesterType;
 	}
 
+	public boolean isHeritrix1Profile() {
+		return getHarvesterType().equals(HarvesterType.HERITRIX1.name());
+	}
+
+	public boolean isHeritrix3Profile() {
+		return getHarvesterType().equals(HarvesterType.HERITRIX3.name());
+	}
 }

@@ -74,6 +74,9 @@ public class Heritrix3Profile {
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyPathSegmentsDecideRule", "maxPathDepth", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxPathDepth()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyHopsDecideRule", "maxHops", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxHops()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxTransitiveHops()));
+            // Map ignore robots
+            String robotsPolicyNameValue = heritrix3ProfileOptions.isIgnoreRobotsTxt() ? "ignore" : "obey";
+            modifyBeanIDPropertyNameAttributeValue("metadata", "robotsPolicyName", xmlDocument, robotsPolicyNameValue);
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isIgnoreCookies()));
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument, heritrix3ProfileOptions.getDefaultEncoding());
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxFileSize()));
@@ -147,6 +150,13 @@ public class Heritrix3Profile {
             profileOptions.setMaxPathDepth(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyPathSegmentsDecideRule", "maxPathDepth", xmlDocument)));
             profileOptions.setMaxHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyHopsDecideRule", "maxHops", xmlDocument)));
             profileOptions.setMaxTransitiveHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument)));
+            // Map ignore robots
+            String robotsPolicyName = getBeanIDPropertyNameAttributeValue("metadata", "robotsPolicyName", xmlDocument);
+            if (robotsPolicyName.equals("ignore")) {
+                profileOptions.setIgnoreRobotsTxt(true);
+            } else if (robotsPolicyName.equals("obey")) {
+                profileOptions.setIgnoreRobotsTxt(false);
+            }
             profileOptions.setIgnoreCookies(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument)));
             profileOptions.setDefaultEncoding(getBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument));
             profileOptions.setMaxFileSize(Long.parseLong(getBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument)));
@@ -201,5 +211,9 @@ public class Heritrix3Profile {
 
     public Heritrix3ProfileOptions getHeritrix3ProfileOptions() {
         return heritrix3ProfileOptions;
+    }
+
+    public String getProfileXml() {
+        return profileXml;
     }
 }

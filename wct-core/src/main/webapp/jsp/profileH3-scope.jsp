@@ -5,7 +5,7 @@
     <td class="subBoxTextHdr">Name:</td>
     <td class="subBoxText"><input type="text" name="name" value="<c:out value="${command.name}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
   </tr>
-  <tr>
+<!--  <tr>
     <td class="subBoxTextHdr" valign=top>Description:</td>
     <td class="subBoxText"><textarea cols="80" rows="5" name="description"><c:out value="${command.description}"/></textarea></td>
   </tr>
@@ -41,5 +41,5 @@
     	</select>
 
     </td>
-  </tr>  
+  </tr>  -->
 </table>

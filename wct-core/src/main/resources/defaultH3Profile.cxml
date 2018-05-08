@@ -60,7 +60,7 @@ metadata.description=Basic crawl starting with useful defaults
        <property name="operatorContactUrl" value="http://www.natlib.govt.nz"/>
        <property name="jobName" value="basic"/>
        <property name="description" value="Basic crawl starting with useful defaults"/>
-  <!-- <property name="robotsPolicyName" value="obey"/> -->
+       <property name="robotsPolicyName" value="obey"/>
   <!-- <property name="operator" value=""/> -->
   <!-- <property name="operatorFrom" value=""/> -->
   <!-- <property name="organization" value=""/> -->
