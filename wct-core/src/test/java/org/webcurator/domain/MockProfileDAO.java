@@ -6,6 +6,7 @@ import java.util.*;
 //XML file imports
 import java.io.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -91,7 +92,7 @@ public class MockProfileDAO implements ProfileDAO {
 	}
 
 	public List<ProfileDTO> getAllDTOs() {
-		return getDTOs(true);
+		return getDTOs(true, null);
 	}
 
 	public List<ProfileDTO> getAvailableProfiles(Agency anAgency, int level,
@@ -128,14 +129,14 @@ public class MockProfileDAO implements ProfileDAO {
 		return null;
 	}
 
-	public List<ProfileDTO> getDTOs(boolean showInactive) {
+	public List<ProfileDTO> getDTOs(boolean showInactive, String type) {
 		List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
 		Iterator<Profile> it = pOids.values().iterator();
 		while(it.hasNext())
 		{
 			Profile p = it.next();
-			if(p.getStatus() == Profile.STATUS_ACTIVE ||
-					showInactive == true)
+			if((p.getStatus() == Profile.STATUS_ACTIVE ||
+					showInactive == true) && (StringUtils.isEmpty(type) || type.equals(p.getHarvesterType())))
 			{
 				profileDTOs.add(getProfileDTO(p));
 			}
@@ -143,14 +144,14 @@ public class MockProfileDAO implements ProfileDAO {
 		return profileDTOs;
 	}
 
-	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive) {
+	public List<ProfileDTO> getAgencyDTOs(Agency agency, boolean showInactive, String type) {
 		List<ProfileDTO> profileDTOs = new ArrayList<ProfileDTO>();
 		Iterator<Profile> it = pOids.values().iterator();
 		while(it.hasNext())
 		{
 			Profile p = it.next();
 			if(p.getOwningAgency().equals(agency) && (p.getStatus() == Profile.STATUS_ACTIVE ||
-					showInactive == true))
+					showInactive == true) && (StringUtils.isEmpty(type) || type.equals(p.getHarvesterType())))
 			{
 				profileDTOs.add(getProfileDTO(p));
 			}

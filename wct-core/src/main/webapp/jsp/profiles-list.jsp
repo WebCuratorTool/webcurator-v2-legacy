@@ -57,7 +57,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							Import to agency:&nbsp;
 				  			<select name="importAgency" id="importAgency">
 								<c:forEach items="${agencies}" var="agency">
-							  		<option value="${agency.oid}" ${command.defaultAgency eq agency.name ? 'SELECTED' : ''}>${agency.name}</option>
+							  		<option value="${agency.oid}" ${usersAgency.name eq agency.name ? 'SELECTED' : ''}>${agency.name}</option>
+				  				</c:forEach>
+			  				</select>
+							Type to import:&nbsp;
+				  			<select name="importType" id="importType"> 
+								<c:forEach items="${types}" var="type">
+							  		<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
 				  				</c:forEach>
 			  				</select>
 						</td>
@@ -70,7 +76,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</form>
 			</fieldset>
 		</td>
-		<td colspan="2" valign="top">
+		<td valign="top" colspan="3" align="right">
+			<select name="createType" id="createType"> 
+				<c:forEach items="${types}" var="type">
+					<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
+				</c:forEach>
+			</select>
 			<a href="curator/profiles/profiles.html"><img src="images/create-new-btn-red.gif" alt="Create a new Profile" width="82" height="24" border="0" align="right" vspace="3" /></a>
 		</td>
 	</tr>
@@ -93,6 +104,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  	</c:forEach>
 				  	</select>
 				  </td>
+				  <td>
+				  Type Filter:&nbsp;
+				  	<select name="harvesterType" id="harvesterType" onchange="document.getElementById('listForm').submit();">
+			  		<option id="" ${command.harvesterType eq '' ? 'SELECTED' : ''}></option>
+					<c:forEach items="${types}" var="type">
+				  		<option id="${type}" ${command.harvesterType eq type ? 'SELECTED' : ''}>${type}</option>
+				  	</c:forEach>
+				  	</select>
+				  </td>
 			  </tr>
 		    </table>
 			</form>
@@ -102,6 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<td class="tableHead">Name</td>
 		<td class="tableHead">Default</td>
 		<td class="tableHead">Description</td>
+		<td class="tableHead">Type</td>
 		<td class="tableHead">Status</td>
 		<td class="tableHead">Agency</td>
 		<td class="tableHead">Action</td>
@@ -123,7 +144,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</authority:showControl>
 		    </td>
 		    <td class="tableRowLite"><c:out value="${profile.description}"/></td>    
-		    <td class="tableRowLite"><spring:message code="profile.state_${profile.status}"/></td>       
+		    <td class="tableRowLite"><c:out value="${profile.harvesterType}"/></td>
+		    <td class="tableRowLite"><spring:message code="profile.state_${profile.status}"/></td>
 		    <td class="tableRowLite"><c:out value="${profile.owningAgency.name}"/></td>    
 		    <td class="tableRowLite">
 		    <form action="curator/profiles/delete.html" method="post"> 

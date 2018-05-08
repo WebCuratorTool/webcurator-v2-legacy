@@ -29,6 +29,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 import org.webcurator.auth.AuthorityManager;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.profiles.ProfileManager;
 import org.webcurator.core.util.AuthUtil;
 import org.webcurator.core.agency.AgencyUserManager;
@@ -49,6 +50,7 @@ public class ProfileListController extends AbstractCommandController {
 	
 	public static final String SESSION_KEY_SHOW_INACTIVE = "profile-list-show-inactive";
 	public static final String SESSION_AGENCY_FILTER = "agency-filter";
+	public static final String SESSION_HARVESTER_TYPE_FILTER = "harvester-type-filter";
 
 	/** The profile Manager */
 	protected ProfileManager profileManager;
@@ -76,10 +78,16 @@ public class ProfileListController extends AbstractCommandController {
 	        	defaultAgency = AuthUtil.getRemoteUserObject().getAgency().getName();
 	        }
 	        command.setDefaultAgency(defaultAgency);
+			String harvesterType = (String)req.getSession().getAttribute(ProfileListController.SESSION_HARVESTER_TYPE_FILTER);
+			if(harvesterType != null)
+			{
+				command.setHarvesterType(harvesterType);
+			}
 		}
 		else if(command.getActionCommand().equals(ProfileListCommand.ACTION_FILTER))
 		{
         	req.getSession().setAttribute(ProfileListController.SESSION_AGENCY_FILTER, command.getDefaultAgency());
+			req.getSession().setAttribute(ProfileListController.SESSION_HARVESTER_TYPE_FILTER, command.getHarvesterType());
 		}
 		else if(command.getActionCommand().equals(ProfileListCommand.ACTION_IMPORT))
 		{
@@ -129,13 +137,13 @@ public class ProfileListController extends AbstractCommandController {
 	        if (authorityManager.hasPrivilege(Privilege.VIEW_PROFILES, Privilege.SCOPE_ALL) || 
 	        		authorityManager.hasPrivilege(Privilege.MANAGE_PROFILES, Privilege.SCOPE_ALL)) {
 	        	agencies = agencyUserManager.getAgencies();
-		        profiles = profileManager.getDTOs(command.isShowInactive());
+		        profiles = profileManager.getDTOs(command.isShowInactive(), command.getHarvesterType());
 	        } else {
 	            User loggedInUser = AuthUtil.getRemoteUserObject();
 	            Agency usersAgency = loggedInUser.getAgency();
 	            agencies = new ArrayList<Agency>();
 	            agencies.add(usersAgency);
-		        profiles = profileManager.getAgencyDTOs(usersAgency, command.isShowInactive());
+		        profiles = profileManager.getAgencyDTOs(usersAgency, command.isShowInactive(), command.getHarvesterType());
 	        }
 	        
 		}
@@ -143,7 +151,10 @@ public class ProfileListController extends AbstractCommandController {
 		mav.addObject(Constants.GBL_CMD_DATA, command);
 		mav.addObject("profiles", profiles);
 		mav.addObject("agencies", agencies);
-		return mav;		
+		mav.addObject("usersAgency", AuthUtil.getRemoteUserObject().getAgency());
+		mav.addObject("types", HarvesterType.values());
+		mav.addObject("defaultType", HarvesterType.DEFAULT);
+		return mav;
 	}
 
 	/**
