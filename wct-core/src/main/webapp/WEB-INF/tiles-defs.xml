@@ -393,6 +393,17 @@
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-profiles.jsp" />
 	</definition>
 
+	<definition name="profileH3" extends=".tabbedNew">
+		<put name="title" value="WEB CURATOR TOOL: Profiles H3" />
+		<put name="controller" value="curator/profiles/profilesH3.html" />
+		<put name="activeTab" value="management" />
+		<put name="pageIcon" value="harvestConfig" />
+		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
+		<put name="page-help"
+			 value="http://dia-nz.github.io/webcurator/" />
+		<put name="object-identifier" value="/jsp/layouts/object-identifier-profiles.jsp" />
+	</definition>
+
 	<definition name="profile-list" extends=".mainLayoutNew">
 		<put name="title" value="WEB CURATOR TOOL: Profiles" />
 		<put name="body" value="/jsp/profiles-list.jsp" />
