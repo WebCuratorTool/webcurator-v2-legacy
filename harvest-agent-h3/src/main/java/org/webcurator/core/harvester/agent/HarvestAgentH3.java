@@ -176,7 +176,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
     }
 
     /**
-     * Performs a clean up of a completed or abored harvest.
+     * Performs a clean up of a completed or aborted harvest.
      * The method attempts to deregister the Heritrix instance
      * from JMX, remove the instance from the Agents list of
      * harvesters and remove the temporary harvest directory.
@@ -478,10 +478,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 		return file;
 	}
 
-    /** @see LogProvider#getAQAFile(String, String) */
-	public File getAQAFile(String aJob, String aFileName) {
-		return null;
-	}
 
 	/** @see LogProvider#getLogFileNames(String) */
 	public List getLogFileNames(String aJob) {
@@ -875,5 +871,15 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
     public Map<String, String> getActiveH3Jobs(){
         return HarvesterH3.getActiveH3JobNames();
+    }
+
+
+    public boolean isValidProfile(String profile) {
+	    // TODO Implement!
+        if (profile.contains("fout")) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
