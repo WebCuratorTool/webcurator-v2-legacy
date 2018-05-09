@@ -97,11 +97,16 @@ public class ProfileListController extends AbstractCommandController {
 			CommonsMultipartFile uploadedFile = (CommonsMultipartFile) multipartRequest.getFile("sourceFile");
 			Profile profile = new Profile();
 			profile.setProfile( new String(uploadedFile.getBytes()) );
-			Date now = new Date();
-			profile.setName("Profile Imported on "+now.toString());
-			profile.setDescription("Imported");
+			profile.setDescription("Imported profile");
 			String importAgency = req.getParameter("importAgency");
 			String importType = req.getParameter("importType");
+			String importName = req.getParameter("importName");
+			if (StringUtils.isBlank(importName)) {
+				Date now = new Date();
+				profile.setName("Profile imported on "+now.toString());
+			} else {
+				profile.setName(importName);
+			}
 			if(StringUtils.isBlank(importAgency)) {
 				profile.setOwningAgency(AuthUtil.getRemoteUserObject().getAgency());
 			} else {
