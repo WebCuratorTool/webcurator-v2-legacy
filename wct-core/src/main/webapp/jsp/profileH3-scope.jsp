@@ -2,44 +2,83 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <table cellpadding="3" cellspacing="0" border="0">
   <tr>
-    <td class="subBoxTextHdr">Name:</td>
-    <td class="subBoxText"><input type="text" name="name" value="<c:out value="${command.name}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
+    <td class="subBoxTextHdr">Contact URL:</td>
+    <td class="subBoxText"><input size="60" type="text" name="contactURL" value="<c:out value="${command.contactURL}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
   </tr>
-<!--  <tr>
-    <td class="subBoxTextHdr" valign=top>Description:</td>
-    <td class="subBoxText"><textarea cols="80" rows="5" name="description"><c:out value="${command.description}"/></textarea></td>
-  </tr>
-  <tr>
-    <td class="subBoxTextHdr">Agency:</td>
-    <td class="subBoxText"><c:out value="${profile.owningAgency.name}"/></td>
-  </tr>  
-  <tr>
-    <td class="subBoxTextHdr">State:</td>
-    <td class="subBoxText">
-    	<c:choose>
-    		<c:when test="${!profile.defaultProfile}">
-		    	<select name="status">
-				  <c:forEach begin="0" end="1" var="i">
-				    <option value="${i}" ${i == command.status ? 'SELECTED' : ''}><spring:message code="profile.state_${i}"/></option>
-				  </c:forEach>
-		    	</select>    		
-    		</c:when>
-    		<c:otherwise>
-    			<spring:message code="profile.state_${command.status}"/>
-    			<input type="hidden" name="status" value="${command.status}" />    			
-    		</c:otherwise>
-    	</c:choose>
-    </td>
-  </tr>  
-  <tr>
-    <td class="subBoxTextHdr">Level:</td>
-    <td class="subBoxText">
-    	<select name="requiredLevel">
-		  <c:forEach begin="1" end="3" var="i">
-		    <option value="${i}" ${i == command.requiredLevel ? 'SELECTED' : ''}>${i}</option>
-		  </c:forEach>
-    	</select>
 
-    </td>
-  </tr>  -->
+  <tr>
+    <td class="subBoxTextHdr">Job Name:</td>
+    <td class="subBoxText"><input size="60" type="text" name="jobName" value="<c:out value="${command.jobName}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Description:</td>
+    <td class="subBoxText"><input size="60" type="text" name="description" value="<c:out value="${command.description}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">User Agent:</td>
+    <td class="subBoxText"><input size="60" type="text" name="userAgent" value="<c:out value="${command.userAgent}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Document Limit:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="documentLimit" value="<c:out value="${command.documentLimit}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Data Limit:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="dataLimit" value="<c:out value="${command.dataLimit}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Time Limit:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="timeLimit" value="<c:out value="${command.timeLimit}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Max Path Depth:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxPathDepth" value="<c:out value="${command.maxPathDepth}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Max Hops:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxHops" value="<c:out value="${command.maxHops}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Max Transitive Hops:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxTransitiveHops" value="<c:out value="${command.maxTransitiveHops}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Ignore Robots:</td>
+    <td class="subBoxText"><input type="checkbox" name="ignoreRobotsTxt" ${command.ignoreRobotsTxt ? 'CHECKED':''}></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Ignore Cookies:</td>
+    <td class="subBoxText"><input type="checkbox" name="ignoreCookies" ${command.ignoreCookies ? 'CHECKED':''}></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Default Encoding:</td>
+    <td class="subBoxText"><input size="20" type="text" name="defaultEncoding" value="<c:out value="${command.defaultEncoding}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Max File Size:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxFileSize" value="<c:out value="${command.maxFileSize}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Compress:</td>
+    <td class="subBoxText"><input type="checkbox" name="compress" ${command.compress ? 'CHECKED':''}></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Prefix:</td>
+    <td class="subBoxText"><input size="20" type="text" name="prefix" value="<c:out value="${command.prefix}"/>"></td>
+  </tr>
+
 </table>

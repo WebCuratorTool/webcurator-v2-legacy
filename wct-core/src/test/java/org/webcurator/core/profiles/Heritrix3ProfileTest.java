@@ -41,7 +41,10 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     public final void testDefaultHeritrix3Profile() {
         Heritrix3Profile profile = new Heritrix3Profile();
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
-        assertEquals("http://www.natlib.govt.nz", profileOptions.getContactURL());
+        assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
+        assertEquals("basic", profileOptions.getJobName());
+        assertEquals("Basic crawl starting with useful defaults", profileOptions.getDescription());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +http://www.natlib.govt.nz/)", profileOptions.getUserAgent());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(0L, profileOptions.getDataLimit());
         assertEquals(0L, profileOptions.getTimeLimit());
@@ -59,7 +62,10 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     @Test
     public final void testXmlHeritrix3Profile() {
         Heritrix3ProfileOptions profileOptions = testInstance.getHeritrix3ProfileOptions();
-        assertEquals("http://www.natlib.govt.nz", profileOptions.getContactURL());
+        assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
+        assertEquals("test", profileOptions.getJobName());
+        assertEquals("Test crawl starting with useful defaults", profileOptions.getDescription());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +http://www.natlib.govt.nz/)", profileOptions.getUserAgent());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(0L, profileOptions.getDataLimit());
         assertEquals(0L, profileOptions.getTimeLimit());
@@ -77,6 +83,9 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     @Test
     public final void testToProfileXmlHeritrix3Profile() {
         String modifiedContactURL = "http://www.dia.govt.nz";
+        String modifiedJobName = "modified";
+        String modifiedDescription = "Modified crawl starting with useful defaults";
+        String modifiedUserAgent = "XXXX/5.0 (compatible; heritrix/3.3.0 +http://www.natlib.govt.nz/)";
         long modifiedDocumentLimit = 25;
         long modifiedDataLimit = 100;
         long modifiedTimeLimit = 250;
@@ -93,6 +102,9 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
         // Modify test instance
         profileOptions.setContactURL(modifiedContactURL);
+        profileOptions.setJobName(modifiedJobName);
+        profileOptions.setDescription(modifiedDescription);
+        profileOptions.setUserAgent(modifiedUserAgent);
         profileOptions.setDocumentLimit(modifiedDocumentLimit);
         profileOptions.setDataLimit(modifiedDataLimit);
         profileOptions.setTimeLimit(modifiedTimeLimit);
@@ -110,6 +122,9 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3Profile modifiedProfile = new Heritrix3Profile(modifiedXml);
         Heritrix3ProfileOptions modifiedProfileOptions = modifiedProfile.getHeritrix3ProfileOptions();
         assertEquals(modifiedContactURL, modifiedProfileOptions.getContactURL());
+        assertEquals(modifiedJobName, modifiedProfileOptions.getJobName());
+        assertEquals(modifiedDescription, modifiedProfileOptions.getDescription());
+        assertEquals(modifiedUserAgent, modifiedProfileOptions.getUserAgent());
         assertEquals(modifiedDocumentLimit, modifiedProfileOptions.getDocumentLimit());
         assertEquals(modifiedDataLimit, modifiedProfileOptions.getDataLimit());
         assertEquals(modifiedTimeLimit, modifiedProfileOptions.getTimeLimit());

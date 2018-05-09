@@ -17,7 +17,6 @@ package org.webcurator.ui.profiles.validator;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
-import org.webcurator.domain.model.core.Profile;
 import org.webcurator.ui.common.validation.AbstractBaseValidator;
 import org.webcurator.ui.common.validation.ValidatorUtil;
 import org.webcurator.ui.profiles.command.Heritrix3ProfileCommand;
@@ -35,15 +34,21 @@ public class Heritrix3ProfileValidator extends AbstractBaseValidator {
 	public void validate(Object comm, Errors errors) {
 		Heritrix3ProfileCommand command = (Heritrix3ProfileCommand) comm;
 		
-/*		// Name is required and must be less than 255 characters.
-		if(command.getName() != null) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required", getObjectArrayForLabel("name"), "Name is a required field");
-			ValidatorUtil.validateStringMaxLength(errors, command.getName(), Profile.MAX_LEN_NAME, "string.maxlength", getObjectArrayForLabelAndInt("name", Profile.MAX_LEN_NAME), "Name is too long");
+		// Contact URL is required.
+		if(command.getContactURL() != null) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contactURL", "required", getObjectArrayForLabel("contactURL"), "Contact URL is a required field");
+			ValidatorUtil.validateURL(errors, command.getContactURL(),"invalid.url",new Object[] {command.getContactURL()},"Invalid URL");
 		}
 		
-		// Description must be less than 255 characters.
+		// Job name is required,
+		if(command.getJobName() != null) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "jobName", "required", getObjectArrayForLabel("jobName"), "Job Name is a required field");
+		}
+
+		// Description is required,
 		if(command.getDescription() != null) {
-			ValidatorUtil.validateStringMaxLength(errors, command.getDescription(), Profile.MAX_LEN_DESC, "string.maxlength", getObjectArrayForLabelAndInt("description", Profile.MAX_LEN_DESC), "Description is too long");
-		}*/
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "required", getObjectArrayForLabel("description"), "Description is a required field");
+		}
+
 	}
 }

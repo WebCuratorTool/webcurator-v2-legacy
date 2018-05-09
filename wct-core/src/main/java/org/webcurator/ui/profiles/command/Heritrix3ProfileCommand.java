@@ -15,110 +15,211 @@
  */
 package org.webcurator.ui.profiles.command;
 
-import org.webcurator.domain.model.core.Profile;
+import org.webcurator.core.profiles.Heritrix3Profile;
+import org.webcurator.core.profiles.Heritrix3ProfileOptions;
 
 /**
  * The command for editing the scope information about a H3 profile.
  *
  */
 public class Heritrix3ProfileCommand {
-	/** The name of the profile. **/
-	private String name;
-	
-	/** The description of the profile. **/
+	private String contactURL;
+	private String jobName;
 	private String description;
-	
-	/** The current status of the profile. **/
-	private int status;
-	
-	/** The profile selection level required for a user to be able
-	 * to use this profile on a target. */
-	private int requiredLevel;
+	private String userAgent;
+	private long documentLimit;
+	private long dataLimit;
+	private long timeLimit;
+	private long maxPathDepth;
+	private long maxHops;
+	private long maxTransitiveHops;
+	private boolean ignoreRobotsTxt;
+	private boolean ignoreCookies;
+	private String defaultEncoding;
+	private long maxFileSize;
+	private boolean compress;
+	private String prefix;
 
 	/**
-	 * Build a command object from the Profile.
-	 * @param profile The business model object.
-	 * @return A new GeneralCommand object.
+	 * Build a command object from the Heritrix3Profile.
+	 * @param heritrix3Profile The business model object.
+	 * @return A new Heritrix3ProfileCommand object.
 	 */
-	public static Heritrix3ProfileCommand buildFromModel(Profile profile) {
+	public static Heritrix3ProfileCommand buildFromModel(Heritrix3Profile heritrix3Profile) {
 		Heritrix3ProfileCommand command = new Heritrix3ProfileCommand();
-		command.setName( profile.getName() );
-		command.setDescription( profile.getDescription() );
-		command.setStatus( profile.getStatus() );
-		command.setRequiredLevel( profile.getRequiredLevel() );
-		
+		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
+		command.setContactURL(options.getContactURL());
+		command.setJobName(options.getJobName());
+		command.setDescription(options.getDescription());
+		command.setUserAgent(options.getUserAgent());
+		command.setDocumentLimit(options.getDocumentLimit());
+		command.setDataLimit(options.getDataLimit());
+		command.setTimeLimit(options.getTimeLimit());
+		command.setMaxPathDepth(options.getMaxPathDepth());
+		command.setMaxHops(options.getMaxHops());
+		command.setMaxTransitiveHops(options.getMaxTransitiveHops());
+		command.setIgnoreRobotsTxt(options.isIgnoreRobotsTxt());
+		command.setIgnoreCookies(options.isIgnoreCookies());
+		command.setDefaultEncoding(options.getDefaultEncoding());
+		command.setMaxFileSize(options.getMaxFileSize());
+		command.setCompress(options.isCompress());
+		command.setPrefix(options.getPrefix());
+
 		return command;
 	}
 	
 	/**
 	 * Update the business object.
-	 * @param profile The profile to update.
+	 * @param heritrix3Profile The profile to update.
 	 */
-	public void updateBusinessModel(Profile profile) {
-		profile.setName(name);
-		profile.setDescription(description);
-		profile.setStatus(status);
-		profile.setRequiredLevel(requiredLevel);
+	public void updateBusinessModel(Heritrix3Profile heritrix3Profile) {
+		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
+		options.setContactURL(contactURL);
+		options.setJobName(jobName);
+		options.setDescription(description);
+		options.setUserAgent(userAgent);
+		options.setDocumentLimit(documentLimit);
+		options.setDataLimit(dataLimit);
+		options.setTimeLimit(timeLimit);
+		options.setMaxPathDepth(maxPathDepth);
+		options.setMaxHops(maxHops);
+		options.setMaxTransitiveHops(maxTransitiveHops);
+		options.setIgnoreRobotsTxt(ignoreRobotsTxt);
+		options.setIgnoreCookies(ignoreCookies);
+		options.setDefaultEncoding(defaultEncoding);
+		options.setMaxFileSize(maxFileSize);
+		options.setCompress(compress);
+		options.setPrefix(prefix);
+		// update the profile xml
+		String profileXml = heritrix3Profile.toProfileXml();
+		heritrix3Profile.setProfileXml(profileXml);
 	}
-	
-	
-	
-	/**
-	 * @return Returns the description.
-	 */
+
+	public String getContactURL() {
+		return contactURL;
+	}
+
+	public void setContactURL(String contactURL) {
+		this.contactURL = contactURL;
+	}
+
+	public String getJobName() {
+		return jobName;
+	}
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * @param description The description to set.
-	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	/**
-	 * @return Returns the name.
-	 */
-	public String getName() {
-		return name;
+	public String getUserAgent() {
+		return userAgent;
 	}
 
-	/**
-	 * @param name The name to set.
-	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
 	}
 
-	/**
-	 * @return Returns the requiredLevel.
-	 */
-	public int getRequiredLevel() {
-		return requiredLevel;
+	public long getDocumentLimit() {
+		return documentLimit;
 	}
 
-	/**
-	 * @param requiredLevel The requiredLevel to set.
-	 */
-	public void setRequiredLevel(int requiredLevel) {
-		this.requiredLevel = requiredLevel;
+	public void setDocumentLimit(long documentLimit) {
+		this.documentLimit = documentLimit;
 	}
 
-	/**
-	 * @return Returns the status.
-	 */
-	public int getStatus() {
-		return status;
+	public long getDataLimit() {
+		return dataLimit;
 	}
 
-	/**
-	 * @param status The status to set.
-	 */
-	public void setStatus(int status) {
-		this.status = status;
+	public void setDataLimit(long dataLimit) {
+		this.dataLimit = dataLimit;
 	}
-	
-	
 
+	public long getTimeLimit() {
+		return timeLimit;
+	}
+
+	public void setTimeLimit(long timeLimit) {
+		this.timeLimit = timeLimit;
+	}
+
+	public long getMaxPathDepth() {
+		return maxPathDepth;
+	}
+
+	public void setMaxPathDepth(long maxPathDepth) {
+		this.maxPathDepth = maxPathDepth;
+	}
+
+	public long getMaxHops() {
+		return maxHops;
+	}
+
+	public void setMaxHops(long maxHops) {
+		this.maxHops = maxHops;
+	}
+
+	public long getMaxTransitiveHops() {
+		return maxTransitiveHops;
+	}
+
+	public void setMaxTransitiveHops(long maxTransitiveHops) {
+		this.maxTransitiveHops = maxTransitiveHops;
+	}
+
+	public boolean isIgnoreRobotsTxt() {
+		return ignoreRobotsTxt;
+	}
+
+	public void setIgnoreRobotsTxt(boolean ignoreRobotsTxt) {
+		this.ignoreRobotsTxt = ignoreRobotsTxt;
+	}
+
+	public boolean isIgnoreCookies() {
+		return ignoreCookies;
+	}
+
+	public void setIgnoreCookies(boolean ignoreCookies) {
+		this.ignoreCookies = ignoreCookies;
+	}
+
+	public String getDefaultEncoding() {
+		return defaultEncoding;
+	}
+
+	public void setDefaultEncoding(String defaultEncoding) {
+		this.defaultEncoding = defaultEncoding;
+	}
+
+	public long getMaxFileSize() {
+		return maxFileSize;
+	}
+
+	public void setMaxFileSize(long maxFileSize) {
+		this.maxFileSize = maxFileSize;
+	}
+
+	public boolean isCompress() {
+		return compress;
+	}
+
+	public void setCompress(boolean compress) {
+		this.compress = compress;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
 }

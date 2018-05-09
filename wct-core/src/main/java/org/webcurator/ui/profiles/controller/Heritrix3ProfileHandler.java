@@ -17,9 +17,9 @@ package org.webcurator.ui.profiles.controller;
 
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
-import org.webcurator.domain.model.core.Profile;
+import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.ui.common.Constants;
-import org.webcurator.ui.profiles.command.GeneralCommand;
+import org.webcurator.ui.profiles.command.Heritrix3ProfileCommand;
 import org.webcurator.ui.util.Tab;
 import org.webcurator.ui.util.TabHandler;
 import org.webcurator.ui.util.TabbedController;
@@ -44,9 +44,13 @@ public class Heritrix3ProfileHandler extends TabHandler {
 			BindException errors) {
 		
 		// Use the command object to update the profile.
-		GeneralCommand command = (GeneralCommand) comm;
-		Profile profile = (Profile) req.getSession().getAttribute("profile");
-		command.updateBusinessModel(profile);
+		Heritrix3ProfileCommand command = (Heritrix3ProfileCommand) comm;
+		// Have to assume that the heritrix profile in the session is an H3 one, but check first.
+		Object sessionObj = req.getSession().getAttribute("heritrixProfile");
+		if (sessionObj instanceof Heritrix3Profile) {
+			Heritrix3Profile heritrix3Profile = (Heritrix3Profile) sessionObj;
+			command.updateBusinessModel(heritrix3Profile);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -58,9 +62,14 @@ public class Heritrix3ProfileHandler extends TabHandler {
 			Object comm, BindException errors) {
 
 		// Create the command object
-		Profile profile = (Profile) req.getSession().getAttribute("profile");
-		GeneralCommand command = GeneralCommand.buildFromModel(profile);
-		
+		Heritrix3ProfileCommand command = null;
+		// Have to assume that the heritrix profile in the session is an H3 one, but check first.
+		Object sessionObj = req.getSession().getAttribute("heritrixProfile");
+		if (sessionObj instanceof Heritrix3Profile) {
+			Heritrix3Profile heritrix3Profile = (Heritrix3Profile) sessionObj;
+			command = Heritrix3ProfileCommand.buildFromModel(heritrix3Profile);
+		}
+
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
 		

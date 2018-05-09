@@ -68,6 +68,9 @@ public class Heritrix3Profile {
             Document xmlDocument = loadXmlDocument(this.profileXml);
             // Search for xml elements and modify
             modifyBeanIDPropertyNameAttributeValue("metadata", "operatorContactUrl", xmlDocument, heritrix3ProfileOptions.getContactURL());
+            modifyBeanIDPropertyNameAttributeValue("metadata", "jobName", xmlDocument, heritrix3ProfileOptions.getJobName());
+            modifyBeanIDPropertyNameAttributeValue("metadata", "description", xmlDocument, heritrix3ProfileOptions.getDescription());
+            modifyBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument, heritrix3ProfileOptions.getUserAgent());
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDocumentLimit()));
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDataLimit()));
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, Long.toString(heritrix3ProfileOptions.getTimeLimit()));
@@ -144,6 +147,9 @@ public class Heritrix3Profile {
         try {
             Document xmlDocument = loadXmlDocument(xml);
             profileOptions.setContactURL(getBeanIDPropertyNameAttributeValue("metadata", "operatorContactUrl", xmlDocument));
+            profileOptions.setJobName(getBeanIDPropertyNameAttributeValue("metadata", "jobName", xmlDocument));
+            profileOptions.setDescription(getBeanIDPropertyNameAttributeValue("metadata", "description", xmlDocument));
+            profileOptions.setUserAgent(getBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument));
             profileOptions.setDocumentLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument)));
             profileOptions.setDataLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
             profileOptions.setTimeLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
@@ -213,7 +219,15 @@ public class Heritrix3Profile {
         return heritrix3ProfileOptions;
     }
 
+    public void setHeritrix3ProfileOptions(Heritrix3ProfileOptions heritrix3ProfileOptions) {
+        this.heritrix3ProfileOptions = heritrix3ProfileOptions;
+    }
+
     public String getProfileXml() {
         return profileXml;
+    }
+
+    public void setProfileXml(String profileXml) {
+        this.profileXml = profileXml;
     }
 }
