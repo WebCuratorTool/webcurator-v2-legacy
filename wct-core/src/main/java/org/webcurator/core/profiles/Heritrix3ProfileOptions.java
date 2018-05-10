@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class Heritrix3ProfileOptions {
     private String contactURL;
-    private String jobName;
-    private String description;
-    private String userAgent;
     private long documentLimit;
     private long dataLimit;
     private FileSizeUnit dataLimitUnit;
@@ -52,30 +49,6 @@ public class Heritrix3ProfileOptions {
 
     public void setContactURL(String contactURL) {
         this.contactURL = contactURL;
-    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
     }
 
     public long getDocumentLimit() {
@@ -226,9 +199,6 @@ public class Heritrix3ProfileOptions {
     public String toString() {
         return "Heritrix3ProfileOptions{" +
                 "contactURL='" + contactURL + '\'' +
-                ", jobName=" + jobName +
-                ", description=" + description +
-                ", userAgent=" + userAgent +
                 ", documentLimit=" + documentLimit +
                 ", dataLimit=" + dataLimit +
                 ", dataLimitUnit=" + dataLimitUnit +

@@ -7,21 +7,6 @@
   </tr>
 
   <tr>
-    <td class="subBoxTextHdr">Job Name:</td>
-    <td class="subBoxText"><input size="60" type="text" name="jobName" value="<c:out value="${command.jobName}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
-  </tr>
-
-  <tr>
-    <td class="subBoxTextHdr">Description:</td>
-    <td class="subBoxText"><input size="60" type="text" name="description" value="<c:out value="${command.description}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
-  </tr>
-
-  <tr>
-    <td class="subBoxTextHdr">User Agent:</td>
-    <td class="subBoxText"><input size="60" type="text" name="userAgent" value="<c:out value="${command.userAgent}"/>"></td>
-  </tr>
-
-  <tr>
     <td class="subBoxTextHdr">Document Limit:</td>
     <td class="subBoxText"><input size="20" type="number" min="0" name="documentLimit" value="<c:out value="${command.documentLimit}"/>"></td>
   </tr>

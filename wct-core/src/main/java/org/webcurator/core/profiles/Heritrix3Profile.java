@@ -1,5 +1,6 @@
 package org.webcurator.core.profiles;
 
+import com.sun.org.apache.xerces.internal.dom.DeferredTextImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.*;
@@ -14,11 +15,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.text.MessageFormat;
+import java.util.Properties;
 
 /**
  * The <code>Heritrix3Profile</code> class wraps the Heritrix3ProfileOptions object
@@ -29,6 +28,8 @@ public class Heritrix3Profile {
     private Log log = LogFactory.getLog(Heritrix3Profile.class);
     private String profileXml;
     private Heritrix3ProfileOptions heritrix3ProfileOptions;
+    private final static String SIMPLE_OVERRIDES_PROPERTIES_TEXT_XPATH = "/beans/bean[@id='simpleOverrides']/property[@name='properties']/value/text()";
+    private final static String SIMPLE_OVERRIDES_PROPERTIES_XPATH = "/beans/bean[@id='simpleOverrides']/property[@name='properties']/value";
     private final static String BEAN_ID_PROPERTY_NAME_XPATH = "/beans/bean[@id=''{0}'']/property[@name=''{1}'']";
     private final static String SCOPE_RULES_BEAN_CLASS_PROPERTY_NAME_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''{0}'']/property[@name=''{1}'']";
 
@@ -67,10 +68,7 @@ public class Heritrix3Profile {
             // Load default xml into DOM
             Document xmlDocument = loadXmlDocument(this.profileXml);
             // Search for xml elements and modify
-            modifyBeanIDPropertyNameAttributeValue("metadata", "operatorContactUrl", xmlDocument, heritrix3ProfileOptions.getContactURL());
-            modifyBeanIDPropertyNameAttributeValue("metadata", "jobName", xmlDocument, heritrix3ProfileOptions.getJobName());
-            modifyBeanIDPropertyNameAttributeValue("metadata", "description", xmlDocument, heritrix3ProfileOptions.getDescription());
-            modifyBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument, heritrix3ProfileOptions.getUserAgent());
+            updateContactURL(xmlDocument, heritrix3ProfileOptions.getContactURL());
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDocumentLimit()));
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDataLimit()));
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, Long.toString(heritrix3ProfileOptions.getTimeLimit()));
@@ -146,10 +144,7 @@ public class Heritrix3Profile {
         Heritrix3ProfileOptions profileOptions = new Heritrix3ProfileOptions();
         try {
             Document xmlDocument = loadXmlDocument(xml);
-            profileOptions.setContactURL(getBeanIDPropertyNameAttributeValue("metadata", "operatorContactUrl", xmlDocument));
-            profileOptions.setJobName(getBeanIDPropertyNameAttributeValue("metadata", "jobName", xmlDocument));
-            profileOptions.setDescription(getBeanIDPropertyNameAttributeValue("metadata", "description", xmlDocument));
-            profileOptions.setUserAgent(getBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument));
+            profileOptions.setContactURL(findContactURL(xmlDocument));
             profileOptions.setDocumentLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument)));
             profileOptions.setDataLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
             profileOptions.setTimeLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
@@ -191,6 +186,34 @@ public class Heritrix3Profile {
         valueAttribute.setTextContent(newValue);
     }
 
+    private Properties getSimpleOverridesProperties(Document xmlDocument) throws Exception {
+        String propertiesText = xPathTextSearch(SIMPLE_OVERRIDES_PROPERTIES_TEXT_XPATH, xmlDocument);
+        Properties properties = new Properties();
+        Reader reader = new StringReader(propertiesText);
+        properties.load(reader);
+        return properties;
+    }
+
+    private String findContactURL(Document xmlDocument) throws Exception {
+        // find the metadata.operatorContactUrl value
+        Properties properties = getSimpleOverridesProperties(xmlDocument);
+        return properties.getProperty("metadata.operatorContactUrl");
+    }
+
+    private void updateContactURL(Document xmlDocument, String newContactURL) throws Exception {
+        Properties properties = getSimpleOverridesProperties(xmlDocument);
+        // update property
+        properties.setProperty("metadata.operatorContactUrl", newContactURL);
+        // list
+        StringWriter out = new StringWriter();
+        PrintWriter writer = new PrintWriter(out);
+        properties.store(writer, "");
+        String updatedPropertiesText = out.toString();
+        System.out.println(updatedPropertiesText);
+        // update XML
+        xPathSearch(SIMPLE_OVERRIDES_PROPERTIES_XPATH, xmlDocument).setTextContent(updatedPropertiesText);
+    }
+
     private String getBeanIDPropertyNameAttributeValue(String beanID, String propertyName, Document xmlDocument) throws Exception {
         String path = MessageFormat.format(BEAN_ID_PROPERTY_NAME_XPATH, beanID, propertyName);
         return xPathSearch(path, xmlDocument).getAttribute("value");
@@ -206,6 +229,12 @@ public class Heritrix3Profile {
         NodeList nodes = (NodeList) xPath.evaluate(path, xmlDocument.getDocumentElement(), XPathConstants.NODESET);
         Element firstElement = (Element) nodes.item(0);
         return firstElement;
+    }
+
+    private String xPathTextSearch(String path, Document xmlDocument) throws Exception {
+        XPath xPath = XPathFactory.newInstance().newXPath();
+        NodeList nodes = (NodeList) xPath.evaluate(path, xmlDocument.getDocumentElement(), XPathConstants.NODESET);
+        return nodes.item(0).getNodeValue();
     }
 
     private Document loadXmlDocument(String xml) throws Exception {

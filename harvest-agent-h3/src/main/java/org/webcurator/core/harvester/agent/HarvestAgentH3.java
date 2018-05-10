@@ -693,27 +693,6 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             throw new HarvestAgentException("Failed while creating the job profile " + order.getAbsolutePath() + " " + e.getMessage(), e);
         }
 
-        // Load default H3 profile if it exists
-        File defaultProfile = new File(baseHarvestDirectory + File.separator + "defaultH3Profile.cxml");
-        StringBuilder defaultProfileText = new StringBuilder();
-        try {
-            if (defaultProfile.exists()) {
-                BufferedReader reader = new BufferedReader(new FileReader(defaultProfile));
-                String line = null;
-                while((line = reader.readLine()) != null){
-                    defaultProfileText.append(line);
-                    defaultProfileText.append("\r\n");
-                }
-                reader.close();
-                aProfile = defaultProfileText.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            throw new HarvestAgentException("Failed to write the job profile " + order.getAbsolutePath() + " " + e.getMessage(), e);
-        } catch (IOException e) {
-            throw new HarvestAgentException("Failed to write the job profile " + order.getAbsolutePath() + " " + e.getMessage(), e);
-        }
-
         try {
             FileWriter writer = new FileWriter(order);
             writer.write(aProfile);

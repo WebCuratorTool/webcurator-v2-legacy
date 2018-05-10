@@ -24,9 +24,6 @@ import org.webcurator.core.profiles.Heritrix3ProfileOptions;
  */
 public class Heritrix3ProfileCommand {
 	private String contactURL;
-	private String jobName;
-	private String description;
-	private String userAgent;
 	private long documentLimit;
 	private long dataLimit;
 	private long timeLimit;
@@ -49,9 +46,6 @@ public class Heritrix3ProfileCommand {
 		Heritrix3ProfileCommand command = new Heritrix3ProfileCommand();
 		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
 		command.setContactURL(options.getContactURL());
-		command.setJobName(options.getJobName());
-		command.setDescription(options.getDescription());
-		command.setUserAgent(options.getUserAgent());
 		command.setDocumentLimit(options.getDocumentLimit());
 		command.setDataLimit(options.getDataLimit());
 		command.setTimeLimit(options.getTimeLimit());
@@ -75,9 +69,6 @@ public class Heritrix3ProfileCommand {
 	public void updateBusinessModel(Heritrix3Profile heritrix3Profile) {
 		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
 		options.setContactURL(contactURL);
-		options.setJobName(jobName);
-		options.setDescription(description);
-		options.setUserAgent(userAgent);
 		options.setDocumentLimit(documentLimit);
 		options.setDataLimit(dataLimit);
 		options.setTimeLimit(timeLimit);
@@ -101,30 +92,6 @@ public class Heritrix3ProfileCommand {
 
 	public void setContactURL(String contactURL) {
 		this.contactURL = contactURL;
-	}
-
-	public String getJobName() {
-		return jobName;
-	}
-
-	public void setJobName(String jobName) {
-		this.jobName = jobName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getUserAgent() {
-		return userAgent;
-	}
-
-	public void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
 	}
 
 	public long getDocumentLimit() {

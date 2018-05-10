@@ -39,16 +39,6 @@ public class Heritrix3ProfileValidator extends AbstractBaseValidator {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contactURL", "required", getObjectArrayForLabel("contactURL"), "Contact URL is a required field");
 			ValidatorUtil.validateURL(errors, command.getContactURL(),"invalid.url",new Object[] {command.getContactURL()},"Invalid URL");
 		}
-		
-		// Job name is required,
-		if(command.getJobName() != null) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "jobName", "required", getObjectArrayForLabel("jobName"), "Job Name is a required field");
-		}
-
-		// Description is required,
-		if(command.getDescription() != null) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "required", getObjectArrayForLabel("description"), "Description is a required field");
-		}
 
 	}
 }

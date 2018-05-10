@@ -34,14 +34,9 @@
  <bean id="simpleOverrides" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
   <property name="properties">
    <value>
-# This Properties map is specified in the Java 'property list' text format
-# http://java.sun.com/javase/6/docs/api/java/util/Properties.html#load%28java.io.Reader%29
-
 metadata.operatorContactUrl=http://www.natlib.govt.nz/
 metadata.jobName=basic
 metadata.description=Basic crawl starting with useful defaults
-
-##..more?..##
    </value>
   </property>
  </bean>
@@ -57,16 +52,16 @@ metadata.description=Basic crawl starting with useful defaults
 
  <!-- CRAWL METADATA: including identification of crawler/operator -->
  <bean id="metadata" class="org.archive.modules.CrawlMetadata" autowire="byName">
-       <property name="operatorContactUrl" value="http://www.natlib.govt.nz/"/>
-       <property name="jobName" value="test"/>
-       <property name="description" value="Test crawl starting with useful defaults"/>
+       <property name="operatorContactUrl" value="[see override above]"/>
+       <property name="jobName" value="[see override above]"/>
+       <property name="description" value="[see override above]"/>
        <property name="robotsPolicyName" value="ignore"/>
   <!-- <property name="operator" value=""/> -->
   <!-- <property name="operatorFrom" value=""/> -->
   <!-- <property name="organization" value=""/> -->
   <!-- <property name="audience" value=""/> -->
        <property name="userAgentTemplate"
-         value="Mozilla/5.0 (compatible; heritrix/3.3.0 +http://www.natlib.govt.nz/)"/>
+         value="Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)"/>
 
  </bean>
 
