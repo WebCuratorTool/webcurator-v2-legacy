@@ -127,13 +127,14 @@ public class ProfileListController extends AbstractCommandController {
 
 			// For now we only validate H3 profiles
 			if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
-				// TODO validate
-				// TODO figure out the errors object and how it communicates with Spring
 				HarvestAgentFactory haf = new HarvestAgentFactoryImpl();
 				HarvestAgent agent = haf.getHarvestAgent("localhost", 8080, "/harvest-agent-h3/services/urn:HarvestAgent");
 				if (!agent.isValidProfile(profile.getProfile())) {
 					Object[] vals = new Object[] {profile.getProfile()};
 					errors.reject("profile.invalid", vals, "The submitted profile is invalid.");
+					ModelAndView mav = getView(command);
+					mav.addObject(Constants.GBL_ERRORS, errors);
+					return mav;
 				}
 			}
 			// Save to the database
@@ -141,17 +142,13 @@ public class ProfileListController extends AbstractCommandController {
 				profileManager.saveOrUpdate(profile);
 			} 
 			catch (HibernateOptimisticLockingFailureException e) {
-				// FIXME Does this actually work?
 				Object[] vals = new Object[] {profile.getName(), profile.getOwningAgency().getName()};
 				errors.reject("profile.modified", vals, "profile has been modified by another user.");
-			}
-			if (errors.hasErrors()) {
 				ModelAndView mav = getView(command);
 				mav.addObject(Constants.GBL_ERRORS, errors);
 				return mav;
-			} else {
-				return new ModelAndView("redirect:/curator/profiles/list.html");
 			}
+			return new ModelAndView("redirect:/curator/profiles/list.html");
 		}
 		
 		
