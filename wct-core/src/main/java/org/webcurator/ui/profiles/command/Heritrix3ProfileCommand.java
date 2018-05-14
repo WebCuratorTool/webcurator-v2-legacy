@@ -38,6 +38,7 @@ public class Heritrix3ProfileCommand {
 	private long maxFileSize;
 	private boolean compress;
 	private String prefix;
+	private String politeness;
 
 	/**
 	 * Build a command object from the Heritrix3Profile.
@@ -62,6 +63,7 @@ public class Heritrix3ProfileCommand {
 		command.setMaxFileSize(options.getMaxFileSize());
 		command.setCompress(options.isCompress());
 		command.setPrefix(options.getPrefix());
+		command.setPoliteness(options.getPoliteness());
 
 		return command;
 	}
@@ -87,6 +89,7 @@ public class Heritrix3ProfileCommand {
 		options.setMaxFileSize(maxFileSize);
 		options.setCompress(compress);
 		options.setPrefix(prefix);
+		options.setPoliteness(politeness);
 		// update the profile xml
 		String profileXml = heritrix3Profile.toProfileXml();
 		heritrix3Profile.setProfileXml(profileXml);
@@ -210,5 +213,13 @@ public class Heritrix3ProfileCommand {
 
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
+	}
+
+	public String getPoliteness() {
+		return politeness;
+	}
+
+	public void setPoliteness(String politeness) {
+		this.politeness = politeness;
 	}
 }

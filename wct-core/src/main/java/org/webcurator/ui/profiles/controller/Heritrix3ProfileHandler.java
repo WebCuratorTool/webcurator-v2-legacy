@@ -71,8 +71,9 @@ public class Heritrix3ProfileHandler extends TabHandler {
 		}
 
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
+		tmav.addObject("politenessTypes", Heritrix3Profile.POLITENESS_OPTIONS);
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
-		
+
 		return tmav;
 	}
 

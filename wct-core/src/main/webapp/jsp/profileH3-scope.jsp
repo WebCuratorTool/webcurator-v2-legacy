@@ -76,4 +76,15 @@
     <td class="subBoxText"><input size="20" type="text" name="prefix" value="<c:out value="${command.prefix}"/>"></td>
   </tr>
 
+  <tr>
+    <td class="subBoxTextHdr">Politeness:</td>
+    <td class="subBoxText">
+	    <select name="politeness" id="politeness">
+	        <c:forEach items="${politenessTypes}" var="type">
+	            <option id="${type}" ${command.politeness eq type ? 'SELECTED' : ''}>${type}</option>
+	        </c:forEach>
+	    </select>
+    </td>
+  </tr>
+
 </table>

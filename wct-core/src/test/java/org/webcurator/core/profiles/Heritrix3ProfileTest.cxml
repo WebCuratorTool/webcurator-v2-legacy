@@ -383,11 +383,11 @@ metadata.description=Basic crawl starting with useful defaults
   <!-- <property name="processErrorOutlinks" value="false" /> -->
  </bean>
  <bean id="disposition" class="org.archive.crawler.postprocessor.DispositionProcessor">
-  <!-- <property name="delayFactor" value="5.0" /> -->
-  <!-- <property name="minDelayMs" value="3000" /> -->
-  <!-- <property name="respectCrawlDelayUpToSeconds" value="300" /> -->
-  <!-- <property name="maxDelayMs" value="30000" /> -->
-  <!-- <property name="maxPerHostBandwidthUsageKbSec" value="0" /> -->
+       <property name="delayFactor" value="10.0" />
+       <property name="minDelayMs" value="9000" />
+       <property name="maxDelayMs" value="90000" />
+       <property name="respectCrawlDelayUpToSeconds" value="900" />
+       <property name="maxPerHostBandwidthUsageKbSec" value="400" />
  </bean>
  <!-- <bean id="rescheduler" class="org.archive.crawler.postprocessor.ReschedulingProcessor">
        <property name="rescheduleDelaySeconds" value="-1" />

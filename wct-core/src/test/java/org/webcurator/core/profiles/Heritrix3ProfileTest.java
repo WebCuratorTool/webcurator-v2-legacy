@@ -125,6 +125,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(1000000000L, profileOptions.getMaxFileSize());
         assertTrue(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
+        assertEquals(Heritrix3Profile.MEDIUM, profileOptions.getPoliteness());
     }
 
     @Test
@@ -151,6 +152,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(1000000000L, profileOptions.getMaxFileSize());
         assertTrue(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
+        assertEquals(Heritrix3Profile.POLITE, profileOptions.getPoliteness());
     }
 
     @Test
@@ -175,6 +177,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         long modifiedMaxFileSize = 999999999;
         boolean modifiedCompress = false;
         String modifiedPrefix = "XXX";
+        String modifiedPoliteness = Heritrix3Profile.AGGRESSIVE;
         Heritrix3Profile profile = new Heritrix3Profile();
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
         // Modify test instance
@@ -193,6 +196,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOptions.setMaxFileSize(modifiedMaxFileSize);
         profileOptions.setCompress(modifiedCompress);
         profileOptions.setPrefix(modifiedPrefix);
+        profileOptions.setPoliteness(modifiedPoliteness);
         String modifiedXml = profile.toProfileXml();
         // Create new profile instance with modified XML
         Heritrix3Profile modifiedProfile = new Heritrix3Profile(modifiedXml);
@@ -223,5 +227,6 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(modifiedMaxFileSize, modifiedProfileOptions.getMaxFileSize());
         assertFalse(modifiedProfileOptions.isCompress());
         assertEquals(modifiedPrefix, modifiedProfileOptions.getPrefix());
+        assertEquals(Heritrix3Profile.AGGRESSIVE, modifiedProfileOptions.getPoliteness());
     }
 }

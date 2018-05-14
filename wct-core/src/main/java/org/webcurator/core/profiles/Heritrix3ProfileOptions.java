@@ -1,7 +1,6 @@
 package org.webcurator.core.profiles;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public class Heritrix3ProfileOptions {
     private FileSizeUnit maxFileSizeUnit;
     private boolean compress;
     private String prefix;
-    private Politeness politeness;
+    private String politeness;
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public enum FileSizeUnit {
@@ -39,10 +38,6 @@ public class Heritrix3ProfileOptions {
 
     public enum Writer {
         WARC, ARC
-    }
-
-    public enum Politeness {
-        POLITE, MEDIUM, AGRESSIVE
     }
 
     public String getContactURL() {
@@ -205,11 +200,11 @@ public class Heritrix3ProfileOptions {
         this.prefix = prefix;
     }
 
-    public Politeness getPoliteness() {
+    public String getPoliteness() {
         return politeness;
     }
 
-    public void setPoliteness(Politeness politeness) {
+    public void setPoliteness(String politeness) {
         this.politeness = politeness;
     }
 
