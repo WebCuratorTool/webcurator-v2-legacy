@@ -33,6 +33,8 @@ public class Heritrix3ProfileCommand {
 	private boolean ignoreRobotsTxt;
 	private boolean ignoreCookies;
 	private String defaultEncoding;
+	private String blockUrls;
+	private String includeUrls;
 	private long maxFileSize;
 	private boolean compress;
 	private String prefix;
@@ -55,6 +57,8 @@ public class Heritrix3ProfileCommand {
 		command.setIgnoreRobotsTxt(options.isIgnoreRobotsTxt());
 		command.setIgnoreCookies(options.isIgnoreCookies());
 		command.setDefaultEncoding(options.getDefaultEncoding());
+		command.setBlockUrls(options.getBlockURLs());
+		command.setIncludeUrls(options.getIncludeURLs());
 		command.setMaxFileSize(options.getMaxFileSize());
 		command.setCompress(options.isCompress());
 		command.setPrefix(options.getPrefix());
@@ -78,6 +82,8 @@ public class Heritrix3ProfileCommand {
 		options.setIgnoreRobotsTxt(ignoreRobotsTxt);
 		options.setIgnoreCookies(ignoreCookies);
 		options.setDefaultEncoding(defaultEncoding);
+		options.setBlockURLs(blockUrls);
+		options.setIncludeURLs(includeUrls);
 		options.setMaxFileSize(maxFileSize);
 		options.setCompress(compress);
 		options.setPrefix(prefix);
@@ -164,6 +170,22 @@ public class Heritrix3ProfileCommand {
 
 	public void setDefaultEncoding(String defaultEncoding) {
 		this.defaultEncoding = defaultEncoding;
+	}
+
+	public String getBlockUrls() {
+		return blockUrls;
+	}
+
+	public void setBlockUrls(String blockUrls) {
+		this.blockUrls = blockUrls;
+	}
+
+	public String getIncludeUrls() {
+		return includeUrls;
+	}
+
+	public void setIncludeUrls(String includeUrls) {
+		this.includeUrls = includeUrls;
 	}
 
 	public long getMaxFileSize() {

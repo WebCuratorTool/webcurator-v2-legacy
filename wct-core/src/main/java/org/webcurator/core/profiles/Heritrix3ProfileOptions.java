@@ -235,7 +235,11 @@ public class Heritrix3ProfileOptions {
         if (data != null && !data.isEmpty()) {
             // Split the string
             String[] temp = data.split(LINE_SEPARATOR);
-            stringList.addAll(Arrays.asList(temp));
+            // Trim the data in temp
+            for (String tString : temp) {
+                stringList.add(tString.trim());
+            }
+            System.out.println(stringList);
         }
     }
 

@@ -52,6 +52,16 @@
   </tr>
 
   <tr>
+    <td class="subBoxTextHdr" valign=top>Block URLs:</td>
+    <td class="subBoxText"><textarea cols="80" rows="5" name="blockUrls"><c:out value="${command.blockUrls}"/></textarea></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr" valign=top>Include URLs:</td>
+    <td class="subBoxText"><textarea cols="80" rows="5" name="includeUrls"><c:out value="${command.includeUrls}"/></textarea></td>
+  </tr>
+
+  <tr>
     <td class="subBoxTextHdr">Max File Size:</td>
     <td class="subBoxText"><input size="20" type="number" min="0" name="maxFileSize" value="<c:out value="${command.maxFileSize}"/>"></td>
   </tr>
