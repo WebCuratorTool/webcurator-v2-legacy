@@ -1,6 +1,7 @@
 package org.webcurator.core.profiles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,14 +23,15 @@ public class Heritrix3ProfileOptions {
     private boolean ignoreRobotsTxt;
     private boolean ignoreCookies;
     private String defaultEncoding;
-    private List<String> blockURL= new ArrayList<String>();
-    private List<String> includeURL= new ArrayList<String>();
+    private List<String> blockURLsAsList = new ArrayList<String>();
+    private List<String> includeURLsAsList = new ArrayList<String>();
     private Writer writer;
     private long maxFileSize;
     private FileSizeUnit maxFileSizeUnit;
     private boolean compress;
     private String prefix;
     private Politeness politeness;
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public enum FileSizeUnit {
         KB, MB, GB
@@ -131,20 +133,36 @@ public class Heritrix3ProfileOptions {
         this.defaultEncoding = defaultEncoding;
     }
 
-    public List<String> getBlockURL() {
-        return blockURL;
+    public String getBlockURLs() {
+        return convertStringListToString(blockURLsAsList);
     }
 
-    public void setBlockURL(List<String> blockURL) {
-        this.blockURL = blockURL;
+    public void setBlockURLs(String blockURLs) {
+        convertStringToList(blockURLs, blockURLsAsList);
     }
 
-    public List<String> getIncludeURL() {
-        return includeURL;
+    public List<String> getBlockURLsAsList() {
+        return blockURLsAsList;
     }
 
-    public void setIncludeURL(List<String> includeURL) {
-        this.includeURL = includeURL;
+    public void setBlockURLsAsList(List<String> blockURLsAsList) {
+        this.blockURLsAsList = blockURLsAsList;
+    }
+
+    public String getIncludeURLs() {
+        return convertStringListToString(includeURLsAsList);
+    }
+
+    public void setIncludeURLs(String includeURLs) {
+        convertStringToList(includeURLs, includeURLsAsList);
+    }
+
+    public List<String> getIncludeURLsAsList() {
+        return includeURLsAsList;
+    }
+
+    public void setIncludeURLsAsList(List<String> includeURLsAsList) {
+        this.includeURLsAsList = includeURLsAsList;
     }
 
     public Writer getWriter() {
@@ -195,6 +213,32 @@ public class Heritrix3ProfileOptions {
         this.politeness = politeness;
     }
 
+    private String convertStringListToString(List<String> stringList) {
+        if (stringList.isEmpty()) {
+            return "";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (String item : stringList) {
+                sb.append(item);
+                sb.append(LINE_SEPARATOR);
+            }
+            String convertedString = sb.toString();
+            // Remove last separator
+            convertedString = convertedString.substring(0, convertedString.length() - LINE_SEPARATOR.length());
+            return convertedString;
+        }
+    }
+
+    private void convertStringToList(String data, List<String> stringList) {
+        // Re-init list
+        stringList.clear();
+        if (data != null && !data.isEmpty()) {
+            // Split the string
+            String[] temp = data.split(LINE_SEPARATOR);
+            stringList.addAll(Arrays.asList(temp));
+        }
+    }
+
     @Override
     public String toString() {
         return "Heritrix3ProfileOptions{" +
@@ -209,8 +253,8 @@ public class Heritrix3ProfileOptions {
                 ", ignoreRobotsTxt=" + ignoreRobotsTxt +
                 ", ignoreCookies=" + ignoreCookies +
                 ", defaultEncoding='" + defaultEncoding + '\'' +
-                ", blockURL=" + blockURL +
-                ", includeURL=" + includeURL +
+                ", blockURLsAsList=" + blockURLsAsList +
+                ", includeURLsAsList=" + includeURLsAsList +
                 ", writer=" + writer +
                 ", maxFileSize=" + maxFileSize +
                 ", maxFileSizeUnit=" + maxFileSizeUnit +

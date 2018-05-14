@@ -1,6 +1,5 @@
 package org.webcurator.core.profiles;
 
-import com.sun.org.apache.xerces.internal.dom.DeferredTextImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.*;
@@ -17,6 +16,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -32,6 +33,7 @@ public class Heritrix3Profile {
     private final static String SIMPLE_OVERRIDES_PROPERTIES_XPATH = "/beans/bean[@id='simpleOverrides']/property[@name='properties']/value";
     private final static String BEAN_ID_PROPERTY_NAME_XPATH = "/beans/bean[@id=''{0}'']/property[@name=''{1}'']";
     private final static String SCOPE_RULES_BEAN_CLASS_PROPERTY_NAME_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''{0}'']/property[@name=''{1}'']";
+    private final static String MATCHES_LIST_REGEX_DECIDE_RULE_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''org.archive.modules.deciderules.MatchesListRegexDecideRule'']/property[@name=''decision'' and @value=''{0}'']";
 
     /**
      * Default constructor - read the default xml file.
@@ -80,6 +82,8 @@ public class Heritrix3Profile {
             modifyBeanIDPropertyNameAttributeValue("metadata", "robotsPolicyName", xmlDocument, robotsPolicyNameValue);
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isIgnoreCookies()));
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument, heritrix3ProfileOptions.getDefaultEncoding());
+            modifyMatchesDecideRulePropertyNameList("REJECT", xmlDocument, heritrix3ProfileOptions.getBlockURLsAsList());
+            modifyMatchesDecideRulePropertyNameList("ACCEPT", xmlDocument, heritrix3ProfileOptions.getIncludeURLsAsList());
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxFileSize()));
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "compress", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isCompress()));
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument, heritrix3ProfileOptions.getPrefix());
@@ -160,6 +164,8 @@ public class Heritrix3Profile {
             }
             profileOptions.setIgnoreCookies(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument)));
             profileOptions.setDefaultEncoding(getBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument));
+            profileOptions.setBlockURLsAsList(getMatchesDecideRulePropertyNameList("REJECT", xmlDocument));
+            profileOptions.setIncludeURLsAsList(getMatchesDecideRulePropertyNameList("ACCEPT", xmlDocument));
             profileOptions.setMaxFileSize(Long.parseLong(getBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument)));
             profileOptions.setCompress(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("warcWriter", "compress", xmlDocument)));
             profileOptions.setPrefix(getBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument));
@@ -179,15 +185,33 @@ public class Heritrix3Profile {
         modifyElement(path, xmlDocument, newValue);
     }
 
+    private void modifyMatchesDecideRulePropertyNameList(String decisionValue, Document xmlDocument, List<String> newUrls) throws Exception {
+        String path = MessageFormat.format(MATCHES_LIST_REGEX_DECIDE_RULE_XPATH, decisionValue);
+        Element matchesDecideRulePropertyNameListElement = xPathSearch(path, xmlDocument.getDocumentElement());
+        Element parent = (Element) matchesDecideRulePropertyNameListElement.getParentNode();
+        // Get the list element
+        Element listElement = xPathSearch("property[@name='regexList']/list", parent);
+        // Delete all the value nodes
+        while (listElement.hasChildNodes()) {
+            listElement.removeChild(listElement.getFirstChild());
+        }
+        // create new value nodes
+        for (String url : newUrls) {
+            Element urlElement = xmlDocument.createElement("value");
+            urlElement.appendChild(xmlDocument.createTextNode(url));
+            listElement.appendChild(urlElement);
+        }
+    }
+
     private void modifyElement(String path, Document xmlDocument, String newValue) throws Exception {
-        Element elementToModify = xPathSearch(path, xmlDocument);
+        Element elementToModify = xPathSearch(path, xmlDocument.getDocumentElement());
         NamedNodeMap attributes = elementToModify.getAttributes();
         Node valueAttribute = attributes.getNamedItem("value");
         valueAttribute.setTextContent(newValue);
     }
 
     private Properties getSimpleOverridesProperties(Document xmlDocument) throws Exception {
-        String propertiesText = xPathTextSearch(SIMPLE_OVERRIDES_PROPERTIES_TEXT_XPATH, xmlDocument);
+        String propertiesText = xPathTextSearch(SIMPLE_OVERRIDES_PROPERTIES_TEXT_XPATH, xmlDocument.getDocumentElement());
         Properties properties = new Properties();
         Reader reader = new StringReader(propertiesText);
         properties.load(reader);
@@ -211,29 +235,54 @@ public class Heritrix3Profile {
         String updatedPropertiesText = out.toString();
         System.out.println(updatedPropertiesText);
         // update XML
-        xPathSearch(SIMPLE_OVERRIDES_PROPERTIES_XPATH, xmlDocument).setTextContent(updatedPropertiesText);
+        xPathSearch(SIMPLE_OVERRIDES_PROPERTIES_XPATH, xmlDocument.getDocumentElement()).setTextContent(updatedPropertiesText);
     }
 
     private String getBeanIDPropertyNameAttributeValue(String beanID, String propertyName, Document xmlDocument) throws Exception {
         String path = MessageFormat.format(BEAN_ID_PROPERTY_NAME_XPATH, beanID, propertyName);
-        return xPathSearch(path, xmlDocument).getAttribute("value");
+        return xPathSearch(path, xmlDocument.getDocumentElement()).getAttribute("value");
     }
 
     private String getScopeRulesBeanClassPropertyNameAttributeValue(String beanClass, String propertyName, Document xmlDocument) throws Exception {
         String path = MessageFormat.format(SCOPE_RULES_BEAN_CLASS_PROPERTY_NAME_XPATH, beanClass, propertyName);
-        return xPathSearch(path, xmlDocument).getAttribute("value");
+        return xPathSearch(path, xmlDocument.getDocumentElement()).getAttribute("value");
     }
 
-    private Element xPathSearch(String path, Document xmlDocument) throws Exception {
-        XPath xPath = XPathFactory.newInstance().newXPath();
-        NodeList nodes = (NodeList) xPath.evaluate(path, xmlDocument.getDocumentElement(), XPathConstants.NODESET);
+    private List<String> getMatchesDecideRulePropertyNameList(String decisionValue, Document xmlDocument) throws Exception {
+        String path = MessageFormat.format(MATCHES_LIST_REGEX_DECIDE_RULE_XPATH, decisionValue);
+        Element matchesDecideRulePropertyNameListElement = xPathSearch(path, xmlDocument.getDocumentElement());
+        Element parent = (Element) matchesDecideRulePropertyNameListElement.getParentNode();
+        List<String> propertyNameList = xPathSearchPropertyList("property[@name='regexList']/list/value", parent);
+        return propertyNameList;
+    }
+
+    private Element xPathSearch(String path, Element element) throws Exception {
+        NodeList nodes = xPathSearchNodeList(path, element);
         Element firstElement = (Element) nodes.item(0);
         return firstElement;
     }
 
-    private String xPathTextSearch(String path, Document xmlDocument) throws Exception {
+    private NodeList xPathSearchNodeList(String path, Element element) throws Exception {
         XPath xPath = XPathFactory.newInstance().newXPath();
-        NodeList nodes = (NodeList) xPath.evaluate(path, xmlDocument.getDocumentElement(), XPathConstants.NODESET);
+        NodeList nodes = (NodeList) xPath.evaluate(path, element, XPathConstants.NODESET);
+        return nodes;
+    }
+
+    private List<String> xPathSearchPropertyList(String path, Element element) throws Exception {
+        List<String> propertyList = new ArrayList<String>();
+        NodeList nodes = xPathSearchNodeList(path, element);
+        // Convert nodes to a List<String>
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node listItem = nodes.item(i);
+            propertyList.add(listItem.getTextContent());
+
+        }
+        return propertyList;
+    }
+
+    private String xPathTextSearch(String path, Element element) throws Exception {
+        XPath xPath = XPathFactory.newInstance().newXPath();
+        NodeList nodes = (NodeList) xPath.evaluate(path, element, XPathConstants.NODESET);
         return nodes.item(0).getNodeValue();
     }
 
