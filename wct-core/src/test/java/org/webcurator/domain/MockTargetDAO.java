@@ -892,6 +892,18 @@ public class MockTargetDAO implements TargetDAO {
 					{
 						p.setHarvesterType(getString(child));
 					}
+					else if (child.getNodeName().equals("dataLimitUnit"))
+					{
+						p.setDataLimitUnit(getString(child));
+					}
+					else if (child.getNodeName().equals("maxFileSizeUnit"))
+					{
+						p.setMaxFileSizeUnit(getString(child));
+					}
+					else if (child.getNodeName().equals("timeLimitUnit"))
+					{
+						p.setTimeLimitUnit(getString(child));
+					}
  				}
 			}
 			

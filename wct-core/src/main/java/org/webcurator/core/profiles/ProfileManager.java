@@ -59,6 +59,9 @@ public class ProfileManager {
 			profile.setProfile(HeritrixProfile.create().toString());
 		}
 		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
+			profile.setDataLimitUnit(ProfileDataUnit.DEFAULT.name());
+			profile.setMaxFileSizeUnit(ProfileDataUnit.DEFAULT.name());
+			profile.setTimeLimitUnit(ProfileTimeUnit.DEFAULT.name());
 			profile.setProfile(new Heritrix3Profile().getProfileXml());
 		}
 

@@ -14,8 +14,9 @@ public class Heritrix3ProfileOptions {
     private String contactURL;
     private long documentLimit;
     private long dataLimit;
-    private FileSizeUnit dataLimitUnit;
+    private ProfileDataUnit dataLimitUnit;
     private long timeLimit;
+    private ProfileTimeUnit timeLimitUnit;
     private long maxPathDepth;
     private long maxHops;
     private long maxTransitiveHops;
@@ -26,15 +27,11 @@ public class Heritrix3ProfileOptions {
     private List<String> includeURLsAsList = new ArrayList<String>();
     private Writer writer;
     private long maxFileSize;
-    private FileSizeUnit maxFileSizeUnit;
+    private ProfileDataUnit maxFileSizeUnit;
     private boolean compress;
     private String prefix;
     private String politeness;
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-    public enum FileSizeUnit {
-        KB, MB, GB
-    }
 
     public enum Writer {
         WARC, ARC
@@ -64,11 +61,11 @@ public class Heritrix3ProfileOptions {
         this.dataLimit = dataLimit;
     }
 
-    public FileSizeUnit getDataLimitUnit() {
+    public ProfileDataUnit getDataLimitUnit() {
         return dataLimitUnit;
     }
 
-    public void setDataLimitUnit(FileSizeUnit dataLimitUnit) {
+    public void setDataLimitUnit(ProfileDataUnit dataLimitUnit) {
         this.dataLimitUnit = dataLimitUnit;
     }
 
@@ -78,6 +75,14 @@ public class Heritrix3ProfileOptions {
 
     public void setTimeLimit(long timeLimit) {
         this.timeLimit = timeLimit;
+    }
+
+    public ProfileTimeUnit getTimeLimitUnit() {
+        return timeLimitUnit;
+    }
+
+    public void setTimeLimitUnit(ProfileTimeUnit timeLimitUnit) {
+        this.timeLimitUnit = timeLimitUnit;
     }
 
     public long getMaxPathDepth() {
@@ -176,11 +181,11 @@ public class Heritrix3ProfileOptions {
         this.maxFileSize = maxFileSize;
     }
 
-    public FileSizeUnit getMaxFileSizeUnit() {
+    public ProfileDataUnit getMaxFileSizeUnit() {
         return maxFileSizeUnit;
     }
 
-    public void setMaxFileSizeUnit(FileSizeUnit maxFileSizeUnit) {
+    public void setMaxFileSizeUnit(ProfileDataUnit maxFileSizeUnit) {
         this.maxFileSizeUnit = maxFileSizeUnit;
     }
 
@@ -246,6 +251,7 @@ public class Heritrix3ProfileOptions {
                 ", dataLimit=" + dataLimit +
                 ", dataLimitUnit=" + dataLimitUnit +
                 ", timeLimit=" + timeLimit +
+                ", timeLimitUnit=" + timeLimitUnit +
                 ", maxPathDepth=" + maxPathDepth +
                 ", maxHops=" + maxHops +
                 ", maxTransitiveHops=" + maxTransitiveHops +
