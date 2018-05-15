@@ -799,13 +799,14 @@ public class HarvesterH3 implements Harvester {
      */
     protected boolean hasValidProfile() {
         if (h3job != null) {
+            // try to launch the job (puts it into the PAUSED state if all is well)
             heritrix.launchJob(h3job.shortName);
             try {
-                heritrix.waitForJobState(h3job.shortName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 10, 1000);
+                heritrix.waitForJobState(h3job.shortName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 5, 100);
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
-            h3job = heritrix.job(h3job.shortName).job;
+            h3job = heritrix.job(h3job.shortName).job; // refresh job
             return h3job.statusDescription.equals("Active: PAUSED");
         } else {
             return false;
