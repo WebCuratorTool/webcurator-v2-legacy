@@ -81,7 +81,7 @@ public class Heritrix3Profile {
             updateContactURL(xmlDocument, heritrix3ProfileOptions.getContactURL());
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDocumentLimit()));
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument, heritrix3ProfileOptions.getDataLimitAsBytes().toString());
-            modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, Long.toString(heritrix3ProfileOptions.getTimeLimitAsSeconds()));
+            modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, heritrix3ProfileOptions.getTimeLimitAsSeconds().toString());
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyPathSegmentsDecideRule", "maxPathDepth", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxPathDepth()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyHopsDecideRule", "maxHops", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxHops()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxTransitiveHops()));
@@ -179,7 +179,7 @@ public class Heritrix3Profile {
             profileOptions.setContactURL(findContactURL(xmlDocument));
             profileOptions.setDocumentLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument)));
             profileOptions.setDataLimitAsBytes(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
-            profileOptions.setTimeLimitAsSeconds(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
+            profileOptions.setTimeLimitAsSeconds(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
             profileOptions.setMaxPathDepth(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyPathSegmentsDecideRule", "maxPathDepth", xmlDocument)));
             profileOptions.setMaxHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyHopsDecideRule", "maxHops", xmlDocument)));
             profileOptions.setMaxTransitiveHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument)));

@@ -17,7 +17,7 @@ public class Heritrix3ProfileOptions {
     private long documentLimit;
     private BigInteger dataLimitAsBytes;
     private ProfileDataUnit dataLimitUnit;
-    private long timeLimitAsSeconds;
+    private BigInteger timeLimitAsSeconds;
     private ProfileTimeUnit timeLimitUnit;
     private long maxPathDepth;
     private long maxHops;
@@ -90,7 +90,7 @@ public class Heritrix3ProfileOptions {
     }
 
     /**
-     * Convert the max file size in bytes to the unit set in the max file size.
+     * Convert the max file size in bytes to the unit set in the max file size unit.
      * @return
      */
     public BigDecimal getMaxFileSize() {
@@ -115,6 +115,32 @@ public class Heritrix3ProfileOptions {
         maxFileSizeAsBytes = convertProfileDataUnitToBytes(value, maxFileSizeUnit);
     }
 
+    /**
+     * Convert the time limit in bytes to the unit set in the time limit unit.
+     * @return
+     */
+    public BigDecimal getTimeLimit() {
+        if (timeLimitUnit == null) {
+            // default to seconds
+            timeLimitUnit = ProfileTimeUnit.SECOND;
+            return new BigDecimal(timeLimitAsSeconds);
+        }
+        return convertSecondsToProfileTimeUnit(timeLimitAsSeconds, timeLimitUnit);
+    }
+
+    /**
+     * Convert the value to seconds as per the unit.
+     * @param value
+     */
+    public void setTimeLimit(BigDecimal value) {
+        if (timeLimitUnit == null) {
+            // default to seconds
+            timeLimitUnit = ProfileTimeUnit.SECOND;
+            timeLimitAsSeconds = value.toBigInteger();
+        }
+        timeLimitAsSeconds = convertProfileTimeUnitToSeconds(value, timeLimitUnit);
+    }
+
     private BigDecimal convertBytesToProfileDataUnit(BigInteger bytes, ProfileDataUnit unit) {
         if (unit.equals(ProfileDataUnit.B)) {
             return new BigDecimal(bytes);
@@ -132,6 +158,29 @@ public class Heritrix3ProfileOptions {
             return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
         }
         return new BigDecimal(bytes);
+    }
+
+    private BigDecimal convertSecondsToProfileTimeUnit(BigInteger seconds, ProfileTimeUnit unit) {
+        if (unit.equals(ProfileTimeUnit.SECOND)) {
+            return new BigDecimal(seconds);
+        }
+        if (unit.equals(ProfileTimeUnit.MINUTE)) {
+            BigDecimal divisor = new BigDecimal(60);
+            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        if (unit.equals(ProfileTimeUnit.HOUR)) {
+            BigDecimal divisor = new BigDecimal(60).pow(2);
+            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        if (unit.equals(ProfileTimeUnit.DAY)) {
+            BigDecimal divisor = new BigDecimal(60).pow(2).multiply(new BigDecimal(24));
+            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        if (unit.equals(ProfileTimeUnit.WEEK)) {
+            BigDecimal divisor = new BigDecimal(60).pow(2).multiply(new BigDecimal(24)).multiply(new BigDecimal(7));
+            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        return new BigDecimal(seconds);
     }
 
     private BigInteger convertProfileDataUnitToBytes(BigDecimal value, ProfileDataUnit unit) {
@@ -153,6 +202,29 @@ public class Heritrix3ProfileOptions {
         return value.toBigInteger();
     }
 
+    private BigInteger convertProfileTimeUnitToSeconds(BigDecimal value, ProfileTimeUnit unit) {
+        if (unit.equals(ProfileTimeUnit.SECOND)) {
+            return value.toBigInteger();
+        }
+        if (unit.equals(ProfileTimeUnit.MINUTE)) {
+            BigDecimal multiplier = new BigDecimal(60);
+            return value.multiply(multiplier).toBigInteger();
+        }
+        if (unit.equals(ProfileTimeUnit.HOUR)) {
+            BigDecimal multiplier = new BigDecimal(60).pow(2);
+            return value.multiply(multiplier).toBigInteger();
+        }
+        if (unit.equals(ProfileTimeUnit.DAY)) {
+            BigDecimal multiplier = new BigDecimal(60).pow(2).multiply(new BigDecimal(24));
+            return value.multiply(multiplier).toBigInteger();
+        }
+        if (unit.equals(ProfileTimeUnit.WEEK)) {
+            BigDecimal multiplier = new BigDecimal(60).pow(2).multiply(new BigDecimal(24)).multiply(new BigDecimal(7));
+            return value.multiply(multiplier).toBigInteger();
+        }
+        return value.toBigInteger();
+    }
+
     public ProfileDataUnit getDataLimitUnit() {
         return dataLimitUnit;
     }
@@ -161,11 +233,11 @@ public class Heritrix3ProfileOptions {
         this.dataLimitUnit = dataLimitUnit;
     }
 
-    public long getTimeLimitAsSeconds() {
+    public BigInteger getTimeLimitAsSeconds() {
         return timeLimitAsSeconds;
     }
 
-    public void setTimeLimitAsSeconds(long timeLimitAsSeconds) {
+    public void setTimeLimitAsSeconds(BigInteger timeLimitAsSeconds) {
         this.timeLimitAsSeconds = timeLimitAsSeconds;
     }
 

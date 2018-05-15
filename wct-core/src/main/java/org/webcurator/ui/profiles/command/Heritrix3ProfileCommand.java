@@ -51,7 +51,7 @@ public class Heritrix3ProfileCommand {
 		command.setContactURL(options.getContactURL());
 		command.setDocumentLimit(options.getDocumentLimit());
 		//command.setDataLimit(options.getDataLimitAsBytes());
-		command.setTimeLimit(options.getTimeLimitAsSeconds());
+		//command.setTimeLimit(options.getTimeLimitAsSeconds());
 		command.setMaxPathDepth(options.getMaxPathDepth());
 		command.setMaxHops(options.getMaxHops());
 		command.setMaxTransitiveHops(options.getMaxTransitiveHops());
@@ -77,7 +77,7 @@ public class Heritrix3ProfileCommand {
 		options.setContactURL(contactURL);
 		options.setDocumentLimit(documentLimit);
 		//options.setDataLimitAsBytes(dataLimit);
-		options.setTimeLimitAsSeconds(timeLimit);
+		//options.setTimeLimitAsSeconds(timeLimit);
 		options.setMaxPathDepth(maxPathDepth);
 		options.setMaxHops(maxHops);
 		options.setMaxTransitiveHops(maxTransitiveHops);

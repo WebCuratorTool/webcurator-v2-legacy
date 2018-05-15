@@ -125,6 +125,54 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     }
 
     @Test
+    public final void testProfileOptionTimeLimit() {
+        Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
+        options.setTimeLimitAsSeconds(new BigInteger("50000000"));
+        options.setTimeLimitUnit(null);
+        assertEquals(new BigDecimal(50000000L), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.SECOND);
+        assertEquals(new BigDecimal(50000000L), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.MINUTE);
+        assertEquals(new BigDecimal(833333.33333333d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.HOUR);
+        assertEquals(new BigDecimal(13888.88888889d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.DAY);
+        assertEquals(new BigDecimal(578.70370370d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.WEEK);
+        assertEquals(new BigDecimal(82.67195767d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitAsSeconds(new BigInteger("1512000"));
+        options.setTimeLimitUnit(ProfileTimeUnit.SECOND);
+        assertEquals(new BigDecimal(new BigInteger("1512000")), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.MINUTE);
+        assertEquals(new BigDecimal(25200.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.HOUR);
+        assertEquals(new BigDecimal(420.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.DAY);
+        assertEquals(new BigDecimal(17.50000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+        options.setTimeLimitUnit(ProfileTimeUnit.WEEK);
+        assertEquals(new BigDecimal(2.50000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
+
+        options.setTimeLimitUnit(null);
+        options.setTimeLimit(new BigDecimal(50000000L));
+        assertEquals(new BigInteger("50000000"), options.getTimeLimitAsSeconds());
+        options.setTimeLimitUnit(ProfileTimeUnit.SECOND);
+        options.setTimeLimit(new BigDecimal(4563554.6844d));
+        assertEquals(new BigInteger("4563554"), options.getTimeLimitAsSeconds());
+        options.setTimeLimitUnit(ProfileTimeUnit.MINUTE);
+        options.setTimeLimit(new BigDecimal(17.25d));
+        assertEquals(new BigInteger("1035"), options.getTimeLimitAsSeconds());
+        options.setTimeLimitUnit(ProfileTimeUnit.HOUR);
+        options.setTimeLimit(new BigDecimal(17.74843209d));
+        assertEquals(new BigInteger("63894"), options.getTimeLimitAsSeconds());
+        options.setTimeLimitUnit(ProfileTimeUnit.DAY);
+        options.setTimeLimit(new BigDecimal(175.7855d));
+        assertEquals(new BigInteger("15187867"), options.getTimeLimitAsSeconds());
+        options.setTimeLimitUnit(ProfileTimeUnit.WEEK);
+        options.setTimeLimit(new BigDecimal(7.65443d));
+        assertEquals(new BigInteger("4629399"), options.getTimeLimitAsSeconds());
+    }
+
+    @Test
     public final void testProfileOptionBlockUrls() {
         Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
         // Convert block urls string into list
@@ -191,7 +239,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
-        assertEquals(0L, profileOptions.getTimeLimitAsSeconds());
+        assertEquals(new BigInteger("0"), profileOptions.getTimeLimitAsSeconds());
         assertEquals(20L, profileOptions.getMaxPathDepth());
         assertEquals(20L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
@@ -218,7 +266,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
-        assertEquals(0L, profileOptions.getTimeLimitAsSeconds());
+        assertEquals(new BigInteger("0"), profileOptions.getTimeLimitAsSeconds());
         assertEquals(20L, profileOptions.getMaxPathDepth());
         assertEquals(200L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
@@ -244,7 +292,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         String modifiedContactURL = "http://www.dia.govt.nz";
         long modifiedDocumentLimit = 25;
         BigInteger modifiedDataLimit = new BigInteger("100");
-        long modifiedTimeLimit = 250;
+        BigInteger modifiedTimeLimit = new BigInteger("250");
         long modifiedMaxPathDepth = 150;
         long modifiedMaxHops = 50;
         long modifiedMaxTransitiveHops = 5;
