@@ -15,6 +15,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
+import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +80,8 @@ public class Heritrix3Profile {
             // Search for xml elements and modify
             updateContactURL(xmlDocument, heritrix3ProfileOptions.getContactURL());
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDocumentLimit()));
-            modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDataLimit()));
-            modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, Long.toString(heritrix3ProfileOptions.getTimeLimit()));
+            modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument, heritrix3ProfileOptions.getDataLimitAsBytes().toString());
+            modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, Long.toString(heritrix3ProfileOptions.getTimeLimitAsSeconds()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyPathSegmentsDecideRule", "maxPathDepth", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxPathDepth()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyHopsDecideRule", "maxHops", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxHops()));
             modifyScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxTransitiveHops()));
@@ -91,7 +92,7 @@ public class Heritrix3Profile {
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument, heritrix3ProfileOptions.getDefaultEncoding());
             modifyMatchesDecideRulePropertyNameList("REJECT", xmlDocument, heritrix3ProfileOptions.getBlockURLsAsList());
             modifyMatchesDecideRulePropertyNameList("ACCEPT", xmlDocument, heritrix3ProfileOptions.getIncludeURLsAsList());
-            modifyBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument, Long.toString(heritrix3ProfileOptions.getMaxFileSize()));
+            modifyBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument, heritrix3ProfileOptions.getMaxFileSizeAsBytes().toString());
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "compress", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isCompress()));
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument, heritrix3ProfileOptions.getPrefix());
             // Map politeness
@@ -177,8 +178,8 @@ public class Heritrix3Profile {
             Document xmlDocument = loadXmlDocument(xml);
             profileOptions.setContactURL(findContactURL(xmlDocument));
             profileOptions.setDocumentLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument)));
-            profileOptions.setDataLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
-            profileOptions.setTimeLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
+            profileOptions.setDataLimitAsBytes(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
+            profileOptions.setTimeLimitAsSeconds(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
             profileOptions.setMaxPathDepth(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyPathSegmentsDecideRule", "maxPathDepth", xmlDocument)));
             profileOptions.setMaxHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TooManyHopsDecideRule", "maxHops", xmlDocument)));
             profileOptions.setMaxTransitiveHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument)));
@@ -193,7 +194,7 @@ public class Heritrix3Profile {
             profileOptions.setDefaultEncoding(getBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument));
             profileOptions.setBlockURLsAsList(getMatchesDecideRulePropertyNameList("REJECT", xmlDocument));
             profileOptions.setIncludeURLsAsList(getMatchesDecideRulePropertyNameList("ACCEPT", xmlDocument));
-            profileOptions.setMaxFileSize(Long.parseLong(getBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument)));
+            profileOptions.setMaxFileSizeAsBytes(new BigInteger(getBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument)));
             profileOptions.setCompress(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("warcWriter", "compress", xmlDocument)));
             profileOptions.setPrefix(getBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument));
             // map xml politeness values

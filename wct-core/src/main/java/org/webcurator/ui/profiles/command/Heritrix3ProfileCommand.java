@@ -50,8 +50,8 @@ public class Heritrix3ProfileCommand {
 		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
 		command.setContactURL(options.getContactURL());
 		command.setDocumentLimit(options.getDocumentLimit());
-		command.setDataLimit(options.getDataLimit());
-		command.setTimeLimit(options.getTimeLimit());
+		//command.setDataLimit(options.getDataLimitAsBytes());
+		command.setTimeLimit(options.getTimeLimitAsSeconds());
 		command.setMaxPathDepth(options.getMaxPathDepth());
 		command.setMaxHops(options.getMaxHops());
 		command.setMaxTransitiveHops(options.getMaxTransitiveHops());
@@ -60,7 +60,7 @@ public class Heritrix3ProfileCommand {
 		command.setDefaultEncoding(options.getDefaultEncoding());
 		command.setBlockUrls(options.getBlockURLs());
 		command.setIncludeUrls(options.getIncludeURLs());
-		command.setMaxFileSize(options.getMaxFileSize());
+		//command.setMaxFileSize(options.getMaxFileSizeAsBytes());
 		command.setCompress(options.isCompress());
 		command.setPrefix(options.getPrefix());
 		command.setPoliteness(options.getPoliteness());
@@ -76,8 +76,8 @@ public class Heritrix3ProfileCommand {
 		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
 		options.setContactURL(contactURL);
 		options.setDocumentLimit(documentLimit);
-		options.setDataLimit(dataLimit);
-		options.setTimeLimit(timeLimit);
+		//options.setDataLimitAsBytes(dataLimit);
+		options.setTimeLimitAsSeconds(timeLimit);
 		options.setMaxPathDepth(maxPathDepth);
 		options.setMaxHops(maxHops);
 		options.setMaxTransitiveHops(maxTransitiveHops);
@@ -86,7 +86,7 @@ public class Heritrix3ProfileCommand {
 		options.setDefaultEncoding(defaultEncoding);
 		options.setBlockURLs(blockUrls);
 		options.setIncludeURLs(includeUrls);
-		options.setMaxFileSize(maxFileSize);
+		//options.setMaxFileSizeAsBytes(maxFileSize);
 		options.setCompress(compress);
 		options.setPrefix(prefix);
 		options.setPoliteness(politeness);

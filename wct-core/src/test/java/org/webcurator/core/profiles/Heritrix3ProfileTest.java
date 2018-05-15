@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,88 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         }
         fileReader.close();
         return stringBuffer.toString();
+    }
+
+    @Test
+    public final void testProfileOptionDataLimit() {
+        Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
+        options.setDataLimitAsBytes(new BigInteger("1000000"));
+        options.setDataLimitUnit(null);
+        assertEquals(new BigDecimal(1000000L), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.B);
+        assertEquals(new BigDecimal(1000000L), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.KB);
+        assertEquals(new BigDecimal(976.56250000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.MB);
+        assertEquals(new BigDecimal(0.95367432d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.GB);
+        assertEquals(new BigDecimal(0.00093132d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
+        options.setDataLimitAsBytes(new BigInteger("2684354560"));
+        options.setDataLimitUnit(ProfileDataUnit.B);
+        assertEquals(new BigDecimal(new BigInteger("2684354560")), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.KB);
+        assertEquals(new BigDecimal(2621440.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.MB);
+        assertEquals(new BigDecimal(2560.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
+        options.setDataLimitUnit(ProfileDataUnit.GB);
+        assertEquals(new BigDecimal(2.50000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
+
+        options.setDataLimitUnit(null);
+        options.setDataLimit(new BigDecimal(20000000L));
+        assertEquals(new BigInteger("20000000"), options.getDataLimitAsBytes());
+        options.setDataLimitUnit(ProfileDataUnit.B);
+        options.setDataLimit(new BigDecimal(150000.999d));
+        assertEquals(new BigInteger("150000"), options.getDataLimitAsBytes());
+        options.setDataLimitUnit(ProfileDataUnit.KB);
+        options.setDataLimit(new BigDecimal(7.5d));
+        assertEquals(new BigInteger("7680"), options.getDataLimitAsBytes());
+        options.setDataLimitUnit(ProfileDataUnit.MB);
+        options.setDataLimit(new BigDecimal(7.54735763d));
+        assertEquals(new BigInteger("7913978"), options.getDataLimitAsBytes());
+        options.setDataLimitUnit(ProfileDataUnit.GB);
+        options.setDataLimit(new BigDecimal(8.125d));
+        assertEquals(new BigInteger("8724152320"), options.getDataLimitAsBytes());
+    }
+
+    @Test
+    public final void testProfileOptionMaxFileSize() {
+        Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
+        options.setMaxFileSizeAsBytes(new BigInteger("50000000"));
+        options.setMaxFileSizeUnit(null);
+        assertEquals(new BigDecimal(50000000L), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.B);
+        assertEquals(new BigDecimal(50000000L), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.KB);
+        assertEquals(new BigDecimal(48828.12500000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.MB);
+        assertEquals(new BigDecimal(47.68371582d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.GB);
+        assertEquals(new BigDecimal(0.04656613d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
+        options.setMaxFileSizeAsBytes(new BigInteger("1288490188800"));
+        options.setMaxFileSizeUnit(ProfileDataUnit.B);
+        assertEquals(new BigDecimal(new BigInteger("1288490188800")), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.KB);
+        assertEquals(new BigDecimal(1258291200.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.MB);
+        assertEquals(new BigDecimal(1228800.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
+        options.setMaxFileSizeUnit(ProfileDataUnit.GB);
+        assertEquals(new BigDecimal(1200.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
+
+        options.setMaxFileSizeUnit(null);
+        options.setMaxFileSize(new BigDecimal(50000000L));
+        assertEquals(new BigInteger("50000000"), options.getMaxFileSizeAsBytes());
+        options.setMaxFileSizeUnit(ProfileDataUnit.B);
+        options.setMaxFileSize(new BigDecimal(1577000.12345d));
+        assertEquals(new BigInteger("1577000"), options.getMaxFileSizeAsBytes());
+        options.setMaxFileSizeUnit(ProfileDataUnit.KB);
+        options.setMaxFileSize(new BigDecimal(17.25d));
+        assertEquals(new BigInteger("17664"), options.getMaxFileSizeAsBytes());
+        options.setMaxFileSizeUnit(ProfileDataUnit.MB);
+        options.setMaxFileSize(new BigDecimal(17.74843209d));
+        assertEquals(new BigInteger("18610579"), options.getMaxFileSizeAsBytes());
+        options.setMaxFileSizeUnit(ProfileDataUnit.GB);
+        options.setMaxFileSize(new BigDecimal(175.7855d));
+        assertEquals(new BigInteger("188748243402"), options.getMaxFileSizeAsBytes());
     }
 
     @Test
@@ -106,8 +190,8 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
         assertEquals(0L, profileOptions.getDocumentLimit());
-        assertEquals(0L, profileOptions.getDataLimit());
-        assertEquals(0L, profileOptions.getTimeLimit());
+        assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
+        assertEquals(0L, profileOptions.getTimeLimitAsSeconds());
         assertEquals(20L, profileOptions.getMaxPathDepth());
         assertEquals(20L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
@@ -122,7 +206,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(2, includeUrls.size());
         assertTrue(includeUrls.contains(".*dia.*"));
         assertTrue(includeUrls.contains(".*natlib.*"));
-        assertEquals(1000000000L, profileOptions.getMaxFileSize());
+        assertEquals(new BigInteger("1000000000"), profileOptions.getMaxFileSizeAsBytes());
         assertTrue(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
         assertEquals(Heritrix3Profile.MEDIUM, profileOptions.getPoliteness());
@@ -133,8 +217,8 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions profileOptions = testInstance.getHeritrix3ProfileOptions();
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
         assertEquals(0L, profileOptions.getDocumentLimit());
-        assertEquals(0L, profileOptions.getDataLimit());
-        assertEquals(0L, profileOptions.getTimeLimit());
+        assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
+        assertEquals(0L, profileOptions.getTimeLimitAsSeconds());
         assertEquals(20L, profileOptions.getMaxPathDepth());
         assertEquals(200L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
@@ -149,7 +233,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(2, includeUrls.size());
         assertTrue(includeUrls.contains(".*dia.*"));
         assertTrue(includeUrls.contains(".*natlib.*"));
-        assertEquals(1000000000L, profileOptions.getMaxFileSize());
+        assertEquals(new BigInteger("1000000000"), profileOptions.getMaxFileSizeAsBytes());
         assertTrue(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
         assertEquals(Heritrix3Profile.POLITE, profileOptions.getPoliteness());
@@ -159,7 +243,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     public final void testToProfileXmlHeritrix3Profile() {
         String modifiedContactURL = "http://www.dia.govt.nz";
         long modifiedDocumentLimit = 25;
-        long modifiedDataLimit = 100;
+        BigInteger modifiedDataLimit = new BigInteger("100");
         long modifiedTimeLimit = 250;
         long modifiedMaxPathDepth = 150;
         long modifiedMaxHops = 50;
@@ -174,7 +258,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         modifiedIncludeUrls.add("*xxx*");
         modifiedIncludeUrls.add("*yyy*");
         modifiedIncludeUrls.add("*zzz*");
-        long modifiedMaxFileSize = 999999999;
+        BigInteger modifiedMaxFileSize = new BigInteger("999999999");
         boolean modifiedCompress = false;
         String modifiedPrefix = "XXX";
         String modifiedPoliteness = Heritrix3Profile.AGGRESSIVE;
@@ -183,8 +267,8 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         // Modify test instance
         profileOptions.setContactURL(modifiedContactURL);
         profileOptions.setDocumentLimit(modifiedDocumentLimit);
-        profileOptions.setDataLimit(modifiedDataLimit);
-        profileOptions.setTimeLimit(modifiedTimeLimit);
+        profileOptions.setDataLimitAsBytes(modifiedDataLimit);
+        profileOptions.setTimeLimitAsSeconds(modifiedTimeLimit);
         profileOptions.setMaxPathDepth(modifiedMaxPathDepth);
         profileOptions.setMaxHops(modifiedMaxHops);
         profileOptions.setMaxTransitiveHops(modifiedMaxTransitiveHops);
@@ -193,7 +277,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOptions.setDefaultEncoding(modifiedDefaultEncoding);
         profileOptions.setBlockURLsAsList(modifiedBlockUrls);
         profileOptions.setIncludeURLsAsList(modifiedIncludeUrls);
-        profileOptions.setMaxFileSize(modifiedMaxFileSize);
+        profileOptions.setMaxFileSizeAsBytes(modifiedMaxFileSize);
         profileOptions.setCompress(modifiedCompress);
         profileOptions.setPrefix(modifiedPrefix);
         profileOptions.setPoliteness(modifiedPoliteness);
@@ -203,8 +287,8 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions modifiedProfileOptions = modifiedProfile.getHeritrix3ProfileOptions();
         assertEquals(modifiedContactURL, modifiedProfileOptions.getContactURL());
         assertEquals(modifiedDocumentLimit, modifiedProfileOptions.getDocumentLimit());
-        assertEquals(modifiedDataLimit, modifiedProfileOptions.getDataLimit());
-        assertEquals(modifiedTimeLimit, modifiedProfileOptions.getTimeLimit());
+        assertEquals(modifiedDataLimit, modifiedProfileOptions.getDataLimitAsBytes());
+        assertEquals(modifiedTimeLimit, modifiedProfileOptions.getTimeLimitAsSeconds());
         assertEquals(modifiedMaxPathDepth, modifiedProfileOptions.getMaxPathDepth());
         assertEquals(modifiedMaxHops, modifiedProfileOptions.getMaxHops());
         assertEquals(modifiedMaxTransitiveHops, modifiedProfileOptions.getMaxTransitiveHops());
@@ -224,7 +308,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertTrue(includeUrls.contains("*zzz*"));
         assertFalse(includeUrls.contains(".*dia.*"));
         assertFalse(includeUrls.contains(".*natlib.*"));
-        assertEquals(modifiedMaxFileSize, modifiedProfileOptions.getMaxFileSize());
+        assertEquals(modifiedMaxFileSize, modifiedProfileOptions.getMaxFileSizeAsBytes());
         assertFalse(modifiedProfileOptions.isCompress());
         assertEquals(modifiedPrefix, modifiedProfileOptions.getPrefix());
         assertEquals(Heritrix3Profile.AGGRESSIVE, modifiedProfileOptions.getPoliteness());

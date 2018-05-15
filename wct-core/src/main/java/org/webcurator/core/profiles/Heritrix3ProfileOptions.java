@@ -1,5 +1,7 @@
 package org.webcurator.core.profiles;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,9 @@ import java.util.List;
 public class Heritrix3ProfileOptions {
     private String contactURL;
     private long documentLimit;
-    private long dataLimit;
+    private BigInteger dataLimitAsBytes;
     private ProfileDataUnit dataLimitUnit;
-    private long timeLimit;
+    private long timeLimitAsSeconds;
     private ProfileTimeUnit timeLimitUnit;
     private long maxPathDepth;
     private long maxHops;
@@ -26,7 +28,7 @@ public class Heritrix3ProfileOptions {
     private List<String> blockURLsAsList = new ArrayList<String>();
     private List<String> includeURLsAsList = new ArrayList<String>();
     private Writer writer;
-    private long maxFileSize;
+    private BigInteger maxFileSizeAsBytes;
     private ProfileDataUnit maxFileSizeUnit;
     private boolean compress;
     private String prefix;
@@ -53,12 +55,102 @@ public class Heritrix3ProfileOptions {
         this.documentLimit = documentLimit;
     }
 
-    public long getDataLimit() {
-        return dataLimit;
+    public BigInteger getDataLimitAsBytes() {
+        return dataLimitAsBytes;
     }
 
-    public void setDataLimit(long dataLimit) {
-        this.dataLimit = dataLimit;
+    public void setDataLimitAsBytes(BigInteger dataLimitAsBytes) {
+        this.dataLimitAsBytes = dataLimitAsBytes;
+    }
+
+    /**
+     * Convert the data limit in bytes to the unit set in the data limit unit.
+     * @return
+     */
+    public BigDecimal getDataLimit() {
+        if (dataLimitUnit == null) {
+            // default to bytes
+            dataLimitUnit = ProfileDataUnit.B;
+            return new BigDecimal(dataLimitAsBytes);
+        }
+        return convertBytesToProfileDataUnit(dataLimitAsBytes, dataLimitUnit);
+    }
+
+    /**
+     * Convert the value to bytes as per the unit.
+     * @param value
+     */
+    public void setDataLimit(BigDecimal value) {
+        if (dataLimitUnit == null) {
+            // default to bytes
+            dataLimitUnit = ProfileDataUnit.B;
+            dataLimitAsBytes = value.toBigInteger();
+        }
+        dataLimitAsBytes = convertProfileDataUnitToBytes(value, dataLimitUnit);
+    }
+
+    /**
+     * Convert the max file size in bytes to the unit set in the max file size.
+     * @return
+     */
+    public BigDecimal getMaxFileSize() {
+        if (maxFileSizeUnit == null) {
+            // default to bytes
+            maxFileSizeUnit = ProfileDataUnit.B;
+            return new BigDecimal(maxFileSizeAsBytes);
+        }
+        return convertBytesToProfileDataUnit(maxFileSizeAsBytes, maxFileSizeUnit);
+    }
+
+    /**
+     * Convert the value to bytes as per the unit.
+     * @param value
+     */
+    public void setMaxFileSize(BigDecimal value) {
+        if (maxFileSizeUnit == null) {
+            // default to bytes
+            maxFileSizeUnit = ProfileDataUnit.B;
+            maxFileSizeAsBytes = value.toBigInteger();
+        }
+        maxFileSizeAsBytes = convertProfileDataUnitToBytes(value, maxFileSizeUnit);
+    }
+
+    private BigDecimal convertBytesToProfileDataUnit(BigInteger bytes, ProfileDataUnit unit) {
+        if (unit.equals(ProfileDataUnit.B)) {
+            return new BigDecimal(bytes);
+        }
+        if (unit.equals(ProfileDataUnit.KB)) {
+            BigDecimal divisor = new BigDecimal(1024);
+            return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        if (unit.equals(ProfileDataUnit.MB)) {
+            BigDecimal divisor = new BigDecimal(1024).pow(2);
+            return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        if (unit.equals(ProfileDataUnit.GB)) {
+            BigDecimal divisor = new BigDecimal(1024).pow(3);
+            return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
+        }
+        return new BigDecimal(bytes);
+    }
+
+    private BigInteger convertProfileDataUnitToBytes(BigDecimal value, ProfileDataUnit unit) {
+        if (unit.equals(ProfileDataUnit.B)) {
+            return value.toBigInteger();
+        }
+        if (unit.equals(ProfileDataUnit.KB)) {
+            BigDecimal multiplier = new BigDecimal(1024);
+            return value.multiply(multiplier).toBigInteger();
+        }
+        if (unit.equals(ProfileDataUnit.MB)) {
+            BigDecimal multiplier = new BigDecimal(1024).pow(2);
+            return value.multiply(multiplier).toBigInteger();
+        }
+        if (unit.equals(ProfileDataUnit.GB)) {
+            BigDecimal multiplier = new BigDecimal(1024).pow(3);
+            return value.multiply(multiplier).toBigInteger();
+        }
+        return value.toBigInteger();
     }
 
     public ProfileDataUnit getDataLimitUnit() {
@@ -69,12 +161,12 @@ public class Heritrix3ProfileOptions {
         this.dataLimitUnit = dataLimitUnit;
     }
 
-    public long getTimeLimit() {
-        return timeLimit;
+    public long getTimeLimitAsSeconds() {
+        return timeLimitAsSeconds;
     }
 
-    public void setTimeLimit(long timeLimit) {
-        this.timeLimit = timeLimit;
+    public void setTimeLimitAsSeconds(long timeLimitAsSeconds) {
+        this.timeLimitAsSeconds = timeLimitAsSeconds;
     }
 
     public ProfileTimeUnit getTimeLimitUnit() {
@@ -173,12 +265,12 @@ public class Heritrix3ProfileOptions {
         this.writer = writer;
     }
 
-    public long getMaxFileSize() {
-        return maxFileSize;
+    public BigInteger getMaxFileSizeAsBytes() {
+        return maxFileSizeAsBytes;
     }
 
-    public void setMaxFileSize(long maxFileSize) {
-        this.maxFileSize = maxFileSize;
+    public void setMaxFileSizeAsBytes(BigInteger maxFileSizeAsBytes) {
+        this.maxFileSizeAsBytes = maxFileSizeAsBytes;
     }
 
     public ProfileDataUnit getMaxFileSizeUnit() {
@@ -239,7 +331,6 @@ public class Heritrix3ProfileOptions {
             for (String tString : temp) {
                 stringList.add(tString.trim());
             }
-            System.out.println(stringList);
         }
     }
 
@@ -248,9 +339,9 @@ public class Heritrix3ProfileOptions {
         return "Heritrix3ProfileOptions{" +
                 "contactURL='" + contactURL + '\'' +
                 ", documentLimit=" + documentLimit +
-                ", dataLimit=" + dataLimit +
+                ", dataLimitAsBytes=" + dataLimitAsBytes +
                 ", dataLimitUnit=" + dataLimitUnit +
-                ", timeLimit=" + timeLimit +
+                ", timeLimitAsSeconds=" + timeLimitAsSeconds +
                 ", timeLimitUnit=" + timeLimitUnit +
                 ", maxPathDepth=" + maxPathDepth +
                 ", maxHops=" + maxHops +
@@ -261,7 +352,7 @@ public class Heritrix3ProfileOptions {
                 ", blockURLsAsList=" + blockURLsAsList +
                 ", includeURLsAsList=" + includeURLsAsList +
                 ", writer=" + writer +
-                ", maxFileSize=" + maxFileSize +
+                ", maxFileSizeAsBytes=" + maxFileSizeAsBytes +
                 ", maxFileSizeUnit=" + maxFileSizeUnit +
                 ", compress=" + compress +
                 ", prefix='" + prefix + '\'' +
