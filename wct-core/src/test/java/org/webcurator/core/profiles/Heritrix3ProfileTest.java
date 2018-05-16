@@ -257,7 +257,12 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(new BigInteger("1000000000"), profileOptions.getMaxFileSizeAsBytes());
         assertTrue(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
-        assertEquals(Heritrix3Profile.MEDIUM, profileOptions.getPoliteness());
+        PolitenessOptions politenessOptions = profileOptions.getPolitenessOptions();
+        assertEquals(5.0d, politenessOptions.getDelayFactor(), 0.0);
+        assertEquals(3000L, politenessOptions.getMinDelayMs());
+        assertEquals(30000L, politenessOptions.getMaxDelayMs());
+        assertEquals(300L, politenessOptions.getRespectCrawlDelayUpToSeconds());
+        assertEquals(800L, politenessOptions.getMaxPerHostBandwidthUsageKbSec());
     }
 
     @Test
@@ -284,7 +289,12 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(new BigInteger("1000000000"), profileOptions.getMaxFileSizeAsBytes());
         assertTrue(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
-        assertEquals(Heritrix3Profile.POLITE, profileOptions.getPoliteness());
+        PolitenessOptions politenessOptions = profileOptions.getPolitenessOptions();
+        assertEquals(10.0d, politenessOptions.getDelayFactor(), 0.0);
+        assertEquals(9000L, politenessOptions.getMinDelayMs());
+        assertEquals(90000L, politenessOptions.getMaxDelayMs());
+        assertEquals(900L, politenessOptions.getRespectCrawlDelayUpToSeconds());
+        assertEquals(400L, politenessOptions.getMaxPerHostBandwidthUsageKbSec());
     }
 
     @Test
@@ -309,7 +319,11 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         BigInteger modifiedMaxFileSize = new BigInteger("999999999");
         boolean modifiedCompress = false;
         String modifiedPrefix = "XXX";
-        String modifiedPoliteness = Heritrix3Profile.AGGRESSIVE;
+        double modifiedDelayFactor = 10.0d;
+        long modifiedMinDelayMs = 9000L;
+        long modifiedMaxDelayMs = 90000L;
+        long modifiedRespectCrawlDelayUpToSeconds = 900L;
+        long modifiedMaxPerHostBandwidthUsageKbSec = 400L;
         Heritrix3Profile profile = new Heritrix3Profile();
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
         // Modify test instance
@@ -328,7 +342,12 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOptions.setMaxFileSizeAsBytes(modifiedMaxFileSize);
         profileOptions.setCompress(modifiedCompress);
         profileOptions.setPrefix(modifiedPrefix);
-        profileOptions.setPoliteness(modifiedPoliteness);
+        PolitenessOptions politenessOptions = profileOptions.getPolitenessOptions();
+        politenessOptions.setDelayFactor(modifiedDelayFactor);
+        politenessOptions.setMinDelayMs(modifiedMinDelayMs);
+        politenessOptions.setMaxDelayMs(modifiedMaxDelayMs);
+        politenessOptions.setRespectCrawlDelayUpToSeconds(modifiedRespectCrawlDelayUpToSeconds);
+        politenessOptions.setMaxPerHostBandwidthUsageKbSec(modifiedMaxPerHostBandwidthUsageKbSec);
         String modifiedXml = profile.toProfileXml();
         // Create new profile instance with modified XML
         Heritrix3Profile modifiedProfile = new Heritrix3Profile(modifiedXml);
@@ -359,6 +378,11 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(modifiedMaxFileSize, modifiedProfileOptions.getMaxFileSizeAsBytes());
         assertFalse(modifiedProfileOptions.isCompress());
         assertEquals(modifiedPrefix, modifiedProfileOptions.getPrefix());
-        assertEquals(Heritrix3Profile.AGGRESSIVE, modifiedProfileOptions.getPoliteness());
+        PolitenessOptions modifiedPolitenessOptions = modifiedProfileOptions.getPolitenessOptions();
+        assertEquals(10.0d, modifiedPolitenessOptions.getDelayFactor(), 0.0);
+        assertEquals(9000L, modifiedPolitenessOptions.getMinDelayMs());
+        assertEquals(90000L, modifiedPolitenessOptions.getMaxDelayMs());
+        assertEquals(900L, modifiedPolitenessOptions.getRespectCrawlDelayUpToSeconds());
+        assertEquals(400L, modifiedPolitenessOptions.getMaxPerHostBandwidthUsageKbSec());
     }
 }

@@ -31,7 +31,7 @@ public class Heritrix3ProfileOptions {
     private ProfileDataUnit maxFileSizeUnit;
     private boolean compress;
     private String prefix;
-    private String politeness;
+    private PolitenessOptions politenessOptions;
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private static final int BIG_DECIMAL_SCALE = 8;
     private static final int BYTES_CONVERSION_FACTOR = 1024;
@@ -329,12 +329,12 @@ public class Heritrix3ProfileOptions {
         this.prefix = prefix;
     }
 
-    public String getPoliteness() {
-        return politeness;
+    public PolitenessOptions getPolitenessOptions() {
+        return politenessOptions;
     }
 
-    public void setPoliteness(String politeness) {
-        this.politeness = politeness;
+    public void setPolitenessOptions(PolitenessOptions politenessOptions) {
+        this.politenessOptions = politenessOptions;
     }
 
     private String convertStringListToString(List<String> stringList) {
@@ -387,7 +387,7 @@ public class Heritrix3ProfileOptions {
                 ", maxFileSizeUnit=" + maxFileSizeUnit +
                 ", compress=" + compress +
                 ", prefix='" + prefix + '\'' +
-                ", politeness=" + politeness +
+                ", politenessOptions=" + politenessOptions +
                 '}';
     }
 }

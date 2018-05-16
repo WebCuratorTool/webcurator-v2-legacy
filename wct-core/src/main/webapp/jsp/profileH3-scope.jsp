@@ -108,4 +108,29 @@
     </td>
   </tr>
 
+  <tr>
+    <td class="subBoxTextHdr">Delay Factor:</td>
+    <td class="subBoxText"><input size="20" type="number" step="0.01" min="0.00" name="delayFactor" value="<c:out value="${command.delayFactor}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Min Delay (ms):</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="minDelayMs" value="<c:out value="${command.minDelayMs}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Max Delay (ms):</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxDelayMs" value="<c:out value="${command.maxDelayMs}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Respect Crawl Delay up to Seconds:</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="respectCrawlDelayUpToSeconds" value="<c:out value="${command.respectCrawlDelayUpToSeconds}"/>"></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">Max Per Host Bandwidth Usage (kb/s):</td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxPerHostBandwidthUsageKbSec" value="<c:out value="${command.maxPerHostBandwidthUsageKbSec}"/>"></td>
+  </tr>
+
 </table>

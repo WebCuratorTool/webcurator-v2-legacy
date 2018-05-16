@@ -15,10 +15,7 @@
  */
 package org.webcurator.ui.profiles.command;
 
-import org.webcurator.core.profiles.Heritrix3Profile;
-import org.webcurator.core.profiles.Heritrix3ProfileOptions;
-import org.webcurator.core.profiles.ProfileDataUnit;
-import org.webcurator.core.profiles.ProfileTimeUnit;
+import org.webcurator.core.profiles.*;
 import org.webcurator.domain.model.core.Profile;
 
 import java.math.BigDecimal;
@@ -47,6 +44,11 @@ public class Heritrix3ProfileCommand {
 	private boolean compress;
 	private String prefix;
 	private String politeness;
+	private double delayFactor;
+	private long minDelayMs;
+	private long maxDelayMs;
+	private long respectCrawlDelayUpToSeconds;
+	private long maxPerHostBandwidthUsageKbSec;
 
 	/**
 	 * Build a command object from the Heritrix3Profile.
@@ -87,7 +89,14 @@ public class Heritrix3ProfileCommand {
 		command.setMaxFileSize(options.getMaxFileSize().doubleValue());
 		command.setCompress(options.isCompress());
 		command.setPrefix(options.getPrefix());
-		command.setPoliteness(options.getPoliteness());
+		PolitenessOptions politenessOptions = options.getPolitenessOptions();
+		command.setDelayFactor(politenessOptions.getDelayFactor());
+		command.setMinDelayMs(politenessOptions.getMinDelayMs());
+		command.setMaxDelayMs(politenessOptions.getMaxDelayMs());
+		command.setRespectCrawlDelayUpToSeconds(politenessOptions.getRespectCrawlDelayUpToSeconds());
+		command.setMaxPerHostBandwidthUsageKbSec(politenessOptions.getMaxPerHostBandwidthUsageKbSec());
+		// set the politeness combo box value
+		command.setPoliteness(politenessOptions.getPoliteness());
 
 		return command;
 	}
@@ -122,7 +131,12 @@ public class Heritrix3ProfileCommand {
 		options.setMaxFileSize(new BigDecimal(maxFileSize).setScale(8, BigDecimal.ROUND_HALF_UP));
 		options.setCompress(compress);
 		options.setPrefix(prefix);
-		options.setPoliteness(politeness);
+		PolitenessOptions politenessOptions = options.getPolitenessOptions();
+		politenessOptions.setDelayFactor(delayFactor);
+		politenessOptions.setMinDelayMs(minDelayMs);
+		politenessOptions.setMaxDelayMs(maxDelayMs);
+		politenessOptions.setRespectCrawlDelayUpToSeconds(respectCrawlDelayUpToSeconds);
+		politenessOptions.setMaxPerHostBandwidthUsageKbSec(maxPerHostBandwidthUsageKbSec);
 		// update the profile xml
 		String profileXml = heritrix3Profile.toProfileXml();
 		heritrix3Profile.setProfileXml(profileXml);
@@ -278,5 +292,45 @@ public class Heritrix3ProfileCommand {
 
 	public void setPoliteness(String politeness) {
 		this.politeness = politeness;
+	}
+
+	public double getDelayFactor() {
+		return delayFactor;
+	}
+
+	public void setDelayFactor(double delayFactor) {
+		this.delayFactor = delayFactor;
+	}
+
+	public long getMinDelayMs() {
+		return minDelayMs;
+	}
+
+	public void setMinDelayMs(long minDelayMs) {
+		this.minDelayMs = minDelayMs;
+	}
+
+	public long getMaxDelayMs() {
+		return maxDelayMs;
+	}
+
+	public void setMaxDelayMs(long maxDelayMs) {
+		this.maxDelayMs = maxDelayMs;
+	}
+
+	public long getRespectCrawlDelayUpToSeconds() {
+		return respectCrawlDelayUpToSeconds;
+	}
+
+	public void setRespectCrawlDelayUpToSeconds(long respectCrawlDelayUpToSeconds) {
+		this.respectCrawlDelayUpToSeconds = respectCrawlDelayUpToSeconds;
+	}
+
+	public long getMaxPerHostBandwidthUsageKbSec() {
+		return maxPerHostBandwidthUsageKbSec;
+	}
+
+	public void setMaxPerHostBandwidthUsageKbSec(long maxPerHostBandwidthUsageKbSec) {
+		this.maxPerHostBandwidthUsageKbSec = maxPerHostBandwidthUsageKbSec;
 	}
 }

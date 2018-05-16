@@ -35,13 +35,6 @@ public class Heritrix3Profile {
     private final static String BEAN_ID_PROPERTY_NAME_XPATH = "/beans/bean[@id=''{0}'']/property[@name=''{1}'']";
     private final static String SCOPE_RULES_BEAN_CLASS_PROPERTY_NAME_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''{0}'']/property[@name=''{1}'']";
     private final static String MATCHES_LIST_REGEX_DECIDE_RULE_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''org.archive.modules.deciderules.MatchesListRegexDecideRule'']/property[@name=''decision'' and @value=''{0}'']";
-    private PolitenessOptions polite = new PolitenessOptions(10.0d, 9000, 90000, 900, 400);
-    private PolitenessOptions medium = new PolitenessOptions(5.0d, 3000, 30000, 300, 800);
-    private PolitenessOptions aggressive = new PolitenessOptions(1.0d, 1000, 10000, 100, 2000);
-    public static final String POLITE = "Polite";
-    public static final String MEDIUM = "Medium";
-    public static final String AGGRESSIVE = "Aggressive";
-    public static final String[] POLITENESS_OPTIONS = {POLITE, MEDIUM, AGGRESSIVE};
 
     /**
      * Default constructor - read the default xml file.
@@ -96,7 +89,7 @@ public class Heritrix3Profile {
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "compress", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isCompress()));
             modifyBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument, heritrix3ProfileOptions.getPrefix());
             // Map politeness
-            PolitenessOptions politenessOptions = getPolitenessOptions(heritrix3ProfileOptions.getPoliteness());
+            PolitenessOptions politenessOptions = heritrix3ProfileOptions.getPolitenessOptions();
             modifyBeanIDPropertyNameAttributeValue("disposition", "delayFactor", xmlDocument, Double.toString(politenessOptions.getDelayFactor()));
             modifyBeanIDPropertyNameAttributeValue("disposition", "minDelayMs", xmlDocument, Long.toString(politenessOptions.getMinDelayMs()));
             modifyBeanIDPropertyNameAttributeValue("disposition", "maxDelayMs", xmlDocument, Long.toString(politenessOptions.getMaxDelayMs()));
@@ -110,19 +103,6 @@ public class Heritrix3Profile {
         // set instance variable xml for consistency
         this.profileXml = xml;
         return xml;
-    }
-
-    private PolitenessOptions getPolitenessOptions(String politeness) {
-        if (politeness.equals(POLITE)) {
-            return polite;
-        } else if (politeness.equals(MEDIUM)) {
-            return medium;
-        } else if (politeness.equals(AGGRESSIVE)) {
-            return aggressive;
-        } else {
-            // default
-            return medium;
-        }
     }
 
     private String domToXml(Document xmlDocument) {
@@ -204,7 +184,7 @@ public class Heritrix3Profile {
             long respectCrawlDelayUpToSeconds = Long.parseLong(getBeanIDPropertyNameAttributeValue("disposition", "respectCrawlDelayUpToSeconds", xmlDocument));
             long maxPerHostBandwidthUsageKbSec = Long.parseLong(getBeanIDPropertyNameAttributeValue("disposition", "maxPerHostBandwidthUsageKbSec", xmlDocument));
             PolitenessOptions politenessOptions = new PolitenessOptions(delayFactor, minDelayMs, maxDelayMs, respectCrawlDelayUpToSeconds, maxPerHostBandwidthUsageKbSec);
-            profileOptions.setPoliteness(politenessOptions.getPoliteness());
+            profileOptions.setPolitenessOptions(politenessOptions);
         } catch (Exception e) {
             log.error("Exception converting XML to profile options", e);
         }
@@ -345,122 +325,4 @@ public class Heritrix3Profile {
         this.profileXml = profileXml;
     }
 
-    private class PolitenessOptions {
-        private double delayFactor;
-        private long minDelayMs;
-        private long maxDelayMs;
-        private long respectCrawlDelayUpToSeconds;
-        private long maxPerHostBandwidthUsageKbSec;
-
-        public PolitenessOptions(double delayFactor, long minDelayMs, long maxDelayMs, long respectCrawlDelayUpToSeconds, long maxPerHostBandwidthUsageKbSec) {
-            this.delayFactor = delayFactor;
-            this.minDelayMs = minDelayMs;
-            this.maxDelayMs = maxDelayMs;
-            this.respectCrawlDelayUpToSeconds = respectCrawlDelayUpToSeconds;
-            this.maxPerHostBandwidthUsageKbSec = maxPerHostBandwidthUsageKbSec;
-        }
-
-        public double getDelayFactor() {
-            return delayFactor;
-        }
-
-        public void setDelayFactor(double delayFactor) {
-            this.delayFactor = delayFactor;
-        }
-
-        public long getMinDelayMs() {
-            return minDelayMs;
-        }
-
-        public void setMinDelayMs(long minDelayMs) {
-            this.minDelayMs = minDelayMs;
-        }
-
-        public long getMaxDelayMs() {
-            return maxDelayMs;
-        }
-
-        public void setMaxDelayMs(long maxDelayMs) {
-            this.maxDelayMs = maxDelayMs;
-        }
-
-        public long getRespectCrawlDelayUpToSeconds() {
-            return respectCrawlDelayUpToSeconds;
-        }
-
-        public void setRespectCrawlDelayUpToSeconds(long respectCrawlDelayUpToSeconds) {
-            this.respectCrawlDelayUpToSeconds = respectCrawlDelayUpToSeconds;
-        }
-
-        public long getMaxPerHostBandwidthUsageKbSec() {
-            return maxPerHostBandwidthUsageKbSec;
-        }
-
-        public void setMaxPerHostBandwidthUsageKbSec(long maxPerHostBandwidthUsageKbSec) {
-            this.maxPerHostBandwidthUsageKbSec = maxPerHostBandwidthUsageKbSec;
-        }
-
-        public boolean isPolite() {
-            return this.equals(polite);
-        }
-
-        public boolean isMedium() {
-            return this.equals(medium);
-        }
-
-        public boolean isAggressive() {
-            return this.equals(aggressive);
-        }
-
-        public String getPoliteness() {
-            if (isPolite()) {
-                return POLITE;
-            } else if (isMedium()) {
-                 return MEDIUM;
-            } else if (isAggressive()) {
-                return  AGGRESSIVE;
-            } else {
-                // default
-                return MEDIUM;
-            }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            PolitenessOptions that = (PolitenessOptions) o;
-
-            if (Double.compare(that.delayFactor, delayFactor) != 0) return false;
-            if (minDelayMs != that.minDelayMs) return false;
-            if (maxDelayMs != that.maxDelayMs) return false;
-            if (respectCrawlDelayUpToSeconds != that.respectCrawlDelayUpToSeconds) return false;
-            return maxPerHostBandwidthUsageKbSec == that.maxPerHostBandwidthUsageKbSec;
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            long temp;
-            temp = Double.doubleToLongBits(delayFactor);
-            result = (int) (temp ^ (temp >>> 32));
-            result = 31 * result + (int) (minDelayMs ^ (minDelayMs >>> 32));
-            result = 31 * result + (int) (maxDelayMs ^ (maxDelayMs >>> 32));
-            result = 31 * result + (int) (respectCrawlDelayUpToSeconds ^ (respectCrawlDelayUpToSeconds >>> 32));
-            result = 31 * result + (int) (maxPerHostBandwidthUsageKbSec ^ (maxPerHostBandwidthUsageKbSec >>> 32));
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "PolitenessOptions{" +
-                    "delayFactor=" + delayFactor +
-                    ", minDelayMs=" + minDelayMs +
-                    ", maxDelayMs=" + maxDelayMs +
-                    ", respectCrawlDelayUpToSeconds=" + respectCrawlDelayUpToSeconds +
-                    ", maxPerHostBandwidthUsageKbSec=" + maxPerHostBandwidthUsageKbSec +
-                    '}';
-        }
-    }
 }

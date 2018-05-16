@@ -18,6 +18,7 @@ package org.webcurator.ui.profiles.controller;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.webcurator.core.profiles.Heritrix3Profile;
+import org.webcurator.core.profiles.PolitenessOptions;
 import org.webcurator.core.profiles.ProfileDataUnit;
 import org.webcurator.core.profiles.ProfileTimeUnit;
 import org.webcurator.domain.model.core.Profile;
@@ -76,7 +77,7 @@ public class Heritrix3ProfileHandler extends TabHandler {
 		}
 
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
-		tmav.addObject("politenessTypes", Heritrix3Profile.POLITENESS_OPTIONS);
+		tmav.addObject("politenessTypes", PolitenessOptions.POLITENESS_OPTIONS);
 		tmav.addObject("profileDataUnits", ProfileDataUnit.getProfileDataUnitNames());
 		tmav.addObject("profileTimeUnits", ProfileTimeUnit.getProfileDataTimeNames());
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
