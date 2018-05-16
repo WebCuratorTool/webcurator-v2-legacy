@@ -27,17 +27,18 @@ public class Heritrix3ProfileOptions {
     private String defaultEncoding;
     private List<String> blockURLsAsList = new ArrayList<String>();
     private List<String> includeURLsAsList = new ArrayList<String>();
-    private Writer writer;
     private BigInteger maxFileSizeAsBytes;
     private ProfileDataUnit maxFileSizeUnit;
     private boolean compress;
     private String prefix;
     private String politeness;
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
-    public enum Writer {
-        WARC, ARC
-    }
+    private static final int BIG_DECIMAL_SCALE = 8;
+    private static final int BYTES_CONVERSION_FACTOR = 1024;
+    private static final int SECONDS_PER_MINUTE = 60;
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int HOURS_PER_DAY = 24;
+    private static final int DAYS_PER_WEEK = 7;
 
     public String getContactURL() {
         return contactURL;
@@ -71,7 +72,7 @@ public class Heritrix3ProfileOptions {
         if (dataLimitUnit == null) {
             // default to bytes
             dataLimitUnit = ProfileDataUnit.B;
-            return new BigDecimal(dataLimitAsBytes);
+            return new BigDecimal(dataLimitAsBytes).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP);
         }
         return convertBytesToProfileDataUnit(dataLimitAsBytes, dataLimitUnit);
     }
@@ -84,7 +85,7 @@ public class Heritrix3ProfileOptions {
         if (dataLimitUnit == null) {
             // default to bytes
             dataLimitUnit = ProfileDataUnit.B;
-            dataLimitAsBytes = value.toBigInteger();
+            dataLimitAsBytes = value.setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).toBigInteger();
         }
         dataLimitAsBytes = convertProfileDataUnitToBytes(value, dataLimitUnit);
     }
@@ -97,7 +98,7 @@ public class Heritrix3ProfileOptions {
         if (maxFileSizeUnit == null) {
             // default to bytes
             maxFileSizeUnit = ProfileDataUnit.B;
-            return new BigDecimal(maxFileSizeAsBytes);
+            return new BigDecimal(maxFileSizeAsBytes).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP);
         }
         return convertBytesToProfileDataUnit(maxFileSizeAsBytes, maxFileSizeUnit);
     }
@@ -110,7 +111,7 @@ public class Heritrix3ProfileOptions {
         if (maxFileSizeUnit == null) {
             // default to bytes
             maxFileSizeUnit = ProfileDataUnit.B;
-            maxFileSizeAsBytes = value.toBigInteger();
+            maxFileSizeAsBytes = value.setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).toBigInteger();
         }
         maxFileSizeAsBytes = convertProfileDataUnitToBytes(value, maxFileSizeUnit);
     }
@@ -123,7 +124,7 @@ public class Heritrix3ProfileOptions {
         if (timeLimitUnit == null) {
             // default to seconds
             timeLimitUnit = ProfileTimeUnit.SECOND;
-            return new BigDecimal(timeLimitAsSeconds);
+            return new BigDecimal(timeLimitAsSeconds).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP);
         }
         return convertSecondsToProfileTimeUnit(timeLimitAsSeconds, timeLimitUnit);
     }
@@ -136,93 +137,60 @@ public class Heritrix3ProfileOptions {
         if (timeLimitUnit == null) {
             // default to seconds
             timeLimitUnit = ProfileTimeUnit.SECOND;
-            timeLimitAsSeconds = value.toBigInteger();
+            timeLimitAsSeconds = value.setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).toBigInteger();
         }
         timeLimitAsSeconds = convertProfileTimeUnitToSeconds(value, timeLimitUnit);
     }
 
     private BigDecimal convertBytesToProfileDataUnit(BigInteger bytes, ProfileDataUnit unit) {
-        if (unit.equals(ProfileDataUnit.B)) {
-            return new BigDecimal(bytes);
-        }
-        if (unit.equals(ProfileDataUnit.KB)) {
-            BigDecimal divisor = new BigDecimal(1024);
-            return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        if (unit.equals(ProfileDataUnit.MB)) {
-            BigDecimal divisor = new BigDecimal(1024).pow(2);
-            return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        if (unit.equals(ProfileDataUnit.GB)) {
-            BigDecimal divisor = new BigDecimal(1024).pow(3);
-            return new BigDecimal(bytes).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        return new BigDecimal(bytes);
+        BigDecimal factor = createProfileDataUnitFactor(unit);
+        return new BigDecimal(bytes).divide(factor, BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP);
     }
 
     private BigDecimal convertSecondsToProfileTimeUnit(BigInteger seconds, ProfileTimeUnit unit) {
-        if (unit.equals(ProfileTimeUnit.SECOND)) {
-            return new BigDecimal(seconds);
-        }
-        if (unit.equals(ProfileTimeUnit.MINUTE)) {
-            BigDecimal divisor = new BigDecimal(60);
-            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        if (unit.equals(ProfileTimeUnit.HOUR)) {
-            BigDecimal divisor = new BigDecimal(60).pow(2);
-            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        if (unit.equals(ProfileTimeUnit.DAY)) {
-            BigDecimal divisor = new BigDecimal(60).pow(2).multiply(new BigDecimal(24));
-            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        if (unit.equals(ProfileTimeUnit.WEEK)) {
-            BigDecimal divisor = new BigDecimal(60).pow(2).multiply(new BigDecimal(24)).multiply(new BigDecimal(7));
-            return new BigDecimal(seconds).divide(divisor, 8, BigDecimal.ROUND_HALF_UP);
-        }
-        return new BigDecimal(seconds);
+        BigDecimal factor = createProfileTimeUnitFactor(unit);
+        return new BigDecimal(seconds).divide(factor, BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP);
     }
 
     private BigInteger convertProfileDataUnitToBytes(BigDecimal value, ProfileDataUnit unit) {
-        if (unit.equals(ProfileDataUnit.B)) {
-            return value.toBigInteger();
-        }
-        if (unit.equals(ProfileDataUnit.KB)) {
-            BigDecimal multiplier = new BigDecimal(1024);
-            return value.multiply(multiplier).toBigInteger();
-        }
-        if (unit.equals(ProfileDataUnit.MB)) {
-            BigDecimal multiplier = new BigDecimal(1024).pow(2);
-            return value.multiply(multiplier).toBigInteger();
-        }
-        if (unit.equals(ProfileDataUnit.GB)) {
-            BigDecimal multiplier = new BigDecimal(1024).pow(3);
-            return value.multiply(multiplier).toBigInteger();
-        }
-        return value.toBigInteger();
+        BigDecimal factor = createProfileDataUnitFactor(unit);
+        return value.multiply(factor).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).toBigInteger();
     }
 
     private BigInteger convertProfileTimeUnitToSeconds(BigDecimal value, ProfileTimeUnit unit) {
-        if (unit.equals(ProfileTimeUnit.SECOND)) {
-            return value.toBigInteger();
+        BigDecimal factor = createProfileTimeUnitFactor(unit);
+        return value.multiply(factor).setScale(BIG_DECIMAL_SCALE, BigDecimal.ROUND_HALF_UP).toBigInteger();
+    }
+
+    private BigDecimal createProfileDataUnitFactor(ProfileDataUnit unit) {
+        BigDecimal factor = BigDecimal.ONE;
+        if (unit.equals(ProfileDataUnit.KB)) {
+            factor = new BigDecimal(BYTES_CONVERSION_FACTOR);
         }
+        if (unit.equals(ProfileDataUnit.MB)) {
+            factor = new BigDecimal(BYTES_CONVERSION_FACTOR).pow(2);
+        }
+        if (unit.equals(ProfileDataUnit.GB)) {
+            factor = new BigDecimal(BYTES_CONVERSION_FACTOR).pow(3);
+        }
+        return factor;
+    }
+
+    private BigDecimal createProfileTimeUnitFactor(ProfileTimeUnit unit) {
+        BigDecimal factor = BigDecimal.ONE;
         if (unit.equals(ProfileTimeUnit.MINUTE)) {
-            BigDecimal multiplier = new BigDecimal(60);
-            return value.multiply(multiplier).toBigInteger();
+            factor = new BigDecimal(SECONDS_PER_MINUTE);
         }
         if (unit.equals(ProfileTimeUnit.HOUR)) {
-            BigDecimal multiplier = new BigDecimal(60).pow(2);
-            return value.multiply(multiplier).toBigInteger();
+            factor = new BigDecimal(SECONDS_PER_MINUTE).multiply(new BigDecimal(MINUTES_PER_HOUR));
         }
         if (unit.equals(ProfileTimeUnit.DAY)) {
-            BigDecimal multiplier = new BigDecimal(60).pow(2).multiply(new BigDecimal(24));
-            return value.multiply(multiplier).toBigInteger();
+            factor = new BigDecimal(SECONDS_PER_MINUTE).multiply(new BigDecimal(MINUTES_PER_HOUR)).multiply(new BigDecimal(HOURS_PER_DAY));
         }
         if (unit.equals(ProfileTimeUnit.WEEK)) {
-            BigDecimal multiplier = new BigDecimal(60).pow(2).multiply(new BigDecimal(24)).multiply(new BigDecimal(7));
-            return value.multiply(multiplier).toBigInteger();
+            factor = new BigDecimal(SECONDS_PER_MINUTE).multiply(new BigDecimal(MINUTES_PER_HOUR)).multiply(new BigDecimal(HOURS_PER_DAY)).multiply(new BigDecimal(DAYS_PER_WEEK));
         }
-        return value.toBigInteger();
+        return factor;
     }
 
     public ProfileDataUnit getDataLimitUnit() {
@@ -329,14 +297,6 @@ public class Heritrix3ProfileOptions {
         this.includeURLsAsList = includeURLsAsList;
     }
 
-    public Writer getWriter() {
-        return writer;
-    }
-
-    public void setWriter(Writer writer) {
-        this.writer = writer;
-    }
-
     public BigInteger getMaxFileSizeAsBytes() {
         return maxFileSizeAsBytes;
     }
@@ -423,7 +383,6 @@ public class Heritrix3ProfileOptions {
                 ", defaultEncoding='" + defaultEncoding + '\'' +
                 ", blockURLsAsList=" + blockURLsAsList +
                 ", includeURLsAsList=" + includeURLsAsList +
-                ", writer=" + writer +
                 ", maxFileSizeAsBytes=" + maxFileSizeAsBytes +
                 ", maxFileSizeUnit=" + maxFileSizeUnit +
                 ", compress=" + compress +

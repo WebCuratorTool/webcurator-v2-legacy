@@ -17,6 +17,11 @@ package org.webcurator.ui.profiles.command;
 
 import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.core.profiles.Heritrix3ProfileOptions;
+import org.webcurator.core.profiles.ProfileDataUnit;
+import org.webcurator.core.profiles.ProfileTimeUnit;
+import org.webcurator.domain.model.core.Profile;
+
+import java.math.BigDecimal;
 
 /**
  * The command for editing the scope information about a H3 profile.
@@ -25,8 +30,10 @@ import org.webcurator.core.profiles.Heritrix3ProfileOptions;
 public class Heritrix3ProfileCommand {
 	private String contactURL;
 	private long documentLimit;
-	private long dataLimit;
-	private long timeLimit;
+	private double dataLimit;
+	private String dataLimitUnit;
+	private double timeLimit;
+	private String timeLimitUnit;
 	private long maxPathDepth;
 	private long maxHops;
 	private long maxTransitiveHops;
@@ -35,7 +42,8 @@ public class Heritrix3ProfileCommand {
 	private String defaultEncoding;
 	private String blockUrls;
 	private String includeUrls;
-	private long maxFileSize;
+	private double maxFileSize;
+	private String maxFileSizeUnit;
 	private boolean compress;
 	private String prefix;
 	private String politeness;
@@ -45,13 +53,29 @@ public class Heritrix3ProfileCommand {
 	 * @param heritrix3Profile The business model object.
 	 * @return A new Heritrix3ProfileCommand object.
 	 */
-	public static Heritrix3ProfileCommand buildFromModel(Heritrix3Profile heritrix3Profile) {
+	public static Heritrix3ProfileCommand buildFromModel(Heritrix3Profile heritrix3Profile, Profile profile) {
 		Heritrix3ProfileCommand command = new Heritrix3ProfileCommand();
 		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
+		// set up the units
+		if (profile != null) {
+			options.setDataLimitUnit(profile.getDataLimitUnit() != null ? ProfileDataUnit.valueOf(profile.getDataLimitUnit()) : ProfileDataUnit.DEFAULT);
+			options.setTimeLimitUnit(profile.getTimeLimitUnit() != null ? ProfileTimeUnit.valueOf(profile.getTimeLimitUnit()) : ProfileTimeUnit.DEFAULT);
+			options.setMaxFileSizeUnit(profile.getMaxFileSizeUnit() != null ? ProfileDataUnit.valueOf(profile.getMaxFileSizeUnit()) : ProfileDataUnit.DEFAULT);
+			command.setDataLimitUnit(profile.getDataLimitUnit() != null ? profile.getDataLimitUnit() : ProfileDataUnit.DEFAULT.name());
+			command.setTimeLimitUnit(profile.getTimeLimitUnit() != null ? profile.getTimeLimitUnit() : ProfileTimeUnit.DEFAULT.name());
+			command.setMaxFileSizeUnit(profile.getMaxFileSizeUnit() != null ? profile.getMaxFileSizeUnit() : ProfileDataUnit.DEFAULT.name());
+		} else {
+			options.setDataLimitUnit(ProfileDataUnit.DEFAULT);
+			options.setTimeLimitUnit(ProfileTimeUnit.DEFAULT);
+			options.setMaxFileSizeUnit(ProfileDataUnit.DEFAULT);
+			command.setDataLimitUnit(ProfileDataUnit.DEFAULT.name());
+			command.setTimeLimitUnit(ProfileTimeUnit.DEFAULT.name());
+			command.setMaxFileSizeUnit(ProfileDataUnit.DEFAULT.name());
+		}
 		command.setContactURL(options.getContactURL());
 		command.setDocumentLimit(options.getDocumentLimit());
-		//command.setDataLimit(options.getDataLimitAsBytes());
-		//command.setTimeLimit(options.getTimeLimitAsSeconds());
+		command.setDataLimit(options.getDataLimit().doubleValue());
+		command.setTimeLimit(options.getTimeLimit().doubleValue());
 		command.setMaxPathDepth(options.getMaxPathDepth());
 		command.setMaxHops(options.getMaxHops());
 		command.setMaxTransitiveHops(options.getMaxTransitiveHops());
@@ -60,7 +84,7 @@ public class Heritrix3ProfileCommand {
 		command.setDefaultEncoding(options.getDefaultEncoding());
 		command.setBlockUrls(options.getBlockURLs());
 		command.setIncludeUrls(options.getIncludeURLs());
-		//command.setMaxFileSize(options.getMaxFileSizeAsBytes());
+		command.setMaxFileSize(options.getMaxFileSize().doubleValue());
 		command.setCompress(options.isCompress());
 		command.setPrefix(options.getPrefix());
 		command.setPoliteness(options.getPoliteness());
@@ -72,12 +96,20 @@ public class Heritrix3ProfileCommand {
 	 * Update the business object.
 	 * @param heritrix3Profile The profile to update.
 	 */
-	public void updateBusinessModel(Heritrix3Profile heritrix3Profile) {
+	public void updateBusinessModel(Heritrix3Profile heritrix3Profile, Profile profile) {
 		Heritrix3ProfileOptions options = heritrix3Profile.getHeritrix3ProfileOptions();
+		// update the units
+		if (profile != null) {
+			profile.setDataLimitUnit(dataLimitUnit);
+			profile.setTimeLimitUnit(timeLimitUnit);
+			profile.setMaxFileSizeUnit(maxFileSizeUnit);
+		}
 		options.setContactURL(contactURL);
 		options.setDocumentLimit(documentLimit);
-		//options.setDataLimitAsBytes(dataLimit);
-		//options.setTimeLimitAsSeconds(timeLimit);
+		options.setDataLimitUnit(ProfileDataUnit.valueOf(dataLimitUnit));
+		options.setDataLimit(new BigDecimal(dataLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
+		options.setTimeLimitUnit(ProfileTimeUnit.valueOf(timeLimitUnit));
+		options.setTimeLimit(new BigDecimal(timeLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
 		options.setMaxPathDepth(maxPathDepth);
 		options.setMaxHops(maxHops);
 		options.setMaxTransitiveHops(maxTransitiveHops);
@@ -86,7 +118,8 @@ public class Heritrix3ProfileCommand {
 		options.setDefaultEncoding(defaultEncoding);
 		options.setBlockURLs(blockUrls);
 		options.setIncludeURLs(includeUrls);
-		//options.setMaxFileSizeAsBytes(maxFileSize);
+		options.setMaxFileSizeUnit(ProfileDataUnit.valueOf(maxFileSizeUnit));
+		options.setMaxFileSize(new BigDecimal(maxFileSize).setScale(8, BigDecimal.ROUND_HALF_UP));
 		options.setCompress(compress);
 		options.setPrefix(prefix);
 		options.setPoliteness(politeness);
@@ -111,20 +144,36 @@ public class Heritrix3ProfileCommand {
 		this.documentLimit = documentLimit;
 	}
 
-	public long getDataLimit() {
+	public double getDataLimit() {
 		return dataLimit;
 	}
 
-	public void setDataLimit(long dataLimit) {
+	public void setDataLimit(double dataLimit) {
 		this.dataLimit = dataLimit;
 	}
 
-	public long getTimeLimit() {
+	public String getDataLimitUnit() {
+		return dataLimitUnit;
+	}
+
+	public void setDataLimitUnit(String dataLimitUnit) {
+		this.dataLimitUnit = dataLimitUnit;
+	}
+
+	public double getTimeLimit() {
 		return timeLimit;
 	}
 
-	public void setTimeLimit(long timeLimit) {
+	public void setTimeLimit(double timeLimit) {
 		this.timeLimit = timeLimit;
+	}
+
+	public String getTimeLimitUnit() {
+		return timeLimitUnit;
+	}
+
+	public void setTimeLimitUnit(String timeLimitUnit) {
+		this.timeLimitUnit = timeLimitUnit;
 	}
 
 	public long getMaxPathDepth() {
@@ -191,12 +240,20 @@ public class Heritrix3ProfileCommand {
 		this.includeUrls = includeUrls;
 	}
 
-	public long getMaxFileSize() {
+	public double getMaxFileSize() {
 		return maxFileSize;
 	}
 
-	public void setMaxFileSize(long maxFileSize) {
+	public void setMaxFileSize(double maxFileSize) {
 		this.maxFileSize = maxFileSize;
+	}
+
+	public String getMaxFileSizeUnit() {
+		return maxFileSizeUnit;
+	}
+
+	public void setMaxFileSizeUnit(String maxFileSizeUnit) {
+		this.maxFileSizeUnit = maxFileSizeUnit;
 	}
 
 	public boolean isCompress() {

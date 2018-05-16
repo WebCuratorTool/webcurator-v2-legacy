@@ -18,6 +18,9 @@ package org.webcurator.ui.profiles.controller;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.webcurator.core.profiles.Heritrix3Profile;
+import org.webcurator.core.profiles.ProfileDataUnit;
+import org.webcurator.core.profiles.ProfileTimeUnit;
+import org.webcurator.domain.model.core.Profile;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.profiles.command.Heritrix3ProfileCommand;
 import org.webcurator.ui.util.Tab;
@@ -48,8 +51,9 @@ public class Heritrix3ProfileHandler extends TabHandler {
 		// Have to assume that the heritrix profile in the session is an H3 one, but check first.
 		Object sessionObj = req.getSession().getAttribute("heritrixProfile");
 		if (sessionObj instanceof Heritrix3Profile) {
+			Profile profile = (Profile) req.getSession().getAttribute("profile");
 			Heritrix3Profile heritrix3Profile = (Heritrix3Profile) sessionObj;
-			command.updateBusinessModel(heritrix3Profile);
+			command.updateBusinessModel(heritrix3Profile, profile);
 		}
 	}
 
@@ -66,12 +70,15 @@ public class Heritrix3ProfileHandler extends TabHandler {
 		// Have to assume that the heritrix profile in the session is an H3 one, but check first.
 		Object sessionObj = req.getSession().getAttribute("heritrixProfile");
 		if (sessionObj instanceof Heritrix3Profile) {
+			Profile profile = (Profile) req.getSession().getAttribute("profile");
 			Heritrix3Profile heritrix3Profile = (Heritrix3Profile) sessionObj;
-			command = Heritrix3ProfileCommand.buildFromModel(heritrix3Profile);
+			command = Heritrix3ProfileCommand.buildFromModel(heritrix3Profile, profile);
 		}
 
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
 		tmav.addObject("politenessTypes", Heritrix3Profile.POLITENESS_OPTIONS);
+		tmav.addObject("profileDataUnits", ProfileDataUnit.getProfileDataUnitNames());
+		tmav.addObject("profileTimeUnits", ProfileTimeUnit.getProfileDataTimeNames());
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
 
 		return tmav;

@@ -47,9 +47,9 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
         options.setDataLimitAsBytes(new BigInteger("1000000"));
         options.setDataLimitUnit(null);
-        assertEquals(new BigDecimal(1000000L), options.getDataLimit());
+        assertEquals(new BigDecimal(1000000L).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
         options.setDataLimitUnit(ProfileDataUnit.B);
-        assertEquals(new BigDecimal(1000000L), options.getDataLimit());
+        assertEquals(new BigDecimal(1000000L).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
         options.setDataLimitUnit(ProfileDataUnit.KB);
         assertEquals(new BigDecimal(976.56250000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
         options.setDataLimitUnit(ProfileDataUnit.MB);
@@ -58,7 +58,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(new BigDecimal(0.00093132d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
         options.setDataLimitAsBytes(new BigInteger("2684354560"));
         options.setDataLimitUnit(ProfileDataUnit.B);
-        assertEquals(new BigDecimal(new BigInteger("2684354560")), options.getDataLimit());
+        assertEquals(new BigDecimal(new BigInteger("2684354560")).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
         options.setDataLimitUnit(ProfileDataUnit.KB);
         assertEquals(new BigDecimal(2621440.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getDataLimit());
         options.setDataLimitUnit(ProfileDataUnit.MB);
@@ -88,9 +88,9 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
         options.setMaxFileSizeAsBytes(new BigInteger("50000000"));
         options.setMaxFileSizeUnit(null);
-        assertEquals(new BigDecimal(50000000L), options.getMaxFileSize());
+        assertEquals(new BigDecimal(50000000L).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
         options.setMaxFileSizeUnit(ProfileDataUnit.B);
-        assertEquals(new BigDecimal(50000000L), options.getMaxFileSize());
+        assertEquals(new BigDecimal(50000000L).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
         options.setMaxFileSizeUnit(ProfileDataUnit.KB);
         assertEquals(new BigDecimal(48828.12500000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
         options.setMaxFileSizeUnit(ProfileDataUnit.MB);
@@ -99,7 +99,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(new BigDecimal(0.04656613d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
         options.setMaxFileSizeAsBytes(new BigInteger("1288490188800"));
         options.setMaxFileSizeUnit(ProfileDataUnit.B);
-        assertEquals(new BigDecimal(new BigInteger("1288490188800")), options.getMaxFileSize());
+        assertEquals(new BigDecimal(new BigInteger("1288490188800")).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
         options.setMaxFileSizeUnit(ProfileDataUnit.KB);
         assertEquals(new BigDecimal(1258291200.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getMaxFileSize());
         options.setMaxFileSizeUnit(ProfileDataUnit.MB);
@@ -129,9 +129,9 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions options = new Heritrix3ProfileOptions();
         options.setTimeLimitAsSeconds(new BigInteger("50000000"));
         options.setTimeLimitUnit(null);
-        assertEquals(new BigDecimal(50000000L), options.getTimeLimit());
+        assertEquals(new BigDecimal(50000000L).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
         options.setTimeLimitUnit(ProfileTimeUnit.SECOND);
-        assertEquals(new BigDecimal(50000000L), options.getTimeLimit());
+        assertEquals(new BigDecimal(50000000L).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
         options.setTimeLimitUnit(ProfileTimeUnit.MINUTE);
         assertEquals(new BigDecimal(833333.33333333d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
         options.setTimeLimitUnit(ProfileTimeUnit.HOUR);
@@ -142,7 +142,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(new BigDecimal(82.67195767d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
         options.setTimeLimitAsSeconds(new BigInteger("1512000"));
         options.setTimeLimitUnit(ProfileTimeUnit.SECOND);
-        assertEquals(new BigDecimal(new BigInteger("1512000")), options.getTimeLimit());
+        assertEquals(new BigDecimal(new BigInteger("1512000")).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
         options.setTimeLimitUnit(ProfileTimeUnit.MINUTE);
         assertEquals(new BigDecimal(25200.00000000d).setScale(8, BigDecimal.ROUND_HALF_UP), options.getTimeLimit());
         options.setTimeLimitUnit(ProfileTimeUnit.HOUR);

@@ -13,12 +13,26 @@
 
   <tr>
     <td class="subBoxTextHdr">Data Limit:</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="dataLimit" value="<c:out value="${command.dataLimit}"/>"></td>
+    <td class="subBoxText">
+      <input size="20" type="number" step="0.001" min="0.000" name="dataLimit" value="<c:out value="${command.dataLimit}"/>">
+      <select name="dataLimitUnit" id="dataLimitUnit">
+	    <c:forEach items="${profileDataUnits}" var="unit">
+	      <option id="${unit}" ${command.dataLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+	    </c:forEach>
+	  </select>
+    </td>
   </tr>
 
   <tr>
     <td class="subBoxTextHdr">Time Limit:</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="timeLimit" value="<c:out value="${command.timeLimit}"/>"></td>
+    <td class="subBoxText">
+      <input size="20" type="number" step="0.001" min="0.000" name="timeLimit" value="<c:out value="${command.timeLimit}"/>">
+      <select name="timeLimitUnit" id="timeLimitUnit">
+	    <c:forEach items="${profileTimeUnits}" var="unit">
+	      <option id="${unit}" ${command.timeLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+	    </c:forEach>
+	  </select>
+    </td>
   </tr>
 
   <tr>
@@ -63,7 +77,14 @@
 
   <tr>
     <td class="subBoxTextHdr">Max File Size:</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="maxFileSize" value="<c:out value="${command.maxFileSize}"/>"></td>
+    <td class="subBoxText">
+      <input size="20" type="number" step="0.001" min="0.000" name="maxFileSize" value="<c:out value="${command.maxFileSize}"/>">
+      <select name="maxFileSizeUnit" id="maxFileSizeUnit">
+	    <c:forEach items="${profileDataUnits}" var="unit">
+	      <option id="${unit}" ${command.maxFileSizeUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+	    </c:forEach>
+	  </select>
+    </td>
   </tr>
 
   <tr>
