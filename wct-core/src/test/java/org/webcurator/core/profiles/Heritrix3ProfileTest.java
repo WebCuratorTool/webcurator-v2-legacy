@@ -233,10 +233,29 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     }
 
     @Test
+    public final void testProfileOptionUserAgent() {
+        Heritrix3Profile profile = new Heritrix3Profile();
+        Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
+        assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +", profileOptions.getUserAgent());
+        profileOptions.setUserAgent("Mozilla/5.0 (compatible; heritrix/3.3.0 +");
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
+
+        // Test idempotency
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +", profileOptions.getUserAgent());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +", profileOptions.getUserAgent());
+        profileOptions.setUserAgent("Mozilla/5.0 (compatible; heritrix/3.3.0 +");
+        profileOptions.setUserAgent("Mozilla/5.0 (compatible; heritrix/3.3.0 +");
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/3.3.0 +", profileOptions.getUserAgent());
+    }
+
+    @Test
     public final void testDefaultHeritrix3Profile() {
         Heritrix3Profile profile = new Heritrix3Profile();
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
         assertEquals(new BigInteger("0"), profileOptions.getTimeLimitAsSeconds());
@@ -269,6 +288,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     public final void testXmlHeritrix3Profile() {
         Heritrix3ProfileOptions profileOptions = testInstance.getHeritrix3ProfileOptions();
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
         assertEquals(new BigInteger("0"), profileOptions.getTimeLimitAsSeconds());
@@ -300,6 +320,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     @Test
     public final void testToProfileXmlHeritrix3Profile() {
         String modifiedContactURL = "http://www.dia.govt.nz";
+        String modifiedUserAgentTemplate = "IE/11.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)";
         long modifiedDocumentLimit = 25;
         BigInteger modifiedDataLimit = new BigInteger("100");
         BigInteger modifiedTimeLimit = new BigInteger("250");
@@ -328,6 +349,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
         // Modify test instance
         profileOptions.setContactURL(modifiedContactURL);
+        profileOptions.setUserAgentTemplate(modifiedUserAgentTemplate);
         profileOptions.setDocumentLimit(modifiedDocumentLimit);
         profileOptions.setDataLimitAsBytes(modifiedDataLimit);
         profileOptions.setTimeLimitAsSeconds(modifiedTimeLimit);
@@ -353,6 +375,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3Profile modifiedProfile = new Heritrix3Profile(modifiedXml);
         Heritrix3ProfileOptions modifiedProfileOptions = modifiedProfile.getHeritrix3ProfileOptions();
         assertEquals(modifiedContactURL, modifiedProfileOptions.getContactURL());
+        assertEquals(modifiedUserAgentTemplate, modifiedProfileOptions.getUserAgentTemplate());
         assertEquals(modifiedDocumentLimit, modifiedProfileOptions.getDocumentLimit());
         assertEquals(modifiedDataLimit, modifiedProfileOptions.getDataLimitAsBytes());
         assertEquals(modifiedTimeLimit, modifiedProfileOptions.getTimeLimitAsSeconds());

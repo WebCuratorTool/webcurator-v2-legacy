@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class Heritrix3ProfileOptions {
     private String contactURL;
+    private String userAgentTemplate;
     private long documentLimit;
     private BigInteger dataLimitAsBytes;
     private ProfileDataUnit dataLimitUnit;
@@ -39,6 +40,7 @@ public class Heritrix3ProfileOptions {
     private static final int MINUTES_PER_HOUR = 60;
     private static final int HOURS_PER_DAY = 24;
     private static final int DAYS_PER_WEEK = 7;
+    private static final String CONTACT_URL_TEMPLATE = "@OPERATOR_CONTACT_URL@";
 
     public String getContactURL() {
         return contactURL;
@@ -46,6 +48,40 @@ public class Heritrix3ProfileOptions {
 
     public void setContactURL(String contactURL) {
         this.contactURL = contactURL;
+    }
+
+    public String getUserAgentTemplate() {
+        return userAgentTemplate;
+    }
+
+    public void setUserAgentTemplate(String userAgentTemplate) {
+        this.userAgentTemplate = userAgentTemplate;
+    }
+
+    /**
+     * Converts the user agent template into the user agent.
+     * @return
+     */
+    public String getUserAgent() {
+        if (userAgentTemplate != null) {
+            String result = userAgentTemplate.replace(CONTACT_URL_TEMPLATE + ")", "");
+            return result;
+        }
+        return "";
+    }
+
+    /**
+     * Converts the user agent into the user agent template.
+     * Adds the CONTACT_URL_TEMPLATE - this **MUST** be in the user agent template otherwise the Heritrix job will not start in the server.
+     * @param userAgent
+     */
+    public void setUserAgent(String userAgent) {
+        String tempUserAgent = userAgent != null ? userAgent : "";
+        if (tempUserAgent.contains(CONTACT_URL_TEMPLATE + ")")) {
+            userAgentTemplate = tempUserAgent;
+        } else {
+            userAgentTemplate = tempUserAgent + CONTACT_URL_TEMPLATE + ")";
+        }
     }
 
     public long getDocumentLimit() {
@@ -370,6 +406,7 @@ public class Heritrix3ProfileOptions {
     public String toString() {
         return "Heritrix3ProfileOptions{" +
                 "contactURL='" + contactURL + '\'' +
+                ", userAgentTemplate='" + userAgentTemplate + '\'' +
                 ", documentLimit=" + documentLimit +
                 ", dataLimitAsBytes=" + dataLimitAsBytes +
                 ", dataLimitUnit=" + dataLimitUnit +

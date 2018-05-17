@@ -23,6 +23,10 @@
     $("#maxPerHostBandwidthUsageKbSec").val(option.maxPerHostBandwidthUsageKbSec);
   }
 
+  function setUserAgentResult(userAgent, contactURL) {
+    $("#userAgentResult").val(userAgent + " " + contactURL + ")");
+  }
+
   $(document).ready(function() {
 
     var politeOption = {
@@ -68,6 +72,16 @@
       makeReadOnlyPolitenessOptions(politenessValueSelected);
     });
 
+    // set the H3 user agent
+    setUserAgentResult($("#userAgent").val(), $("#contactURL").val());
+
+    $("#contactURL").keyup(function() {
+      setUserAgentResult($("#userAgent").val(), $(this).val());
+    });
+
+    $("#userAgent").keyup(function() {
+      setUserAgentResult($(this).val(), $("#contactURL").val());
+    });
   });
 
 </script>
@@ -75,7 +89,17 @@
 <table cellpadding="3" cellspacing="0" border="0">
   <tr>
     <td class="subBoxTextHdr">Contact URL:</td>
-    <td class="subBoxText"><input size="60" type="text" name="contactURL" value="<c:out value="${command.contactURL}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
+    <td class="subBoxText"><input size="80" type="text" name="contactURL" id="contactURL" value="<c:out value="${command.contactURL}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">User Agent Prefix:</td>
+    <td class="subBoxText"><input size="80" type="text" name="userAgent" id="userAgent" value="<c:out value="${command.userAgent}"/>"><font color=red size=2>&nbsp;<strong>*</strong></font></td>
+  </tr>
+
+  <tr>
+    <td class="subBoxTextHdr">User Agent used by Heritrix 3:</td>
+    <td class="subBoxText"><input size="80" type="text" name="userAgentResult" id="userAgentResult" readonly value=""></td>
   </tr>
 
   <tr>

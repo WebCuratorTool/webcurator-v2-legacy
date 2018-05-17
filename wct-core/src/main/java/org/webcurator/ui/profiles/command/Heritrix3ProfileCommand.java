@@ -26,6 +26,7 @@ import java.math.BigDecimal;
  */
 public class Heritrix3ProfileCommand {
 	private String contactURL;
+	private String userAgent;
 	private long documentLimit;
 	private double dataLimit;
 	private String dataLimitUnit;
@@ -75,6 +76,7 @@ public class Heritrix3ProfileCommand {
 			command.setMaxFileSizeUnit(ProfileDataUnit.DEFAULT.name());
 		}
 		command.setContactURL(options.getContactURL());
+		command.setUserAgent(options.getUserAgent());
 		command.setDocumentLimit(options.getDocumentLimit());
 		command.setDataLimit(options.getDataLimit().doubleValue());
 		command.setTimeLimit(options.getTimeLimit().doubleValue());
@@ -114,6 +116,7 @@ public class Heritrix3ProfileCommand {
 			profile.setMaxFileSizeUnit(maxFileSizeUnit);
 		}
 		options.setContactURL(contactURL);
+		options.setUserAgent(userAgent);
 		options.setDocumentLimit(documentLimit);
 		options.setDataLimitUnit(ProfileDataUnit.valueOf(dataLimitUnit));
 		options.setDataLimit(new BigDecimal(dataLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
@@ -148,6 +151,14 @@ public class Heritrix3ProfileCommand {
 
 	public void setContactURL(String contactURL) {
 		this.contactURL = contactURL;
+	}
+
+	public String getUserAgent() {
+		return userAgent;
+	}
+
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
 	}
 
 	public long getDocumentLimit() {

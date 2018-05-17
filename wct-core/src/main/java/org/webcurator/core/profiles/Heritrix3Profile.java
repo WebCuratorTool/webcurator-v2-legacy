@@ -72,6 +72,7 @@ public class Heritrix3Profile {
             Document xmlDocument = loadXmlDocument(this.profileXml);
             // Search for xml elements and modify
             updateContactURL(xmlDocument, heritrix3ProfileOptions.getContactURL());
+            modifyBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument, heritrix3ProfileOptions.getUserAgentTemplate());
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument, Long.toString(heritrix3ProfileOptions.getDocumentLimit()));
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument, heritrix3ProfileOptions.getDataLimitAsBytes().toString());
             modifyBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument, heritrix3ProfileOptions.getTimeLimitAsSeconds().toString());
@@ -157,6 +158,7 @@ public class Heritrix3Profile {
         try {
             Document xmlDocument = loadXmlDocument(xml);
             profileOptions.setContactURL(findContactURL(xmlDocument));
+            profileOptions.setUserAgentTemplate(getBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument));
             profileOptions.setDocumentLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument)));
             profileOptions.setDataLimitAsBytes(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
             profileOptions.setTimeLimitAsSeconds(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));

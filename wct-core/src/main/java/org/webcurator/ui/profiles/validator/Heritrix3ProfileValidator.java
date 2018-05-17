@@ -40,5 +40,9 @@ public class Heritrix3ProfileValidator extends AbstractBaseValidator {
 			ValidatorUtil.validateURL(errors, command.getContactURL(),"invalid.url",new Object[] {command.getContactURL()},"Invalid URL");
 		}
 
+		// User agent prefix is required.
+		if(command.getUserAgent() != null) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userAgent", "required", getObjectArrayForLabel("userAgent"), "User Agent Prefix is a required field");
+		}
 	}
 }
