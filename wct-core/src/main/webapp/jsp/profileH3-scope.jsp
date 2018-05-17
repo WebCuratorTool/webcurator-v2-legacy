@@ -1,5 +1,77 @@
 <%@taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+  function makeReadOnlyPolitenessOptions(politenessValueSelected) {
+    var readOnly = politenessValueSelected == 'Custom' ? false : true;
+    //alert(readOnly);
+    $("#delayFactor").prop('readonly', readOnly);
+    $("#minDelayMs").prop('readonly', readOnly);
+    $("#maxDelayMs").prop('readonly', readOnly);
+    $("#respectCrawlDelayUpToSeconds").prop('readonly', readOnly);
+    $("#maxPerHostBandwidthUsageKbSec").prop('readonly', readOnly);
+  }
+
+  function setPolitenessValues(option) {
+    //alert(JSON.stringify(option));
+    $("#delayFactor").val(option.delayFactor);
+    $("#minDelayMs").val(option.minDelayMs);
+    $("#maxDelayMs").val(option.maxDelayMs);
+    $("#respectCrawlDelayUpToSeconds").val(option.respectCrawlDelayUpToSeconds);
+    $("#maxPerHostBandwidthUsageKbSec").val(option.maxPerHostBandwidthUsageKbSec);
+  }
+
+  $(document).ready(function() {
+
+    var politeOption = {
+      delayFactor: "${politeOption.delayFactor}",
+      minDelayMs: "${politeOption.minDelayMs}",
+      maxDelayMs: "${politeOption.maxDelayMs}",
+      respectCrawlDelayUpToSeconds: "${politeOption.respectCrawlDelayUpToSeconds}",
+      maxPerHostBandwidthUsageKbSec: "${politeOption.maxPerHostBandwidthUsageKbSec}",
+    };
+    var mediumOption = {
+      delayFactor: "${mediumOption.delayFactor}",
+      minDelayMs: "${mediumOption.minDelayMs}",
+      maxDelayMs: "${mediumOption.maxDelayMs}",
+      respectCrawlDelayUpToSeconds: "${mediumOption.respectCrawlDelayUpToSeconds}",
+      maxPerHostBandwidthUsageKbSec: "${mediumOption.maxPerHostBandwidthUsageKbSec}",
+    };
+    var aggressiveOption = {
+      delayFactor: "${aggressiveOption.delayFactor}",
+      minDelayMs: "${aggressiveOption.minDelayMs}",
+      maxDelayMs: "${aggressiveOption.maxDelayMs}",
+      respectCrawlDelayUpToSeconds: "${aggressiveOption.respectCrawlDelayUpToSeconds}",
+      maxPerHostBandwidthUsageKbSec: "${aggressiveOption.maxPerHostBandwidthUsageKbSec}",
+    };
+
+    // make read only (or not) based on selection
+    makeReadOnlyPolitenessOptions($('#politeness').value);
+
+
+    $('#politeness').change(function() {
+      var politenessValueSelected = this.value;
+      //alert("Politeness selected: " + politenessValueSelected);
+      // set the politeness values
+      if (politenessValueSelected == 'Polite') {
+        setPolitenessValues(politeOption);
+      }
+      if (politenessValueSelected == 'Medium') {
+        setPolitenessValues(mediumOption);
+      }
+      if (politenessValueSelected == 'Aggressive') {
+        setPolitenessValues(aggressiveOption);
+      }
+      // make read only (or not) politeness options
+      makeReadOnlyPolitenessOptions(politenessValueSelected);
+    });
+
+  });
+
+</script>
+
 <table cellpadding="3" cellspacing="0" border="0">
   <tr>
     <td class="subBoxTextHdr">Contact URL:</td>
@@ -110,27 +182,27 @@
 
   <tr>
     <td class="subBoxTextHdr">Delay Factor:</td>
-    <td class="subBoxText"><input size="20" type="number" step="0.01" min="0.00" name="delayFactor" value="<c:out value="${command.delayFactor}"/>"></td>
+    <td class="subBoxText"><input size="20" type="number" step="0.01" min="0.00" name="delayFactor" id="delayFactor" value="<c:out value="${command.delayFactor}"/>"></td>
   </tr>
 
   <tr>
     <td class="subBoxTextHdr">Min Delay (ms):</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="minDelayMs" value="<c:out value="${command.minDelayMs}"/>"></td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="minDelayMs" id="minDelayMs" value="<c:out value="${command.minDelayMs}"/>"></td>
   </tr>
 
   <tr>
     <td class="subBoxTextHdr">Max Delay (ms):</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="maxDelayMs" value="<c:out value="${command.maxDelayMs}"/>"></td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxDelayMs" id="maxDelayMs" value="<c:out value="${command.maxDelayMs}"/>"></td>
   </tr>
 
   <tr>
     <td class="subBoxTextHdr">Respect Crawl Delay up to Seconds:</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="respectCrawlDelayUpToSeconds" value="<c:out value="${command.respectCrawlDelayUpToSeconds}"/>"></td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="respectCrawlDelayUpToSeconds" id="respectCrawlDelayUpToSeconds" value="<c:out value="${command.respectCrawlDelayUpToSeconds}"/>"></td>
   </tr>
 
   <tr>
     <td class="subBoxTextHdr">Max Per Host Bandwidth Usage (kb/s):</td>
-    <td class="subBoxText"><input size="20" type="number" min="0" name="maxPerHostBandwidthUsageKbSec" value="<c:out value="${command.maxPerHostBandwidthUsageKbSec}"/>"></td>
+    <td class="subBoxText"><input size="20" type="number" min="0" name="maxPerHostBandwidthUsageKbSec" id="maxPerHostBandwidthUsageKbSec" value="<c:out value="${command.maxPerHostBandwidthUsageKbSec}"/>"></td>
   </tr>
 
 </table>
