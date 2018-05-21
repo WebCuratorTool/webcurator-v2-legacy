@@ -53,6 +53,8 @@ drop table if exists DB_WCT.FLAG cascade;
 drop table if exists DB_WCT.INDICATOR_CRITERIA cascade;
 drop table if exists DB_WCT.INDICATOR_REPORT_LINE cascade;
 drop table if exists DB_WCT.INDICATOR cascade;
+drop table if exists DB_WCT.PO_H3_BLOCK_URL cascade;
+drop table if exists DB_WCT.PO_H3_INCLUDE_URL cascade;
 
 create table DB_WCT.ABSTRACT_TARGET (AT_OID int8 not null, AT_DESC varchar(4000), AT_NAME varchar(255), AT_OWNER_ID int8, AT_PROF_OVERRIDE_OID int8, AT_STATE int4, T_PROFILE_ID int8, AT_OBJECT_TYPE int4, AT_CREATION_DATE TIMESTAMP, AT_REFERENCE varchar(255), AT_PROFILE_NOTE varchar(255), AT_DUBLIN_CORE_OID int8, AT_ACCESS_ZONE int8 default 0 not null, AT_DISPLAY_TARGET bool default true not null, AT_DISPLAY_NOTE varchar(4000), AT_DISPLAY_CHG_REASON varchar(1000), AT_RR_OID int8, AT_CRAWLS int8, AT_REFERENCE_CRAWL_OID int8, AT_AUTO_PRUNE bool not null default false, AT_AUTO_DENOTE_REFERENCE_CRAWL bool not null default false, AT_REQUEST_TO_ARCHIVISTS varchar(4000), primary key (AT_OID));
 create table DB_WCT.AGENCY (AGC_OID int8 not null, AGC_NAME varchar(80) not null unique, AGC_ADDRESS varchar(255) not null, AGC_LOGO_URL varchar(255), AGC_URL varchar(255), AGC_EMAIL varchar(80), AGC_FAX varchar(20), AGC_PHONE varchar(20), AGC_SHOW_TASKS bool default true not null, AGC_DEFAULT_DESC_TYPE varchar(255), primary key (AGC_OID));
@@ -79,7 +81,7 @@ create table DB_WCT.PROFILE (P_OID int8 not null, P_VERSION int4 not null, P_DES
 create table DB_WCT.PROFILE_BASIC_CREDENTIALS (PBC_PC_OID int8 not null, PBC_REALM varchar(255), primary key (PBC_PC_OID));
 create table DB_WCT.PROFILE_CREDENTIALS (PC_OID int8 not null, PC_DOMAIN varchar(255), PC_PASSWORD varchar(255), PC_USERNAME varchar(255), PC_PROFILE_OVERIDE_OID int8, PC_INDEX int4, primary key (PC_OID));
 create table DB_WCT.PROFILE_FORM_CREDENTIALS (PRC_PC_OID int8 not null, PFC_METHOD varchar(4), PFC_LOGIN_URI varchar(255), PFC_PASSWORD_FIELD varchar(255), PFC_USERNAME_FIELD varchar(255), primary key (PRC_PC_OID));
-create table DB_WCT.PROFILE_OVERRIDES (PO_OID int8 not null, PO_EXCL_MIME_TYPES varchar(255), PO_MAX_BYES int8, PO_MAX_DOCS int8, PO_MAX_HOPS int4, PO_MAX_PATH_DEPTH int4, PO_MAX_TIME_SEC int8, PO_ROBOTS_POLICY varchar(10), PO_OR_CREDENTIALS bool, PO_OR_EXCL_MIME_TYPES bool, PO_OR_EXCLUSION_URI bool, PO_OR_INCLUSION_URI bool, PO_OR_MAX_BYTES bool, PO_OR_MAX_DOCS bool, PO_OR_MAX_HOPS bool, PO_OR_MAX_PATH_DEPTH bool, PO_OR_MAX_TIME_SEC bool, PO_OR_ROBOTS_POLICY bool, primary key (PO_OID));
+create table DB_WCT.PROFILE_OVERRIDES (PO_OID int8 not null, PO_EXCL_MIME_TYPES varchar(255), PO_MAX_BYES int8, PO_MAX_DOCS int8, PO_MAX_HOPS int4, PO_MAX_PATH_DEPTH int4, PO_MAX_TIME_SEC int8, PO_ROBOTS_POLICY varchar(10), PO_H3_DOC_LIMIT int4, PO_H3_DATA_LIMIT float8, PO_H3_DATA_LIMIT_UNIT varchar(40), PO_H3_TIME_LIMIT float8, PO_H3_TIME_LIMIT_UNIT varchar(40), PO_H3_MAX_PATH_DEPTH int4, PO_H3_MAX_HOPS int4, PO_H3_MAX_TRANS_HOPS int4, PO_H3_IGNORE_ROBOTS varchar(10), PO_H3_IGNORE_COOKIES bool, PO_OR_CREDENTIALS bool, PO_OR_EXCL_MIME_TYPES bool, PO_OR_EXCLUSION_URI bool, PO_OR_INCLUSION_URI bool, PO_OR_MAX_BYTES bool, PO_OR_MAX_DOCS bool, PO_OR_MAX_HOPS bool, PO_OR_MAX_PATH_DEPTH bool, PO_OR_MAX_TIME_SEC bool, PO_OR_ROBOTS_POLICY bool, PO_H3_OR_DOC_LIMIT bool, PO_H3_OR_DATA_LIMIT bool, PO_H3_OR_TIME_LIMIT bool, PO_H3_OR_MAX_PATH_DEPTH bool, PO_H3_OR_MAX_HOPS bool, PO_H3_OR_MAX_TRANS_HOPS bool, PO_H3_OR_IGNORE_ROBOTS bool, PO_H3_OR_IGNORE_COOKIES bool, PO_H3_OR_BLOCK_URL bool, PO_H3_OR_INCL_URL bool, primary key (PO_OID));
 create table DB_WCT.REJECTION_REASON (RR_OID int8 not null, RR_NAME varchar(100) not null, RR_AVAILABLE_FOR_TARGET bool default false not null, RR_AVAILABLE_FOR_TI bool default false not null, RR_AGC_OID int8 not null, primary key (RR_OID));
 create table DB_WCT.ROLE_PRIVILEGE (PRV_OID int8 not null, PRV_CODE varchar(40) not null, PRV_ROLE_OID int8, PRV_SCOPE int4 not null, primary key (PRV_OID));
 create table DB_WCT.SCHEDULE (S_OID int8 not null, S_CRON varchar(255) not null, S_START TIMESTAMP not null, S_END TIMESTAMP, S_TARGET_ID int8, S_TYPE int4 not null, S_OWNER_OID int8, S_NEXT_SCHEDULE_TIME TIMESTAMP, S_ABSTRACT_TARGET_ID int8, S_LAST_PROCESSED_DATE timestamp without time zone default '2001-01-01 00:00:00', primary key (S_OID));
@@ -106,6 +108,8 @@ create table DB_WCT.FLAG (F_OID int8 not null, F_NAME varchar(255) not null, F_R
 create table DB_WCT.INDICATOR_CRITERIA (IC_OID int8 not null, IC_NAME varchar(255) not null, IC_DESCRIPTION varchar(255), IC_UPPER_LIMIT_PERCENTAGE float8, IC_LOWER_LIMIT_PERCENTAGE float8, IC_UPPER_LIMIT float8, IC_LOWER_LIMIT float8, IC_AGC_OID int8 not null, primary key (IC_OID), IC_UNIT varchar(20) not null, IC_SHOW_DELTA bool not null, IC_ENABLE_REPORT bool not null);
 create table DB_WCT.INDICATOR (I_OID int8 not null, I_IC_OID int8 not null, I_TI_OID int8 not null, I_NAME varchar(255) not null, I_FLOAT_VALUE float8, I_UPPER_LIMIT_PERCENTAGE float8, I_LOWER_LIMIT_PERCENTAGE float8, I_UPPER_LIMIT float8, I_LOWER_LIMIT float8, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID int8 not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bool not null, I_INDEX int4, I_DATE TIMESTAMP not null);
 create table DB_WCT.INDICATOR_REPORT_LINE (IRL_OID int8, IRL_I_OID int8, IRL_LINE varchar(1024), IRL_INDEX int4);
+create table DB_WCT.PO_H3_BLOCK_URL (PBU_PROF_OVER_OID int8 not null, PBU_FILTER varchar(255), PBU_IX int4 not null, primary key (PBU_PROF_OVER_OID, PBU_IX));
+create table DB_WCT.PO_H3_INCLUDE_URL (PIU_PROF_OVER_OID int8 not null, PIU_FILTER varchar(255), PIU_IX int4 not null, primary key (PIU_PROF_OVER_OID, PIU_IX));
 
 
 alter table DB_WCT.ABSTRACT_TARGET add constraint AT_NAME_AND_TYPE unique (AT_NAME, AT_OBJECT_TYPE);
@@ -180,6 +184,8 @@ alter table DB_WCT.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) r
 alter table DB_WCT.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references DB_WCT.INDICATOR_CRITERIA (IC_OID);
 alter table DB_WCT.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
 alter table DB_WCT.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references DB_WCT.INDICATOR (I_OID);
+alter table DB_WCT.PO_H3_BLOCK_URL add constraint PBU_FK_1 foreign key (PBU_PROF_OVER_OID) references DB_WCT.PROFILE_OVERRIDES;
+alter table DB_WCT.PO_H3_INCLUDE_URL add constraint PIU_FK_1 foreign key (PIU_PROF_OVER_OID) references DB_WCT.PROFILE_OVERRIDES;
 
 create table DB_WCT.ID_GENERATOR ( IG_TYPE varchar(255),  IG_VALUE int4 ) ;
 

@@ -37,6 +37,7 @@ import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.HarvestAgentConfig;
 import org.webcurator.core.notification.InTrayManager;
 import org.webcurator.core.notification.MessageType;
+import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.core.profiles.HeritrixProfile;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.store.DigitalAssetStore;
@@ -493,9 +494,15 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 			return heritrixProfile.toString();
 		}
 		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
-			String profileString = profile.getProfile();
-			// TODO - Heritrix3 overrides
-			return profileString;
+			String profileXml = profile.getProfile();
+			if (aTargetInstance.getProfileOverrides().hasH3Overrides()) {
+				Heritrix3Profile h3Profile = new Heritrix3Profile(profileXml);
+				log.info("Applying H3 Profile Overrides for " + aTargetInstance.getOid());
+				aTargetInstance.getProfileOverrides().apply(h3Profile);
+				return h3Profile.toProfileXml();
+			} else {
+				return profileXml;
+			}
 		}
 		return profile.getProfile();
 	}

@@ -1,6 +1,7 @@
 package org.webcurator.core.profiles;
 
 import org.junit.Test;
+import org.webcurator.domain.model.core.ProfileOverrides;
 import org.webcurator.test.BaseWCTTest;
 
 import java.io.BufferedReader;
@@ -254,6 +255,10 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     public final void testDefaultHeritrix3Profile() {
         Heritrix3Profile profile = new Heritrix3Profile();
         Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
+        assertDefaultProfileOptions(profileOptions);
+    }
+
+    private void assertDefaultProfileOptions(Heritrix3ProfileOptions profileOptions) {
         assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
         assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
         assertEquals(0L, profileOptions.getDocumentLimit());
@@ -283,6 +288,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(300L, politenessOptions.getRespectCrawlDelayUpToSeconds());
         assertEquals(800L, politenessOptions.getMaxPerHostBandwidthUsageKbSec());
     }
+
 
     @Test
     public final void testXmlHeritrix3Profile() {
@@ -407,5 +413,95 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(90000L, modifiedPolitenessOptions.getMaxDelayMs());
         assertEquals(900L, modifiedPolitenessOptions.getRespectCrawlDelayUpToSeconds());
         assertEquals(400L, modifiedPolitenessOptions.getMaxPerHostBandwidthUsageKbSec());
+    }
+
+    @Test
+    public final void testAllProfileOverrides() {
+        ProfileOverrides profileOverrides = new ProfileOverrides();
+        Heritrix3Profile profile = new Heritrix3Profile();
+        // Set the profileOverrides data
+        // No overrides set to true
+        long modifiedDocumentLimit = 25;
+        double modifiedDataLimit = 100.0d;
+        double modifiedTimeLimit = 250.0d;
+        long modifiedMaxPathDepth = 150;
+        long modifiedMaxHops = 50;
+        long modifiedMaxTransitiveHops = 5;
+        String modifiedIgnoreRobots = "ignore";
+        boolean modifiedIgnoreCookies = true;
+        List<String> modifiedBlockUrls = new ArrayList<String>();
+        modifiedBlockUrls.add("*aaa*");
+        modifiedBlockUrls.add("*bbb*");
+        List<String> modifiedIncludeUrls = new ArrayList<String>();
+        modifiedIncludeUrls.add("*xxx*");
+        modifiedIncludeUrls.add("*yyy*");
+        modifiedIncludeUrls.add("*zzz*");
+        profileOverrides.setH3DocumentLimit(modifiedDocumentLimit);
+        profileOverrides.setH3DataLimit(modifiedDataLimit);
+        profileOverrides.setH3DataLimitUnit(ProfileDataUnit.KB.name());
+        profileOverrides.setH3TimeLimit(modifiedTimeLimit);
+        profileOverrides.setH3TimeLimitUnit(ProfileTimeUnit.MINUTE.name());
+        profileOverrides.setH3MaxPathDepth(modifiedMaxPathDepth);
+        profileOverrides.setH3MaxHops(modifiedMaxHops);
+        profileOverrides.setH3MaxTransitiveHops(modifiedMaxTransitiveHops);
+        profileOverrides.setH3IgnoreRobots(modifiedIgnoreRobots);
+        profileOverrides.setH3IgnoreCookies(modifiedIgnoreCookies);
+        profileOverrides.setH3BlockedUrls(modifiedBlockUrls);
+        profileOverrides.setH3IncludedUrls(modifiedIncludeUrls);
+        // Apply
+        profileOverrides.apply(profile);
+        String modifiedXml = profile.toProfileXml();
+        // Create new profile instance with modified XML
+        Heritrix3Profile modifiedProfile = new Heritrix3Profile(modifiedXml);
+        // Assert defaults
+        assertDefaultProfileOptions(modifiedProfile.getHeritrix3ProfileOptions());
+        // override all
+        profileOverrides.setOverrideH3DocumentLimit(true);
+        profileOverrides.setOverrideH3DataLimit(true);
+        profileOverrides.setOverrideH3TimeLimit(true);
+        profileOverrides.setOverrideH3MaxPathDepth(true);
+        profileOverrides.setOverrideH3MaxHops(true);
+        profileOverrides.setOverrideH3MaxTransitiveHops(true);
+        profileOverrides.setOverrideH3IgnoreRobots(true);
+        profileOverrides.setOverrideH3IgnoreCookies(true);
+        profileOverrides.setOverrideH3BlockedUrls(true);
+        profileOverrides.setOverrideH3IncludedUrls(true);
+        // apply
+        // Apply
+        profileOverrides.apply(modifiedProfile);
+        String overriddenXml = modifiedProfile.toProfileXml();
+        // Create new profile instance with overridden XML
+        Heritrix3Profile overriddenProfile = new Heritrix3Profile(overriddenXml);
+        // Assertions
+        Heritrix3ProfileOptions overriddenProfileOptions = overriddenProfile.getHeritrix3ProfileOptions();
+        assertEquals("http://www.natlib.govt.nz/", overriddenProfileOptions.getContactURL());
+        assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", overriddenProfileOptions.getUserAgentTemplate());
+        assertEquals(25L, overriddenProfileOptions.getDocumentLimit());
+        assertEquals(new BigInteger("102400"), overriddenProfileOptions.getDataLimitAsBytes());
+        assertEquals(new BigInteger("15000"), overriddenProfileOptions.getTimeLimitAsSeconds());
+        assertEquals(150L, overriddenProfileOptions.getMaxPathDepth());
+        assertEquals(50L, overriddenProfileOptions.getMaxHops());
+        assertEquals(5L, overriddenProfileOptions.getMaxTransitiveHops());
+        assertTrue(overriddenProfileOptions.isIgnoreRobotsTxt());
+        assertTrue(overriddenProfileOptions.isIgnoreCookies());
+        assertEquals("ISO-8859-1", overriddenProfileOptions.getDefaultEncoding());
+        List<String> blockUrls = overriddenProfileOptions.getBlockURLsAsList();
+        assertEquals(2, blockUrls.size());
+        assertTrue(blockUrls.contains("*aaa*"));
+        assertTrue(blockUrls.contains("*bbb*"));
+        List<String> includeUrls = overriddenProfileOptions.getIncludeURLsAsList();
+        assertEquals(3, includeUrls.size());
+        assertTrue(includeUrls.contains("*xxx*"));
+        assertTrue(includeUrls.contains("*yyy*"));
+        assertTrue(includeUrls.contains("*zzz*"));
+        assertEquals(new BigInteger("1000000000"), overriddenProfileOptions.getMaxFileSizeAsBytes());
+        assertTrue(overriddenProfileOptions.isCompress());
+        assertEquals("IAH", overriddenProfileOptions.getPrefix());
+        PolitenessOptions politenessOptions = overriddenProfileOptions.getPolitenessOptions();
+        assertEquals(5.0d, politenessOptions.getDelayFactor(), 0.0);
+        assertEquals(3000L, politenessOptions.getMinDelayMs());
+        assertEquals(30000L, politenessOptions.getMaxDelayMs());
+        assertEquals(300L, politenessOptions.getRespectCrawlDelayUpToSeconds());
+        assertEquals(800L, politenessOptions.getMaxPerHostBandwidthUsageKbSec());
     }
 }

@@ -58,6 +58,8 @@ drop table if exists DB_WCT.FLAG;
 drop table if exists DB_WCT.INDICATOR_CRITERIA;
 drop table if exists DB_WCT.INDICATOR_REPORT_LINE;
 drop table if exists DB_WCT.INDICATOR;
+drop table if exists DB_WCT.PO_H3_BLOCK_URL;
+drop table if exists DB_WCT.PO_H3_INCLUDE_URL;
 
 set foreign_key_checks=1;
 
@@ -86,7 +88,7 @@ create table DB_WCT.PROFILE (P_OID bigint not null, P_VERSION integer not null, 
 create table DB_WCT.PROFILE_BASIC_CREDENTIALS (PBC_PC_OID bigint not null, PBC_REALM varchar(255), primary key (PBC_PC_OID));
 create table DB_WCT.PROFILE_CREDENTIALS (PC_OID bigint not null, PC_DOMAIN varchar(255), PC_PASSWORD varchar(255), PC_USERNAME varchar(255), PC_PROFILE_OVERIDE_OID bigint, PC_INDEX integer, primary key (PC_OID));
 create table DB_WCT.PROFILE_FORM_CREDENTIALS (PRC_PC_OID bigint not null, PFC_METHOD varchar(4), PFC_LOGIN_URI varchar(255), PFC_PASSWORD_FIELD varchar(255), PFC_USERNAME_FIELD varchar(255), primary key (PRC_PC_OID));
-create table DB_WCT.PROFILE_OVERRIDES (PO_OID bigint not null, PO_EXCL_MIME_TYPES varchar(255), PO_MAX_BYES bigint, PO_MAX_DOCS bigint, PO_MAX_HOPS integer, PO_MAX_PATH_DEPTH integer, PO_MAX_TIME_SEC bigint, PO_ROBOTS_POLICY varchar(10), PO_OR_CREDENTIALS bit, PO_OR_EXCL_MIME_TYPES bit, PO_OR_EXCLUSION_URI bit, PO_OR_INCLUSION_URI bit, PO_OR_MAX_BYTES bit, PO_OR_MAX_DOCS bit, PO_OR_MAX_HOPS bit, PO_OR_MAX_PATH_DEPTH bit, PO_OR_MAX_TIME_SEC bit, PO_OR_ROBOTS_POLICY bit, primary key (PO_OID));
+create table DB_WCT.PROFILE_OVERRIDES (PO_OID bigint not null, PO_EXCL_MIME_TYPES varchar(255), PO_MAX_BYES bigint, PO_MAX_DOCS bigint, PO_MAX_HOPS integer, PO_MAX_PATH_DEPTH integer, PO_MAX_TIME_SEC bigint, PO_ROBOTS_POLICY varchar(10), PO_H3_DOC_LIMIT integer, PO_H3_DATA_LIMIT double precision, PO_H3_DATA_LIMIT_UNIT varchar(40), PO_H3_TIME_LIMIT double precision, PO_H3_TIME_LIMIT_UNIT varchar(40), PO_H3_MAX_PATH_DEPTH integer, PO_H3_MAX_HOPS integer, PO_H3_MAX_TRANS_HOPS integer, PO_H3_IGNORE_ROBOTS varchar(10), PO_H3_IGNORE_COOKIES bit, PO_OR_CREDENTIALS bit, PO_OR_EXCL_MIME_TYPES bit, PO_OR_EXCLUSION_URI bit, PO_OR_INCLUSION_URI bit, PO_OR_MAX_BYTES bit, PO_OR_MAX_DOCS bit, PO_OR_MAX_HOPS bit, PO_OR_MAX_PATH_DEPTH bit, PO_OR_MAX_TIME_SEC bit, PO_OR_ROBOTS_POLICY bit, PO_H3_OR_DOC_LIMIT bit, PO_H3_OR_DATA_LIMIT bit, PO_H3_OR_TIME_LIMIT bit, PO_H3_OR_MAX_PATH_DEPTH bit, PO_H3_OR_MAX_HOPS bit, PO_H3_OR_MAX_TRANS_HOPS bit, PO_H3_OR_IGNORE_ROBOTS bit, PO_H3_OR_IGNORE_COOKIES bit, PO_H3_OR_BLOCK_URL bit, PO_H3_OR_INCL_URL bit, primary key (PO_OID));
 CREATE TABLE DB_WCT.REJECTION_REASON (RR_OID bigint not null, RR_NAME varchar(100) not null, RR_AVAILABLE_FOR_TARGET bit default 0 not null, RR_AVAILABLE_FOR_TI bit default 0 not null, RR_AGC_OID bigint not null, primary key (RR_OID));
 create table DB_WCT.ROLE_PRIVILEGE (PRV_OID bigint not null, PRV_CODE varchar(40) not null, PRV_ROLE_OID bigint, PRV_SCOPE integer not null, primary key (PRV_OID));
 create table DB_WCT.SCHEDULE (S_OID bigint not null, S_CRON varchar(255) not null, S_START TIMESTAMP not null, S_END TIMESTAMP NULL, S_TARGET_ID bigint, S_TYPE integer not null, S_OWNER_OID bigint, S_NEXT_SCHEDULE_TIME TIMESTAMP NULL, S_ABSTRACT_TARGET_ID bigint, S_LAST_PROCESSED_DATE DATETIME DEFAULT '2001-01-01 00:00:00', primary key (S_OID));
@@ -114,6 +116,8 @@ create table DB_WCT.INDICATOR_CRITERIA (IC_OID bigint not null, IC_NAME varchar(
 create table DB_WCT.INDICATOR (I_OID bigint not null, I_IC_OID bigint not null, I_TI_OID bigint not null, I_NAME varchar(255) not null, I_FLOAT_VALUE double precision, I_UPPER_LIMIT_PERCENTAGE double precision, I_LOWER_LIMIT_PERCENTAGE double precision, I_UPPER_LIMIT double precision, I_LOWER_LIMIT double precision, I_ADVICE varchar(255), I_JUSTIFICATION varchar(255), I_AGC_OID bigint not null , primary key (I_OID), I_UNIT varchar(20) not null, I_SHOW_DELTA bit not null, I_INDEX integer, I_DATE TIMESTAMP(6) not null);
 create table DB_WCT.INDICATOR_REPORT_LINE (IRL_OID bigint, IRL_I_OID bigint, IRL_LINE varchar(1024), IRL_INDEX integer);
 create table DB_WCT.ID_GENERATOR ( IG_TYPE varchar(255),  IG_VALUE integer ) ;
+create table DB_WCT.PO_H3_BLOCK_URL (PBU_PROF_OVER_OID bigint not null, PBU_FILTER varchar(255), PBU_IX integer not null, primary key (PBU_PROF_OVER_OID, PBU_IX));
+create table DB_WCT.PO_H3_INCLUDE_URL (PIU_PROF_OVER_OID bigint not null, PIU_FILTER varchar(255), PIU_IX integer not null, primary key (PIU_PROF_OVER_OID, PIU_IX));
 
 -- NOTE: constraints are not enforced in MySQL, but they are in MariaDB starting with 10.2.1.
 alter table DB_WCT.ABSTRACT_TARGET add unique key AT_NAME_AND_TYPE (AT_NAME, AT_OBJECT_TYPE);
@@ -188,6 +192,8 @@ alter table DB_WCT.INDICATOR add constraint FK_I_TI_OID foreign key (I_TI_OID) r
 alter table DB_WCT.INDICATOR add constraint FK_I_IC_OID foreign key (I_IC_OID) references DB_WCT.INDICATOR_CRITERIA (IC_OID);
 alter table DB_WCT.INDICATOR add constraint FK_I_AGENCY_OID foreign key (I_AGC_OID) references DB_WCT.AGENCY (AGC_OID);
 alter table DB_WCT.INDICATOR_REPORT_LINE add constraint FK_IRL_I_OID foreign key (IRL_I_OID) references DB_WCT.INDICATOR (I_OID);
+alter table DB_WCT.PO_H3_BLOCK_URL add index PBU_FK_1 (PBU_PROF_OVER_OID), add constraint PBU_FK_1 foreign key (PBU_PROF_OVER_OID) references DB_WCT.PROFILE_OVERRIDES (PO_OID);
+alter table DB_WCT.PO_H3_INCLUDE_URL add index PIU_FK_1 (PIU_PROF_OVER_OID), add constraint PIU_FK_1 foreign key (PIU_PROF_OVER_OID) references DB_WCT.PROFILE_OVERRIDES (PO_OID);
 
 
 create view DB_WCT.URL_PERMISSION_MAPPING_VIEW as 
