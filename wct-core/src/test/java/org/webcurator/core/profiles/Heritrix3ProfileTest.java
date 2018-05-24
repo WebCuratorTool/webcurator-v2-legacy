@@ -269,7 +269,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
         assertFalse(profileOptions.isIgnoreRobotsTxt());
         assertFalse(profileOptions.isIgnoreCookies());
-        assertEquals("ISO-8859-1", profileOptions.getDefaultEncoding());
+        assertEquals("UTF-8", profileOptions.getDefaultEncoding());
         List<String> blockUrls = profileOptions.getBlockURLsAsList();
         assertEquals(43, blockUrls.size());
         assertTrue(blockUrls.contains(".*/text/javascript.*"));
@@ -279,7 +279,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertTrue(includeUrls.contains(".*dia.*"));
         assertTrue(includeUrls.contains(".*natlib.*"));
         assertEquals(new BigInteger("1000000000"), profileOptions.getMaxFileSizeAsBytes());
-        assertTrue(profileOptions.isCompress());
+        assertFalse(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
         PolitenessOptions politenessOptions = profileOptions.getPolitenessOptions();
         assertEquals(5.0d, politenessOptions.getDelayFactor(), 0.0);
@@ -484,7 +484,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(5L, overriddenProfileOptions.getMaxTransitiveHops());
         assertTrue(overriddenProfileOptions.isIgnoreRobotsTxt());
         assertTrue(overriddenProfileOptions.isIgnoreCookies());
-        assertEquals("ISO-8859-1", overriddenProfileOptions.getDefaultEncoding());
+        assertEquals("UTF-8", overriddenProfileOptions.getDefaultEncoding());
         List<String> blockUrls = overriddenProfileOptions.getBlockURLsAsList();
         assertEquals(2, blockUrls.size());
         assertTrue(blockUrls.contains("*aaa*"));
@@ -495,7 +495,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertTrue(includeUrls.contains("*yyy*"));
         assertTrue(includeUrls.contains("*zzz*"));
         assertEquals(new BigInteger("1000000000"), overriddenProfileOptions.getMaxFileSizeAsBytes());
-        assertTrue(overriddenProfileOptions.isCompress());
+        assertFalse(overriddenProfileOptions.isCompress());
         assertEquals("IAH", overriddenProfileOptions.getPrefix());
         PolitenessOptions politenessOptions = overriddenProfileOptions.getPolitenessOptions();
         assertEquals(5.0d, politenessOptions.getDelayFactor(), 0.0);

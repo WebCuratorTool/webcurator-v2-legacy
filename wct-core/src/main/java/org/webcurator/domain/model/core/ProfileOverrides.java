@@ -227,7 +227,7 @@ public class ProfileOverrides {
 		copy.overrideExcludedMimeTypes = overrideExcludedMimeTypes;
 
 		copy.h3DocumentLimit = h3DocumentLimit;
-		copy.overrideH3DataLimit = overrideH3DataLimit;
+		copy.overrideH3DocumentLimit = overrideH3DocumentLimit;
 		copy.h3DataLimit = h3DataLimit;
 		copy.overrideH3DataLimit = overrideH3DataLimit;
 		copy.h3DataLimitUnit = h3DataLimitUnit;

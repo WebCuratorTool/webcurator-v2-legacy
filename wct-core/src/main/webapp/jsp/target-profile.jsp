@@ -44,10 +44,12 @@
   function toggleProvideOverrides(harvesterTypeValueSelected) {
     if (harvesterTypeValueSelected == 'HERITRIX1') {
       $('#h1ProfileOverrides').show();
+      $('#h1Credentials').show();
       $('#h3ProfileOverrides').hide();
     } else {
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
+      $('#h1Credentials').hide();
     }
   }
 
@@ -422,6 +424,7 @@
 </div>
 
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
+<div id="h1Credentials">
 <span class="subBoxTitle">Credentials Override</span>
 
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
@@ -494,6 +497,7 @@
 </table>
 </c:otherwise>
 </c:choose>
+</div>
 
 <c:if test="${urlPrefix ne 'ti'}">
 <table>
