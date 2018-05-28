@@ -1,14 +1,14 @@
 package org.webcurator.core.profiles;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.webcurator.core.util.ApplicationContextFactory;
+
 public class PolitenessOptions {
     private double delayFactor;
     private long minDelayMs;
     private long maxDelayMs;
     private long respectCrawlDelayUpToSeconds;
     private long maxPerHostBandwidthUsageKbSec;
-    public static final PolitenessOptions POLITE_OPTIONS = new PolitenessOptions(10.0d, 9000, 90000, 900, 400);
-    public static final PolitenessOptions MEDIUM_OPTIONS = new PolitenessOptions(5.0d, 3000, 30000, 300, 800);
-    public static final PolitenessOptions AGGRESSIVE_OPTIONS = new PolitenessOptions(1.0d, 1000, 10000, 100, 2000);
     public static final String POLITE = "Polite";
     public static final String MEDIUM = "Medium";
     public static final String AGGRESSIVE = "Aggressive";
@@ -22,6 +22,22 @@ public class PolitenessOptions {
         this.respectCrawlDelayUpToSeconds = respectCrawlDelayUpToSeconds;
         this.maxPerHostBandwidthUsageKbSec = maxPerHostBandwidthUsageKbSec;
     }
+
+    public static PolitenessOptions getPolitePolitenessOptions() {
+        WebApplicationContext ctx = ApplicationContextFactory.getWebApplicationContext();
+        return (PolitenessOptions) ctx.getBean("politePolitenessOptions");
+    }
+
+    public static PolitenessOptions getMediumPolitenessOptions() {
+        WebApplicationContext ctx = ApplicationContextFactory.getWebApplicationContext();
+        return (PolitenessOptions) ctx.getBean("mediumPolitenessOptions");
+    }
+
+    public static PolitenessOptions getAggressivePolitenessOptions() {
+        WebApplicationContext ctx = ApplicationContextFactory.getWebApplicationContext();
+        return (PolitenessOptions) ctx.getBean("aggressivePolitenessOptions");
+    }
+
 
     public double getDelayFactor() {
         return delayFactor;
@@ -64,15 +80,15 @@ public class PolitenessOptions {
     }
 
     public boolean isPolite() {
-        return this.equals(POLITE_OPTIONS);
+        return this.equals(getPolitePolitenessOptions());
     }
 
     public boolean isMedium() {
-        return this.equals(MEDIUM_OPTIONS);
+        return this.equals(getMediumPolitenessOptions());
     }
 
     public boolean isAggressive() {
-        return this.equals(AGGRESSIVE_OPTIONS);
+        return this.equals(getAggressivePolitenessOptions());
     }
 
     public String getPoliteness() {

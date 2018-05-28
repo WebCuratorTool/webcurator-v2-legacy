@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -429,10 +430,10 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         long modifiedMaxTransitiveHops = 5;
         String modifiedIgnoreRobots = "ignore";
         boolean modifiedIgnoreCookies = true;
-        List<String> modifiedBlockUrls = new ArrayList<String>();
+        List<String> modifiedBlockUrls = new LinkedList<String>();
         modifiedBlockUrls.add("*aaa*");
         modifiedBlockUrls.add("*bbb*");
-        List<String> modifiedIncludeUrls = new ArrayList<String>();
+        List<String> modifiedIncludeUrls = new LinkedList<String>();
         modifiedIncludeUrls.add("*xxx*");
         modifiedIncludeUrls.add("*yyy*");
         modifiedIncludeUrls.add("*zzz*");

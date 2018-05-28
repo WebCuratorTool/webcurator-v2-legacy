@@ -80,9 +80,9 @@ public class Heritrix3ProfileHandler extends TabHandler {
 		tmav.addObject("politenessTypes", PolitenessOptions.POLITENESS_OPTIONS);
 		tmav.addObject("profileDataUnits", ProfileDataUnit.getProfileDataUnitNames());
 		tmav.addObject("profileTimeUnits", ProfileTimeUnit.getProfileDataTimeNames());
-		tmav.addObject("politeOption", PolitenessOptions.POLITE_OPTIONS);
-		tmav.addObject("mediumOption", PolitenessOptions.MEDIUM_OPTIONS);
-		tmav.addObject("aggressiveOption", PolitenessOptions.AGGRESSIVE_OPTIONS);
+		tmav.addObject("politeOption", PolitenessOptions.getPolitePolitenessOptions());
+		tmav.addObject("mediumOption", PolitenessOptions.getMediumPolitenessOptions());
+		tmav.addObject("aggressiveOption", PolitenessOptions.getAggressivePolitenessOptions());
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
 
 		return tmav;
