@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 
-  function changeBaseProfileList(profilesList, harvesterTypeValueSelected) {
+  function changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid) {
 //      alert(JSON.stringify(profilesList));
 //      alert("harvesterTypeValueSelected: " + harvesterTypeValueSelected);
       // Change the base profile list to those profiles that match the selected harvester type.
@@ -37,7 +37,12 @@
 //      alert(JSON.stringify(matchingProfiles));
       $("#profileOid").html('');
       $(matchingProfiles).each(function(i) {
-        $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
+        if (matchingProfiles[i].oid == commandProfileOid) {
+          //alert(matchingProfiles[i].oid + " = " + commandProfileOid);
+          $("#profileOid").append("<option value=" + matchingProfiles[i].oid + " SELECTED>" + matchingProfiles[i].name + "</option>");
+        } else {
+          $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
+        }
       });
   }
 
@@ -64,13 +69,14 @@
       profilesList.push(jsProfile);
     </c:forEach>
     var selectedHarvesterTypeName = "<c:out value='${harvesterTypeName}' />";
+    var commandProfileOid = "<c:out value='${command.profileOid}' />";
     $("#harvesterType option[value='" + selectedHarvesterTypeName + "']").prop('selected', true);
-    changeBaseProfileList(profilesList, selectedHarvesterTypeName);
+    changeBaseProfileList(profilesList, selectedHarvesterTypeName, commandProfileOid);
     toggleProvideOverrides(selectedHarvesterTypeName);
 
     $('#harvesterType').change(function() {
       var harvesterTypeValueSelected = this.value;
-      changeBaseProfileList(profilesList, harvesterTypeValueSelected);
+      changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid);
       toggleProvideOverrides(harvesterTypeValueSelected);
     });
 
