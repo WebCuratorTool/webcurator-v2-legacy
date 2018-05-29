@@ -3,6 +3,7 @@
 <%@ taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
 <%@page import="org.webcurator.domain.model.auth.Privilege"%>
 <%@page import="org.webcurator.ui.profiles.command.ProfileListCommand"%>
+<script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
 
 <%
 String path = request.getContextPath();
@@ -35,6 +36,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   }
 
 //-->
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#createType').change(function() {
+        var selectedHarvesterType = this.value;
+        var link = $(this).parent().find("#profilesLink");
+        if (selectedHarvesterType == 'HERITRIX3') {
+            link.attr("href", "curator/profiles/profilesH3.html");
+        } else {
+            link.attr("href", "curator/profiles/profiles.html");
+        }
+    });
+
+  });
 </script>
 
 <span class="midtitleGrey">Profile</span>
@@ -82,7 +98,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
 				</c:forEach>
 			</select>
-			<a href="curator/profiles/profiles.html"><img src="images/create-new-btn-red.gif" alt="Create a new Profile" width="82" height="24" border="0" align="right" vspace="3" /></a>
+    		<c:if test="${defaultType.name() eq 'HERITRIX1'}">
+			    <a id="profilesLink" href="curator/profiles/profiles.html"><img src="images/create-new-btn-red.gif" alt="Create a new H1 Profile" width="82" height="24" border="0" align="right" vspace="3" /></a>
+			</c:if>
+    		<c:if test="${defaultType.name() eq 'HERITRIX3'}">
+			    <a id="profilesLink" href="curator/profiles/profilesH3.html"><img src="images/create-new-btn-red.gif" alt="Create a new H3 Profile" width="82" height="24" border="0" align="right" vspace="3" /></a>
+			</c:if>
 		</td>
 	</tr>
 	</authority:hasPrivilege>
@@ -159,9 +180,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    	<authority:hasAgencyOwnedPriv ownedObject="${profile}" privilege="<%=Privilege.MANAGE_PROFILES%>">
 			    	<c:if test="${profile.status != 2}">
 				    	<img src="images/action-sep-line.gif" alt="" width="7" height="19" border="0" />
-				        <a href="curator/profiles/profiles.html?profileOid=<c:out value="${profile.oid}"/>&mode=edit" title="Edit">
-				        <img src="images/action-icon-edit.gif" alt="click here to EDIT this item" width="18" height="18" border="0" />
-				        </a>
+                		<c:if test="${profile.harvesterType eq 'HERITRIX1'}">
+    				        <a href="curator/profiles/profiles.html?profileOid=<c:out value="${profile.oid}"/>&mode=edit" title="Edit">
+    				            <img src="images/action-icon-edit.gif" alt="click here to EDIT this item" width="18" height="18" border="0" />
+    				        </a>
+			            </c:if>
+                		<c:if test="${profile.harvesterType eq 'HERITRIX3'}">
+    				        <a href="curator/profiles/profilesH3.html?profileOid=<c:out value="${profile.oid}"/>&mode=edit" title="Edit">
+    				            <img src="images/action-icon-edit.gif" alt="click here to EDIT this item" width="18" height="18" border="0" />
+    				        </a>
+			            </c:if>
 			        </c:if>
 			    </authority:hasAgencyOwnedPriv>
 			    
@@ -169,17 +197,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<authority:hasPrivilege privilege="<%=Privilege.MANAGE_PROFILES%>" scope="<%=Privilege.SCOPE_AGENCY%>">
 				    <authority:hasAgencyOwnedPriv ownedObject="${profile}" privilege="<%= Privilege.VIEW_PROFILES %>">		        				    	    
 				        <img src="images/action-sep-line.gif" alt="" width="7" height="19" border="0" />		    				    
-				        <a href="curator/profiles/profiles.html?profileOid=<c:out value="${profile.oid}"/>&mode=copy" title="Copy">
-				        <img src="images/action-icon-copy.gif" alt="click here to COPY this item" border="0" />
-				        </a>
+                		<c:if test="${profile.harvesterType eq 'HERITRIX1'}">
+	    			        <a href="curator/profiles/profiles.html?profileOid=<c:out value="${profile.oid}"/>&mode=copy" title="Copy">
+    		    		        <img src="images/action-icon-copy.gif" alt="click here to COPY this item" border="0" />
+		    		        </a>
+                		</c:if>
+                		<c:if test="${profile.harvesterType eq 'HERITRIX3'}">
+	    			        <a href="curator/profiles/profilesH3.html?profileOid=<c:out value="${profile.oid}"/>&mode=copy" title="Copy">
+    		    		        <img src="images/action-icon-copy.gif" alt="click here to COPY this item" border="0" />
+		    		        </a>
+                		</c:if>
 					</authority:hasAgencyOwnedPriv>
 		        </authority:hasPrivilege>
 		        
 		    	<authority:hasAgencyOwnedPriv ownedObject="${profile}" privilege="<%=Privilege.MANAGE_PROFILES%>">
 			    	<img src="images/action-sep-line.gif" alt="" width="7" height="19" border="0" />
-			        <a href="curator/profiles/profiles.html?profileOid=<c:out value="${profile.oid}"/>&mode=export" title="Export">
-			        <img src="images/action-icon-export.gif" alt="click here to Export this item as XML" width="18" height="18" border="0" />
-			        </a>
+             		<c:if test="${profile.harvesterType eq 'HERITRIX1'}">
+    			        <a href="curator/profiles/profiles.html?profileOid=<c:out value="${profile.oid}"/>&mode=export" title="Export">
+    	    		        <img src="images/action-icon-export.gif" alt="click here to Export this item as XML" width="18" height="18" border="0" />
+		    	        </a>
+             		</c:if>
+             		<c:if test="${profile.harvesterType eq 'HERITRIX3'}">
+    			        <a href="curator/profiles/profilesH3.html?profileOid=<c:out value="${profile.oid}"/>&mode=export" title="Export">
+	        		        <img src="images/action-icon-export.gif" alt="click here to Export this item as XML" width="18" height="18" border="0" />
+		    	        </a>
+             		</c:if>
 			    </authority:hasAgencyOwnedPriv>
 
 		    	<authority:hasAgencyOwnedPriv ownedObject="${profile}" privilege="<%=Privilege.MANAGE_PROFILES%>">

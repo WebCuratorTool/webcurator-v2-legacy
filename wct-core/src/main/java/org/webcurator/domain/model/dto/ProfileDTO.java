@@ -56,6 +56,15 @@ public class ProfileDTO implements AgencyOwnable {
 	/** Which crawler is this? */
 	private String harvesterType;
 
+	/** The data limit unit B/KB/MB/GB */
+	private String dataLimitUnit;
+
+	/** The max file size unit B/KB/MB/GB */
+	private String maxFileSizeUnit;
+
+	/** The time limit unit SECOND/MINUTE/DAY/HOUR */
+	private String timeLimitUnit;
+
 	/**
 	 * Constructor for the DTO.
 	 * @param anOid				The database OID of the profile.
@@ -66,6 +75,9 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param anAgency			The agency that owns this profile.
 	 * @param defaultProfile	True if this is the default profile; otherwise false.
 	 * @param harvesterType		The type of harvester.
+	 * @param dataLimitUnit		The data limit unit.
+	 * @param maxFileSizeUnit	The max file size unit.
+	 * @param timeLimitUnit 	The time limit unit.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -74,6 +86,9 @@ public class ProfileDTO implements AgencyOwnable {
 				      int aRequiredLevel,
 				      Agency anAgency,
 				      String harvesterType,
+				      String dataLimitUnit,
+				      String maxFileSizeUnit,
+				      String timeLimitUnit,
 				      boolean defaultProfile) {
 		oid = anOid;
 		name = aName;
@@ -83,6 +98,9 @@ public class ProfileDTO implements AgencyOwnable {
 		owningAgency = anAgency;
 		this.defaultProfile = defaultProfile;
 		this.harvesterType = harvesterType;
+		this.dataLimitUnit = dataLimitUnit;
+		this.maxFileSizeUnit = maxFileSizeUnit;
+		this.timeLimitUnit = timeLimitUnit;
 		this.origOid = null;
 	}
 
@@ -97,6 +115,9 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param defaultProfile	True if this is the default profile; otherwise false.
 	 * @param origOid			The original database OID for a locked profile.
 	 * @param harvesterType		The type of harvester.
+	 * @param dataLimitUnit		The data limit unit.
+	 * @param maxFileSizeUnit	The max file size unit.
+	 * @param timeLimitUnit 	The time limit unit.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -106,7 +127,10 @@ public class ProfileDTO implements AgencyOwnable {
 				      Agency anAgency,
 				      boolean defaultProfile,
 				      Long origOid,
-					  String harvesterType) {
+					  String harvesterType,
+					  String dataLimitUnit,
+					  String maxFileSizeUnit,
+					  String timeLimitUnit) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
@@ -116,6 +140,9 @@ public class ProfileDTO implements AgencyOwnable {
 		this.defaultProfile = defaultProfile;
 		this.origOid = origOid;
 		this.harvesterType = harvesterType;
+		this.dataLimitUnit = dataLimitUnit;
+		this.maxFileSizeUnit = maxFileSizeUnit;
+		this.timeLimitUnit = timeLimitUnit;
 	}
 
 	/**
@@ -251,5 +278,50 @@ public class ProfileDTO implements AgencyOwnable {
 	 */
 	public void setHarvesterType(String harvesterType) {
 		this.harvesterType = harvesterType;
+	}
+
+	/**
+	 * @return Returns the data limit unit
+	 */
+	public String getDataLimitUnit() {
+		return dataLimitUnit;
+	}
+
+	/**
+	 *
+	 * @param dataLimitUnit The data limit unit
+	 */
+	public void setDataLimitUnit(String dataLimitUnit) {
+		this.dataLimitUnit = dataLimitUnit;
+	}
+
+	/**
+	 * @return Returns the max file size unit
+	 */
+	public String getMaxFileSizeUnit() {
+		return maxFileSizeUnit;
+	}
+
+	/**
+	 *
+	 * @param maxFileSizeUnit The max file size unit
+	 */
+	public void setMaxFileSizeUnit(String maxFileSizeUnit) {
+		this.maxFileSizeUnit = maxFileSizeUnit;
+	}
+
+	/**
+	 * @return Returns the time limit unit
+	 */
+	public String getTimeLimitUnit() {
+		return timeLimitUnit;
+	}
+
+	/**
+	 *
+	 * @param timeLimitUnit The time limit unit
+	 */
+	public void setTimeLimitUnit(String timeLimitUnit) {
+		this.timeLimitUnit = timeLimitUnit;
 	}
 }

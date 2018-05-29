@@ -54,9 +54,17 @@ public class ProfileManager {
 		profile.setOwningAgency(anAgency);
 		profile.setRequiredLevel(1);
 		profile.setStatus(Profile.STATUS_ACTIVE);
-		profile.setProfile(HeritrixProfile.create().toString());
 		profile.setHarvesterType(HarvesterType.DEFAULT.name());
-		
+		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX1.name())) {
+			profile.setProfile(HeritrixProfile.create().toString());
+		}
+		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
+			profile.setDataLimitUnit(ProfileDataUnit.DEFAULT.name());
+			profile.setMaxFileSizeUnit(ProfileDataUnit.DEFAULT.name());
+			profile.setTimeLimitUnit(ProfileTimeUnit.DEFAULT.name());
+			profile.setProfile(new Heritrix3Profile().getProfileXml());
+		}
+
 		profileDao.saveOrUpdate(profile);
 		auditor.audit(AuthUtil.getRemoteUserObject(), Profile.class.getName(), profile.getOid(), Auditor.ACTION_NEW_PROFILE, "A new profile " + profile.getName() + " has been created for " + profile.getOwningAgency().getName());
 	}

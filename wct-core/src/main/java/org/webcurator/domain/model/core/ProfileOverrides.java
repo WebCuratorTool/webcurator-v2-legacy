@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.core;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,8 +25,7 @@ import javax.management.InvalidAttributeValueException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.webcurator.core.exceptions.WCTRuntimeException;
-import org.webcurator.core.profiles.DuplicateNameException;
-import org.webcurator.core.profiles.HeritrixProfile;
+import org.webcurator.core.profiles.*;
 
 import java.util.LinkedList;
 
@@ -119,8 +119,63 @@ public class ProfileOverrides {
 	/** True to override the credentials; otherwise false */
 	private boolean overrideCredentials = false;
 
-	
-    /**
+	/** The H3 document limit */
+	private Long h3DocumentLimit = null;
+	/** True to override the H3 document limit; otherwise false */
+	private boolean overrideH3DocumentLimit = false;
+
+	/** The H3 data limit */
+	private Double h3DataLimit = null;
+	/** True to override the H3 data limit; otherwise false */
+	private boolean overrideH3DataLimit = false;
+
+	/** The H3 data limit unit */
+	private String h3DataLimitUnit = null;
+
+	/** The H3 time limit */
+	private Double h3TimeLimit = null;
+	/** True to override the H3 time limit; otherwise false */
+	private boolean overrideH3TimeLimit = false;
+
+	/** The H3 time limit unit */
+	private String h3TimeLimitUnit = null;
+
+	/** The H3 max path depth */
+	private Long h3MaxPathDepth = null;
+	/** True to override the H3 max path depth; otherwise false */
+	private boolean overrideH3MaxPathDepth = false;
+
+	/** The H3 max hops */
+	private Long h3MaxHops = null;
+	/** True to override the H3 max hops; otherwise false */
+	private boolean overrideH3MaxHops = false;
+
+	/** The H3 max transitive hops */
+	private Long h3MaxTransitiveHops = null;
+	/** True to override the H3 max transitive hops; otherwise false */
+	private boolean overrideH3MaxTransitiveHops = false;
+
+	/** The H3 ignore robots */
+	private String h3IgnoreRobots = "obey"; // false
+	/** True to override the H3 ignore robots; otherwise false */
+	private boolean overrideH3IgnoreRobots = false;
+
+	/** The H3 ignore cookies */
+	private boolean h3IgnoreCookies = false;
+	/** True to override the H3 ignore cookies; otherwise false */
+	private boolean overrideH3IgnoreCookies = false;
+
+	/** The list of blocked H3 URLs */
+	private List<String> h3BlockedUrls = new LinkedList<String>();
+	/** True to override the blocked urls; otherwise false */
+	private boolean overrideH3BlockedUrls = false;
+
+	/** The list of included H3 URLs */
+	private List<String> h3IncludedUrls = new LinkedList<String>();
+	/** True to override the included urls; otherwise false */
+	private boolean overrideH3IncludedUrls = false;
+
+	/**
      * Gets the database OID of the object.
      * @return Returns the oid.
      * @hibernate.id column="PO_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
@@ -170,13 +225,88 @@ public class ProfileOverrides {
 		copy.overrideIncludeUriFilters = overrideIncludeUriFilters;
 		copy.excludedMimeTypes = excludedMimeTypes;
 		copy.overrideExcludedMimeTypes = overrideExcludedMimeTypes;
-		
+
+		copy.h3DocumentLimit = h3DocumentLimit;
+		copy.overrideH3DocumentLimit = overrideH3DocumentLimit;
+		copy.h3DataLimit = h3DataLimit;
+		copy.overrideH3DataLimit = overrideH3DataLimit;
+		copy.h3DataLimitUnit = h3DataLimitUnit;
+		copy.h3TimeLimit = h3TimeLimit;
+		copy.overrideH3TimeLimit = overrideH3TimeLimit;
+		copy.h3TimeLimitUnit = h3TimeLimitUnit;
+		copy.h3MaxPathDepth = h3MaxPathDepth;
+		copy.overrideH3MaxPathDepth = overrideH3MaxPathDepth;
+		copy.h3MaxHops = h3MaxHops;
+		copy.overrideH3MaxHops = overrideH3MaxHops;
+		copy.h3MaxTransitiveHops = h3MaxTransitiveHops;
+		copy.overrideH3MaxTransitiveHops = overrideH3MaxTransitiveHops;
+		copy.h3IgnoreRobots = h3IgnoreRobots;
+		copy.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
+		copy.h3IgnoreCookies = h3IgnoreCookies;
+		copy.overrideH3IgnoreCookies = overrideH3IgnoreCookies;
+		copy.h3DocumentLimit = h3DocumentLimit;
+		copy.h3DocumentLimit = h3DocumentLimit;
+		copy.h3BlockedUrls = new LinkedList<String>();
+		copy.h3BlockedUrls.addAll(h3BlockedUrls);
+		copy.overrideH3BlockedUrls = overrideH3BlockedUrls;
+		copy.h3IncludedUrls = new LinkedList<String>();
+		copy.h3IncludedUrls.addAll(h3IncludedUrls);
+		copy.overrideH3IncludedUrls = overrideH3IncludedUrls;
+
 		copy.overrideCredentials = overrideCredentials;
 		for(ProfileCredentials creds : credentials) {
 			copy.credentials.add(creds.copy());
 		}
 
 		return copy;
+	}
+
+	/**
+	 * Apply the profile overrides to a Heritrix 3 profile. For each element in
+	 * the profile that is overriden (the flag set to true), this method
+	 * deletes the value from the base profile and replaces it with the value
+	 * from the overrides.
+	 *
+	 * @param profile The Heritrix 3 Profile to override.
+	 */
+	public void apply(Heritrix3Profile profile) {
+		Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
+		if (overrideH3DocumentLimit) {
+			profileOptions.setDocumentLimit(h3DocumentLimit);
+		}
+		if (overrideH3DataLimit) {
+			profileOptions.setDataLimitUnit(ProfileDataUnit.valueOf(h3DataLimitUnit));
+			profileOptions.setDataLimit(new BigDecimal(h3DataLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
+		}
+		if (overrideH3TimeLimit) {
+			profileOptions.setTimeLimitUnit(ProfileTimeUnit.valueOf(h3TimeLimitUnit));
+			profileOptions.setTimeLimit(new BigDecimal(h3TimeLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
+		}
+		if (overrideH3MaxPathDepth) {
+			profileOptions.setMaxPathDepth(h3MaxPathDepth);
+		}
+		if (overrideH3MaxHops) {
+			profileOptions.setMaxHops(h3MaxHops);
+		}
+		if (overrideH3MaxTransitiveHops) {
+			profileOptions.setMaxTransitiveHops(h3MaxTransitiveHops);
+		}
+		if (overrideH3IgnoreRobots) {
+			if (h3IgnoreRobots.equals("ignore")) {
+				profileOptions.setIgnoreRobotsTxt(true);
+			} else if (h3IgnoreRobots.equals("obey")) {
+				profileOptions.setIgnoreRobotsTxt(false);
+			}
+		}
+		if (overrideH3IgnoreCookies) {
+			profileOptions.setIgnoreCookies(h3IgnoreCookies);
+		}
+		if (overrideH3BlockedUrls) {
+			profileOptions.setBlockURLsAsList(h3BlockedUrls);
+		}
+		if (overrideH3IncludedUrls) {
+			profileOptions.setIncludeURLsAsList(h3IncludedUrls);
+		}
 	}
 	
 	/**
@@ -334,10 +464,32 @@ public class ProfileOverrides {
 		}
 		
 		return false;
-	}	
-	
-	
-	
+	}
+
+	/**
+	 * Return flag to indicate that there are H3 overrides set in this profile
+	 * overrides object
+	 * @return flag to indicat there are overrides
+	 */
+	public boolean hasH3Overrides() {
+		if (isOverrideCredentials() ||
+				isOverrideH3DocumentLimit() ||
+				isOverrideH3DataLimit() ||
+				isOverrideH3TimeLimit() ||
+				isOverrideH3MaxPathDepth() ||
+				isOverrideH3MaxHops() ||
+				isOverrideH3MaxTransitiveHops() ||
+				isOverrideH3IgnoreRobots() ||
+				isOverrideH3IgnoreCookies() ||
+				isOverrideH3BlockedUrls() ||
+				isOverrideH3IncludedUrls()) {
+			return true;
+		}
+
+		return false;
+	}
+
+
 	/**
 	 * @return Returns the contentTypeRegexp.
 	 * @hibernate.property column="PO_EXCL_MIME_TYPES"
@@ -651,7 +803,341 @@ public class ProfileOverrides {
 		this.overrideRobotsHonouringPolicy = overrideRobotsHonouringPolicy;
 	}
 
+	/**
+	 * @return Returns the h3DocumentLimit.
+	 * @hibernate.property column="PO_H3_DOC_LIMIT"
+	 */
+	public Long getH3DocumentLimit() {
+		return h3DocumentLimit;
+	}
 
+	/**
+	 * @param h3DocumentLimit The h3DocumentLimit to set.
+	 */
+	public void setH3DocumentLimit(Long h3DocumentLimit) {
+		this.h3DocumentLimit = h3DocumentLimit;
+	}
 
+	/**
+	 * @return Returns the overrideH3DocumentLimit.
+	 * @hibernate.property column="PO_H3_OR_DOC_LIMIT"
+	 */
+	public boolean isOverrideH3DocumentLimit() {
+		return overrideH3DocumentLimit;
+	}
 
+	/**
+	 * @param overrideH3DocumentLimit The overrideH3DocumentLimit to set.
+	 */
+	public void setOverrideH3DocumentLimit(boolean overrideH3DocumentLimit) {
+		this.overrideH3DocumentLimit = overrideH3DocumentLimit;
+	}
+
+	/**
+	 * @return Returns the h3DataLimit.
+	 * @hibernate.property column="PO_H3_DATA_LIMIT"
+	 */
+	public Double getH3DataLimit() {
+		return h3DataLimit;
+	}
+
+	/**
+	 * @param h3DataLimit The h3DataLimit to set.
+	 */
+	public void setH3DataLimit(Double h3DataLimit) {
+		this.h3DataLimit = h3DataLimit;
+	}
+
+	/**
+	 * @return Returns the overrideH3DataLimit.
+	 * @hibernate.property column="PO_H3_OR_DATA_LIMIT"
+	 */
+	public boolean isOverrideH3DataLimit() {
+		return overrideH3DataLimit;
+	}
+
+	/**
+	 * @param overrideH3DataLimit The overrideH3DataLimit to set.
+	 */
+	public void setOverrideH3DataLimit(boolean overrideH3DataLimit) {
+		this.overrideH3DataLimit = overrideH3DataLimit;
+	}
+
+	/**
+	 * @return Returns the h3DataLimitUnit.
+	 * @hibernate.property column="PO_H3_DATA_LIMIT_UNIT"
+	 */
+	public String getH3DataLimitUnit() {
+		return h3DataLimitUnit;
+	}
+
+	/**
+	 * @param h3DataLimitUnit The h3DataLimitUnit to set.
+	 */
+	public void setH3DataLimitUnit(String h3DataLimitUnit) {
+		this.h3DataLimitUnit = h3DataLimitUnit;
+	}
+
+	/**
+	 * @return Returns the h3TimeLimit.
+	 * @hibernate.property column="PO_H3_TIME_LIMIT"
+	 */
+	public Double getH3TimeLimit() {
+		return h3TimeLimit;
+	}
+
+	/**
+	 * @param h3TimeLimit The h3TimeLimit to set.
+	 */
+	public void setH3TimeLimit(Double h3TimeLimit) {
+		this.h3TimeLimit = h3TimeLimit;
+	}
+
+	/**
+	 * @return Returns the overrideH3TimeLimit.
+	 * @hibernate.property column="PO_H3_OR_TIME_LIMIT"
+	 */
+	public boolean isOverrideH3TimeLimit() {
+		return overrideH3TimeLimit;
+	}
+
+	/**
+	 * @param overrideH3TimeLimit The overrideH3TimeLimit to set.
+	 */
+	public void setOverrideH3TimeLimit(boolean overrideH3TimeLimit) {
+		this.overrideH3TimeLimit = overrideH3TimeLimit;
+	}
+
+	/**
+	 * @return Returns the h3TimeLimitUnit.
+	 * @hibernate.property column="PO_H3_TIME_LIMIT_UNIT"
+	 */
+	public String getH3TimeLimitUnit() {
+		return h3TimeLimitUnit;
+	}
+
+	/**
+	 * @param h3TimeLimitUnit The h3TimeLimitUnit to set.
+	 */
+	public void setH3TimeLimitUnit(String h3TimeLimitUnit) {
+		this.h3TimeLimitUnit = h3TimeLimitUnit;
+	}
+
+	/**
+	 * @return Returns the h3MaxPathDepth.
+	 * @hibernate.property column="PO_H3_MAX_PATH_DEPTH"
+	 */
+	public Long getH3MaxPathDepth() {
+		return h3MaxPathDepth;
+	}
+
+	/**
+	 * @param h3MaxPathDepth The h3MaxPathDepth to set.
+	 */
+	public void setH3MaxPathDepth(Long h3MaxPathDepth) {
+		this.h3MaxPathDepth = h3MaxPathDepth;
+	}
+
+	/**
+	 * @return Returns the overrideH3MaxPathDepth.
+	 * @hibernate.property column="PO_H3_OR_MAX_PATH_DEPTH"
+	 */
+	public boolean isOverrideH3MaxPathDepth() {
+		return overrideH3MaxPathDepth;
+	}
+
+	/**
+	 * @param overrideH3MaxPathDepth The overrideH3MaxPathDepth to set.
+	 */
+	public void setOverrideH3MaxPathDepth(boolean overrideH3MaxPathDepth) {
+		this.overrideH3MaxPathDepth = overrideH3MaxPathDepth;
+	}
+
+	/**
+	 * @return Returns the h3MaxHops.
+	 * @hibernate.property column="PO_H3_MAX_HOPS"
+	 */
+	public Long getH3MaxHops() {
+		return h3MaxHops;
+	}
+
+	/**
+	 * @param h3MaxHops The h3MaxHops to set.
+	 */
+	public void setH3MaxHops(Long h3MaxHops) {
+		this.h3MaxHops = h3MaxHops;
+	}
+
+	/**
+	 * @return Returns the overrideH3MaxHops.
+	 * @hibernate.property column="PO_H3_OR_MAX_HOPS"
+	 */
+	public boolean isOverrideH3MaxHops() {
+		return overrideH3MaxHops;
+	}
+
+	/**
+	 * @param overrideH3MaxHops The overrideH3MaxHops to set.
+	 */
+	public void setOverrideH3MaxHops(boolean overrideH3MaxHops) {
+		this.overrideH3MaxHops = overrideH3MaxHops;
+	}
+
+	/**
+	 * @return Returns the h3MaxTransitiveHops.
+	 * @hibernate.property column="PO_H3_MAX_TRANS_HOPS"
+	 */
+	public Long getH3MaxTransitiveHops() {
+		return h3MaxTransitiveHops;
+	}
+
+	/**
+	 * @param h3MaxTransitiveHops The h3MaxTransitiveHops to set.
+	 */
+	public void setH3MaxTransitiveHops(Long h3MaxTransitiveHops) {
+		this.h3MaxTransitiveHops = h3MaxTransitiveHops;
+	}
+
+	/**
+	 * @return Returns the overrideH3MaxTransitiveHops.
+	 * @hibernate.property column="PO_H3_OR_MAX_TRANS_HOPS"
+	 */
+	public boolean isOverrideH3MaxTransitiveHops() {
+		return overrideH3MaxTransitiveHops;
+	}
+
+	/**
+	 * @param overrideH3MaxTransitiveHops The overrideH3MaxTransitiveHops to set.
+	 */
+	public void setOverrideH3MaxTransitiveHops(boolean overrideH3MaxTransitiveHops) {
+		this.overrideH3MaxTransitiveHops = overrideH3MaxTransitiveHops;
+	}
+
+	/**
+	 * @return Returns the h3IgnoreRobots.
+	 * @hibernate.property column="PO_H3_IGNORE_ROBOTS"
+	 * "ignore" = true
+	 * "obey" = false
+	 */
+	public String getH3IgnoreRobots() {
+		return h3IgnoreRobots;
+	}
+
+	/**
+	 * @param h3IgnoreRobots The h3IgnoreRobots to set.
+	 */
+	public void setH3IgnoreRobots(String h3IgnoreRobots) {
+		this.h3IgnoreRobots = h3IgnoreRobots;
+	}
+
+	/**
+	 * @return Returns the overrideH3IgnoreRobots.
+	 * @hibernate.property column="PO_H3_OR_IGNORE_ROBOTS"
+	 */
+	public boolean isOverrideH3IgnoreRobots() {
+		return overrideH3IgnoreRobots;
+	}
+
+	/**
+	 * @param overrideH3IgnoreRobots The overrideH3IgnoreRobots to set.
+	 */
+	public void setOverrideH3IgnoreRobots(boolean overrideH3IgnoreRobots) {
+		this.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
+	}
+
+	/**
+	 * @return Returns the h3IgnoreCookies.
+	 * @hibernate.property column="PO_H3_IGNORE_COOKIES"
+	 */
+	public boolean isH3IgnoreCookies() {
+		return h3IgnoreCookies;
+	}
+
+	/**
+	 * @param h3IgnoreCookies The h3IgnoreCookies to set.
+	 */
+	public void setH3IgnoreCookies(boolean h3IgnoreCookies) {
+		this.h3IgnoreCookies = h3IgnoreCookies;
+	}
+
+	/**
+	 * @return Returns the overrideH3IgnoreCookies.
+	 * @hibernate.property column="PO_H3_OR_IGNORE_COOKIES"
+	 */
+	public boolean isOverrideH3IgnoreCookies() {
+		return overrideH3IgnoreCookies;
+	}
+
+	/**
+	 * @param overrideH3IgnoreCookies The overrideH3IgnoreCookies to set.
+	 */
+	public void setOverrideH3IgnoreCookies(boolean overrideH3IgnoreCookies) {
+		this.overrideH3IgnoreCookies = overrideH3IgnoreCookies;
+	}
+
+	/**
+	 * @return Returns the h3BlockedUrls.
+	 * @hibernate.list table="PO_H3_BLOCK_URL" lazy="false"
+	 * @hibernate.collection-key column="PBU_PROF_OVER_OID"
+	 * @hibernate.collection-index column="PBU_IX"
+	 * @hibernate.collection-element type="string" column="PBU_FILTER"
+	 */
+	public List<String> getH3BlockedUrls() {
+		return h3BlockedUrls;
+	}
+
+	/**
+	 * @param h3BlockedUrls The h3BlockedUrls to set.
+	 */
+	public void setH3BlockedUrls(List<String> h3BlockedUrls) {
+		this.h3BlockedUrls = h3BlockedUrls;
+	}
+
+	/**
+	 * @return Returns the overrideH3BlockedUrls.
+	 * @hibernate.property column="PO_H3_OR_BLOCK_URL"
+	 */
+	public boolean isOverrideH3BlockedUrls() {
+		return overrideH3BlockedUrls;
+	}
+
+	/**
+	 * @param overrideH3BlockedUrls The overrideH3BlockedUrls to set.
+	 */
+	public void setOverrideH3BlockedUrls(boolean overrideH3BlockedUrls) {
+		this.overrideH3BlockedUrls = overrideH3BlockedUrls;
+	}
+
+	/**
+	 * @return Returns the h3IncludedUrls.
+	 * @hibernate.list table="PO_H3_INCLUDE_URL" lazy="false"
+	 * @hibernate.collection-key column="PIU_PROF_OVER_OID"
+	 * @hibernate.collection-index column="PIU_IX"
+	 * @hibernate.collection-element type="string" column="PIU_FILTER"
+	 */
+	public List<String> getH3IncludedUrls() {
+		return h3IncludedUrls;
+	}
+
+	/**
+	 * @param h3IncludedUrls The h3IncludedUrls to set.
+	 */
+	public void setH3IncludedUrls(List<String> h3IncludedUrls) {
+		this.h3IncludedUrls = h3IncludedUrls;
+	}
+
+	/**
+	 * @return Returns the overrideH3IncludedUrls.
+	 * @hibernate.property column="PO_H3_OR_INCL_URL"
+	 */
+	public boolean isOverrideH3IncludedUrls() {
+		return overrideH3IncludedUrls;
+	}
+
+	/**
+	 * @param overrideH3IncludedUrls The overrideH3IncludedUrls to set.
+	 */
+	public void setOverrideH3IncludedUrls(boolean overrideH3IncludedUrls) {
+		this.overrideH3IncludedUrls = overrideH3IncludedUrls;
+	}
 }

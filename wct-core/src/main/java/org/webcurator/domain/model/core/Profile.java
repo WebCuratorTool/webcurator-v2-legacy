@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.core;
 
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.domain.AgencyOwnable;
 import org.webcurator.domain.model.auth.Agency;
 
@@ -26,17 +27,17 @@ import org.webcurator.domain.model.auth.Agency;
  * 
  * @author bbeaumont
  * @hibernate.class table="PROFILE" lazy="false"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAllDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.status = 1 order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.status = 1 AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAvailableProfileDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid=:agencyOid AND p.status = 1 AND (p.requiredLevel <= :requiredLevel OR p.defaultProfile=:default OR p.oid=:currentProfileOid) ORDER BY p.name"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getDTO" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p where p.oid = :oid"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAgencyDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAgencyDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveAgencyDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.status = 1 order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveAgencyDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.status = 1 AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.Profile.getLockedDTO" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType) FROM Profile p WHERE p.origOid = :origOid and p.version = :version"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAllDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.status = 1 order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.status = 1 AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAvailableProfileDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.owningAgency.oid=:agencyOid AND p.status = 1 AND (p.requiredLevel <= :requiredLevel OR p.defaultProfile=:default OR p.oid=:currentProfileOid) ORDER BY p.name"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getDTO" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p where p.oid = :oid"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAgencyDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.owningAgency.oid = :agencyOid order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getAgencyDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveAgencyDTOs" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.status = 1 order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getActiveAgencyDTOsByType" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.owningAgency.oid = :agencyOid AND p.status = 1 AND p.harvesterType = :harvesterType order by p.owningAgency, upper(p.name)"
+ * @hibernate.query name="org.webcurator.domain.model.core.Profile.getLockedDTO" query="SELECT new org.webcurator.domain.model.dto.ProfileDTO(p.oid, p.name, p.description, p.status, p.requiredLevel, p.owningAgency, p.defaultProfile, p.origOid, p.harvesterType, p.dataLimitUnit, p.maxFileSizeUnit, p.timeLimitUnit) FROM Profile p WHERE p.origOid = :origOid and p.version = :version"
  */
 public class Profile implements AgencyOwnable {
 	
@@ -118,7 +119,16 @@ public class Profile implements AgencyOwnable {
 
 	/** What type of harvester is being configured by this profile? */
 	private String harvesterType;
-		
+
+	/** The data limit unit B/KB/MB/GB */
+	private String dataLimitUnit;
+
+	/** The max file size unit B/KB/MB/GB */
+	private String maxFileSizeUnit;
+
+	/** The time limit unit SECOND/MINUTE/DAY/HOUR */
+	private String timeLimitUnit;
+
     /**
      * Get a clone of the profile with a null OID.
      * @return A clone of this Profile.
@@ -136,7 +146,10 @@ public class Profile implements AgencyOwnable {
 		theClone.setVersion(version);
 		theClone.setOrigOid(origOid);
 		theClone.setHarvesterType(harvesterType);
-		
+		theClone.setDataLimitUnit(dataLimitUnit);
+		theClone.setMaxFileSizeUnit(maxFileSizeUnit);
+		theClone.setTimeLimitUnit(timeLimitUnit);
+
 		return theClone;
 	}
 	
@@ -353,4 +366,56 @@ public class Profile implements AgencyOwnable {
 		this.harvesterType = harvesterType;
 	}
 
+	/**
+	 * @return The data limit unit
+	 * @hibernate.property column="P_DATA_LIMIT_UNIT"
+	 */
+	public String getDataLimitUnit() {
+		return dataLimitUnit;
+	}
+
+	/**
+	 * @param dataLimitUnit The data limit unit
+	 */
+	public void setDataLimitUnit(String dataLimitUnit) {
+		this.dataLimitUnit = dataLimitUnit;
+	}
+
+	/**
+	 * @return The max file size unit
+	 * @hibernate.property column="P_MAX_FILE_SIZE_UNIT"
+	 */
+	public String getMaxFileSizeUnit() {
+		return maxFileSizeUnit;
+	}
+
+	/**
+	 * @param maxFileSizeUnit The max file size unit
+	 */
+	public void setMaxFileSizeUnit(String maxFileSizeUnit) {
+		this.maxFileSizeUnit = maxFileSizeUnit;
+	}
+
+	/**
+	 * @return The time limit unit
+	 * @hibernate.property column="P_TIME_LIMIT_UNIT"
+	 */
+	public String getTimeLimitUnit() {
+		return timeLimitUnit;
+	}
+
+	/**
+	 * @param timeLimitUnit The time limit unit
+	 */
+	public void setTimeLimitUnit(String timeLimitUnit) {
+		this.timeLimitUnit = timeLimitUnit;
+	}
+
+	public boolean isHeritrix1Profile() {
+		return getHarvesterType().equals(HarvesterType.HERITRIX1.name());
+	}
+
+	public boolean isHeritrix3Profile() {
+		return getHarvesterType().equals(HarvesterType.HERITRIX3.name());
+	}
 }
