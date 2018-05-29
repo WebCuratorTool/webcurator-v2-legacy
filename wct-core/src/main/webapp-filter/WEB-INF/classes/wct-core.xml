@@ -730,7 +730,7 @@
 		<!-- Max Delay milliseconds -->
 		<constructor-arg index = "2" type = "long" value = "90000"/>
 		<!-- Respect crawl delay up to seconds -->
-		<constructor-arg index = "3" type = "long" value = "900"/>
+		<constructor-arg index = "3" type = "long" value = "180"/>
 		<!-- Max per host bandwidth usage kb/sec -->
 		<constructor-arg index = "4" type = "long" value = "400"/>
 	</bean>
@@ -743,7 +743,7 @@
 		<!-- Max Delay milliseconds -->
 		<constructor-arg index = "2" type = "long" value = "30000"/>
 		<!-- Respect crawl delay up to seconds -->
-		<constructor-arg index = "3" type = "long" value = "300"/>
+		<constructor-arg index = "3" type = "long" value = "30"/>
 		<!-- Max per host bandwidth usage kb/sec -->
 		<constructor-arg index = "4" type = "long" value = "800"/>
 	</bean>
@@ -756,7 +756,7 @@
 		<!-- Max Delay milliseconds -->
 		<constructor-arg index = "2" type = "long" value = "10000"/>
 		<!-- Respect crawl delay up to seconds -->
-		<constructor-arg index = "3" type = "long" value = "100"/>
+		<constructor-arg index = "3" type = "long" value = "2"/>
 		<!-- Max per host bandwidth usage kb/sec -->
 		<constructor-arg index = "4" type = "long" value = "2000"/>
 	</bean>
