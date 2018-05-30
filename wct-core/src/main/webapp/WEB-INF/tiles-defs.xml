@@ -382,6 +382,11 @@
 		<put name="body" value="/jsp/profile-view.jsp" />
 	</definition>
 
+	<definition name="h3-script-console" extends=".popup">
+		<put name="title" value="H3 Script Console" />
+		<put name="body" value="/jsp/h3-script-console.jsp" />
+	</definition>
+
 	<definition name="profile" extends=".tabbedNew">
 		<put name="title" value="WEB CURATOR TOOL: Profiles" />
 		<put name="controller" value="curator/profiles/profiles.html" />

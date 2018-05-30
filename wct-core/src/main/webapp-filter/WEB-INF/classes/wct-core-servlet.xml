@@ -83,7 +83,8 @@
 				<entry key="/curator/target/target-form-credentials.html" value="formCredentialsControllerTarget"/>								
 				<entry key="/curator/target/ti-basic-credentials.html" value="basicCredentialsControllerTargetInstance"/>
 				<entry key="/curator/target/ti-form-credentials.html" value="formCredentialsControllerTargetInstance"/>
-				<entry key="/curator/intray/intray.html" value="inTrayController"/>				
+				<entry key="/curator/target/h3ScriptConsole.html" value="h3ScriptConsoleController"/>
+				<entry key="/curator/intray/intray.html" value="inTrayController"/>
 				<entry key="/curator/report/report.html" value="reportController"/>
 				<entry key="/curator/report/report-preview.html" value="reportPreviewController"/>
 				<entry key="/curator/report/report-save.html" value="reportSaveController"/>
@@ -1276,6 +1277,11 @@
 
 	<bean id="profileViewController" class="org.webcurator.ui.profiles.controller.ProfileViewController">
 		<property name="profileManager" ref="profileManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+
+	<bean id="h3ScriptConsoleController" class="org.webcurator.ui.profiles.controller.H3ScriptConsoleController">
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="authorityManager" ref="authorityManager"/>
 	</bean>
 

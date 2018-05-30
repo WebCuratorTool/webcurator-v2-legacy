@@ -14,6 +14,11 @@
 <script src="scripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
 <script src="scripts/jquery.inview.js" type="text/javascript"></script>
 
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
 <script>
   function setPageNumber(pageNumber) {
 	document.filter2.<%= TargetInstanceCommand.PARAM_PAGE%>.value=pageNumber; 
@@ -33,6 +38,13 @@
  	  $('#dateEntryStart').datepicker({dateFormat: 'dd/mm/yy 00:00:00', changeMonth: true, changeYear: true, showOtherMonths: true, selectOtherMonths: true, showButtonPanel: true});
 	  $('#dateEntryEnd').datepicker({dateFormat: 'dd/mm/yy 23:59:59', changeMonth: true, changeYear: true, showOtherMonths: true, selectOtherMonths: true, showButtonPanel: true});
   });
+
+  function viewH3ScriptConsole(instanceOid) {
+    //alert('Instance Oid ' + instanceOid);
+    var url = '<%= basePath %>curator/target/h3ScriptConsole.html?targetInstanceOid=' + instanceOid;
+    var winObj = window.open(url, 'h3ScriptConsole', 'menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes,width=800,height=600', true);
+    winObj.focus();
+  }
 </script>
 
 
@@ -248,7 +260,7 @@
 			<td class="tableHead">Owner</td>
 			<td class="tableHead">Run Time</td>
 			<td class="tableHead">Data Downloaded</td>
-			<td class="tableHead" style="width:200px;">Action</td>
+			<td class="tableHead" style="width:300px;">Action</td>
 		</tr>
 		<c:set var="count" scope="page" value="0"/>
 	<c:forEach items="${targetInstances.list}" var="instance">
@@ -321,6 +333,10 @@
 				<c:if test="${instance.state eq 'Running'}">
 					<img src="images/action-sep-line.gif" alt="" width="7" height="19" border="0" />
 					<input type="image" src="images/stop-icon.gif" title="Stop" alt="click here to Stop this item" width="21" height="20" border="0" onclick="javascript:document.targetInstance<c:out value="${count}"/>.cmd.value='<%=TargetInstanceCommand.ACTION_STOP%>'; document.targetInstance<c:out value="${count}"/>.action='<c:out value="${action}"/>';"/>			
+				</c:if>
+				<c:if test="${instance.state eq 'Running' && instance.profile.isHeritrix3Profile()}">
+					<img src="images/action-sep-line.gif" alt="" width="7" height="19" border="0" />
+		    	    <a href="javascript:viewH3ScriptConsole(${instance.oid});" title="View"><img src="images/note.gif" title="H3 Script Console" alt="click here to Open H3 Script Console" width="21" height="20" border="0"></a>
 				</c:if>
 				</authority:show>
 				<authority:dont>&nbsp;</authority:dont>
