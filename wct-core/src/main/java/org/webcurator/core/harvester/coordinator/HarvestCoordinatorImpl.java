@@ -33,9 +33,11 @@ import org.slf4j.LoggerFactory;
 import org.webcurator.core.archive.SipBuilder;
 import org.webcurator.core.exceptions.DigitalAssetStoreException;
 import org.webcurator.core.exceptions.WCTRuntimeException;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.HarvestAgentConfig;
 import org.webcurator.core.notification.InTrayManager;
 import org.webcurator.core.notification.MessageType;
+import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.core.profiles.HeritrixProfile;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.store.DigitalAssetStore;
@@ -44,24 +46,7 @@ import org.webcurator.core.targets.TargetManager;
 import org.webcurator.domain.TargetInstanceCriteria;
 import org.webcurator.domain.TargetInstanceDAO;
 import org.webcurator.domain.model.auth.Privilege;
-import org.webcurator.domain.model.core.AbstractTarget;
-import org.webcurator.domain.model.core.ArcHarvestFile;
-import org.webcurator.domain.model.core.ArcHarvestFileDTO;
-import org.webcurator.domain.model.core.ArcHarvestResource;
-import org.webcurator.domain.model.core.ArcHarvestResourceDTO;
-import org.webcurator.domain.model.core.ArcHarvestResult;
-import org.webcurator.domain.model.core.ArcHarvestResultDTO;
-import org.webcurator.domain.model.core.BandwidthRestriction;
-import org.webcurator.domain.model.core.BusinessObjectFactory;
-import org.webcurator.domain.model.core.HarvestResourceDTO;
-import org.webcurator.domain.model.core.HarvestResult;
-import org.webcurator.domain.model.core.HarvestResultDTO;
-import org.webcurator.domain.model.core.LogFilePropertiesDTO;
-import org.webcurator.domain.model.core.Schedule;
-import org.webcurator.domain.model.core.Seed;
-import org.webcurator.domain.model.core.SeedHistory;
-import org.webcurator.domain.model.core.Target;
-import org.webcurator.domain.model.core.TargetInstance;
+import org.webcurator.domain.model.core.*;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 import org.webcurator.domain.model.dto.QueuedTargetInstanceDTO;
 
@@ -490,20 +475,36 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 */
 	private String getHarvestProfileString(TargetInstance aTargetInstance) {
 
-		String profileString = aTargetInstance.getTarget().getProfile().getProfile();
+		Profile profile = aTargetInstance.getTarget().getProfile();
 
-		// replace any ${TI_OID} tokens
-		profileString = profileString.replace("${TI_OID}", aTargetInstance.getOid().toString());
+		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX1.name())) {
+			String profileString = profile.getProfile();
 
-		HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profileString);
+			// replace any ${TI_OID} tokens
+			profileString = profileString.replace("${TI_OID}", aTargetInstance.getOid().toString());
 
-		if (aTargetInstance.getProfileOverrides().hasOverrides()) {
-			log.info("Applying Profile Overrides for " + aTargetInstance.getOid());
-			aTargetInstance.getProfileOverrides().apply(heritrixProfile);
+			HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profileString);
+
+			if (aTargetInstance.getProfileOverrides().hasOverrides()) {
+				log.info("Applying Profile Overrides for " + aTargetInstance.getOid());
+				aTargetInstance.getProfileOverrides().apply(heritrixProfile);
+			}
+
+			heritrixProfile.setToeThreads(targetManager.getSeeds(aTargetInstance).size() * 2);
+			return heritrixProfile.toString();
 		}
-
-		heritrixProfile.setToeThreads(targetManager.getSeeds(aTargetInstance).size() * 2);
-		return heritrixProfile.toString();
+		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
+			String profileXml = profile.getProfile();
+			if (aTargetInstance.getProfileOverrides().hasH3Overrides()) {
+				Heritrix3Profile h3Profile = new Heritrix3Profile(profileXml);
+				log.info("Applying H3 Profile Overrides for " + aTargetInstance.getOid());
+				aTargetInstance.getProfileOverrides().apply(h3Profile);
+				return h3Profile.toProfileXml();
+			} else {
+				return profileXml;
+			}
+		}
+		return profile.getProfile();
 	}
 
 	public long getCurrentGlobalMaxBandwidth() {

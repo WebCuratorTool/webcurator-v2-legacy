@@ -24,7 +24,7 @@
 
 <script type="text/javascript">
 
-  function changeBaseProfileList(profilesList, harvesterTypeValueSelected) {
+  function changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid) {
 //      alert(JSON.stringify(profilesList));
 //      alert("harvesterTypeValueSelected: " + harvesterTypeValueSelected);
       // Change the base profile list to those profiles that match the selected harvester type.
@@ -37,19 +37,24 @@
 //      alert(JSON.stringify(matchingProfiles));
       $("#profileOid").html('');
       $(matchingProfiles).each(function(i) {
-        $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
+        if (matchingProfiles[i].oid == commandProfileOid) {
+          //alert(matchingProfiles[i].oid + " = " + commandProfileOid);
+          $("#profileOid").append("<option value=" + matchingProfiles[i].oid + " SELECTED>" + matchingProfiles[i].name + "</option>");
+        } else {
+          $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
+        }
       });
   }
 
   function toggleProvideOverrides(harvesterTypeValueSelected) {
-    if (harvesterTypeValueSelected == "HERITRIX1") {
-      $('#excludeFiltersRow').show();
-      $('#forceAcceptFiltersRow').show();
-      $('#excludedMimeTypesRow').show();
+    if (harvesterTypeValueSelected == 'HERITRIX1') {
+      $('#h1ProfileOverrides').show();
+      $('#h1Credentials').show();
+      $('#h3ProfileOverrides').hide();
     } else {
-      $('#excludeFiltersRow').hide();
-      $('#forceAcceptFiltersRow').hide();
-      $('#excludedMimeTypesRow').hide();
+      $('#h3ProfileOverrides').show();
+      $('#h1ProfileOverrides').hide();
+      $('#h1Credentials').hide();
     }
   }
 
@@ -64,13 +69,14 @@
       profilesList.push(jsProfile);
     </c:forEach>
     var selectedHarvesterTypeName = "<c:out value='${harvesterTypeName}' />";
+    var commandProfileOid = "<c:out value='${command.profileOid}' />";
     $("#harvesterType option[value='" + selectedHarvesterTypeName + "']").prop('selected', true);
-    changeBaseProfileList(profilesList, selectedHarvesterTypeName);
+    changeBaseProfileList(profilesList, selectedHarvesterTypeName, commandProfileOid);
     toggleProvideOverrides(selectedHarvesterTypeName);
 
     $('#harvesterType').change(function() {
       var harvesterTypeValueSelected = this.value;
-      changeBaseProfileList(profilesList, harvesterTypeValueSelected);
+      changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid);
       toggleProvideOverrides(harvesterTypeValueSelected);
     });
 
@@ -145,135 +151,286 @@
 
 <c:set var="profileEditMode" value="${editMode && (urlPrefix ne 'ti' || command.overrideTarget)}"/>
 
-<div id="annotationsBox">
+<div id="h1ProfileOverrides">
 	<table width="100%" cellpadding="3" cellspacing="0" border="0">
 		<tr>
 			<td class="annotationsHeaderRow">Profile Element</td>
 			<td class="annotationsHeaderRow">Override Value</td>
 			<td class="annotationsHeaderRow">Enable Override</td>
 		</tr>
-  
+
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
-  <tr>
-    <td class="annotationsLiteRow">Robot Honouring Policy</td>
-    <td class="annotationsLiteRow">
-      <select name="robots">
-        <option value="classic" ${command.robots eq 'classic' ? 'selected' : ''}>classic</option>
-        <option value="ignore" ${command.robots eq 'ignore' ? 'selected' : ''}>ignore</option>
-      </select>
-    </td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideRobots" ${command.overrideRobots ? 'checked' : ''}/></td>
-  </tr>
+    <tr>
+      <td class="annotationsLiteRow">Robot Honouring Policy</td>
+      <td class="annotationsLiteRow">
+        <select name="robots">
+          <option value="classic" ${command.robots eq 'classic' ? 'selected' : ''}>classic</option>
+          <option value="ignore" ${command.robots eq 'ignore' ? 'selected' : ''}>ignore</option>
+        </select>
+      </td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideRobots" ${command.overrideRobots ? 'checked' : ''}/></td>
+    </tr>
 
-  <tr>
-    <td class="annotationsLiteRow">Maximum Hours</td>
-    <td class="annotationsLiteRow"><input type="text" size="60" name="maxHours" value="<c:out value="${command.maxHours}"/>"/></td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxHours" ${command.overrideMaxHours ? 'checked' : ''}/></td>
-  </tr>
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Kilobytes</td>
-    <td class="annotationsLiteRow"><input type="text" size="60" name="maxBytesDownload" value="<c:out value="${command.maxBytesDownload}"/>"/></td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxBytesDownload" ${command.overrideMaxBytesDownload ? 'checked' : ''}/></td>
-  </tr>  
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Documents</td>
-    <td class="annotationsLiteRow"><input type="text" size="60" name="maxDocuments" value="<c:out value="${command.maxDocuments}"/>"/></td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxDocuments" ${command.overrideMaxDocuments ? 'checked' : ''}/></td>
-  </tr>  
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Path Depth</td>
-    <td class="annotationsLiteRow"><input type="text" size="60" name="maxPathDepth" value="<c:out value="${command.maxPathDepth}"/>"/></td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxPathDepth" ${command.overrideMaxPathDepth ? 'checked' : ''}/></td>
-  </tr>  
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Hops</td>
-    <td class="annotationsLiteRow"><input type="text" size="60" name="maxHops" value="<c:out value="${command.maxHops}"/>"/></td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxHops" ${command.overrideMaxHops ? 'checked' : ''}/></td>
-  </tr>
+    <tr>
+      <td class="annotationsLiteRow">Maximum Hours</td>
+      <td class="annotationsLiteRow"><input type="text" size="60" name="maxHours" value="<c:out value="${command.maxHours}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxHours" ${command.overrideMaxHours ? 'checked' : ''}/></td>
+    </tr>
 
-  <tr id="excludeFiltersRow">
-    <td class="annotationsLiteRow" valign="top">Exclude Filters</td>
-    <td class="annotationsLiteRow" valign="top"><textarea name="excludeFilters" cols="62" rows="4"><c:out value="${command.excludeFilters}"/></textarea></td>
-    <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideExcludeFilters" ${command.overrideExcludeFilters ? 'checked' : ''}/></td>
-  </tr>  
-  
-  <tr id="forceAcceptFiltersRow">
-    <td class="annotationsLiteRow" valign="top">Force Accept Filters</td>
-    <td class="annotationsLiteRow" valign="top"><textarea name="forceAcceptFilters" cols="62" rows="4"><c:out value="${command.forceAcceptFilters}"/></textarea></td>
-    <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideForceAcceptFilters" ${command.overrideForceAcceptFilters ? 'checked' : ''}/></td>
-  </tr>  
-  
-  <tr id="excludedMimeTypesRow">
-    <td class="annotationsLiteRow">Excluded MIME Types</td>
-    <td class="annotationsLiteRow"><input type="text" size="60" name="excludedMimeTypes" value="<c:out value="${command.excludedMimeTypes}"/>"/></td>
-    <td class="annotationsLiteRow"><input type="checkbox" name="overrideExcludedMimeTypes" ${command.overrideExcludedMimeTypes ? 'checked' : ''}/></td>
-  </tr>  
+    <tr>
+      <td class="annotationsLiteRow">Maximum Kilobytes</td>
+      <td class="annotationsLiteRow"><input type="text" size="60" name="maxBytesDownload" value="<c:out value="${command.maxBytesDownload}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxBytesDownload" ${command.overrideMaxBytesDownload ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Documents</td>
+      <td class="annotationsLiteRow"><input type="text" size="60" name="maxDocuments" value="<c:out value="${command.maxDocuments}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxDocuments" ${command.overrideMaxDocuments ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Path Depth</td>
+      <td class="annotationsLiteRow"><input type="text" size="60" name="maxPathDepth" value="<c:out value="${command.maxPathDepth}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxPathDepth" ${command.overrideMaxPathDepth ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Hops</td>
+      <td class="annotationsLiteRow"><input type="text" size="60" name="maxHops" value="<c:out value="${command.maxHops}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideMaxHops" ${command.overrideMaxHops ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow" valign="top">Exclude Filters</td>
+      <td class="annotationsLiteRow" valign="top"><textarea name="excludeFilters" cols="62" rows="4"><c:out value="${command.excludeFilters}"/></textarea></td>
+      <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideExcludeFilters" ${command.overrideExcludeFilters ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow" valign="top">Force Accept Filters</td>
+      <td class="annotationsLiteRow" valign="top"><textarea name="forceAcceptFilters" cols="62" rows="4"><c:out value="${command.forceAcceptFilters}"/></textarea></td>
+      <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideForceAcceptFilters" ${command.overrideForceAcceptFilters ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Excluded MIME Types</td>
+      <td class="annotationsLiteRow"><input type="text" size="60" name="excludedMimeTypes" value="<c:out value="${command.excludedMimeTypes}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideExcludedMimeTypes" ${command.overrideExcludedMimeTypes ? 'checked' : ''}/></td>
+    </tr>
+</authority:show>
+<authority:dont>
+
+    <tr>
+      <td class="annotationsLiteRow">Robot Honouring Policy</td>
+      <td class="annotationsLiteRow"><c:out value="${command.robots}"/></td>
+      <td class="annotationsLiteRow">${command.overrideRobots ? 'Yes' : 'No'}</td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Hours</td>
+      <td class="annotationsLiteRow"><c:out value="${command.maxHours}"/></td>
+      <td class="annotationsLiteRow">${command.overrideMaxHours ? 'Yes' : 'No'}</td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Kilobytes</td>
+      <td class="annotationsLiteRow"><c:out value="${command.maxBytesDownload}"/></td>
+      <td class="annotationsLiteRow">${command.overrideMaxBytesDownload ? 'Yes' : 'No'}</td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Documents</td>
+      <td class="annotationsLiteRow"><c:out value="${command.maxDocuments}"/></td>
+      <td class="annotationsLiteRow">${command.overrideMaxDocuments ? 'Yes' : 'No'}</td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Path Depth</td>
+      <td class="annotationsLiteRow"><c:out value="${command.maxPathDepth}"/></td>
+      <td class="annotationsLiteRow">${command.overrideMaxPathDepth ? 'Yes' : 'No'}</td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Maximum Hops</td>
+      <td class="annotationsLiteRow"><c:out value="${command.maxHops}"/></td>
+      <td class="annotationsLiteRow">${command.overrideMaxHops ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow" valign="top">Exclude Filters</td>
+      <td class="annotationsLiteRow" valign="top"><pre><c:out value="${command.excludeFilters}"/></pre></td>
+      <td class="annotationsLiteRow" valign="top">${command.overrideExcludeFilters ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow" valign="top">Force Accept Filters</td>
+      <td class="annotationsLiteRow" valign="top"><pre><c:out value="${command.forceAcceptFilters}"/></pre></td>
+      <td class="annotationsLiteRow" valign="top">${command.overrideForceAcceptFilters ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Excluded MIME Types</td>
+      <td class="annotationsLiteRow"><c:out value="${command.excludedMimeTypes}"/></td>
+      <td class="annotationsLiteRow">${command.overrideExcludedMimeTypes ? 'Yes' : 'No'}</td>
+    </tr>
+
+</authority:dont>
+</authority:showControl>
+
+</table>
+</div>
+
+<div id="h3ProfileOverrides">
+	<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<td class="annotationsHeaderRow">Profile Element</td>
+			<td class="annotationsHeaderRow">Override Value</td>
+			<td class="annotationsHeaderRow">Enable Override</td>
+		</tr>
+
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
+
+    <tr>
+      <td class="annotationsLiteRow">Document Limit</td>
+      <td class="annotationsLiteRow"><input size="20" type="number" min="0" name="h3DocumentLimit" value="<c:out value="${command.h3DocumentLimit}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3DocumentLimit" ${command.overrideH3DocumentLimit ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Data Limit</td>
+      <td class="annotationsLiteRow">
+        <input size="20" type="number" step="0.001" min="0.000" name="h3DataLimit" value="<c:out value="${command.h3DataLimit}"/>"/>
+        <select name="h3DataLimitUnit" id="h3DataLimitUnit">
+          <c:forEach items="${profileDataUnits}" var="unit">
+	        <option id="${unit}" ${command.h3DataLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+	      </c:forEach>
+	    </select>
+      </td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3DataLimit" ${command.overrideH3DataLimit ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Time Limit</td>
+      <td class="annotationsLiteRow">
+        <input size="20" type="number" step="0.001" min="0.000" name="h3TimeLimit" value="<c:out value="${command.h3TimeLimit}"/>"/>
+        <select name="h3TimeLimitUnit" id="h3TimeLimitUnit">
+          <c:forEach items="${profileTimeUnits}" var="unit">
+	        <option id="${unit}" ${command.h3TimeLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+	      </c:forEach>
+	    </select>
+      </td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3TimeLimit" ${command.overrideH3TimeLimit ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Max Path Depth</td>
+      <td class="annotationsLiteRow"><input size="20" type="number" min="0" name="h3MaxPathDepth" value="<c:out value="${command.h3MaxPathDepth}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3MaxPathDepth" ${command.overrideH3MaxPathDepth ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Max Hops</td>
+      <td class="annotationsLiteRow"><input size="20" type="number" min="0" name="h3MaxHops" value="<c:out value="${command.h3MaxHops}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3MaxHops" ${command.overrideH3MaxHops ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Max Transitive Hops</td>
+      <td class="annotationsLiteRow"><input size="20" type="number" min="0" name="h3MaxTransitiveHops" value="<c:out value="${command.h3MaxTransitiveHops}"/>"/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3MaxTransitiveHops" ${command.overrideH3MaxTransitiveHops ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Ignore Robots</td>
+      <td class="annotationsLiteRow">
+        <select name="h3IgnoreRobots">
+          <option value="ignore" ${command.h3IgnoreRobots eq 'ignore' ? 'selected' : ''}>ignore</option>
+          <option value="obey" ${command.h3IgnoreRobots eq 'obey' ? 'selected' : ''}>obey</option>
+        </select>
+      </td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3IgnoreRobots" ${command.overrideH3IgnoreRobots ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow">Ignore Cookies</td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="h3IgnoreCookies" ${command.h3IgnoreCookies ? 'checked':''}></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3IgnoreCookies" ${command.overrideH3IgnoreCookies ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow" valign="top">Block URLs</td>
+      <td class="annotationsLiteRow" valign="top"><textarea name="h3BlockedUrls" cols="80" rows="5"><c:out value="${command.h3BlockedUrls}"/></textarea></td>
+      <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideH3BlockedUrls" ${command.overrideH3BlockedUrls ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
+      <td class="annotationsLiteRow" valign="top">Include URLs</td>
+      <td class="annotationsLiteRow" valign="top"><textarea name="h3IncludedUrls" cols="80" rows="5"><c:out value="${command.h3IncludedUrls}"/></textarea></td>
+      <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideH3IncludedUrls" ${command.overrideH3IncludedUrls ? 'checked' : ''}/></td>
+    </tr>
 
 </authority:show>
 <authority:dont>
 
-  <tr>
-    <td class="annotationsLiteRow">Robot Honouring Policy</td>
-    <td class="annotationsLiteRow"><c:out value="${command.robots}"/></td>
-    <td class="annotationsLiteRow">${command.overrideRobots ? 'Yes' : 'No'}</td>
-  </tr>
+    <tr>
+      <td class="annotationsLiteRow">Document Limit</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3DocumentLimit}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3DocumentLimit ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Data Limit</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3DataLimit}"/>&nbsp;<c:out value="${command.h3DataLimitUnit}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3DataLimit ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Time Limit</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3TimeLimit}"/>&nbsp;<c:out value="${command.h3TimeLimitUnit}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3TimeLimit ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Max Path Depth</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3MaxPathDepth}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3MaxPathDepth ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Max Hops</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3MaxHops}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3MaxHops ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Max Transitive Hops</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3MaxTransitiveHops}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3MaxTransitiveHops ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Ignore Robots</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3IgnoreRobots}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3IgnoreRobots ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Ignore Cookies</td>
+      <td class="annotationsLiteRow">${command.h3IgnoreCookies ? 'Yes' : 'No'}</td>
+      <td class="annotationsLiteRow">${command.overrideH3IgnoreCookies ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Block URLs</td>
+      <td class="annotationsLiteRow"><pre><c:out value="${command.h3BlockedUrls}"/></pre></td>
+      <td class="annotationsLiteRow">${command.overrideH3BlockedUrls ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Include URLs</td>
+      <td class="annotationsLiteRow"><pre><c:out value="${command.h3IncludedUrls}"/></pre></td>
+      <td class="annotationsLiteRow">${command.overrideH3IncludedUrls ? 'Yes' : 'No'}</td>
+    </tr>
 
-  <tr>
-    <td class="annotationsLiteRow">Maximum Hours</td>
-    <td class="annotationsLiteRow"><c:out value="${command.maxHours}"/></td>
-    <td class="annotationsLiteRow">${command.overrideMaxHours ? 'Yes' : 'No'}</td>
-  </tr>
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Kilobytes</td>
-    <td class="annotationsLiteRow"><c:out value="${command.maxBytesDownload}"/></td>
-    <td class="annotationsLiteRow">${command.overrideMaxBytesDownload ? 'Yes' : 'No'}</td>
-  </tr>  
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Documents</td>
-    <td class="annotationsLiteRow"><c:out value="${command.maxDocuments}"/></td>
-    <td class="annotationsLiteRow">${command.overrideMaxDocuments ? 'Yes' : 'No'}</td>
-  </tr>  
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Path Depth</td>
-    <td class="annotationsLiteRow"><c:out value="${command.maxPathDepth}"/></td>
-    <td class="annotationsLiteRow">${command.overrideMaxPathDepth ? 'Yes' : 'No'}</td>
-  </tr>  
-  
-  <tr>
-    <td class="annotationsLiteRow">Maximum Hops</td>
-    <td class="annotationsLiteRow"><c:out value="${command.maxHops}"/></td>
-    <td class="annotationsLiteRow">${command.overrideMaxHops ? 'Yes' : 'No'}</td>
-  </tr>  
-  <tr id="excludeFiltersRow">
-    <td class="annotationsLiteRow" valign="top">Exclude Filters</td>
-    <td class="annotationsLiteRow" valign="top"><pre><c:out value="${command.excludeFilters}"/></pre></td>
-    <td class="annotationsLiteRow" valign="top">${command.overrideExcludeFilters ? 'Yes' : 'No'}</td>
-  </tr>  
-  <tr id="forceAcceptFiltersRow">
-    <td class="annotationsLiteRow" valign="top">Force Accept Filters</td>
-    <td class="annotationsLiteRow" valign="top"><pre><c:out value="${command.forceAcceptFilters}"/></pre></td>
-    <td class="annotationsLiteRow" valign="top">${command.overrideForceAcceptFilters ? 'Yes' : 'No'}</td>
-  </tr>  
-  <tr id="excludedMimeTypesRow">
-    <td class="annotationsLiteRow">Excluded MIME Types</td>
-    <td class="annotationsLiteRow"><c:out value="${command.excludedMimeTypes}"/></td>
-    <td class="annotationsLiteRow">${command.overrideExcludedMimeTypes ? 'Yes' : 'No'}</td>
-  </tr>
 </authority:dont>
-</authority:showControl> 
-  
-</table> 
+</authority:showControl>
+
+</table>
 </div>
 
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
+<div id="h1Credentials">
 <span class="subBoxTitle">Credentials Override</span>
 
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
@@ -346,6 +503,7 @@
 </table>
 </c:otherwise>
 </c:choose>
+</div>
 
 <c:if test="${urlPrefix ne 'ti'}">
 <table>

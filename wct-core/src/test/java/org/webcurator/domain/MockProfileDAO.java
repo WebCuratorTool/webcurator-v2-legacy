@@ -202,6 +202,9 @@ public class MockProfileDAO implements ProfileDAO {
 			p.setVersion(profile.getVersion());
 			p.setOrigOid(profile.getOrigOid());
 			p.setHarvesterType(profile.getHarvesterType());
+			p.setDataLimitUnit(profile.getDataLimitUnit());
+			p.setMaxFileSizeUnit(profile.getMaxFileSizeUnit());
+			p.setTimeLimitUnit(profile.getTimeLimitUnit());
 		}
 		else
 		{
@@ -280,6 +283,9 @@ public class MockProfileDAO implements ProfileDAO {
 			    profile.getRequiredLevel(),
 			    profile.getOwningAgency(),
 			    profile.getHarvesterType(),
+			    profile.getDataLimitUnit(),
+			    profile.getMaxFileSizeUnit(),
+			    profile.getTimeLimitUnit(),
 			    profile.isDefaultProfile());
 	}
 	
@@ -352,6 +358,18 @@ public class MockProfileDAO implements ProfileDAO {
 					else if (child.getNodeName().equals("harvesterType"))
 					{
 						p.setHarvesterType(getString(child));
+					}
+					else if (child.getNodeName().equals("dataLimitUnit"))
+					{
+						p.setDataLimitUnit(getString(child));
+					}
+					else if (child.getNodeName().equals("maxFileSizeUnit"))
+					{
+						p.setMaxFileSizeUnit(getString(child));
+					}
+					else if (child.getNodeName().equals("timeLimitUnit"))
+					{
+						p.setTimeLimitUnit(getString(child));
 					}
 				}
 			}

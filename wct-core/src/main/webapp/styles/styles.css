@@ -783,6 +783,14 @@ input, textarea, select {
 	font-size: 11px;
 }
 
+input[readonly] {
+	border: 0;
+}
+
+input[readonly="readonly"] {
+	border: 0;
+}
+
 .inputWide {
 	width: 225px;
 }

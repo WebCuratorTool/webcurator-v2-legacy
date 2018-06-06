@@ -84,6 +84,7 @@
 				<status>1</status>
 				<requiredLevel>1</requiredLevel>
 				<owningAgency id="2000"/>
+				<harvesterType>HERITRIX1</harvesterType>
 				<profile><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <crawl-order xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="heritrix_settings.xsd">
   <meta>
