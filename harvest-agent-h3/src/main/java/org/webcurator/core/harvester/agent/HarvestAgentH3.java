@@ -125,8 +125,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         try {
             super.initiateHarvest(aJob, aProfile, aSeeds);
             //TODO - what to do with profile and seeds files when harvests aborted? Where are these files actually created?
-            // TODO make sure the submitted profile is actually passed on here (once the profile management code in core has been sorted out)
-            File profile = createProfile(aJob, null);
+            File profile = createProfile(aJob, aProfile);
             createSeedsFile(profile, aSeeds);
             harvester = getHarvester(aJob);
             harvester.start(profile, aJob);
@@ -860,8 +859,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         //TODO - as is this is now redundant as the profile is copied over to H3 job dir.
         //TODO - updating the profile is possible with H3, but would require more work so out of scope for now.
 
-        // TODO make sure the submitted profile is actually passed on here (once the profile management code in core has been sorted out)
-        createProfile(aJob, null);
+        createProfile(aJob, aProfile);
     }
 
     /**
