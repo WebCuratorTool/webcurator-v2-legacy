@@ -22,6 +22,7 @@ import java.util.List;
 import org.junit.Test;
 import org.webcurator.core.archive.MockSipBuilder;
 import org.webcurator.core.exceptions.WCTRuntimeException;
+import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.HarvestAgentConfig;
 import org.webcurator.core.harvester.agent.MockHarvestAgent;
 import org.webcurator.core.harvester.agent.MockHarvestAgentFactory;
@@ -189,6 +190,7 @@ public class HarvestCoordinatorImplTest extends BaseWCTTest<HarvestCoordinatorIm
 		aStatus.setName("Test Agent");
 		aStatus.setHarvesterStatus(aHarvesterStatus);
 		aStatus.setMaxHarvests(2);
+		aStatus.setHarvesterType(HarvesterType.HERITRIX1.name());
 		testInstance.heartbeat(aStatus);
 
 		QueuedTargetInstanceDTO dto = new QueuedTargetInstanceDTO(ti.getOid(), ti.getScheduledTime(), ti.getPriority(),
@@ -253,6 +255,7 @@ public class HarvestCoordinatorImplTest extends BaseWCTTest<HarvestCoordinatorIm
 		aStatus.setHarvesterStatus(aHarvesterStatus);
 		aStatus.setMaxHarvests(2);
 		aStatus.setAcceptTasks(false);
+		aStatus.setHarvesterType(HarvesterType.HERITRIX1.name());
 		testInstance.heartbeat(aStatus);
 
 		QueuedTargetInstanceDTO dto = new QueuedTargetInstanceDTO(ti.getOid(), ti.getScheduledTime(), ti.getPriority(),

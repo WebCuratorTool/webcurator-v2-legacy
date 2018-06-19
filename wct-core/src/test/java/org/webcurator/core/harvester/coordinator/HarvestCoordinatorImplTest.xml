@@ -306,6 +306,7 @@
 </crawl-order>]]>
 				</profile>
 				<defaultProfile>true</defaultProfile>
+				<harvesterType>HERITRIX1</harvesterType>
 				<version>1</version>
 			</profile>
 			<creationDate/>
