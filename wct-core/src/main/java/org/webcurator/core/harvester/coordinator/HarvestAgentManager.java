@@ -52,7 +52,7 @@ public interface HarvestAgentManager {
 
 	List<HarvestAgentStatusDTO> getAvailableHarvesters(String agencyName);
 
-	HarvestAgentStatusDTO getHarvester(String agencyName);
+	HarvestAgentStatusDTO getHarvester(String agencyName, String harvesterType);
 
 
 }

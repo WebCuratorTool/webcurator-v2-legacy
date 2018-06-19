@@ -61,8 +61,8 @@ public class AssignToHarvesterController extends AbstractCommandController {
         while (it.hasNext()) {
 			key = (String) it.next();
 			agent = agents.get(key);				
-			if (agent.getAllowedAgencies().contains(instanceAgency)
-				|| agent.getAllowedAgencies().isEmpty()) {
+			if ((agent.getAllowedAgencies().contains(instanceAgency) || agent.getAllowedAgencies().isEmpty())
+									&& agent.getHarvesterType().equals(ti.getProfile().getHarvesterType())) {
 				allowedAgents.put(key, agent);
 			}
 		}
