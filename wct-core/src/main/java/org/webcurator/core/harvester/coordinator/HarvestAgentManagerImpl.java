@@ -433,16 +433,18 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 	 * 
 	 * @param agencyName
 	 *            the agency to get harvesters for
+	 * @param harvesterType
+	 *            the desired harvester type
 	 * @return the harvest agent
 	 */
 	@Override
-	public HarvestAgentStatusDTO getHarvester(String agencyName) {
+	public HarvestAgentStatusDTO getHarvester(String agencyName, String harvesterType) {
 		HarvestAgentStatusDTO selectedAgent = null;
 
 		List<HarvestAgentStatusDTO> harvestersForAgency = getHarvestersForAgency(agencyName);
 		for (HarvestAgentStatusDTO agent : harvestersForAgency) {
 			if (selectedAgent == null || agent.getHarvesterStatusCount() < selectedAgent.getHarvesterStatusCount()) {
-				if (harvesterCanHarvestNow(agent)) {
+				if (harvesterCanHarvestNow(agent) && agent.getHarvesterType().equals(harvesterType)) {
 					selectedAgent = agent;
 				}
 			}

@@ -103,7 +103,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	/**
-	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#heartbeat(org.webcurator.core.harvester.agent.HarvestAgentStatus)
+	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#heartbeat(HarvestAgentStatusDTO)
 	 */
 	public void heartbeat(HarvestAgentStatusDTO aStatus) {
 		harvestAgentManager.heartbeat(aStatus);
@@ -115,7 +115,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 * Execute search of Target Instances in 'Running' or 'Paused' states. Add any
 	 * active job names to List for Harvest Agent attempting recovery.
 	 *
-	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#recoverHarvests(java.lang.String, int, java.lang.String)
+	 * @see org.webcurator.core.harvester.coordinator.HarvestCoordinator#recoverHarvests(String, int, String)
 	 * @param haHost harvest agent host requesting attempting recovery
 	 * @param haPort harvest agent port requesting attempting recovery
 	 * @param haService harvest agent service requesting attempting recovery
@@ -136,7 +136,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	/**
-	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#harvestComplete(org.webcurator.core.model.HarvestResult)
+	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#harvestComplete(HarvestResultDTO)
 	 */
 	public void harvestComplete(HarvestResultDTO aResult) {
 		TargetInstance ti = targetInstanceDao.load(aResult.getTargetInstanceOid());
@@ -329,7 +329,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	/**
-	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#notification(Long,
+	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#notification(Long, int, String)
 	 *      String, String)
 	 */
 	public void notification(Long aTargetInstanceOid, int notificationCategory, String aMessageType) {
@@ -338,8 +338,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	/**
-	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentListener#notification(String,
-	 *      String)
+     *
 	 */
 	public void notification(String aSubject, int notificationCategory, String aMessage) {
 		List<String> privs = new ArrayList<String>();
@@ -348,7 +347,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	/**
-	 * @see org.webcurator.core.harvester.coordinator.HarvestAgentCoordinator#harvest(TargetInstance)
+	 * @see org.webcurator.core.harvester.coordinator.HarvestCoordinator#harvest(TargetInstance, HarvestAgentStatusDTO)
 	 */
 	public void harvest(TargetInstance aTargetInstance, HarvestAgentStatusDTO aHarvestAgent) {
 		if (aTargetInstance == null) {
@@ -554,7 +553,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		harvestBandwidthManager.saveOrUpdate(bandwidthRestriction);
 	}
 
-	/** @see org.webcurator.domain.HarvestCoordinatorDAO#delete(Object). */
+	/** @see org.webcurator.domain.HarvestCoordinatorDAO#delete(BandwidthRestriction)  */
 	public void delete(BandwidthRestriction bandwidthRestriction) {
 		harvestBandwidthManager.delete(bandwidthRestriction);
 	}
@@ -789,15 +788,24 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	private void queueApprovedHarvest(QueuedTargetInstanceDTO queuedTargetInstance, TargetInstance ti, Long tiOid) {
 		boolean processed = false;
 		while (!processed) {
+			if (ti == null) {
+				ti = loadTargetInstance(tiOid);
+			}
 			// Check to see what harvester resource is available
-			HarvestAgentStatusDTO agent = harvestAgentManager.getHarvester(queuedTargetInstance.getAgencyName());
+			HarvestAgentStatusDTO agent = harvestAgentManager.getHarvester(
+										queuedTargetInstance.getAgencyName(),
+										ti.getProfile().getHarvesterType());
+
+			if (agent == null) {
+				log.warn(String.format("No available harvest agent of type %s found for agency %s",
+														ti.getProfile().getHarvesterType(),
+														queuedTargetInstance.getAgencyName()
+										));
+			}
 
 			if (harvestAgentCanHarvest(agent, queuedTargetInstance)) {
 				synchronized (agent) {
 					// allocate the target instance to the agent
-					if (ti == null) {
-						ti = loadTargetInstance(tiOid);
-					}
 					log.info("Allocating TI " + tiOid + " to agent " + agent.getName());
 					processed = harvestTargetInstance(agent, ti);
 				}
@@ -956,8 +964,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	/**
-	 * @see HarvestCoordinator#getLogLinesByRegex(TargetInstance, String, int,
-	 *      String, boolean)
+	 * @see HarvestCoordinator#getLogLinesByRegex(TargetInstance, String, int, String, boolean)
 	 */
 	public String[] getLogLinesByRegex(TargetInstance aTargetInstance, String aFileName, int aNoOfLines, String aRegex,
 			boolean prependLineNumbers) {
