@@ -768,5 +768,8 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
 		}				
 	}
 
+	public boolean isValidProfile(String profile) {
+	    throw new RuntimeException("Validation of profiles is not supported by " + harvesterType.name());
+    }
 	
 }

@@ -89,4 +89,8 @@ public class MockHarvestAgent implements HarvestAgent {
 		this.memoryWarning = memoryWarning;
 	}
 
+	public boolean isValidProfile(String profile) {
+		return false;
+	}
+
 }

@@ -273,7 +273,7 @@ public class HarvestAgentSOAPClient implements HarvestAgent, HarvestAgentConfig 
      */
     public void resumeAll() {
         try {
-            WCTSoapCall call = new WCTSoapCall(host, port, service, "resumeAll");            
+            WCTSoapCall call = new WCTSoapCall(host, port, service, "resumeAll");
             call.invoke();
         }
         catch (RemoteException e) {
@@ -425,5 +425,25 @@ public class HarvestAgentSOAPClient implements HarvestAgent, HarvestAgentConfig 
 	public void setLogReaderService(String logReaderService) {
 		this.logReaderService = logReaderService;
 	}
-	
+
+	public boolean isValidProfile(String profile) {
+
+        try {
+            WCTSoapCall call = new WCTSoapCall(host, port, service, "isValidProfile");
+            return (Boolean)call.invoke((Object)profile);
+        }
+        catch (RemoteException e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to invoke isValidProfile on the SOAP service : " + e.getMessage(), e);
+            }
+            throw new WCTRuntimeException("Failed to invoke isValidProfile on the SOAP service : " + e.getMessage(), e);
+        }
+        catch (ServiceException e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to create the SOAP call isValidProfile: " + e.getMessage(), e);
+            }
+            throw new WCTRuntimeException("Failed to create the SOAP call isValidProfile: " + e.getMessage(), e);
+        }
+
+    }
 }

@@ -132,16 +132,24 @@ public interface HarvestAgent {
 	/**
 	 * @return the memoryWarning flag
 	 */
-	public boolean getMemoryWarning();
+	boolean getMemoryWarning();
 
 	/**
 	 * @param memoryWarning the memoryWarning flag to set
 	 */
-	public void setMemoryWarning(boolean memoryWarning);
+	void setMemoryWarning(boolean memoryWarning);
     
     /** 
      * Return the status of the HarvestAgent.
      * @return the status of the HarvestAgent
      */
     HarvestAgentStatusDTO getStatus();
+
+
+    /**
+     * 
+     * @param profile A profile
+     * @return true iff the submitted profile is valid (according to the agent's idea of "valid" - YMMV).
+     */
+    boolean isValidProfile(String profile);
 }
