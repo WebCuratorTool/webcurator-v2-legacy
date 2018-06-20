@@ -83,6 +83,12 @@ public abstract class AbstractHarvestAgent implements HarvestAgent {
      * @see org.webcurator.core.harvester.agent.HarvestAgent#stop(java.lang.String)
      */
     public abstract void stop(String aJob);
+
+    /**
+     *
+     * @see HarvestAgent#isValidProfile(String)
+     */
+    public abstract boolean isValidProfile(String profile);
     
     /**
      * @see org.webcurator.core.harvester.agent.HarvestAgent#pauseAll()

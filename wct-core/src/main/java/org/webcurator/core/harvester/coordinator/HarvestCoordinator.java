@@ -306,4 +306,5 @@ public interface HarvestCoordinator extends HarvestAgentListener, HarvestCoordin
 	boolean isHarvestOptimizationEnabled();
 
 	int getHarvestOptimizationLookAheadHours();
+
 }

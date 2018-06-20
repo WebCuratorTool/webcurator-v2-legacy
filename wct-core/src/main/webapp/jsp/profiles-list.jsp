@@ -58,32 +58,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<authority:hasPrivilege privilege="<%=Privilege.MANAGE_PROFILES%>" scope="<%=Privilege.SCOPE_AGENCY%>">
 	<tr>
-		<td colspan="4" valign="top">
+		<td colspan="2" valign="top">
 			<fieldset>
 			<legend class="smalltitleGrey">Import from file</legend>
 			<form id="importForm" action="curator/profiles/list.html" method="POST" enctype="multipart/form-data">
 				<table width="100%">
 					<tr>
 						<td valign="top">
-							Select&nbsp;XML&nbsp;File:&nbsp;<input size="60" height="24" type="file" id="sourceFile" name="sourceFile" value=""/>
+							Select XML File:
+						</td>
+						<td><input type="file" id="sourceFile" name="sourceFile" value=""/></td>
+						<td>
 							<input type="hidden" id="actionCommand" name="actionCommand" value="<%=ProfileListCommand.ACTION_IMPORT %>">
 						</td>
+					</tr>
+					<tr>
+						<td>Profile name:</td><td><input type="text" name="importName"/></td>
+					</tr>
 						<authority:hasPrivilege privilege="<%=Privilege.MANAGE_PROFILES%>" scope="<%=Privilege.SCOPE_ALL%>">
+					<tr>
 						<td>
-							Import to agency:&nbsp;
+							Import to agency
+						</td>
+						<td>
 				  			<select name="importAgency" id="importAgency">
 								<c:forEach items="${agencies}" var="agency">
 							  		<option value="${agency.oid}" ${usersAgency.name eq agency.name ? 'SELECTED' : ''}>${agency.name}</option>
 				  				</c:forEach>
 			  				</select>
+			  			</td>
+			  		</tr>
+			  		<tr>
+			  		    <td>
 							Type to import:&nbsp;
+						</td>
+						<td>
 				  			<select name="importType" id="importType"> 
 								<c:forEach items="${types}" var="type">
 							  		<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>
 				  				</c:forEach>
 			  				</select>
 						</td>
+					</tr>
 						</authority:hasPrivilege>
+					<tr>
 						<td valign="bottom">
 							<img src="images/generic-btn-import-red.gif" alt="Import a Profile"  onclick="importFile();" style="cursor: pointer" border="0" />
 						</td>
@@ -92,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</form>
 			</fieldset>
 		</td>
-		<td valign="top" colspan="3" align="right">
+		<td valign="top" colspan="5" align="right">
 			<select name="createType" id="createType"> 
 				<c:forEach items="${types}" var="type">
 					<option value="${type}" ${defaultType eq type ? 'SELECTED' : ''}>${type}</option>

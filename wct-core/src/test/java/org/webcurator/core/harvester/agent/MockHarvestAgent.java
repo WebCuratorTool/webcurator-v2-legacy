@@ -96,4 +96,8 @@ public class MockHarvestAgent implements HarvestAgent {
 		return _profile;
 	}
 
+	public boolean isValidProfile(String profile) {
+		return false;
+	}
+
 }

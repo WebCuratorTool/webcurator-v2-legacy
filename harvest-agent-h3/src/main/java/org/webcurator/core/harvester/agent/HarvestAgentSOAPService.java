@@ -157,5 +157,9 @@ public class HarvestAgentSOAPService extends ServletEndpointSupport implements H
 	public void setMemoryWarning(boolean memoryWarning) {
 		ha.setMemoryWarning(memoryWarning);
 	}
+
+	public boolean isValidProfile(String profile) {
+	    return ha.isValidProfile(profile);
+    }
 	
 }

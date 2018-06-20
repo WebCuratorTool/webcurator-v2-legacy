@@ -965,7 +965,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 
 	/**
 	 * @see HarvestCoordinator#getLogLinesByRegex(TargetInstance, String, int, String, boolean)
-	 *      String)
 	 */
 	public String[] getLogLinesByRegex(TargetInstance aTargetInstance, String aFileName, int aNoOfLines, String aRegex,
 			boolean prependLineNumbers) {
@@ -1285,5 +1284,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	public void setHarvestQaManager(HarvestQaManager harvestQaManager) {
 		this.harvestQaManager = harvestQaManager;
 	}
+
 
 }
