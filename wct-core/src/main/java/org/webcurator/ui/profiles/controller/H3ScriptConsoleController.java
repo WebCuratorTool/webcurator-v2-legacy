@@ -23,6 +23,7 @@ import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.domain.model.auth.Privilege;
 import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.ui.common.CommonViews;
+import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.profiles.command.H3ScriptConsoleCommand;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,10 +55,20 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 	protected ModelAndView handle(HttpServletRequest req, HttpServletResponse res, Object comm, BindException errors) throws Exception {
 		H3ScriptConsoleCommand command = (H3ScriptConsoleCommand) comm;
 		TargetInstance ti = targetInstanceManager.getTargetInstance(command.getTargetInstanceOid(), true);
+		String result = "";
 
 		if (authorityManager.hasAtLeastOnePrivilege(ti.getProfile(), new String[] {Privilege.MANAGE_TARGET_INSTANCES, Privilege.MANAGE_WEB_HARVESTER})) {
+			if (req.getMethod().equals("POST") && ti.getState().equals("Running")
+					&& command.getActionCommand().equals(H3ScriptConsoleCommand.ACTION_EXECUTE_SCRIPT)) {
+				// Run the heritrix 3 script - only if the status is still running
+				// Validation??
+				String script = command.getScript();
+				result = "XXXX: " + script;
+			}
 			ModelAndView mav = new ModelAndView("h3-script-console");
 			mav.addObject("targetInstance", ti);
+			mav.addObject("result", result);
+			mav.addObject(Constants.GBL_CMD_DATA, command);
 			return mav;
 		}
 		else { 

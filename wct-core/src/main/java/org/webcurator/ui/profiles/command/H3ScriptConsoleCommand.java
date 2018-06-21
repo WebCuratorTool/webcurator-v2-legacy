@@ -20,8 +20,14 @@ package org.webcurator.ui.profiles.command;
  *
  */
 public class H3ScriptConsoleCommand {
+	public static String ACTION_EXECUTE_SCRIPT = "execute-script";
+
 	/** The OID of the target instance to use */
 	private Long targetInstanceOid;
+	/** The script to run on heritrix 3 */
+	private String script;
+
+	private String actionCommand = ACTION_EXECUTE_SCRIPT;
 
 	/**
 	 * @return Returns the targetInstanceOid.
@@ -36,6 +42,32 @@ public class H3ScriptConsoleCommand {
 	public void setTargetInstanceOid(Long targetInstanceOid) {
 		this.targetInstanceOid = targetInstanceOid;
 	}
-	
-	
+
+	/**
+	 * @return Returns the script.
+	 */
+	public String getScript() {
+		return script;
+	}
+
+	/**
+	 * @param script The script to set.
+	 */
+	public void setScript(String script) {
+		this.script = script;
+	}
+
+	/**
+	 * @return Returns the actionCommand.
+	 */
+	public String getActionCommand() {
+		return actionCommand;
+	}
+
+	/**
+	 * @param actionCommand The actionCommand to set.
+	 */
+	public void setActionCommand(String actionCommand) {
+		this.actionCommand = actionCommand;
+	}
 }
