@@ -49,7 +49,7 @@ import org.webcurator.ui.agent.command.BandwidthRestrictionsCommand;
 public final class ValidatorUtil {
     
     public final static String EMAIL_VALIDATION_REGEX = 
-        "^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,4})$";
+        "^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,24})$";
     
     
     /**
