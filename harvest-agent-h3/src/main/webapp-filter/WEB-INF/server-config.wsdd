@@ -25,7 +25,8 @@
  <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
  
  <beanMapping qname="ns:LogFilePropertiesDTO" xmlns:ns="urn:LogReader" languageSpecificType="java:org.webcurator.domain.model.core.LogFilePropertiesDTO"/>  
- 
+ <beanMapping qname="ns:HarvestAgentScriptResult" xmlns:ns="urn:HarvestAgent" languageSpecificType="java:org.webcurator.core.harvester.agent.HarvestAgentScriptResult"/>
+
  <!-- 
  <typeMapping 
     xmlns:ns="urn:LogReader"

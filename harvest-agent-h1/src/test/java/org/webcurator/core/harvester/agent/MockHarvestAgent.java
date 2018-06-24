@@ -95,4 +95,15 @@ public class MockHarvestAgent implements HarvestAgent {
 	public boolean isValidProfile(String profile) {
 		return false;
 	}
+
+	/**
+	 * Execute the shell script in the Heritrix3 server for the job.
+	 * @param jobName the job
+	 * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+	 * @param shellScript the script to execute
+	 * @return the script result
+	 */
+	public HarvestAgentScriptResult executeShellScript(String jobName, String engine, String shellScript) {
+		return null;
+	}
 }

@@ -805,6 +805,27 @@ public class HarvesterH3 implements Harvester {
         }
     }
 
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    public ScriptResult executeShellScript(String jobName, String engine, String shellScript) {
+        // validate the engine
+        List<String> validEngines = Arrays.asList("beanshell", "groovy", "nashorn");
+        if (engine == null || !validEngines.contains(engine)) {
+            log = LogFactory.getLog(HarvesterH3.class);
+            if (log.isErrorEnabled()) {
+                String message = "The script engine specified is not valid. It must be one of " + validEngines;
+                log.error(message);
+                throw new IllegalArgumentException(message);
+            }
+        }
+        return heritrix.ExecuteShellScriptInJob(jobName, engine, shellScript);
+    }
+
     public static void main(String[] args) {
         try {
 

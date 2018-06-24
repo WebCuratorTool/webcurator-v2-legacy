@@ -152,4 +152,13 @@ public interface HarvestAgent {
      * @return true iff the submitted profile is valid (according to the agent's idea of "valid" - YMMV).
      */
     boolean isValidProfile(String profile);
+
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    HarvestAgentScriptResult executeShellScript(String jobName, String engine, String shellScript);
 }

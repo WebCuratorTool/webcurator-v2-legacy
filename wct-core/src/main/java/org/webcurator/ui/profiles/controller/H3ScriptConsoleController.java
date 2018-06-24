@@ -19,12 +19,15 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 import org.webcurator.auth.AuthorityManager;
+import org.webcurator.core.harvester.agent.HarvestAgent;
+import org.webcurator.core.harvester.agent.HarvestAgentScriptResult;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.domain.model.auth.Privilege;
 import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.ui.common.CommonViews;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.profiles.command.H3ScriptConsoleCommand;
+import org.webcurator.ui.util.HarvestAgentUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,9 +64,9 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 			if (req.getMethod().equals("POST") && ti.getState().equals("Running")
 					&& command.getActionCommand().equals(H3ScriptConsoleCommand.ACTION_EXECUTE_SCRIPT)) {
 				// Run the heritrix 3 script - only if the status is still running
-				// Validation??
-				String script = command.getScript();
-				result = "XXXX: " + script;
+				HarvestAgent ha = getHarvestAgent();
+				HarvestAgentScriptResult scriptResult = ha.executeShellScript(Long.toString(command.getTargetInstanceOid()), command.getScriptEngine(), command.getScript());
+				result = scriptResult.toString();
 			}
 			ModelAndView mav = new ModelAndView("h3-script-console");
 			mav.addObject("targetInstance", ti);
@@ -96,7 +99,14 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 	public void setAuthorityManager(AuthorityManager authorityManager) {
 		this.authorityManager = authorityManager;
 	}
-	
-	
+
+	/**
+	 *
+	 * @return The first available H3 HarvestAgent instance that we can find.
+	 */
+	private HarvestAgent getHarvestAgent() {
+
+		return HarvestAgentUtil.getHarvestAgent(getApplicationContext());
+	}
 
 }

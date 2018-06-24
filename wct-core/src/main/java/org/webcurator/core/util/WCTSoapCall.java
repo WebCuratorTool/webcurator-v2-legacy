@@ -33,6 +33,7 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HeaderElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.webcurator.core.harvester.agent.HarvestAgentScriptResult;
 import org.webcurator.domain.model.core.ArcHarvestFileDTO;
 import org.webcurator.domain.model.core.ArcHarvestResourceDTO;
 import org.webcurator.domain.model.core.ArcHarvestResultDTO;
@@ -82,6 +83,7 @@ public class WCTSoapCall {
 		
 		REG_CLASS_TYPES.put(ArcHarvestResultDTO.class, new Mapping( new QName("urn:WebCuratorTool", "ArcHarvestResultDTO"), BeanSerializerFactory.class, BeanDeserializerFactory.class));
         REG_CLASS_TYPES.put(HarvestAgentStatusDTO.class, new Mapping( new QName("urn:WebCuratorTool", "HarvestAgentStatusDTO"), BeanSerializerFactory.class, BeanDeserializerFactory.class));
+        REG_CLASS_TYPES.put(HarvestAgentScriptResult.class, new Mapping( new QName("urn:HarvestAgent", "HarvestAgentScriptResult"), BeanSerializerFactory.class, BeanDeserializerFactory.class));
         REG_CLASS_TYPES.put(HarvesterStatusDTO.class, new Mapping( new QName("urn:WebCuratorTool", "HarvesterStatusDTO"), BeanSerializerFactory.class, BeanDeserializerFactory.class));
         
         REG_CLASS_TYPES.put(ArcHarvestFileDTO.class, new Mapping( new QName("urn:WebCuratorTool", "ArcHarvestFileDTO"), BeanSerializerFactory.class, BeanDeserializerFactory.class));

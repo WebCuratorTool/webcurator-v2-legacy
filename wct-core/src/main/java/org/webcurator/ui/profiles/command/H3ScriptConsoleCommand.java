@@ -24,6 +24,8 @@ public class H3ScriptConsoleCommand {
 
 	/** The OID of the target instance to use */
 	private Long targetInstanceOid;
+	/** The script engine to use on heritrix 3 */
+	private String scriptEngine;
 	/** The script to run on heritrix 3 */
 	private String script;
 
@@ -41,6 +43,20 @@ public class H3ScriptConsoleCommand {
 	 */
 	public void setTargetInstanceOid(Long targetInstanceOid) {
 		this.targetInstanceOid = targetInstanceOid;
+	}
+
+	/**
+	 * @return Returns the script engine.
+	 */
+	public String getScriptEngine() {
+		return scriptEngine;
+	}
+
+	/**
+	 * @param scriptEngine The script engine to set.
+	 */
+	public void setScriptEngine(String scriptEngine) {
+		this.scriptEngine = scriptEngine;
 	}
 
 	/**

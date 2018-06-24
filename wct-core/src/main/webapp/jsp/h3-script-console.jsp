@@ -33,6 +33,16 @@
       <td class="subBoxText"><c:out value="${targetInstance.target.name}"/></td>
     </tr>
     <tr>
+      <td class="subBoxTextHdr">Script Engine:</td>
+      <td class="subBoxText">
+        <select name="scriptEngine" id="scriptEngine">
+          <option value="beanshell" ${command.scriptEngine eq 'beanshell' ? 'SELECTED' : ''}>BeanShell</option>
+          <option value="groovy" ${command.scriptEngine eq 'groovy' ? 'SELECTED' : ''}>Groovy</option>
+          <option value="nashorn" ${command.scriptEngine eq 'nashorn' ? 'SELECTED' : ''}>ECMAScript</option>
+	    </select>
+      </td>
+    </tr>
+    <tr>
       <td class="subBoxTextHdr">Script</td>
       <td class="subBoxText"><textarea cols="80" rows="5" id="script" name="script"><c:out value="${command.script}"/></textarea></td>
     </tr>
@@ -41,10 +51,6 @@
       <td class="subBoxText">
         <input type="button" name="excecuteScript" value="Execute Script" onClick="executeScript();">
       </td>
-    </tr>
-    <tr>
-      <td class="subBoxTextHdr">Result</td>
-      <td class="subBoxText"><pre><c:out value="${result}"/></pre></td>
     </tr>
   </table>
 
