@@ -1,6 +1,77 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="org.webcurator.ui.profiles.command.H3ScriptConsoleCommand"%>
+<script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+  function updateScriptValue(scriptsList, scriptValueSelected) {
+    //alert(scriptValueSelected);
+    if (scriptValueSelected != 'none') {
+      // find the script in the scripts list
+      var script;
+      $.each(scriptsList, function(index, value) {
+        if (value.scriptName == scriptValueSelected) {
+          script = value.script;
+        }
+      });
+      //alert(script);
+      $("#script").val(script);
+    }
+  }
+
+  function updateScriptEngine(scriptsList, scriptValueSelected) {
+    //alert(scriptValueSelected);
+    if (scriptValueSelected != 'none') {
+      // find the type in the scripts list
+      var type;
+      $.each(scriptsList, function(index, value) {
+        if (value.scriptName == scriptValueSelected) {
+          type = value.scriptType;
+        }
+      });
+      //alert(type);
+      $("#scriptEngine option[value='" + type + "']").attr("selected", true);
+    }
+  }
+
+  function makeReadOnlyScript(scriptValueSelected) {
+    var readOnly = scriptValueSelected == 'none' ? false : true;
+    $("#script").prop('readonly', readOnly);
+  }
+
+  $(document).ready(function() {
+    var scriptsList = [];
+    <c:forEach items="${scripts}" var="scriptInList">
+      var jsScript = {
+        scriptName: "<c:out value='${scriptInList.key.key}'/>",
+        scriptType: "<c:out value='${scriptInList.key.value}'/>",
+        script: "<c:out value='${scriptInList.value}'/>"
+      };
+      scriptsList.push(jsScript);
+    </c:forEach>
+    //alert(JSON.stringify(scriptsList));
+
+    // update script text box
+    updateScriptValue(scriptsList, $('#scriptSelected').val());
+    // update script engine list
+    updateScriptEngine(scriptsList, $('#scriptSelected').val());
+    // make read only (or not) based on selection
+    makeReadOnlyScript($('#scriptSelected').val());
+
+    $('#scriptSelected').change(function() {
+      var scriptValueSelected = this.value;
+      // update script text box
+      updateScriptValue(scriptsList, scriptValueSelected);
+      // update script engine list
+      updateScriptEngine(scriptsList, scriptValueSelected);
+      // make read only (or not) based on selection
+      makeReadOnlyScript(scriptValueSelected);
+    });
+
+  });
+
+</script>
 
 <script>
 <!--
@@ -31,6 +102,17 @@
     <tr>
       <td class="subBoxTextHdr">Target Name</td>
       <td class="subBoxText"><c:out value="${targetInstance.target.name}"/></td>
+    </tr>
+    <tr>
+      <td class="subBoxTextHdr">Scripts:</td>
+      <td class="subBoxText">
+        <select name="scriptSelected" id="scriptSelected">
+	      <option value="none" ${command.scriptSelected eq 'none' ? 'SELECTED' : ''}>None</option>
+	      <c:forEach items="${scripts}" var="scr">
+	        <option value="${scr.key.key}" ${command.scriptSelected eq scr.key.key ? 'SELECTED' : ''}>${scr.key.key}</option>
+	      </c:forEach>
+	    </select>
+      </td>
     </tr>
     <tr>
       <td class="subBoxTextHdr">Script Engine:</td>

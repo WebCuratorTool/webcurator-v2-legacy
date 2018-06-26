@@ -26,6 +26,8 @@ public class H3ScriptConsoleCommand {
 	private Long targetInstanceOid;
 	/** The script engine to use on heritrix 3 */
 	private String scriptEngine;
+	/** The script selected from script list */
+	private String scriptSelected;
 	/** The script to run on heritrix 3 */
 	private String script;
 
@@ -85,5 +87,19 @@ public class H3ScriptConsoleCommand {
 	 */
 	public void setActionCommand(String actionCommand) {
 		this.actionCommand = actionCommand;
+	}
+
+	/**
+	 * @return Returns the scriptSelected.
+	 */
+	public String getScriptSelected() {
+		return scriptSelected;
+	}
+
+	/**
+	 * @param scriptSelected The scriptSelected to set.
+	 */
+	public void setScriptSelected(String scriptSelected) {
+		this.scriptSelected = scriptSelected;
 	}
 }
