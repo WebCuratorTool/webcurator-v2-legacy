@@ -1281,6 +1281,8 @@
 	</bean>
 
 	<bean id="h3ScriptConsoleController" class="org.webcurator.ui.profiles.controller.H3ScriptConsoleController">
+		<!-- name of the directory where the h3 scripts are stored -->
+		<property name="h3ScriptsDirectory" value="${h3.scriptsDirectory}"/>
 		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="authorityManager" ref="authorityManager"/>
 	</bean>

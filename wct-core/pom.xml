@@ -41,6 +41,7 @@
 								<file>${basedir}/build/local_${databaseType}_config.properties</file>
 								<file>${basedir}/build/hib_${databaseType}.properties</file>
 								<file>${basedir}/build/version.properties</file>
+								<file>${basedir}/build/local_config.properties</file>
 							</files>
 						</configuration>
 					</execution>

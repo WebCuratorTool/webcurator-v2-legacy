@@ -16,6 +16,9 @@
 package org.webcurator.ui.profiles.controller;
 
 import javafx.util.Pair;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
@@ -32,7 +35,10 @@ import org.webcurator.ui.util.HarvestAgentUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -46,6 +52,21 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 	private TargetInstanceManager targetInstanceManager = null;
 	/** The authority manager for checking permissions */
 	private AuthorityManager authorityManager = null;
+	/**
+	 * The name of the h3 scripts directory.
+	 */
+	private String h3ScriptsDirectory = "";
+
+	/** Logger for the H3ScriptConsoleController. **/
+	private static Log log = LogFactory.getLog(H3ScriptConsoleController.class);
+
+	private static Map<String, String> fileExtensionToScriptType = new HashMap<String, String>();
+
+	static {
+		fileExtensionToScriptType.put("bsh", "beanshell");
+		fileExtensionToScriptType.put("groovy", "groovy");
+		fileExtensionToScriptType.put("js", "nashorn");
+	}
 
 	/**
 	 * Construct a new ProfileViewController.
@@ -90,6 +111,36 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 		}
 	}
 
+	private String getScriptFromFile(File file) {
+		String lineSep = System.getProperty("line.separator");
+		StringBuffer sb = new StringBuffer();
+		BufferedReader br = null;
+		FileReader fr = null;
+		try {
+			fr = new FileReader(file);
+			br = new BufferedReader(fr);
+			String line;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+				//sb.append(lineSep);
+			}
+		} catch (IOException e) {
+			log.error(e);
+		} finally {
+			try {
+				if (br != null) {
+					br.close();
+				}
+				if (fr != null) {
+					fr.close();
+				}
+			} catch (IOException ex) {
+				log.error(ex);
+			}
+		}
+		return sb.toString();
+	}
+
 	/**
 	 * This method returns a map containing a Pair as the key and a String as the value.
 	 * The Pair contains the script's file name as the key and the script type (beanshell, groovy, nashorn)
@@ -98,68 +149,29 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 	 * @return the map.
 	 */
 	private Map<Pair<String, String>, String> getScripts() {
+		final List<String> validFileExtensions = Arrays.asList("bsh", "groovy", "js");
 		Map<Pair<String, String>, String> scripts = new HashMap<Pair<String, String>, String>();
-		//TODO - parse directory - hard code for now...
-		Pair<String, String> scriptPair01 = createScriptPair("Script01", "groovy");
-		scripts.put(scriptPair01, "this.binding.getVariables().each{ rawOut.println(\"${it.key}=\\n ${it.value}\\n\") }");
-		Pair<String, String> scriptPair02 = createScriptPair("Script02", "beanshell");
-		scripts.put(scriptPair02, "Rhubarb, rhubarb");
-/*
-		scripts.put(scriptPair02, "appCtxData = appCtx.getData()\n" +
-				"appCtxData.printProps = { rawOut, obj ->\n" +
-				"  rawOut.println \"#properties\"\n" +
-				"  // getProperties is a groovy introspective shortcut. it returns a map\n" +
-				"  obj.properties.each{ prop ->\n" +
-				"    // prop is a Map.Entry\n" +
-				"    rawOut.println \"\\n\"+ prop\n" +
-				"    try{ // some things don't like you to get their class. ignore those.\n" +
-				"      rawOut.println \"TYPE: \"+ prop.value.class.name\n" +
-				"    }catch(Exception e){}\n" +
-				"  }\n" +
-				"  rawOut.println \"\\n\\n#methods\"\n" +
-				"  try {\n" +
-				"  obj.class.methods.each{ method ->\n" +
-				"    rawOut.println \"\\n${method.name} ${method.parameterTypes}: ${method.returnType}\"\n" +
-				"  } }catch(Exception e){}\n" +
-				"}\n" +
-				" \n" +
-				"// above this line need not be included in later script console sessions\n" +
-				"def printProps(x) { appCtx.getData().printProps(rawOut, x) }\n" +
-				" \n" +
-				"// example: see what can be accessed on the frontier\n" +
-				"printProps(job.crawlController.frontier)");
-*/
-		Pair<String, String> scriptPair03 = createScriptPair("Script03", "nashorn");
-		scripts.put(scriptPair03, "Blah, blah");
-/*
-		scripts.put(scriptPair03, "import com.sleepycat.je.DatabaseEntry;\n" +
-				"import com.sleepycat.je.OperationStatus;\n" +
-				" \n" +
-				"MAX_URLS_TO_LIST = 1000\n" +
-				" \n" +
-				"pendingUris = job.crawlController.frontier.pendingUris\n" +
-				" \n" +
-				"rawOut.println \"(this seems to be more of a ceiling) pendingUris.pendingUrisDB.count()=\" + pendingUris.pendingUrisDB.count()\n" +
-				"rawOut.println()\n" +
-				" \n" +
-				"cursor = pendingUris.pendingUrisDB.openCursor(null, null);\n" +
-				"key = new DatabaseEntry();\n" +
-				"value = new DatabaseEntry();\n" +
-				"count = 0;\n" +
-				" \n" +
-				"while (cursor.getNext(key, value, null) == OperationStatus.SUCCESS && count < MAX_URLS_TO_LIST) {\n" +
-				"    if (value.getData().length == 0) {\n" +
-				"        continue;\n" +
-				"    }\n" +
-				"    curi = pendingUris.crawlUriBinding.entryToObject(value);\n" +
-				"    rawOut.println curi\n" +
-				"    count++\n" +
-				"}\n" +
-				"cursor.close();\n" +
-				" \n" +
-				"rawOut.println()\n" +
-				"rawOut.println count + \" pending urls listed\"");
-*/
+		// Get list of valid files in directory
+		File scriptDirectory = new File(h3ScriptsDirectory);
+		File[] scriptFiles = scriptDirectory.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				String ext = FilenameUtils.getExtension(name);
+				return ext != null && validFileExtensions.contains(ext);
+			}
+		});
+
+		for (File scriptFile : scriptFiles) {
+			// Parse file name into script name and type
+			String scriptName = FilenameUtils.removeExtension(scriptFile.getName());
+			String scriptExt = FilenameUtils.getExtension(scriptFile.getName());
+			String scriptType = fileExtensionToScriptType.get(scriptExt);
+			// Read file contents into script
+			String script = getScriptFromFile(scriptFile);
+			// Put into map
+			Pair<String, String> scriptPair = createScriptPair(scriptName, scriptType);
+			scripts.put(scriptPair, script);
+		}
 		return scripts;
 	}
 
@@ -187,6 +199,13 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 	 */
 	public void setAuthorityManager(AuthorityManager authorityManager) {
 		this.authorityManager = authorityManager;
+	}
+
+	/**
+	 * @param h3ScriptsDirectory The h3ScriptsDirectory to set.
+	 */
+	public void setH3ScriptsDirectory(String h3ScriptsDirectory) {
+		this.h3ScriptsDirectory = h3ScriptsDirectory;
 	}
 
 	/**
