@@ -37,17 +37,22 @@ public class H3ScriptFileController implements Controller {
                 || (scriptFileName == null || scriptFileName.equals(""))) {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } else {
-            // check authority
-            TargetInstance ti = targetInstanceManager.getTargetInstance(Long.parseLong(targetInstanceOid), true);
-            if (authorityManager.hasAtLeastOnePrivilege(ti.getProfile(), new String[] {Privilege.MANAGE_TARGET_INSTANCES, Privilege.MANAGE_WEB_HARVESTER})) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-                httpServletResponse.setContentType("text/plain");
-                PrintWriter pw = httpServletResponse.getWriter();
-                String fileContents = getFileContents(scriptFileName);
-                pw.println(fileContents);
-                pw.flush();
-            } else {
-                httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            try {
+                // check authority
+                TargetInstance ti = targetInstanceManager.getTargetInstance(Long.parseLong(targetInstanceOid), true);
+                if (authorityManager.hasAtLeastOnePrivilege(ti.getProfile(), new String[] {Privilege.MANAGE_TARGET_INSTANCES, Privilege.MANAGE_WEB_HARVESTER})) {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                    httpServletResponse.setContentType("text/plain");
+                    PrintWriter pw = httpServletResponse.getWriter();
+                    String fileContents = getFileContents(scriptFileName);
+                    pw.println(fileContents);
+                    pw.flush();
+                } else {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                }
+            } catch (Exception e) {
+                log.error(e);
+                httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
         return null;
