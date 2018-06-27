@@ -42,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   function viewH3ScriptConsole(instanceOid) {
     //alert('Instance Oid ' + instanceOid);
     var url = '<%= basePath %>curator/target/h3ScriptConsole.html?targetInstanceOid=' + instanceOid;
-    var winObj = window.open(url, 'h3ScriptConsole', 'menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes,width=800,height=600', true);
+    var winObj = window.open(url, 'h3ScriptConsole', 'menubar=no,scrollbars=yes,status=no,toolbar=no,resizable=yes,width=800,height=700', true);
     winObj.focus();
   }
 </script>

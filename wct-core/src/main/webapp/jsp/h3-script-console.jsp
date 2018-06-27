@@ -9,14 +9,21 @@
     //alert(scriptValueSelected);
     if (scriptValueSelected != 'none') {
       // find the script in the scripts list
-      var script;
+      var scriptFileUrl;
       $.each(scriptsList, function(index, value) {
         if (value.scriptName == scriptValueSelected) {
-          script = value.script;
+          var tiOid = $('#targetInstanceOid').val();
+          var sName = value.scriptName;
+          var sExt = value.scriptExt;
+          scriptFileUrl = 'curator/target/h3ScriptFile.html?targetInstanceOid=' + tiOid + '&scriptFileName=' + sName + '.' + sExt;
         }
       });
-      //alert(script);
-      $("#script").val(script);
+      if (scriptFileUrl) {
+        //alert(scriptFileUrl);
+        $.get(scriptFileUrl, function(result) {
+          $("#script").val(result);
+        });
+      }
     }
   }
 
@@ -44,9 +51,9 @@
     var scriptsList = [];
     <c:forEach items="${scripts}" var="scriptInList">
       var jsScript = {
-        scriptName: "<c:out value='${scriptInList.key.key}'/>",
-        scriptType: "<c:out value='${scriptInList.key.value}'/>",
-        script: "<c:out value='${scriptInList.value}'/>"
+        scriptName: "<c:out value='${scriptInList[\'scriptName\']}'/>",
+        scriptExt: "<c:out value='${scriptInList[\'scriptExt\']}'/>",
+        scriptType: "<c:out value='${scriptInList[\'scriptType\']}'/>"
       };
       scriptsList.push(jsScript);
     </c:forEach>
@@ -57,7 +64,7 @@
     // update script engine list
     updateScriptEngine(scriptsList, $('#scriptSelected').val());
     // make read only (or not) based on selection
-    makeReadOnlyScript($('#scriptSelected').val());
+    //makeReadOnlyScript($('#scriptSelected').val());
 
     $('#scriptSelected').change(function() {
       var scriptValueSelected = this.value;
@@ -66,7 +73,7 @@
       // update script engine list
       updateScriptEngine(scriptsList, scriptValueSelected);
       // make read only (or not) based on selection
-      makeReadOnlyScript(scriptValueSelected);
+      //makeReadOnlyScript(scriptValueSelected);
     });
 
   });
@@ -92,7 +99,7 @@
     <tr>
       <td class="subBoxText" colspan="2">
         <input type="hidden" id="actionCommand" name="actionCommand" value="<%=H3ScriptConsoleCommand.ACTION_EXECUTE_SCRIPT %>" />
-        <input type="hidden" name="targetInstanceOid" value="<c:out value="${targetInstance.oid}"/>" />
+        <input type="hidden" id="targetInstanceOid" name="targetInstanceOid" value="<c:out value="${targetInstance.oid}"/>" />
       </td>
     </tr>
     <tr>
@@ -109,7 +116,7 @@
         <select name="scriptSelected" id="scriptSelected">
 	      <option value="none" ${command.scriptSelected eq 'none' ? 'SELECTED' : ''}>None</option>
 	      <c:forEach items="${scripts}" var="scr">
-	        <option value="${scr.key.key}" ${command.scriptSelected eq scr.key.key ? 'SELECTED' : ''}>${scr.key.key}</option>
+	        <option value="${scr['scriptName']}" ${command.scriptSelected eq scr.key.key ? 'SELECTED' : ''}>${scr['scriptName']}</option>
 	      </c:forEach>
 	    </select>
       </td>

@@ -15,7 +15,6 @@
  */
 package org.webcurator.ui.profiles.controller;
 
-import javafx.util.Pair;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,10 +35,7 @@ import org.webcurator.ui.util.HarvestAgentUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -83,8 +79,8 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 		H3ScriptConsoleCommand command = (H3ScriptConsoleCommand) comm;
 		TargetInstance ti = targetInstanceManager.getTargetInstance(command.getTargetInstanceOid(), true);
 		String result = "";
-		// Retrieve the list of script files and the contents
-		Map<Pair<String, String>, String> scripts = getScripts();
+		// Retrieve the list of script file names and types
+		List<Map<String, String>> scripts = getScripts();
 		// Set default selected script
 		String selectedScript = command.getScriptSelected();
 		if (selectedScript == null || selectedScript.equals("")) {
@@ -111,46 +107,16 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 		}
 	}
 
-	private String getScriptFromFile(File file) {
-		String lineSep = System.getProperty("line.separator");
-		StringBuffer sb = new StringBuffer();
-		BufferedReader br = null;
-		FileReader fr = null;
-		try {
-			fr = new FileReader(file);
-			br = new BufferedReader(fr);
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line);
-				//sb.append(lineSep);
-			}
-		} catch (IOException e) {
-			log.error(e);
-		} finally {
-			try {
-				if (br != null) {
-					br.close();
-				}
-				if (fr != null) {
-					fr.close();
-				}
-			} catch (IOException ex) {
-				log.error(ex);
-			}
-		}
-		return sb.toString();
-	}
-
 	/**
-	 * This method returns a map containing a Pair as the key and a String as the value.
-	 * The Pair contains the script's file name as the key and the script type (beanshell, groovy, nashorn)
-	 * as the value.
-	 * The contents of the script file are the map's value.
-	 * @return the map.
+	 * This method returns a list of maps containing the following:
+	 * 1. The scripts file name (minus extension)
+	 * 2. The scripts fime extension
+	 * 3. The script type: (beanshell, groovy, nashorn)
+	 * @return the list.
 	 */
-	private Map<Pair<String, String>, String> getScripts() {
+	private List<Map<String, String>> getScripts() {
 		final List<String> validFileExtensions = Arrays.asList("bsh", "groovy", "js");
-		Map<Pair<String, String>, String> scripts = new HashMap<Pair<String, String>, String>();
+		List<Map<String, String>> scripts = new ArrayList<Map<String, String>>();
 		// Get list of valid files in directory
 		File scriptDirectory = new File(h3ScriptsDirectory);
 		File[] scriptFiles = scriptDirectory.listFiles(new FilenameFilter() {
@@ -161,23 +127,23 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 			}
 		});
 
-		for (File scriptFile : scriptFiles) {
-			// Parse file name into script name and type
-			String scriptName = FilenameUtils.removeExtension(scriptFile.getName());
-			String scriptExt = FilenameUtils.getExtension(scriptFile.getName());
-			String scriptType = fileExtensionToScriptType.get(scriptExt);
-			// Read file contents into script
-			String script = getScriptFromFile(scriptFile);
-			// Put into map
-			Pair<String, String> scriptPair = createScriptPair(scriptName, scriptType);
-			scripts.put(scriptPair, script);
+		// scriptFiles is null if the h3scripts.dir has not been set
+		// or it has been but the directory doesn't exist
+		if (scriptFiles != null) {
+			for (File scriptFile : scriptFiles) {
+				// Parse file name into script name and type
+				String scriptName = FilenameUtils.removeExtension(scriptFile.getName());
+				String scriptExt = FilenameUtils.getExtension(scriptFile.getName());
+				String scriptType = fileExtensionToScriptType.get(scriptExt);
+				// Put into map
+				Map<String, String> scriptMap = new HashMap<String, String>();
+				scriptMap.put("scriptName", scriptName);
+				scriptMap.put("scriptExt", scriptExt);
+				scriptMap.put("scriptType", scriptType);
+				scripts.add(scriptMap);
+			}
 		}
 		return scripts;
-	}
-
-	private Pair<String, String> createScriptPair(String scriptName, String scriptType) {
-		Pair<String, String> pair = new Pair<String, String>(scriptName, scriptType);
-		return pair;
 	}
 
 	/**

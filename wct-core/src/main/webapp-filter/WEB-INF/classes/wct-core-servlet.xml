@@ -84,6 +84,7 @@
 				<entry key="/curator/target/ti-basic-credentials.html" value="basicCredentialsControllerTargetInstance"/>
 				<entry key="/curator/target/ti-form-credentials.html" value="formCredentialsControllerTargetInstance"/>
 				<entry key="/curator/target/h3ScriptConsole.html" value="h3ScriptConsoleController"/>
+				<entry key="/curator/target/h3ScriptFile.html" value="h3ScriptFileController"/>
 				<entry key="/curator/intray/intray.html" value="inTrayController"/>
 				<entry key="/curator/report/report.html" value="reportController"/>
 				<entry key="/curator/report/report-preview.html" value="reportPreviewController"/>
@@ -1281,6 +1282,13 @@
 	</bean>
 
 	<bean id="h3ScriptConsoleController" class="org.webcurator.ui.profiles.controller.H3ScriptConsoleController">
+		<!-- name of the directory where the h3 scripts are stored -->
+		<property name="h3ScriptsDirectory" value="${h3.scriptsDirectory}"/>
+		<property name="targetInstanceManager" ref="targetInstanceManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+
+	<bean id="h3ScriptFileController" class="org.webcurator.ui.profiles.controller.H3ScriptFileController">
 		<!-- name of the directory where the h3 scripts are stored -->
 		<property name="h3ScriptsDirectory" value="${h3.scriptsDirectory}"/>
 		<property name="targetInstanceManager" ref="targetInstanceManager"/>
