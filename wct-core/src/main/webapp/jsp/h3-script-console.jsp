@@ -116,7 +116,7 @@
         <select name="scriptSelected" id="scriptSelected">
 	      <option value="none" ${command.scriptSelected eq 'none' ? 'SELECTED' : ''}>None</option>
 	      <c:forEach items="${scripts}" var="scr">
-	        <option value="${scr['scriptName']}" ${command.scriptSelected eq scr.key.key ? 'SELECTED' : ''}>${scr['scriptName']}</option>
+	        <option value="${scr['scriptName']}" ${command.scriptSelected eq scr['scriptName'] ? 'SELECTED' : ''}>${scr['scriptName']}</option>
 	      </c:forEach>
 	    </select>
       </td>

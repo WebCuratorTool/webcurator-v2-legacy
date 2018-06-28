@@ -143,6 +143,13 @@ public class H3ScriptConsoleController extends AbstractCommandController {
 				scripts.add(scriptMap);
 			}
 		}
+		// sort by script name
+		Collections.sort(scripts, new Comparator<Map<String, String>>() {
+			@Override
+			public int compare(Map<String, String> lhs, Map<String, String> rhs) {
+				return lhs.get("scriptName").compareTo(rhs.get("scriptName"));
+			}
+		});
 		return scripts;
 	}
 
