@@ -18,6 +18,7 @@ package org.webcurator.core.harvester.agent;
 import java.io.File;
 import java.util.List;
 
+import org.netarchivesuite.heritrix3wrapper.ScriptResult;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
 
 /**
@@ -111,4 +112,13 @@ public interface Harvester {
      * @param alertThreshold the number of alerts
      */
     void setAlertThreshold(int alertThreshold);
+
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    ScriptResult executeShellScript(String jobName, String engine, String shellScript);
 }

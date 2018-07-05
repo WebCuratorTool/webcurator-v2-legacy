@@ -161,5 +161,15 @@ public class HarvestAgentSOAPService extends ServletEndpointSupport implements H
 	public boolean isValidProfile(String profile) {
 	    return ha.isValidProfile(profile);
     }
-	
+
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    public HarvestAgentScriptResult executeShellScript(String jobName, String engine, String shellScript) {
+	    return ha.executeShellScript(jobName, engine, shellScript);
+    }
 }

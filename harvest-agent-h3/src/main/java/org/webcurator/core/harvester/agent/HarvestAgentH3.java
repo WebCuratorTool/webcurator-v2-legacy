@@ -18,6 +18,7 @@ package org.webcurator.core.harvester.agent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.archive.util.FileUtils;
+import org.netarchivesuite.heritrix3wrapper.ScriptResult;
 import org.webcurator.core.common.Constants;
 import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.core.harvester.agent.exception.HarvestAgentException;
@@ -918,5 +919,23 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         return isValid;
 
+    }
+
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    public HarvestAgentScriptResult executeShellScript(String jobName, String engine, String shellScript) {
+        Harvester harvester = new HarvesterH3();
+        ScriptResult scriptResult = harvester.executeShellScript(jobName, engine, shellScript);
+        if (scriptResult != null) {
+            String output = scriptResult.script != null ? scriptResult.script.rawOutput : "";
+            return new HarvestAgentScriptResult(scriptResult.responseCode, scriptResult.status, output);
+        } else {
+            return new HarvestAgentScriptResult();
+        }
     }
 }

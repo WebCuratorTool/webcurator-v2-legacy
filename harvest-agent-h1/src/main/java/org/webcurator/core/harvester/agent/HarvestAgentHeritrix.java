@@ -771,5 +771,15 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
 	public boolean isValidProfile(String profile) {
 	    throw new RuntimeException("Validation of profiles is not supported by " + harvesterType.name());
     }
-	
+
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    public HarvestAgentScriptResult executeShellScript(String jobName, String engine, String shellScript) {
+        throw new RuntimeException("The execution of shell scripts is not supported by " + harvesterType.name());
+    }
 }

@@ -446,4 +446,30 @@ public class HarvestAgentSOAPClient implements HarvestAgent, HarvestAgentConfig 
         }
 
     }
+
+    /**
+     * Execute the shell script in the Heritrix3 server for the job.
+     * @param jobName the job
+     * @param engine the script engine: beanshell, groovy, or nashorn (ECMAScript)
+     * @param shellScript the script to execute
+     * @return the script result
+     */
+    public HarvestAgentScriptResult executeShellScript(String jobName, String engine, String shellScript) {
+        try {
+            Object[] data = {jobName, engine, shellScript};
+            WCTSoapCall call = new WCTSoapCall(host, port, service, "executeShellScript");
+            call.regTypes(HarvestAgentScriptResult.class);
+            return (HarvestAgentScriptResult)call.invoke(data);
+        } catch (RemoteException e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to invoke executeShellScript on the SOAP service : " + e.getMessage(), e);
+            }
+            throw new WCTRuntimeException("Failed to invoke executeShellScript on the SOAP service : " + e.getMessage(), e);
+        } catch (ServiceException e) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to create the SOAP call executeShellScript: " + e.getMessage(), e);
+            }
+            throw new WCTRuntimeException("Failed to create the SOAP call executeShellScript: " + e.getMessage(), e);
+        }
+    }
 }

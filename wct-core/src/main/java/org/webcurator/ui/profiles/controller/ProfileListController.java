@@ -39,6 +39,7 @@ import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 import org.webcurator.domain.model.dto.ProfileDTO;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.profiles.command.ProfileListCommand;
+import org.webcurator.ui.util.HarvestAgentUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -210,20 +211,7 @@ public class ProfileListController extends AbstractCommandController {
      */
     private HarvestAgent getHarvestAgent() {
 
-        HarvestAgentManager harvestAgentManager = (HarvestAgentManager) getApplicationContext().getBean("harvestAgentManager");
-        HarvestAgentFactory harvestAgentFactory = (HarvestAgentFactory) getApplicationContext().getBean("harvestAgentFactory");
-
-        HarvestAgentStatusDTO has = null;
-        for (HarvestAgentStatusDTO h : harvestAgentManager.getHarvestAgents().values()) {
-            if (h.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
-                has = h;
-                break;
-            }
-        }
-        if (has == null) {
-            throw new RuntimeException("Could not find harvest agent of type " + HarvesterType.HERITRIX3);
-        }
-        return harvestAgentFactory.getHarvestAgent(has.getHost(), has.getPort(), has.getService());
+        return HarvestAgentUtil.getHarvestAgent(getApplicationContext());
     }
 
 }
