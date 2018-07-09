@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="userDnList" class="org.springframework.beans.factory.config.ListFactoryBean">
+		<property name="targetListClass">
+			<value>java.util.ArrayList</value>
+		</property>
+		
+		
+		<!--
+		============ 
+		Add values to this list to allow more distinguished name patterns.  If preferable,
+		ldap.dn can be removed when there is more than one value to avoid confusion.
+		============ 
+		-->
+		
+		<property name="sourceList">
+			<list>
+ 				<value>${ldap.dn}</value>
+				<value>cn={0},OU=WCT users,DC=webcurator,DC=org</value>
+<!--				<value>cn={0},OU=WCT users,DC=webcurator,DC=org</value>  -->
+<!--				<value>cn={0},OU=WCT users,DC=webcurator,DC=org</value>  -->
+			</list>
+		</property>
+	</bean>
+</beans>

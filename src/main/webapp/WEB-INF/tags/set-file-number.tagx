@@ -1,0 +1,14 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+  <jsp:directive.attribute name="value"
+                           type="java.lang.Integer"
+                           required="true"/>
+<jsp:declaration>
+	String pad = "00";
+</jsp:declaration>
+<jsp:scriptlet> 
+	String str = pad + value; 
+	str = "FILE"+str.substring(str.length()-3);
+	request.setAttribute("fileNumber",str);
+	request.setAttribute("fileNumberValue",value);
+</jsp:scriptlet>
+</jsp:root>

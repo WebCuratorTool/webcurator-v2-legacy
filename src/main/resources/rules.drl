@@ -1,0 +1,1811 @@
+package org.webcurator.core.rules
+
+import org.webcurator.domain.model.core.TargetInstance;
+import org.webcurator.domain.model.core.Seed;
+import org.webcurator.domain.model.core.AbstractTarget;
+import org.webcurator.domain.model.core.HarvestResourceDTO;
+import org.webcurator.domain.model.core.HarvesterStatus;
+import org.webcurator.domain.model.core.HarvestResult;
+import org.webcurator.domain.model.core.Indicator;
+import org.webcurator.domain.model.core.IndicatorReportLine;
+import org.webcurator.core.rules.WordCounter;
+import org.webcurator.core.store.tools.QualityReviewFacade;
+import org.webcurator.core.util.ConverterUtil;
+import org.webcurator.core.harvester.agent.HarvesterStatusUtil;
+import org.webcurator.core.harvester.coordinator.HarvestCoordinator;
+import org.webcurator.core.scheduler.TargetInstanceManager;
+import org.webcurator.domain.model.dto.HarvestHistoryDTO;
+import org.webcurator.ui.common.HeritrixStatusDescription;
+
+import java.text.MessageFormat;
+import javax.activation.MimetypesFileTypeMap;
+import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
+
+import java.lang.StringBuilder;
+
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Date;
+import java.util.Map;
+
+// rules file version (for deployment verification only)
+global String VERSION;
+
+// map of global constants needed by the rules engine (defines the message formats and advice that can be assigned to an indicator)
+global Map<String, String> globals;
+
+rule "Set rules file version"
+	dialect "java"
+	
+	salience 30
+	when
+		eval(true)
+		// map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()
+	then
+		// the rules file version (for deployment verification only)
+        VERSION = "1.1.6";
+        $m.put(drools.getRule().getName(), VERSION);
+end
+
+// indicator declaration for computations involving a reference crawl (ti)
+declare ReferenceCrawlIndicator
+	name 				: String	// the name of the indicator (eg: Long URIs)
+	floatValue			: Float		// the current numerical value of the indicator (if numeric)
+	stringValue 		: String	// the current string value of the indicator (if character based)
+	positiveTolerance	: Float		// the current value + the upperLimitPercentage (computed)
+	negativeTolerance	: Float		// the current value - the lowerLimitPercentage (computed)
+	upperLimitPercentage: Float		// upper limit for the tolerance value expressed as a percentage (eg: +10%, user defined)
+	lowerLimitPercentage: Float		// lower limit for the tolerance value expressed as a percentage (eg: -10%, user defined)	
+	upperLimit			: Float		// upper limit for the current value (user defined)
+	lowerLimit			: Float		// lower limit for the current value (user defined)
+end
+
+// fact declaration that an indicator has changed and so requires
+// reprocessing by the rules engine
+declare HasChanged
+	indicator : Indicator
+	targetInstance : TargetInstance
+end
+
+// fact declaration that a ti has an indicator whos tolerance value (+ve/-ve) should be computed 
+declare InferRCIToleranceValue
+	targetInstance 	: TargetInstance
+	rci				: ReferenceCrawlIndicator
+end
+
+// fact declaration that a ti has an indicator whos tolerance percentages (+%/-%) should be computed 
+declare InferRCITolerance
+	targetInstance 	: TargetInstance
+	rci				: ReferenceCrawlIndicator
+end
+
+// fact declaration that an upper limit for an indicator should be computed 
+// from the reference crawl upper limit percentage  
+declare InferIndicatorUpperLimitValue
+	targetInstance 	: TargetInstance
+	rci				: ReferenceCrawlIndicator
+	indicator		: Indicator
+end
+
+// fact declaration that an upper limit tolerance value for an indicator should be computed 
+// from the reference crawl upper limit percentage  
+declare InferIndicatorUpperLimitToleranceValue
+	rcTargetInstance 	: TargetInstance			// the reference crawl
+	rci					: ReferenceCrawlIndicator
+	targetInstance		: TargetInstance			// the ti
+	indicator			: Indicator
+end
+
+// fact declaration that an indicators value has exceeeded an upper limit
+declare HasExceededUpperLimit
+	targetInstance 	: TargetInstance
+	indicator		: Indicator
+end
+
+// fact declaration that an indicators value has fallen below a lower limit
+declare HasFallenBelowLowerLimit
+	targetInstance 	: TargetInstance
+	indicator		: Indicator
+end
+
+// outcome declaration for reject
+declare Reject
+	indicator 		: Indicator
+	message			: String
+end
+
+// outcome declaration for investigate
+declare Investigate
+	indicator 		: Indicator
+	message			: String
+end
+
+// outcome declaration for archive
+declare Archive
+	indicator 		: Indicator
+	message			: String
+end
+
+// outcome declaration for delist
+declare Delist
+	indicator 		: Indicator
+	message			: String
+end
+
+rule "Initialise indicators"
+	dialect "java"
+	
+	// this rule is executed second to initialise the QA indicators
+	salience 10
+	
+	when
+     	// for each indicator, generate a corresponding indicator
+     	// for the reference crawl (ie: the RCI - Reference Crawl Indicator)
+     	// also reset the indicator value
+     	$indicator : Indicator();
+	then	
+     	
+		// copy over the values from the indicator
+		ReferenceCrawlIndicator rci = new ReferenceCrawlIndicator();
+		rci.setName($indicator.getName() + " (RCI)");
+		rci.setFloatValue(0.0F);
+		rci.setPositiveTolerance(0.0F);
+		rci.setNegativeTolerance(0.0F);
+		rci.setUpperLimitPercentage($indicator.getUpperLimitPercentage());
+		rci.setLowerLimitPercentage($indicator.getLowerLimitPercentage());
+		rci.setUpperLimit($indicator.getUpperLimit());
+		rci.setLowerLimit($indicator.getLowerLimit());
+		
+		insert(rci);
+		
+		// reset the indicator value (since we will be deriving it in subsequent rules)
+		$indicator.setFloatValue(0.0F);
+		
+end
+
+/*
+ *	INDICATORS
+*/
+
+rule "Set Long URIs for Reference Crawl"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance(	state == "Archived",
+    							// the ti is the reference crawl
+    							target.referenceCrawlOid == oid	
+    	)
+        // the QA Indicator to compute
+        $rci: ReferenceCrawlIndicator( 	$v : floatValue, 
+        								name == "Long URIs" + " (RCI)" 
+       	)
+		$qrf : QualityReviewFacade()
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()	
+    then
+     	Float initialValue = $rci.getFloatValue();
+     	
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		if (resourceName.length() > 125 && $ti.getOid().equals(resource.getTargetInstanceOid())) {
+	     			// increment the number of occurances of an excess character length
+					$rci.setFloatValue( $rci.getFloatValue() + 1.0F );
+					$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName());    	
+	     		}
+	     	}
+		}
+		
+		// raise a notification if the indicator value has changed
+		if (!$rci.getFloatValue().equals(initialValue)) {
+       		// insert the fact that the indicator tolerance should be infered
+    		InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $rci );
+    		insert(inferToleranceValue);
+    	}
+end
+
+rule "Set Long URIs for ti"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse 
+    	$ti : TargetInstance( 	state == "Harvested",
+    							// the ti is not a reference crawl
+    							(target.getReferenceCrawlOid == null 
+    							|| target.getReferenceCrawlOid != oid)
+    	)
+        // the QA Indicator to compute
+        $i : Indicator( $v : floatValue, 
+        				name == "Long URIs" 
+        )
+		$qrf : QualityReviewFacade()
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+    then
+     	Float initialValue = $i.getFloatValue();
+     	
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		if (resourceName.length() > 125 && $ti.getOid().equals(resource.getTargetInstanceOid())) {
+	     			// increment the number of occurances of an excess character length
+					$i.setFloatValue( $i.getFloatValue() + 1.0F );
+					$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+					// persist the missing uri for reporting  
+					IndicatorReportLine irl = new IndicatorReportLine();
+					irl.setIndicator($i);
+					irl.setLine(resourceName);
+					$i.getIndicatorReportLines().add(irl);
+	     		}
+	     	}
+		}
+		
+		// raise a notification if the indicator value has changed
+		// only if the crawl is new (invokes absolute limit tests)
+		if ($ti.getTarget().getCrawls() == 1 
+			&&!$i.getFloatValue().equals(initialValue)) {
+			HasChanged notification = new HasChanged($i, $ti);
+			insert(notification);
+		}
+		
+end
+
+rule "Set Repeating URI Patterns for Reference Crawl"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance(	state == "Archived",
+    							// the ti is the reference crawl
+    							target.referenceCrawlOid == oid
+    	)
+        // the QA Indicator to compute
+        $rci: ReferenceCrawlIndicator( 	$v : floatValue, 
+        								name == "Repeating URI Patterns" + " (RCI)" 
+       	)
+		$qrf : QualityReviewFacade()
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()	
+    then
+     	Float initialValue = $rci.getFloatValue();
+     	
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		Pattern p = Pattern.compile("(\\w+/)\\1"); 
+				Matcher m = p.matcher(resourceName); 
+				List<String> matches = new ArrayList<String>(); 
+				while(m.find()){ 
+					matches.add(m.group()); 
+				} 
+	     		if (matches.size() > 0) {
+	     			// increment the number of occurances of an excess character length
+					$rci.setFloatValue( $rci.getFloatValue() + 1.0F );
+					$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName());    	
+	     		}
+	     	}
+		}
+		
+		// raise a notification if the indicator value has changed
+		if (initialValue != null && !$rci.getFloatValue().equals(initialValue)) {
+       		// insert the fact that the indicator tolerance should be infered
+    		InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $rci );
+    		insert(inferToleranceValue);
+    	}
+end
+
+
+rule "Set Repeating URI Patterns for ti"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance( 	state == "Harvested",
+    							// this is not a reference crawl
+    							target.referenceCrawlOid == null || target.referenceCrawlOid != oid					 
+    	)
+        // the QA Indicator to compute
+        $i : Indicator( $v : floatValue, 
+        				name == "Repeating URI Patterns" 
+        )
+		$qrf : QualityReviewFacade()
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+    then
+     	Float initialValue = $i.getFloatValue();
+     	
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		// if the resource contains a repeated path segment
+	     		Pattern p = Pattern.compile("(\\w+/)\\1"); 
+				Matcher m = p.matcher(resourceName); 
+				List<String> matches = new ArrayList<String>(); 
+				while(m.find()){ 
+					matches.add(m.group()); 
+				} 
+	     		if (matches.size() > 0) {
+	     			// increment the number of occurances of an excess character length
+					$i.setFloatValue( $i.getFloatValue() + 1.0F );
+					$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+					// persist the missing uri for reporting  
+					IndicatorReportLine irl = new IndicatorReportLine();
+					irl.setIndicator($i);
+					irl.setLine(resourceName);
+					$i.getIndicatorReportLines().add(irl);
+	     		}
+	     	}
+		}
+		
+		// raise a notification if the indicator value has changed
+		// only if the crawl is new (invokes absolute limit tests)
+		if ($ti.getTarget().getCrawls() == 1 
+			&&!$i.getFloatValue().equals(initialValue)) {
+			HasChanged notification = new HasChanged($i, $ti);
+			insert(notification);
+		}
+end
+
+rule "Set Content Downloaded for Reference Crawl"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance( 	$hs : status,
+    							// the ti is the reference crawl
+    							target.referenceCrawlOid == oid
+    	)
+        // the QA Indicator to compute
+        $rci: ReferenceCrawlIndicator( 	$v : floatValue, 
+        								name == "Content Downloaded" + " (RCI)" 
+        )
+	    // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+    then
+    	// set the content downloaded indicator for the rci
+		$rci.setFloatValue( new Float($hs.getDataDownloaded()) );
+		$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName()); 
+		
+    	// insert the fact that the indicator tolerance should be infered
+    	InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $rci );
+    	insert(inferToleranceValue);
+end
+
+rule "Set Content Downloaded for ti"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance( 	state == "Harvested",
+    							$hs : status
+    	)
+        // the QA Indicator to compute
+        $i : Indicator( $v : floatValue, 
+        				name == "Content Downloaded" 
+        )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+    then
+    	//System.out.println("$hs.getDataDownloaded(): " + $hs.getDataDownloaded());
+    	// set the content downloaded indicator for the ti
+		$i.setFloatValue( new Float($hs.getDataDownloaded()) );
+		$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName()); 
+    	
+     	// raise a notification if the indicator value has changed
+		// only if the crawl is new (invokes absolute limit tests)
+		if ($ti.getTarget().getCrawls() == 1) {
+			HasChanged notification = new HasChanged($i, $ti);
+			insert(notification);
+		}
+end
+
+rule "Set URLs Downloaded for Reference Crawl"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse (must be the reference crawl)
+    	$ti : TargetInstance( 	$hs : status,
+    							status != null,
+    							state == "Archived",
+    							target.referenceCrawlOid != null,
+    							oid == target.referenceCrawlOid
+    	)
+        // the QA Indicator to compute
+        $rci: ReferenceCrawlIndicator( 	$v : floatValue, 
+        								name == "URLs Downloaded" + " (RCI)" 
+        )
+  	    // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+    then
+    	// increment the indicator
+		$rci.setFloatValue( new Float($hs.getUrlsDownloaded()) );
+    	$m.put(drools.getRule().getName(), "Reference crawl ti " + $ti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName()); 
+    	// insert the fact that the indicator tolerance should be infered
+    	InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $rci );
+    	insert(inferToleranceValue);
+    	
+end
+
+rule "Set URLs Downloaded for ti"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance( 	$hs : status,
+    							state == "Harvested"
+    	)
+        // the QA Indicator to compute
+        $i : Indicator( $v : floatValue, 
+        				name == "URLs Downloaded"
+        )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+    then
+    	// make a note of the urls downloaded value
+    	$i.setFloatValue( new Float($hs.getUrlsDownloaded()) );
+     	$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+     	HasChanged notification = new HasChanged($i, $ti); 
+     	insert(notification);
+end
+
+// the Crawl Runtime indicator does not have a corresponding RCI
+// the same indicator therefore applies to both new and old targets
+rule "Set Crawl Runtime indicator"   
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+         // map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()	
+        // the QA Indicator to compute
+        $i : Indicator( name == "Crawl Runtime" )
+    	// the crawl runtime has exceeded the indicators upper limit
+		// the ti is harvested and the harvest status corresponds to this ti
+    	$ti : TargetInstance(	state == "Harvested",
+    							$hs : status,
+    							status != null,
+    							target.referenceCrawlOid != oid 
+    	)
+	then
+	    // record the elapsed time
+		$i.setFloatValue( new Float($hs.getElapsedTime()) );
+      	HasChanged notification = new HasChanged( $i, $ti );
+      	insert(notification); 
+end
+
+rule "Set Robots.txt entries disallowed (RCI)"
+	dialect "java"
+	salience 8
+	when
+		// the target instance (the reference crawl)
+    	$ti : TargetInstance( 	state == "Archived",
+    							(target.referenceCrawlOid != null
+    							|| oid == target.referenceCrawlOid)
+    	)
+		$rci : ReferenceCrawlIndicator( name == "Robots.txt entries disallowed" + " (RCI)" )
+		// interface to the file store
+		$qrf : QualityReviewFacade()
+		// map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+	then
+		List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+      		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		if (resourceName.indexOf("robots.txt") != -1) {
+					Integer wordCount = 0;
+					// fetch the robots.txt file
+					try {
+						File file = $qrf.getResource(resource);
+						wordCount = WordCounter.count("Disallow", file);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					$rci.setFloatValue(new Float(wordCount));
+					$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName() + " (based on resource " + resourceName + ")");
+					// insert the fact that the indicator tolerance should be infered
+			    	InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $rci );
+			    	insert(inferToleranceValue);
+	     		}
+	     	}
+		}
+		
+end
+
+rule "Set Robots.txt entries disallowed for ti"
+	dialect "java"
+	salience 7
+	when
+		// the target instance (must not be the reference crawl)
+    	$ti : TargetInstance( 	state == "Harvested",
+    							(target.referenceCrawlOid == null
+    							|| oid != target.referenceCrawlOid)
+    	)
+		$i : Indicator( name == "Robots.txt entries disallowed" )
+		// interface to the file store
+		$qrf : QualityReviewFacade()
+		// map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+	then
+		List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		// if the resource name is for the robots.txt file
+	     		if (resourceName.indexOf("robots.txt") != -1) {
+					Integer wordCount = 0;
+					// fetch the robots.txt file
+					try {
+						File file = $qrf.getResource(resource);
+						wordCount = WordCounter.count("Disallow", file);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					$i.setFloatValue(new Float(wordCount));
+					$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName() + " (based on resource " + resourceName + ")");
+					// insert the fact that the indicator tolerance should be infered
+					HasChanged notification = new HasChanged( $i, $ti );
+      				insert(notification);
+	     		}
+	     	}
+		}
+ 
+end
+
+rule "Set Heritrix Error Codes (RCI)"
+	dialect "java"
+	salience 7
+	when
+		// the target instance (must not be the reference crawl)
+    	$ti : TargetInstance( 	state == "Archived",
+    							target.referenceCrawlOid != null,
+    							oid == target.referenceCrawlOid
+    	)
+		$i : ReferenceCrawlIndicator( name == "Heritrix Error Codes" + " (RCI)" )
+		// interface to the file store
+		$hc : HarvestCoordinator()
+		// map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+	then
+		int count = 0;
+		// fetch the crawl.log file
+		try {
+			File file = $hc.getLogfile($ti, "crawl.log");
+			ArrayList<String> lines = WordCounter.getColumn(1, " ", file);
+			// iterate through the column and count only the negative integer values
+			Iterator<String> it = lines.iterator();
+			
+			while (it.hasNext()) {
+				String line = it.next();
+				if (line != null && !line.equals("")) {
+					Integer errorCode = Integer.parseInt(line);
+					if (errorCode < 0 
+							|| errorCode.equals(403) 
+							|| errorCode.equals(404)
+							|| errorCode.equals(301)) {
+						count++;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		$i.setFloatValue(new Float(count));
+		$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+		// insert the fact that the indicator tolerance should be infered
+    	InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $i );
+    	insert(inferToleranceValue);
+end
+
+rule "Set Heritrix Error Codes for ti"
+	dialect "java"
+	salience 8
+	when
+		// the target instance (must not be the reference crawl)
+    	$ti : TargetInstance( 	state == "Harvested",
+    							target.referenceCrawlOid != null,
+    							oid != target.referenceCrawlOid
+    	)
+		$i : Indicator( name == "Heritrix Error Codes" )
+		// interface to the file store
+		$hc : HarvestCoordinator()
+		// map to relay the decision rationale to the ui
+        $m : RuleMessageMap()
+	then
+		// fetch the crawl.log file
+		File file = $hc.getLogfile($ti, "crawl.log");
+		ArrayList<String> lines = WordCounter.getColumn(1, " ", file);
+		// iterate through the column and count only the negative integer values
+		Iterator<String> it = lines.iterator();
+		int count = 0;
+
+		while (it.hasNext()) {
+			String line = it.next();
+			if (line != null && !line.equals("")) {
+				Integer errorCode = Integer.parseInt(line);
+				if (errorCode < 0 
+						|| errorCode.equals(403) 
+						|| errorCode.equals(404)
+						|| errorCode.equals(301)) {
+					count++;
+					// persist the error code
+					IndicatorReportLine irl = new IndicatorReportLine();
+					irl.setIndicator($i);
+					irl.setLine(errorCode.toString() + " " + HeritrixStatusDescription.getDescription(errorCode));
+					$i.getIndicatorReportLines().add(irl);
+				}
+			}
+		}
+		$i.setFloatValue(new Float(count));
+		$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+		HasChanged notification = new HasChanged( $i, $ti );
+      	insert(notification); 
+end
+
+rule "Set Unknown MIME Types (RCI)"
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 8
+    when
+    	// the reference crawl Target Instance to analyse
+    	$ti : TargetInstance( 	state == "Archived",
+    							target.referenceCrawlOid != null,
+    							oid == target.referenceCrawlOid,
+    							// the abstract target for ref crawl
+    							$at	: target )
+         // map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()	
+        // the QA Indicator to compute
+        $i : ReferenceCrawlIndicator( 	$v : floatValue, 
+        								name == "Unknown MIME Types"  + " (RCI)" 
+        )
+        $qrf : QualityReviewFacade()
+    then
+    
+     	//MimetypesFileTypeMap mimeTypes = new MimetypesFileTypeMap();
+     	ConfigurableMimeFileTypeMap mimeTypes = new ConfigurableMimeFileTypeMap(); 
+     	HashSet<String> unknownMimeTypes = new HashSet<String>();
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+
+	     		HarvestResourceDTO resource = resources.next();
+
+		    	String fileName = resource.getName();
+		    	String originalFileName = resource.getName();
+		    	
+		    	if (fileName.indexOf("?") != -1) {
+		    		fileName = fileName.substring(0, fileName.indexOf("?"));
+		    	}
+		    	
+		    	// filename must contain an extension
+		    	String[] segments = fileName.split("/");
+		    	String segment = segments[segments.length-1];
+		    	
+		    	// the resource should not end with a '/' character
+		    	if (segment.indexOf(".") != -1 && fileName.charAt(fileName.length()-1) != '/') {
+		    		// last check is to exclude any seeds for the target (performed last
+		    		// since it is more expensive than the previous checks)
+			        fileName = segment;
+			        Set<Seed> seeds = $at.getSeeds();
+			        Iterator<Seed> it = seeds.iterator();
+			        Set<String> seedNames = new HashSet<String>();
+			        while (it.hasNext()) {
+			        	seedNames.add(it.next().getSeed());
+			        }
+		    		
+		    		// if the resource name is not a seed
+		    		if (!seedNames.contains(originalFileName)) {
+						String mimeType = mimeTypes.getContentType(fileName);
+						if (mimeType.equals("application/octet-stream")) {
+							// get the MIME type (ie: file extension)
+							int startIdx = fileName.lastIndexOf(".");
+							String mime = fileName.substring(startIdx, fileName.length());
+						}
+					}
+				}
+	     	}
+		}
+		    
+		        	// raise a notification if there are unknown MIME types
+		if (unknownMimeTypes.size() > 0) {
+	    	// increment the number of occurances of the unknown MIME types
+			$i.setFloatValue( (float)unknownMimeTypes.size() );
+			$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());    	
+		
+			// insert the fact that the indicator tolerance should be infered
+			InferRCIToleranceValue inferToleranceValue = new InferRCIToleranceValue( $ti, $i );
+			insert(inferToleranceValue);
+		}
+
+end
+
+
+rule "Set Unknown MIME Types for ti"
+	dialect "java"
+	// the indicators are calculated after the prerequisite inferences
+	salience 9
+    when
+    	// the Target Instance to analyse
+    	$ti : TargetInstance( 	state == "Harvested",
+    							// the abstract target for ref crawl
+    							$at	: target )
+         // map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()	
+        // the QA Indicator to compute
+        $i : Indicator( $v : floatValue, 
+        				name == "Unknown MIME Types" 
+        )
+        $qrf : QualityReviewFacade()
+    then
+     	//MimetypesFileTypeMap mimeTypes = new MimetypesFileTypeMap();
+     	ConfigurableMimeFileTypeMap mimeTypes = new ConfigurableMimeFileTypeMap();
+     	
+     	HashSet<String> unknownMimeTypes = new HashSet<String>();
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+
+	     		HarvestResourceDTO resource = resources.next();
+
+		    	String fileName = resource.getName();
+		    	String originalFileName = resource.getName();
+		    	
+		    	if (fileName.indexOf("?") != -1) {
+		    		fileName = fileName.substring(0, fileName.indexOf("?"));
+		    	}
+		    	
+		    	// filename must contain an extension
+		    	String[] segments = fileName.split("/");
+		    	String segment = segments[segments.length-1];
+		    	
+		    	// the resource should not end with a '/' character
+		    	if (segment.indexOf(".") != -1 && fileName.charAt(fileName.length()-1) != '/') {
+		    		// last check is to exclude any seeds for the target (performed last
+		    		// since it is more expensive than the previous checks)
+		    		fileName = segment;
+			        Set<Seed> seeds = $at.getSeeds();
+			        Iterator<Seed> it = seeds.iterator();
+			        Set<String> seedNames = new HashSet<String>();
+			        while (it.hasNext()) {
+			        	seedNames.add(it.next().getSeed());
+			        }
+		    		
+		    		// if the resource name is not a seed
+		    		if (!seedNames.contains(originalFileName)) {
+						String mimeType = mimeTypes.getContentType(fileName);
+						if (mimeType.equals("application/octet-stream")) {
+							// get the MIME type (ie: file extension)
+							int startIdx = fileName.lastIndexOf(".");
+							String mime = fileName.substring(startIdx, fileName.length());
+						}
+					}
+				}
+	     	}
+		}
+    
+    	// raise a notification if there are unknown MIME types
+		if (unknownMimeTypes.size() > 0) {
+	    	// increment the number of occurances of the unknown MIME types
+			$i.setFloatValue( (float)unknownMimeTypes.size() );
+		
+			// persist the unknown MIME types for reporting
+		    Iterator<String> uris = unknownMimeTypes.iterator();
+	    	while (uris.hasNext()) {
+	    		String uri = uris.next();
+	    		// parse the file extenstion from the filename
+	    		int start = uri.lastIndexOf('.');
+	    		
+	    		String fileExtension = null;
+	    		
+				if (start != -1) {
+					fileExtension = uri.substring(start + 1, uri.length());
+				} else {
+					fileExtension = uri;
+				}
+							
+				IndicatorReportLine irl = new IndicatorReportLine();
+				irl.setIndicator($i);
+				irl.setLine(fileExtension);
+				
+				$i.getIndicatorReportLines().add(irl);
+			}
+					
+			$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());    	
+		
+			// insert the fact that the indicator tolerance should be infered
+			HasChanged notification = new HasChanged($i, $ti);
+			insert(notification);
+		}		
+		
+end
+
+rule "Indicator exceeded its upper limit"
+	dialect "java"
+	salience -1
+	when
+		// a notification must exist denoting that an indicator has changed
+		$h	: HasChanged( 	$i : indicator,
+							indicator.getFloatValue() > indicator.getUpperLimit()
+		)
+        // map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()	
+   	then
+		HasExceededUpperLimit limit = new HasExceededUpperLimit($h.getTargetInstance(), $h.getIndicator());
+		insert(limit);
+end
+
+rule "Indicator fallen below its lower limit"
+	dialect "java"
+	salience -1
+	when
+		// a notification must exist denoting that an indicator has changed
+		$h	: HasChanged( 	$i : indicator,
+							$i.getFloatValue() < $i.getLowerLimit(),
+							$ti : targetInstance 
+		)
+        // map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()	
+   	then
+      	$m.put(drools.getRule().getName() + " (" + $i.getName() + ")", "Target instance " + $ti.getOid() + " and has value of " + $i.getFloatValue() + " for indicator " + $i.getName() + " has fallen below its lower limit value of " + $i.getLowerLimit()); 
+		HasFallenBelowLowerLimit limit = new HasFallenBelowLowerLimit($ti, $i);
+		insert(limit);
+end
+
+rule "Compute Matching URIs"   
+	dialect "java"
+	salience 8
+    when
+	    // the Target Instance to analyse (must not be the reference crawl)
+    	$ti 		: TargetInstance( 	state == "Harvested",
+    									target.referenceCrawlOid != null,
+    									oid != target.referenceCrawlOid != null
+    	)
+     	// the reference crawl Target Instance to analyse
+    	$rcti : TargetInstance( 	state == "Archived",
+    								target.referenceCrawlOid != null,
+    								oid == target.referenceCrawlOid,
+    								// the abstract target for ref crawl
+    								$at	: target )
+    	
+		$qrf : QualityReviewFacade()
+        // the QA Indicator to set
+        $i	 : Indicator( $iv : floatValue, name == "Matching URIs" )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()      
+    then
+     	Float initialValue = $i.getFloatValue();
+     	
+     	List<HarvestResult> tiResults = $ti.getHarvestResults();
+     	List<HarvestResult> rcResults = $rcti.getHarvestResults();
+     	
+     	if (tiResults.size() > 0 && rcResults.size() > 0) {
+      		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult tiResult = tiResults.get(tiResults.size()-1);
+     		// use the endorsed result for the reference crawl
+     		Iterator<HarvestResult> rcResultIt = rcResults.iterator();
+     		HarvestResult rcResult = null;
+     		while (rcResultIt.hasNext()) {
+     			HarvestResult result = rcResultIt.next();
+     			 if (result.getState() == 1) {// HarvestResult.STATE_ENDORSED
+     			 	rcResult = result;
+     			 }
+     		}  
+     		
+     		if (rcResult == null) {
+     			throw new Exception("Could not find endorsed HarvestResult for reference crawl ti with oid: " + $rcti.getOid());
+     		} else {
+     		
+				Iterator<HarvestResourceDTO> tiIt = $qrf.getHarvestResourceDTOs(tiResult.getOid()).iterator();
+				Iterator<HarvestResourceDTO> rcIt = $qrf.getHarvestResourceDTOs(rcResult.getOid()).iterator();
+	
+		     	// build a hashset for the reference crawl resource names (makes searching easier)
+		     	HashSet<String> rcResourceSet = new HashSet<String>();
+		     	while (rcIt.hasNext()) { rcResourceSet.add(rcIt.next().getName()); };
+		     	
+		     	while (tiIt.hasNext()) {
+	
+		     		HarvestResourceDTO resource = tiIt.next();
+		     		String resourceName = resource.getName();
+	
+		     		if (rcResourceSet.contains(resourceName)) {
+		     			// increment the number of occurances of an excess character length
+						$i.setFloatValue( $i.getFloatValue() + 1.0F );
+						$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+						// persist the missing uri for reporting  
+						IndicatorReportLine irl = new IndicatorReportLine();
+						irl.setIndicator($i);
+						irl.setLine(resourceName);
+						$i.getIndicatorReportLines().add(irl);  	
+		     		}
+		     	}
+	     	}
+		}
+    
+end
+
+// the new uris are then computed by the difference between downloaded uris, matching uris and missing uris 
+rule "Compute New URIs"
+	dialect "java"
+	salience 7
+	when
+	    // the Target Instance to analyse (must not be the reference crawl)
+    	$ti 		: TargetInstance( 	state == "Harvested",
+    									target.referenceCrawlOid != null,
+    									oid != target.referenceCrawlOid != null
+    	)
+        $rci 		: ReferenceCrawlIndicator( name == "New URIs" + " (RCI)" )
+		// the QA Indicator to set
+        $i	 		: Indicator( $iv : floatValue, name == "New URIs" )
+        $matching	: Indicator( $matchingv : floatValue, name == "Matching URIs" )
+        $missing	: Indicator( $missingv : floatValue, name == "Missing URIs" )
+        $d	 		: Indicator( $dv : floatValue, name == "URLs Downloaded" )
+        $drci 		: ReferenceCrawlIndicator( $drv : floatValue, name == "URLs Downloaded" + " (RCI)" )
+        $qrf : 	QualityReviewFacade()
+        // the reference crawl
+        $rcti	: TargetInstance( state == "Archived" )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()  
+	then
+   
+	    // identify the new uris so that we can log them
+     	List<HarvestResult> tiResults = $ti.getHarvestResults();
+     	List<HarvestResult> rcResults = $rcti.getHarvestResults();
+     	
+     	if (tiResults.size() > 0 && rcResults.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult tiResult = tiResults.get(tiResults.size()-1);
+     		// use the endorsed result for the reference crawl
+     		Iterator<HarvestResult> rcResultIt = rcResults.iterator();
+     		HarvestResult rcResult = null;
+     		while (rcResultIt.hasNext()) {
+     			HarvestResult result = rcResultIt.next();
+     			 if (result.getState() == 1) {// HarvestResult.STATE_ENDORSED
+     			 	rcResult = result;
+     			 }
+     		}  
+     		
+     		if (rcResult == null) {
+     			throw new Exception("Could not find endorsed HarvestResult for reference crawl ti with oid: " + $rcti.getOid());
+     		} else {
+     		
+				Iterator<HarvestResourceDTO> tiIt = $qrf.getHarvestResourceDTOs(tiResult.getOid()).iterator();
+				Iterator<HarvestResourceDTO> rcIt = $qrf.getHarvestResourceDTOs(rcResult.getOid()).iterator();
+	
+		     	// build a hashset for the reference crawl resource names (makes searching easier)
+		     	HashSet<String> rcResourceSet = new HashSet<String>();
+		     	while (rcIt.hasNext()) { rcResourceSet.add(rcIt.next().getName()); };
+		     	
+		     	HashSet<String> tiResourceSet = new HashSet<String>();
+		     	// next build a hashset of the downloaded uris 
+		     	while (tiIt.hasNext()) {
+		     		HarvestResourceDTO resource = tiIt.next();
+		     		String resourceName = resource.getName();
+					tiResourceSet.add(resourceName);
+		     	}
+		     	
+		     	// we can now identify the new uris as those entries in the latest crawl
+		     	// that do not appear in the reference crawl (the latest crawl entries minus the
+		     	// entries from the reference crawl)
+		     	Set<String> newUris = new TreeSet<String>(tiResourceSet);
+		     	newUris.removeAll(rcResourceSet);
+		     	
+		     	// set the indicator
+			    $i.setFloatValue( new Float(newUris.size()) );
+			    
+		    	// persist the new uris for reporting
+		    	Iterator<String> uris = newUris.iterator();
+		    	while (uris.hasNext()) {
+		    		String uri = uris.next();
+					IndicatorReportLine irl = new IndicatorReportLine();
+					irl.setIndicator($i);
+					irl.setLine(uri);
+					$i.getIndicatorReportLines().add(irl);
+				}
+			    
+			    // copy over the rci value from the downloaded urls to the missing uris
+			    $rci.setFloatValue($dv);
+		      	$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName() + " (" + $dv + " uris downloaded, " + $missing.getFloatValue() + " uris missing and " + $matching.getFloatValue() + " uris matching)");
+		      	InferIndicatorUpperLimitValue inferUpperLimit = new InferIndicatorUpperLimitValue( $ti, $rci, $i );
+		      	insert ( inferUpperLimit );
+		     	
+	     	}
+		}		
+	    
+end
+
+// the missing uris are then computed by the difference between downloaded uris
+// in the RC and the matching uris
+rule "Compute Missing URIs for ti"
+	dialect "java"
+	salience 7 // this must run after the dependant setters (eg: Set URLs Downloaded)
+	when
+	    // the Target Instance to analyse
+    	$ti : TargetInstance( state == "Harvested" )
+		// the QA Indicator to set
+        $i	 : Indicator( $iv : floatValue, name == "Missing URIs" )
+        // the matching uris for the comparison
+        $u	 : Indicator( $uv : floatValue, name == "Matching URIs" )
+        $d	 : ReferenceCrawlIndicator( $dv : floatValue, name == "URLs Downloaded" + " (RCI)" )
+        $rci : ReferenceCrawlIndicator( name == "Missing URIs" + " (RCI)" )
+        $qrf : 	QualityReviewFacade()
+        // the reference crawl
+        $rcti	: TargetInstance( state == "Archived" )
+        // map to relay the decision rationale to the ui
+        $m 	: RuleMessageMap()  
+	then
+		// identify the missing uris so that we can log them
+     	List<HarvestResult> tiResults = $ti.getHarvestResults();
+     	List<HarvestResult> rcResults = $rcti.getHarvestResults();
+     	
+     	if (tiResults.size() > 0 && rcResults.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult tiResult = tiResults.get(tiResults.size()-1);
+     		// use the endorsed result for the reference crawl
+     		Iterator<HarvestResult> rcResultIt = rcResults.iterator();
+     		HarvestResult rcResult = null;
+     		while (rcResultIt.hasNext()) {
+     			HarvestResult result = rcResultIt.next();
+     			 if (result.getState() == 1) {// HarvestResult.STATE_ENDORSED
+     			 	rcResult = result;
+     			 }
+     		}  
+     		
+     		if (rcResult == null) {
+     			throw new Exception("Could not find endorsed HarvestResult for reference crawl ti with oid: " + $rcti.getOid());
+     		} else {
+     		
+				Iterator<HarvestResourceDTO> tiIt = $qrf.getHarvestResourceDTOs(tiResult.getOid()).iterator();
+				Iterator<HarvestResourceDTO> rcIt = $qrf.getHarvestResourceDTOs(rcResult.getOid()).iterator();
+	
+		     	// build a hashset for the reference crawl resource names (makes searching easier)
+		     	HashSet<String> rcResourceSet = new HashSet<String>();
+		     	while (rcIt.hasNext()) { rcResourceSet.add(rcIt.next().getName()); };
+		     	
+		     	HashSet<String> tiResourceSet = new HashSet<String>();
+		     	// next build a hashset of the downloaded uris 
+		     	while (tiIt.hasNext()) {
+		     		HarvestResourceDTO resource = tiIt.next();
+		     		String resourceName = resource.getName();
+					tiResourceSet.add(resourceName);
+		     	}
+		     	
+		     	// we can now identify the missing uris as those entries in the reference crawl
+		     	// that do not appear in the latest crawl (the reference crawl entries minus the
+		     	// entries from the latest crawl)
+		     	Set<String> missingUris = new TreeSet<String>(rcResourceSet);
+		     	missingUris.removeAll(tiResourceSet);
+		     	
+		     	// set the indicator
+			    $i.setFloatValue( new Float(missingUris.size()) );
+			    
+			   	// persist the missing uris for reporting
+		    	Iterator<String> uris = missingUris.iterator();
+		    	while (uris.hasNext()) {
+		    		String uri = uris.next();
+					IndicatorReportLine irl = new IndicatorReportLine();
+					irl.setIndicator($i);
+					irl.setLine(uri);
+					$i.getIndicatorReportLines().add(irl);
+				}
+			    
+			    // copy over the rci value from the downloaded urls to the missing uris
+			    $rci.setFloatValue($dv);
+		      	$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+		      	InferIndicatorUpperLimitValue inferUpperLimit = new InferIndicatorUpperLimitValue( $ti, $rci, $i );
+		      	insert ( inferUpperLimit );
+		     	
+	     	}
+		}		
+end
+
+rule "Set Off Scope URIs (RCI)"
+	dialect "java"
+	salience 9
+	when
+        $qrf 	: 	QualityReviewFacade()
+        // the indicator to set
+        $rci	:	ReferenceCrawlIndicator (	name == "Off Scope URIs" + " (RCI)",
+        										$v : floatValue 
+        )   
+        // the indicator to infer the upper limit on
+        $i		:	Indicator ( name == "Off Scope URIs" )
+        $rcti : TargetInstance (	target.referenceCrawlOid == oid, // ti must be the reference crawl
+        							$at:	target
+        )
+        $ti : TargetInstance (	target.referenceCrawlOid != oid // ti must not be the reference crawl (used later for the differential comparison)
+        )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap() 
+    then
+        Float initialValue = $rci.getFloatValue();
+     	
+     	List<HarvestResult> results = $rcti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		Iterator<Seed> seedIt = $at.getSeeds().iterator();
+	     		boolean seedFound = false;
+	     		while (seedIt.hasNext()) {
+	     			Seed seed = seedIt.next();
+	     			// if the seed does appear in the resource name, then the resource is not off scope
+	     			if (resourceName.indexOf(seed.getSeed()) != -1) {
+	     				seedFound = true;
+					}
+	     		}
+	     		// if none of the seeds has not been found then the resource is off scope
+	     		if (!seedFound) {
+	     				// increment the indicator
+						$rci.setFloatValue( $rci.getFloatValue() + 1.0F );
+						$m.put(drools.getRule().getName(), "rcti " + $ti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName());
+	     		}
+	     	}
+		}
+    
+		// raise a notification if the indicator value has changed
+		if (!$rci.getFloatValue().equals(initialValue)) {
+			InferIndicatorUpperLimitToleranceValue inferUpperLimit = new InferIndicatorUpperLimitToleranceValue( $rcti, $rci, $ti, $i );
+	      	insert ( inferUpperLimit );
+      	}
+end 
+
+rule "Set Off Scope URIs for ti"
+	dialect "java"
+	salience 7
+	when
+		$ti : TargetInstance (	(target.referenceCrawlOid == null
+								|| target.referenceCrawlOid != oid), // ti must not be the reference crawl
+        						$at:	target
+        )
+        $qrf 	: 	QualityReviewFacade() 
+        // the indicator to infer the upper limit on
+        $i		:	Indicator ( $v : floatValue, name == "Off Scope URIs" )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap() 
+    then
+       	Float initialValue = $i.getFloatValue();
+     	
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	
+	     	while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+	     		Iterator<Seed> seedIt = $at.getSeeds().iterator();
+	     		boolean seedFound = false;
+	     		while (seedIt.hasNext()) {
+	     			Seed seed = seedIt.next();
+	     			// if the seed does appear in the resource name, then the resource is not off scope
+	     			if (resourceName.indexOf(seed.getSeed()) != -1) {
+	     				seedFound = true;
+					}
+	     			
+				}
+	     		// if none of the seeds has not been found then the resource is off scope
+     			if (!seedFound) {
+					// increment the indicator
+					$i.setFloatValue( $i.getFloatValue() + 1.0F );
+					$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName() + " (upper limit is " + $i.getUpperLimit() + ")");
+					// persist the uri for reporting
+					IndicatorReportLine irl = new IndicatorReportLine();
+					irl.setIndicator($i);
+					irl.setLine(resourceName);
+					$i.getIndicatorReportLines().add(irl);	
+				}     		
+				
+	     	}
+		}
+    
+		// raise a notification if the indicator value has changed
+		if (!$i.getFloatValue().equals(initialValue)) {
+			HasChanged notification = new HasChanged($i, $ti); 
+     		insert(notification);
+      	}
+    
+end 
+
+rule "Insert SubDomains (RCI)"
+	dialect "java"
+	salience 9
+	when
+	    // the ti is archived since it is a reference crawl
+    	$rcti : TargetInstance( 	state == "Archived",
+    								$at: target
+    	)
+    	$ti	: TargetInstance (oid != target.referenceCrawlOid)
+        $qrf : QualityReviewFacade()
+		// the QA Indicator to set
+        $rci : ReferenceCrawlIndicator( $v: floatValue,
+        								name == "Sub Domains" + " (RCI)" 
+        )
+        // the indicator to infer the upper limit on
+        $i		:	Indicator ( name == "Sub Domains" )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()  
+	then
+	    Float initialValue = $rci.getFloatValue();
+     	
+     	List<HarvestResult> results = $rcti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	// keep track of the unique list of subdomains
+	     	HashSet<String> subdomains = new HashSet<String>();
+			while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+
+		     	// get the seeds for the ti
+		      	Iterator<Seed> seeds = $at.getSeeds().iterator();
+		     	while (seeds.hasNext()) {
+					Seed seed = seeds.next();
+	
+					// the resource must contain the seed
+					int startIdx = resourceName.indexOf(seed.getSeed());
+		     		if (startIdx != -1) {
+				      	// find the first chararacter position after the seed
+				      	startIdx = startIdx + seed.getSeed().length();
+				      	// the subdomain is the next set of characters up to the "/" character or the end of resource
+				      	int endIdx = resourceName.indexOf("/", startIdx + 1);
+				      	String domainName = null;
+				      	String domainUri = null;
+				      	if (endIdx != -1) {
+				      		domainName = resourceName.substring(startIdx, endIdx);
+				      		domainUri = resourceName.substring(0, endIdx);
+				      	} else {
+				      		if (resourceName.length() > startIdx) {
+				      			domainName = resourceName.substring(startIdx, resourceName.length());
+				      			domainUri = resourceName.substring(0, resourceName.length());
+				      		}
+				      	}
+				      	// if the subdomain is not already in the subdomains set, then increment the indicator
+				      	// we ignore the subdomain if it contains a '.' character since this will be a file
+				      	if (domainName != null && !domainName.equals("")  && !domainName.equals("/")
+				      		&& domainName.indexOf(".") == -1 && subdomains.add(domainUri)) {
+							$m.put(drools.getRule().getName() + " (" + domainUri + ")", "Added subdomain " + domainUri + " for ti " + $ti.getOid());
+							// increment the number of occurances for the indicator
+							$rci.setFloatValue( $rci.getFloatValue() + 1.0F );
+					      	$m.put(drools.getRule().getName(), "rcti " + $rcti.getOid() + " has value of " + $rci.getFloatValue() + " for indicator " + $rci.getName());
+						}
+		     		}
+	     		}
+	     	}
+		}
+	
+		// raise a notification if the indicator value has changed
+		if (!$rci.getFloatValue().equals(initialValue)) {
+      		InferIndicatorUpperLimitToleranceValue inferUpperLimit = new InferIndicatorUpperLimitToleranceValue( $rcti, $rci, $ti, $i );
+      		insert ( inferUpperLimit );
+		}
+	
+end
+
+
+rule "SubDomains for ti"
+	dialect "java"
+	salience 8
+	when
+	    // the ti is Harvested since it is not a reference crawl
+    	$ti 	: TargetInstance( 	state == "Harvested", 
+    								$at: target
+    	)
+        $qrf 	: QualityReviewFacade()
+		// the QA Indicator to set
+        $i		:	Indicator ( $v : floatValue, name == "Sub Domains" )
+        // map to relay the decision rationale to the ui
+        $m : RuleMessageMap()  
+	then
+		// the subdomains are identified looking for all level 1 virtual directories off the target's seed
+	
+	    Float initialValue = $i.getFloatValue();
+     	
+     	List<HarvestResult> results = $ti.getHarvestResults();
+     	
+     	if (results.size() > 0) {
+     		// get the latest HarvestResult for the ti (may have applied auto-prune)
+     		HarvestResult result = results.get(results.size()-1);
+
+	     	// iterate over the harvest resources
+	     	Iterator<HarvestResourceDTO> resources = $qrf.getHarvestResourceDTOs(result.getOid()).iterator();
+	     	// keep track of the unique list of subdomains
+	     	HashSet<String> subdomains = new HashSet<String>();
+
+			while (resources.hasNext()) {
+	     		HarvestResourceDTO resource = resources.next();
+	     		String resourceName = resource.getName();
+		     	// get the seeds for the ti
+		     	Iterator<Seed> seeds = $at.getSeeds().iterator();
+	
+		     	while (seeds.hasNext()) {
+					Seed seed = seeds.next();
+					// the resource must contain the seed
+					int startIdx = resourceName.indexOf(seed.getSeed());
+		     		if (startIdx != -1) {
+				      	// find the first chararacter position after the seed
+				      	startIdx = startIdx + seed.getSeed().length();
+				      	// the subdomain is the next set of characters up to the "/" character or the end of resource
+				      	int endIdx = resourceName.indexOf("/", startIdx + 1);
+				      	String domainName = null;
+				      	String domainUri = null;
+				      	if (endIdx != -1) {
+				      		domainName = resourceName.substring(startIdx, endIdx);
+				      		domainUri = resourceName.substring(0, endIdx);
+				      	} else {
+				      		if (resourceName.length() > startIdx) {
+				      			domainName = resourceName.substring(startIdx, resourceName.length());
+				      			domainUri = resourceName.substring(0, resourceName.length());
+				      		}
+				      	}
+				      	// if the subdomain is not already in the subdomains set, then increment the indicator
+				      	// we ignore the subdomain if it contains a '.' character since this will be a file
+				      	if (domainName != null && !domainName.equals("") && !domainName.equals("/")
+				      		&& domainName.indexOf(".") == -1 && subdomains.add(domainUri)) {
+							$m.put(drools.getRule().getName() + " (" + domainUri + ")", "Added subdomain " + domainUri + " for ti " + $ti.getOid());
+							$i.setFloatValue( $i.getFloatValue() + 1.0F );
+						}
+						// we log the resource against the domain to give the total uris per domain for reporting
+						if (domainName != null && !domainName.equals("") && !domainName.equals("/")
+				      		&& domainName.indexOf(".") == -1) {
+				      		// persist the missing uri for reporting  
+							IndicatorReportLine irl = new IndicatorReportLine();
+							irl.setIndicator($i);
+							irl.setLine(domainUri);
+							$i.getIndicatorReportLines().add(irl);
+				      	}
+		     		}
+	     		}
+	     	}
+		}
+	
+		// raise a notification if the indicator value has changed
+		if (!$i.getFloatValue().equals(initialValue)) {
+	    	$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+			HasChanged notification = new HasChanged($i, $ti);
+			insert(notification);
+		}
+	
+end
+
+/*
+ *	FURTHER INFERENCES
+*/
+rule "Infer RCI tolerance Value"   
+	dialect "java"
+	salience 5
+    when
+    	// map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()
+		// a request to compute the tolerance value must exist
+		InferRCIToleranceValue(	$ti : targetInstance, 
+								$rci : rci
+		)
+    then
+    	// calculate the positive tolerance of the value
+		$rci.setPositiveTolerance( ($rci.getFloatValue()/100.0F)*$rci.getUpperLimitPercentage() );
+		// calculate the negative tolerance of the value
+		$rci.setNegativeTolerance( ($rci.getFloatValue()/100.0F)*$rci.getLowerLimitPercentage() );
+		$m.put(drools.getRule().getName(), "Reference crawl " + $ti.getOid() + " has " + $rci.getName() + " value of " + $rci.getFloatValue() + ", tolerance band is therefore " + ($rci.getFloatValue() + $rci.getNegativeTolerance()) + " to " + ($rci.getFloatValue() + $rci.getPositiveTolerance()));
+    	// infer if the ti falls within the RCI percentage tolerance
+    	InferRCITolerance inferTolerance = new InferRCITolerance( $ti, $rci );
+    	insert( inferTolerance );
+end
+
+rule "Infer indicator upper limit value from the RCI upper limit percentage"   
+	dialect "java"
+	salience 2
+    when
+		// a request to compute the tolerance value must exist
+		InferIndicatorUpperLimitValue(	$ti : targetInstance, 
+										$rci : rci, 
+										$i : indicator
+		)
+		// map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()
+    then
+    	// calculate the positive tolerance of the value
+		$i.setUpperLimit( ($rci.getFloatValue()/100.0F)*$rci.getUpperLimitPercentage() );
+		$m.put(drools.getRule().getName() + " (" + $i.getName() + ")", "ti " + $ti.getOid() + " has " + $rci.getName() + " value of " + $rci.getFloatValue() + ", indicator " + $i.getName() + " upper limit is therefore " + $i.getUpperLimit() + " (" + $rci.getUpperLimitPercentage() + "%)");
+		HasChanged notification = new HasChanged($i, $ti);
+		insert(notification);
+end
+
+rule "Infer indicator upper limit tolerance value from the RCI upper limit percentage"   
+	dialect "java"
+	salience 6
+    when
+    	// map to relay the decision rationale to the ui
+        $m  : RuleMessageMap()
+		// a request to compute the tolerance value must exist
+		InferIndicatorUpperLimitToleranceValue(	$rcti : rcTargetInstance, // the reference crawl ti
+												$irci : rci,
+												rci.upperLimitPercentage != null,
+												$ti	:  targetInstance,
+												$i : indicator												
+		)
+    then
+    	// calculate the positive tolerance of the value
+		$i.setUpperLimit( $irci.getFloatValue() + ($irci.getFloatValue()/100.0F)*$irci.getUpperLimitPercentage() );
+		$m.put(drools.getRule().getName(), "ti " + $ti.getOid() + " has " + $irci.getName() + " value of " + $irci.getFloatValue() + ", indicator " + $i.getName() + " upper limit is therefore " + $i.getUpperLimit() + " (+" + $irci.getUpperLimitPercentage() + "%)");
+		HasChanged notification = new HasChanged($i, $ti);
+		insert(notification);
+end
+
+rule "Set Delist for ti"
+	dialect "java"
+	salience -2
+	when
+		$ti 	: TargetInstance( state == "Harvested" )
+		$tim	: TargetInstanceManager()
+		$i		: Indicator ( name == "Delist" )
+		// content downloaded for the current ti
+		$this_cd: Indicator ( name == "Content Downloaded" )
+		// map to relay the decision rationale to the ui
+        $m  	: RuleMessageMap()
+	then
+		// we use the indicator upper limit to define the number of crawls
+		// that the content downloaded figure must not have changed for
+		
+		// fetch the previous harvest histories so that we can retrieve the associated tis and indicators
+		Iterator<HarvestHistoryDTO> histories = $tim.getHarvestHistory($ti.getTarget().getOid()).iterator();
+		int resultCount = 0;
+		Long contentDownloaded = null;
+		boolean inconsistentIndicatorValue = false;
+		$i.setFloatValue(0.0F);
+		while (histories.hasNext()) {
+			// fetch the indicators from the assocaited ti
+			HarvestHistoryDTO history = histories.next();
+			
+			// scroll forward until we reach the current ti
+			while (!history.getOid().equals($ti.getOid()) && histories.hasNext() && resultCount == 0) {
+				history = histories.next();
+			} 
+			// fetch the ti for the harvest history record
+			TargetInstance ati = $tim.getTargetInstance(history.getOid());
+			// fetch the indicators for the harvest history record
+			Iterator<Indicator> indicators = ati.getIndicators().iterator();
+			while (indicators.hasNext()) {
+				// find the content downloaded indicator
+				Indicator indicator = indicators.next();
+				if (indicator.getName().equals("Content Downloaded")) {
+					// if this is the first result then this defines the content downloaded that will be used for comparison
+					// with the remaining history records
+					if (resultCount == 0) {
+						contentDownloaded = $this_cd.getFloatValue().longValue();
+						//System.out.println("contentDownloaded for ti " + $ti.getOid() + ": " + contentDownloaded);
+						$i.setFloatValue($i.getFloatValue() + 1.0F);
+					} else {
+						//System.out.println("Analysing previous crawl no:" + resultCount);
+						// if the indicator value is identical to the retrieved indicator value then
+						// increment the indicator value (compared for the last n crawls)
+						if (!inconsistentIndicatorValue && contentDownloaded == indicator.getFloatValue().longValue() && resultCount <= $i.getUpperLimit().intValue()) {
+							$i.setFloatValue($i.getFloatValue() + 1.0F);
+							$m.put(drools.getRule().getName(), "Target instance " + $ti.getOid() + " has value of " + $i.getFloatValue() + " for indicator " + $i.getName());
+						} else {
+							if (contentDownloaded != indicator.getFloatValue().longValue() && resultCount <= $i.getUpperLimit().intValue()) {
+								// reset the indicator
+								$i.setFloatValue(0.0F);
+								// mark it as inconsistent
+								inconsistentIndicatorValue = true;
+							} else if (resultCount > $i.getUpperLimit().intValue()) {
+								//System.out.println("Harvest history no " + resultCount + " has exceeded the minimum number of crawls of " + $i.getUpperLimit().intValue() + " for indicator " + "Content Downloaded" + " (IGNORING)");
+							}
+						}
+					}
+					resultCount++;
+				}
+			}
+		}
+		
+		// if the indicator upper limit is equal or greater than the indicator value then advise de-list
+		if ($i.getUpperLimit().intValue() <= $i.getFloatValue()) {
+	        MessageFormat form = new MessageFormat(globals.get("MSG_EXCEEDED_UPPER_LIMIT").toString());
+	        Object[] values = {$i.getName(), $i.getValue(), $i.getValueOf($i.getUpperLimit())};
+	        String message = form.format(values);
+	        
+	        $m.put(drools.getRule().getName(), message);
+	       	Delist advice = new Delist($i, message);
+		    insert( advice );
+		}
+end
+
+/*
+ *	ADVICE
+*/
+rule "Advise archive based on indicator falling within RCI tolerance percentages"
+	salience -1
+	when
+		// the ti must be in the harvested state
+		$ti		: TargetInstance( state == "Harvested" )
+		// the indicator tolerance has been infered, and the tolerance values computed
+		InferRCITolerance($rciti : targetInstance, $rci : rci)
+		// the indicator for the ti (not the RCI)
+		$i		: Indicator(   $rci.getFloatValue() + $rci.getPositiveTolerance() >= $i.getFloatValue()
+							&& $rci.getFloatValue() + $rci.getNegativeTolerance() <= $i.getFloatValue()
+							&& $rci.getFloatValue() + $rci.getPositiveTolerance() != 0.0F 
+							&& $rci.getFloatValue() + $rci.getNegativeTolerance() != 0.0F
+							// we never return the matching uris indicator since it is derived
+							&& name != "Matching URIs"
+							)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+		MessageFormat form = new MessageFormat(globals.get("MSG_WITHIN_TOLERANCE").toString());
+        Object[] values = {$i.getName(), $i.getValueOf($i.getFloatValue()), $rci.getLowerLimitPercentage(), $rci.getUpperLimitPercentage(), $i.getValueOf($rci.getFloatValue() + $rci.getNegativeTolerance()), $i.getValueOf($i.getFloatValue()), $i.getValueOf($rci.getFloatValue() + $rci.getPositiveTolerance())};
+        String message = form.format(values);
+		
+		$m.put(drools.getRule().getName() + " for indicator " + $i.getName(), message);
+		Archive advice = new Archive($i, message);
+		insert( advice );
+		
+end
+
+/*
+rule "Advise investigate based on indicator falling outside the RCI tolerance percentages"
+	salience -1
+	when
+		// the ti must be in the harvested state
+		$ti		: TargetInstance( state == "Harvested" )
+		// the indicator tolerance has been infered, and the tolerance values computed
+		InferRCITolerance($rciti : targetInstance, $rci : rci)
+		// the indicator for the ti (not the RCI)
+		$i		: Indicator(   
+							$i.getFloatValue() != null
+							&&	(	
+									$rci.getFloatValue() + $rci.getPositiveTolerance() < $i.getFloatValue()
+									|| $rci.getFloatValue() + $rci.getNegativeTolerance() > $i.getFloatValue()
+								)
+							&& $rci.getFloatValue() + $rci.getPositiveTolerance() != 0.0F 
+							&& $rci.getFloatValue() + $rci.getNegativeTolerance() != 0.0F
+							// we never return the matching uris indicator since it is derived
+							&& name != "Matching URIs"
+							&& name != "Delist"
+							&& name != "Crawl Runtime"
+							&& name != "Heritrix Error Codes"
+							&& name != "Long URIs"
+							&& name != "Missing URIs"
+							&& name != "New URIs"
+							&& name != "Off Scope URIs"
+							&& name != "Repeating URI Patterns"
+							&& name != "Robots.txt entries disallowed"
+							&& name != "Sub Domains"
+							&& name != "URLs Downloaded" 
+							&& name != "Unknown MIME Types" 
+							)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+		MessageFormat form = new MessageFormat(globals.get("MSG_OUTSIDE_TOLERANCE").toString());
+        Object[] values = {$i.getName(), $i.getValueOf($i.getFloatValue()), $rci.getLowerLimitPercentage(), $rci.getUpperLimitPercentage(), $i.getValueOf($rci.getFloatValue() + $rci.getNegativeTolerance()), $i.getValueOf($i.getFloatValue()), $i.getValueOf($rci.getFloatValue() + $rci.getPositiveTolerance())};
+        String message = form.format(values);
+		
+		$m.put(drools.getRule().getName() + " for indicator " + $i.getName(), message);
+		Investigate advice = new Investigate($i, message);
+		insert( advice );
+		
+end
+*/
+
+rule "Advise investigate recommendation based on an indicator value exceeding its upper limit"
+	salience -1
+	when
+		HasExceededUpperLimit(	$ti : targetInstance, 
+								$i  : indicator,
+								$i.name != "Crawl Runtime"
+								)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+        MessageFormat form = new MessageFormat(globals.get("MSG_EXCEEDED_UPPER_LIMIT").toString());
+        Object[] values = {$i.getName(), $i.getValue(), $i.getValueOf($i.getUpperLimit())};
+        String message = form.format(values);
+        $m.put(drools.getRule().getName(), message);
+        Investigate advice = new Investigate($i, message);
+		insert( advice );
+end
+
+rule "Advise reject recommendation based on an indicator value exceeding its upper limit"
+	salience -1
+	when
+		HasExceededUpperLimit(	$ti : targetInstance, 
+								$i  : indicator,
+								$i.name == "Crawl Runtime"
+								)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+
+	then
+        MessageFormat form = new MessageFormat(globals.get("MSG_EXCEEDED_UPPER_LIMIT").toString());
+        Object[] values = {$i.getName(), $i.getValue(), $i.getValueOf($i.getUpperLimit())};
+        String message = form.format(values);
+        
+        $m.put(drools.getRule().getName(), message);
+        Reject advice = new Reject($i, message);
+		insert( advice );
+end
+	
+rule "Advise reject recommendation based on an indicator value falling below its lower limit"
+	salience -1
+	when
+		HasFallenBelowLowerLimit( 	$ti : targetInstance, 
+									$i 	: indicator)
+		$m		: RuleMessageMap()
+	then
+
+        MessageFormat form = new MessageFormat(globals.get("MSG_FALLEN_BELOW_LOWER_LIMIT").toString());
+        Object[] values = {$i.getName(), $i.getValue(), $i.getValueOf($i.getLowerLimit())};
+        String message = form.format(values);
+        
+        $m.put(drools.getRule().getName(), message);
+       	Reject advice = new Reject($i, message);
+	    insert( advice );
+end
+
+/*
+ *	OUTCOMES
+*/
+rule "Reject"
+	salience -4 // needs to run last
+	when
+		$ti		: TargetInstance()
+		// reject is the strongest advice
+		Reject( $i 			: indicator, 
+				$message 	: message
+		)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+		$m.put(drools.getRule().getName(), "Applied advice archive for ti " + $ti.getOid());
+		$i.setAdvice(globals.get("REJECT").toString());		
+		$i.setJustification($message);
+end
+
+rule "Investigate"
+	salience -3 // needs to run afer archive advice
+	when
+		$ti		: TargetInstance()
+		// investigate the ti 
+		Investigate(	$i 		: indicator,
+						$message	: message						
+		)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+		$m.put(drools.getRule().getName(), "Applied advice investigate for ti " + $ti.getOid());
+		$i.setAdvice(globals.get("INVESTIGATE").toString());		
+		$i.setJustification($message);
+end
+
+rule "Archive"
+	salience -2 // needs to run before any other advice
+	when
+		$ti		: TargetInstance()
+		// archive the ti 
+		Archive(	$i 		: indicator,
+					$message 	: message	 
+		)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+		$m.put(drools.getRule().getName(), "Applied advice archive for ti " + $ti.getOid());
+		$i.setAdvice(globals.get("ARCHIVE").toString());		
+		$i.setJustification($message);
+end
+
+rule "Delist"
+	salience -2 // needs to run before any other advice
+	when
+		$ti		: TargetInstance()
+		// delist the ti 
+		Delist(		$i 			: indicator,
+					$message 	: message	 
+		)
+		// map to relay the decision rationale to the ui
+		$m		: RuleMessageMap()
+	then
+		$m.put(drools.getRule().getName(), "Applied advice delist for ti " + $ti.getOid());
+		$i.setAdvice("Delist");		
+		$i.setJustification($message);
+end
+
+/**
+*	FINAL INDICATOR CHECKS
+*/
+rule "Check Advice"
+	salience -5
+	when
+		$i : Indicator()
+	then
+		if ($i.getAdvice() == null || $i.getAdvice().equals("Running")) {
+			$i.setAdvice("None");
+		}
+		$i.setDateTime(new Date());
+end

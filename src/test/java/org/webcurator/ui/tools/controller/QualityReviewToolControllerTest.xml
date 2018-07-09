@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siteagencycontrollertest>
+	<agencies>
+		<agency id="2000">
+			<name>British Library</name>
+			<address />
+			<phone />
+			<agencyURL />
+			<agencyLogoURL />
+			<email />
+			<fax />
+			<roles>
+				<role id="3000">
+					<name>BL-Admin</name>
+					<description>Test Role</description>
+					<role-privileges>
+						<!-- SCOPE_ALL = 0; SCOPE_AGENCY = 100; SCOPE_OWNER = 200; SCOPE_NONE = 500; -->
+						<role-privilege id="4000">
+							<scope>0</scope>
+							<privilege>MANAGE_AGENCIES</privilege>
+						</role-privilege>
+					</role-privileges>
+				</role>
+			</roles>
+			<users>
+				<user id="1000" username="TestUser">
+					<title />
+					<firstname>Test</firstname>
+					<lastname>User</lastname>
+					<email>test.user@localhost.co.uk</email>
+					<active>true</active>
+					<externalAuth>false</externalAuth>
+					<roles>
+						<role id="3000" />
+					</roles>
+				</user>
+			</users>
+		</agency>
+	</agencies>
+	<targets>
+		<target id="4000">
+			<name />
+			<description />
+			<schedules>
+				<schedule id="11000">
+					<startDate />
+					<endDate />
+					<cronPattern />
+					<target id="4000" />
+					<target-instances>
+						<target-instance id="5000" />
+					</target-instances>
+					<scheduleType>0</scheduleType>
+					<owner id="1000" />
+					<nextScheduleAfterPeriod />
+				</schedule>
+			</schedules>
+			<owner id="1000" />
+			<overrides></overrides>
+			<state>0</state>
+			<profile id="13000" />
+			<creationDate />
+			<parents></parents>
+			<referenceNumber />
+			<dublinCoreMetaData id="14000">
+				<title />
+				<creator />
+				<subject />
+				<description />
+				<publisher />
+				<contributor />
+				<type />
+				<format />
+				<identifier />
+				<source />
+				<language />
+				<relation />
+				<coverage />
+				<issn />
+				<isbn />
+			</dublinCoreMetaData>
+			<profileNote />
+			<annotations></annotations>
+			<selectionDate />
+			<selectionType />
+			<selectionNote />
+			<evaluationNote />
+			<harvestType />
+			<seeds>
+				<seed id="6000">
+					<seed-url>http://www.oakleigh.co.uk/</seed-url>
+					<permissions>
+						<permission id="7000" />
+					</permissions>
+					<primary>true</primary>
+				</seed>
+			</seeds>
+		</target>
+	</targets>
+	<groups>
+		<group id="15000">
+			<name />
+			<description />
+			<schedules>
+				<schedule id="11001">
+					<startDate />
+					<endDate />
+					<cronPattern />
+					<target id="15000" />
+					<target-instances>
+						<target-instance id="5000" />
+						<target-instance id="5001" />
+						<target-instance id="5002" />
+					</target-instances>
+					<scheduleType>0</scheduleType>
+					<owner id="1000" />
+					<nextScheduleAfterPeriod />
+				</schedule>
+			</schedules>
+			<owner id="1000" />
+			<overrides></overrides>
+			<state>0</state>
+			<profile id="13000" />
+			<creationDate />
+			<parents></parents>
+			<referenceNumber />
+			<dublinCoreMetaData id="14001">
+				<title />
+				<creator />
+				<subject />
+				<description />
+				<publisher />
+				<contributor />
+				<type />
+				<format />
+				<identifier />
+				<source />
+				<language />
+				<relation />
+				<coverage />
+				<issn />
+				<isbn />
+			</dublinCoreMetaData>
+			<profileNote />
+			<annotations></annotations>
+			<sipType>1</sipType>
+			<fromDate></fromDate>
+			<toDate></toDate>
+			<ownershipMetaData></ownershipMetaData>
+			<children>
+				<group-member id="16000" />
+			</children>
+			<type />
+		</group>
+	</groups>
+	<group-members>
+		<group-member id="16000">
+			<parent id="15000" />
+			<child id="4000" />
+		</group-member>
+	</group-members>
+	<profiles>
+		<profile id="13000">
+			<name>A profile</name>
+			<description />
+			<status>1</status>
+			<requiredLevel>1</requiredLevel>
+			<owningAgency id="2000" />
+			<profile />
+			<defaultProfile>true</defaultProfile>
+			<version>1</version>
+		</profile>
+	</profiles>
+	<target-instances>
+		<target-instance id="5000">
+			<target id="4000" />
+			<harvestResults>
+				<havestResult id="111000">
+					<harvestNumber>1</harvestNumber>
+					<provenanceNote>Original Harvest</provenanceNote>
+					<creationDate>2008-06-18 21:49</creationDate>
+					<createdBy id="1000" />
+					<resources>
+						<resource id="327680">
+							<length>21521</length>
+							<name>http://www.oakleigh.co.uk/Experience</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327681">
+							<length>14921</length>
+							<name>http://www.oakleigh.co.uk/About-Us</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327682">
+							<length>5879</length>
+							<name>http://www.oakleigh.co.uk/images/logo.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327683">
+							<length>18010</length>
+							<name>http://www.oakleigh.co.uk/Higher%20Education</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327684">
+							<length>14831</length>
+							<name>http://www.oakleigh.co.uk/Careers</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327685">
+							<length>12793</length>
+							<name>http://www.oakleigh.co.uk/Accessibility</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327686">
+							<length>0</length>
+							<name>http://www.oakleigh.co.uk/</name>
+							<statusCode>302</statusCode>
+						</resource>
+						<resource id="327687">
+							<length>9545</length>
+							<name>http://www.oakleigh.co.uk/Homepage</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327688">
+							<length>193</length>
+							<name>http://www.oakleigh.co.uk/images/icon-navArrow.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327689">
+							<length>1164</length>
+							<name>filedesc://IAH-20080624072919-00000-D2X6G1J.arc.open</name>
+							<statusCode>-1</statusCode>
+						</resource>
+						<resource id="327690">
+							<length>38124</length>
+							<name>http://www.oakleigh.co.uk/White-papers</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327691">
+							<length>156</length>
+							<name>http://www.oakleigh.co.uk/images/goOnWhite.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327692">
+							<length>72</length>
+							<name>dns:www.google-analytics.com</name>
+							<statusCode>-1</statusCode>
+						</resource>
+						<resource id="327693">
+							<length>5346</length>
+							<name>http://www.oakleigh.co.uk/images/getLatestWhitePaper.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327694">
+							<length>12272</length>
+							<name>http://www.oakleigh.co.uk/Customise</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327695">
+							<length>17616</length>
+							<name>http://www.oakleigh.co.uk/Healthcare</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327696">
+							<length>34877</length>
+							<name>http://www.oakleigh.co.uk/Central%20Government%20Agencies</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327697">
+							<length>11254</length>
+							<name>http://www.oakleigh.co.uk/email.form</name>
+							<statusCode>404</statusCode>
+						</resource>
+						<resource id="327698">
+							<length>145</length>
+							<name>http://www.oakleigh.co.uk/images/goButton.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327699">
+							<length>2041</length>
+							<name>http://www.oakleigh.co.uk/images/submit.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+						<resource id="327700">
+							<length>58</length>
+							<name>dns:www.oakleigh.co.uk</name>
+							<statusCode>-1</statusCode>
+						</resource>
+						<resource id="327701">
+							<length>540</length>
+							<name>http://www.oakleigh.co.uk/images/minusIcon.gif</name>
+							<statusCode>200</statusCode>
+						</resource>
+					</resources>
+				</havestResult>
+			</harvestResults>
+			<schedule id="11000" />
+			<scheduledTime />
+			<actualStartTime />
+			<!-- PRI_LOW = 1000; PRI_NRML = 100; PRI_HI = 0; -->
+			<priority>100</priority>
+			<!-- "Scheduled"; "Queued"; "Running"; "Stopping"; "Paused"; "Aborted"; "Harvested"; "Rejected"; "Endorsed"; "Archived"; "Archiving"; -->
+			<state>Harvested</state>
+			<bandwidthPercent>20</bandwidthPercent>
+			<allocatedBandwidth>20</allocatedBandwidth>
+			<!-- No harvester status -->
+			<status />
+			<owner id="1000" />
+			<annotations></annotations>
+			<version>0</version>
+			<referenceNumber />
+			<harvestServer />
+			<sipParts />
+			;
+			<originalSeeds>
+				<originalseed>http://www.oakleigh.co.uk/</originalseed>
+			</originalSeeds>
+			<overrides></overrides>
+			<archiveIdentifier />
+			<purged>false</purged>
+		</target-instance>
+	</target-instances>
+	<sites>
+		<site id="9000">
+			<title>Oakleigh Web Site</title>
+			<description />
+			<notes />
+			<libraryOrderNo />
+			<published>true</published>
+			<active>true</active>
+			<authorisingAgents>
+				<authorisingAgent id="8000">
+					<name>Oakleigh</name>
+					<description />
+					<contact>Gav Kerr</contact>
+					<phoneNumber />
+					<email>gavinkerr@oakleigh.co.uk</email>
+					<address />
+					<annotations></annotations>
+				</authorisingAgent>
+			</authorisingAgents>
+			<urlPatterns>
+				<urlPattern id="10000">
+					<pattern>http://www.oakleigh.co.uk/*</pattern>
+					<permissions>
+						<permission id="7000" />
+					</permissions>
+				</urlPattern>
+			</urlPatterns>
+			<permissions>
+				<permission id="7000">
+					<authorisingAgent id="8000" />
+					<urlPatterns>
+						<urlPattern id="10000" />
+					</urlPatterns>
+					<startDate />
+					<endDate />
+					<approved>true</approved>
+					<!-- STATUS_PENDING = 0; STATUS_REQUESTED = 1; STATUS_APPROVED = 2; STATUS_DENIED = 3; EXT_STATUS_APPROVED_FUTURE = 4; EXT_STATUS_APPROVED_EXPIRED = 5;-->
+					<status>2</status>
+					<authResponse />
+					<accessStatus />
+					<openAccessDate />
+					<availableFlag>true</availableFlag>
+					<specialRequirements />
+					<creationDate />
+					<copyrightUrl />
+					<copyrightStatement />
+					<permissionSentDate />
+					<permissionGrantedDate />
+					<quickPick>false</quickPick>
+					<displayName />
+					<owningAgency id="2000" />
+					<fileReference />
+					<exclusions></exclusions>
+					<annotations></annotations>
+				</permission>
+			</permissions>
+			<annotations></annotations>
+		</site>
+	</sites>
+</siteagencycontrollertest>

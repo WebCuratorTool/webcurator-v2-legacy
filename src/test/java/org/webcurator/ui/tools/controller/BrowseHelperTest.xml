@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<browsehelpertest>
+	<pagetests>
+		<pagetest>
+		   <infilename>src/test/java/org/webcurator/ui/tools/controller/test1in.html</infilename>
+		   <contenttype>text/html</contenttype>
+		   <oid>6914048</oid>
+		   <resourceurl>http://www.oldyardsrugby.co.uk/</resourceurl>
+		   <outfilename>src/test/java/org/webcurator/ui/tools/controller/test1out.html</outfilename>
+		</pagetest>
+	</pagetests>
+</browsehelpertest>

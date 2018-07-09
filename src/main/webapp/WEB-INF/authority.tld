@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+  version="2.0">
+  
+  <tlib-version>1.1</tlib-version>
+  <short-name>authority</short-name>
+  <uri>http://www.webcurator.org/authority</uri>
+  
+  <tag>
+    <name>hasPrivilege</name>
+    <tag-class>org.webcurator.auth.tag.HasPrivilegeTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+        <name>privilege</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>scope</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>noPrivilege</name>
+    <tag-class>org.webcurator.auth.tag.NoPrivilegeTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+        <name>privilege</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>   
+    <attribute>
+        <name>scope</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>hasAgencyOwnedPriv</name>
+    <tag-class>org.webcurator.auth.tag.HasAgencyOwnedPrivTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+        <name>privilege</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>   
+    <attribute>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>ownedObject</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>hasUserOwnedPriv</name>
+    <tag-class>org.webcurator.auth.tag.HasUserOwnedPrivTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+        <name>privilege</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>   
+    <attribute>
+        <name>scope</name>
+        <required>false</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>ownedObject</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  <tag>
+    <name>hasAtLeastOnePriv</name>
+    <tag-class>org.webcurator.auth.tag.HasAtLeastOnePrivTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+        <name>privileges</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  
+  <tag>
+    <name>showControl</name>
+    <tag-class>org.webcurator.auth.tag.ShowControlTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+        <name>privileges</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>ownedObject</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+        <name>editMode</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>    
+  </tag>  
+  
+  <tag>
+    <name>show</name>
+    <tag-class>org.webcurator.auth.tag.ShowControlTrueTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>    
+  
+  <tag>
+    <name>dont</name>
+    <tag-class>org.webcurator.auth.tag.ShowControlFalseTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>    
+  
+  
+</taglib>

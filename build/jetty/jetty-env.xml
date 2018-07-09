@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+	<New id="wctDatasource" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>java:comp/env/jdbc/wctDatasource</Arg>
+		<Arg>
+		     <New class="org.apache.commons.dbcp.BasicDataSource">
+                 <Set name="driverClassName">${schema.driver}</Set>
+                 <Set name="username">${schema.user}</Set>
+                 <Set name="password">${schema.password}</Set>
+                 <Set name="url">${schema.url}</Set>
+                 <Set name="testOnBorrow">true</Set>
+                 <Set name="validationQuery">${schema.query}</Set>
+            </New>
+		</Arg>
+	</New>
+</Configure>

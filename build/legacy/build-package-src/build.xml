@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wct-package-src" default="package">
+	<property file="./build.properties" />
+	<property file="${root}/build/version.properties" />    	
+	<property name="packtarget" value="${root}/target-package-src"/>
+	<property name="wcttarget" value="${root}/target"/>
+	<property name="dastarget" value="${das.root}/target"/>
+	<property name="hatarget" value="${ha.root}/target"/>
+	<property name="docs" value="${root}/docs"/>
+	<property name="db" value="${root}/db"/>
+	<description>
+            WCT Package src ANT Build file 
+    	</description>
+	
+	<target name="clean">
+		<delete dir="${packtarget}"/>		
+    </target>
+	
+	<target name="prepare">
+	    	<mkdir dir="${packtarget}"/>
+		<mkdir dir="${packtarget}/WCTCore"/>
+		<mkdir dir="${packtarget}/WCTDigitalAssetStore"/>
+		<mkdir dir="${packtarget}/WCTHarvestAgent"/>
+		<mkdir dir="${packtarget}/WCTSubmitToRosetta"/>
+
+		<ant antfile="${root}/build/build.xml" target="war-with-sql" inheritall="false"/>		
+		<ant antfile="${ha.root}/build/build.xml" target="war" inheritall="false"/>
+		<ant antfile="${rosetta_module.root}/build/build.xml" target="deploy" inheritall="false"/>
+		<ant antfile="${das.root}/build/build.xml" target="war" inheritall="false"/>
+		<ant antfile="${root}/build/build.xml" target="javadoc" inheritall="false"/>
+	</target>
+
+	<target name="deploy-wctcore">
+		<copy todir="${packtarget}/WCTCore/docs">
+			<fileset dir="${root}/docs" includes="*.pdf"/>
+			<fileset dir="${root}/docs" includes="license.txt"/>
+		</copy>
+		<copy todir="${packtarget}/WCTCore/docs/javadoc">
+			<fileset dir="${root}/docs/javadoc" includes="**/*"/>	
+		</copy>
+		<copy todir="${packtarget}/WCTCore/src-api">
+			<fileset dir="${root}/src-api" includes="**/*"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTCore/src-app">
+			<fileset dir="${root}/src-app" includes="**/*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTCore/build">
+			<fileset dir="${root}/build" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTCore/cfg">
+			<fileset dir="${root}/cfg" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTCore/etc">
+			<fileset dir="${root}/etc" includes="*.jar"/>
+		</copy>
+		<copy todir="${packtarget}/WCTCore/db">
+			<fileset dir="${root}/db/setup" includes="*.sql"/>
+			<fileset dir="${root}/db/sql" includes="*.sql">	
+				<exclude name="wct-schema-mysql.sql"/>
+				<exclude name="wct-schema-oracle.sql"/>
+				<exclude name="wct-schema-postgresql.sql"/>
+				<exclude name="wct-schema-export.sql"/>
+				<exclude name="wct-schema-export-postgres.sql"/>
+			</fileset>
+			<fileset dir="${root}/db/upgrade" includes="*.sql">	
+				<exclude name="upgrade-oracle-1_1-to-1_2.sql"/>
+				<exclude name="upgrade-postgres-1_1-to-1_2.sql"/>
+			</fileset>
+		</copy>
+		<copy todir="${packtarget}/WCTCore/WebRoot">
+			<fileset dir="${root}/WebRoot" includes="**/*"/>
+		</copy>
+	</target>
+	
+	<target name="deploy-wctharvest">	
+		<copy todir="${packtarget}/WCTHarvestAgent/docs">
+			<fileset dir="${ha.root}/docs" includes="license.txt"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTHarvestAgent/src">
+			<fileset dir="${ha.root}/src" includes="**/*"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTHarvestAgent/build">
+			<fileset dir="${ha.root}/build" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTHarvestAgent/cfg">
+			<fileset dir="${ha.root}/cfg" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTHarvestAgent/WebRoot">
+			<fileset dir="${ha.root}/WebRoot" includes="**/*"/>
+		</copy>
+	</target>
+		
+	<target name="deploy-wctdas">		
+		<copy todir="${packtarget}/WCTDigitalAssetStore/docs">
+			<fileset dir="${das.root}/docs" includes="license.txt"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTDigitalAssetStore/src">
+			<fileset dir="${das.root}/src" includes="**/*"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTDigitalAssetStore/build">
+			<fileset dir="${das.root}/build" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTDigitalAssetStore/cfg">
+			<fileset dir="${das.root}/cfg" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTDigitalAssetStore/WebRoot">
+			<fileset dir="${das.root}/WebRoot" includes="**/*"/>
+		</copy>
+	</target>
+	
+	<target name="deploy-rosetta_module">		
+		<copy todir="${packtarget}/WCTSubmitToRosetta/docs">
+			<fileset dir="${rosetta_module.root}/docs" includes="license.txt"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTSubmitToRosetta/src">
+			<fileset dir="${rosetta_module.root}/src" includes="**/*"/>
+		</copy>	
+		<copy todir="${packtarget}/WCTSubmitToRosetta/build">
+			<fileset dir="${rosetta_module.root}/build" includes="*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTSubmitToRosetta/endorsed-lib">
+			<fileset dir="${rosetta_module.root}/endorsed-lib" includes="**/*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTSubmitToRosetta/lib">
+			<fileset dir="${rosetta_module.root}/lib" includes="**/*"/>
+		</copy>
+		<copy todir="${packtarget}/WCTSubmitToRosetta">
+			<fileset dir="${rosetta_module.root}" includes="pom.xml Readme.txt"/>
+		</copy>
+	</target>
+	
+	<target name="tar">
+		<tar destfile="${packtarget}/wct-package-src-${wct.application.version}.tar.gz" compression="gzip" basedir="${packtarget}"/>
+		<zip destfile="${packtarget}/wct-package-src-${wct.application.version}.zip">
+			<fileset dir="${packtarget}" excludes="**/*.tar.gz"/>
+		</zip>		
+	</target>
+		
+	<target name="package" depends="clean,prepare, deploy-wctcore, deploy-rosetta_module, deploy-wctdas, deploy-wctharvest, tar"/>
+
+</project>

@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wct" default="all">
+    <property file="./build.properties" />
+	<property file="${system}_config.properties"/>
+    <property file="./version.properties" />
+    <property name="target" value="${root}/target"/>
+    <property name="xdoclet.force" value="true"/>
+    <property name="xdoclet.mergedir" value="${root}/merge"/>
+    <property name="src-app" value="${root}/src-app"/>
+    <property name="src-api" value="${root}/src-api"/>
+    <property name="src/test/java" value="${root}/src/test/java"/>
+    <property name="gen-src" value="${root}/gen-src"/>
+    <property name="cfg" value="${root}/cfg"/>
+    <property name="docs" value="${root}/docs"/>
+    <property name="db" value="${root}/db"/>
+    <property name="eclipse.webroot" value="${root}/WebRoot"/>
+    <property name="web.libs" value="${root}/WebRoot/WEB-INF/lib"/>	
+    <property name="web.root" value="${root}/WebRoot"/>	
+    <description>
+        WCT Core ANT Build file 
+    </description>
+    
+    <path id="xdoclet.classpath">
+        <fileset dir="${hibernate.dir}/" includes="*.jar"/>
+        <fileset dir="${hibernate.dir}/lib" includes="*.jar"/>
+        <fileset dir="${xdoclet.dir}" includes="*.jar"/>
+        <fileset dir="${tomcat.lib}" includes="servlet-api.jar"/>
+    </path>
+    
+    <path id="xdoclet.schema.classpath">
+    <path refid="xdoclet.classpath"/>
+        <pathelement path="${target}/${proj.name}/WEB-INF/classes" >
+        </pathelement>
+    </path>
+    
+    <path id="classpath.wct">
+        <fileset dir="${tomcat.lib}">
+            <include name="servlet-api.jar"/>
+            <include name="jsp-api.jar"/>
+        </fileset>		
+        <fileset dir="${web.libs}" includes="*.jar"/>
+    </path>
+    
+    <path id="classpath.wcttests">
+        <fileset dir="${tomcat.lib}">
+            <include name="servlet-api.jar"/>
+            <include name="jsp-api.jar"/>
+        </fileset>		
+        <fileset dir="${web.libs}" includes="*.jar"/>
+        <fileset dir="${junit.lib}">
+            <include name="junit-4.4.jar"/>
+        </fileset>		
+        <fileset dir="${springmock.lib}">
+            <include name="spring-mock.jar"/>
+        </fileset>		
+    </path>
+
+    <path id="classpath.wct.target">
+        <fileset dir="${target}/${proj.name}/WEB-INF/classes" includes="**/*.*"/>
+        <fileset dir="${web.libs}" includes="*.jar"/>
+    </path>
+    
+    <!-- Tasks for Hibernate XDoclet -->
+    <taskdef name="hibernatedoclet" classname="xdoclet.modules.hibernate.HibernateDocletTask" classpathref="xdoclet.classpath"/>
+    <taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="xdoclet.schema.classpath"/>	
+    
+	<target name="schemaexport" depends="hibdoclet">
+	    <schemaexport
+	        properties="hib_oracle.properties"
+	        quiet="no"
+	        text="yes"
+	        drop="no"
+	        delimiter=";"
+	        output="${db}/sql/wct-schema-oracle.sql">
+            <fileset dir="${target}/${proj.name}/WEB-INF/classes">
+                <include name="**/*.hbm.xml"/>
+            </fileset>            
+	    </schemaexport>
+			<replace file="${db}/sql/wct-schema-oracle.sql" token="@@SCHEMA_NAME@@" value="${schema.name}"></replace>		
+		
+	    <schemaexport
+	        properties="hib_postgresql.properties"
+	        quiet="no"
+	        text="yes"
+	        drop="no"
+	        delimiter=";"
+	        output="${db}/sql/wct-schema-postgresql.sql">
+            <fileset dir="${target}/${proj.name}/WEB-INF/classes">
+                <include name="**/*.hbm.xml"/>
+            </fileset>            
+	    </schemaexport>		
+		<replace file="${db}/sql/wct-schema-postgresql.sql" token="@@SCHEMA_NAME@@" value="${schema.name}"></replace>		
+		
+	    <schemaexport
+	        properties="hib_mysql.properties"
+	        quiet="no"
+	        text="yes"
+	        drop="no"
+	        delimiter=";"
+	        output="${db}/sql/wct-schema-mysql.sql">
+            <fileset dir="${target}/${proj.name}/WEB-INF/classes">
+                <include name="**/*.hbm.xml"/>
+            </fileset>            
+	    </schemaexport>		
+		<replace file="${db}/sql/wct-schema-mysql.sql" token="@@SCHEMA_NAME@@" value="${schema.name}"></replace>
+		<!-- The mysql null timestamp workaround: make sure null dates are null and not current_timestamp -->
+		<replace file="${db}/sql/wct-schema-mysql.sql" token="TIMESTAMP(9)," value="TIMESTAMP(9) NULL,"/>
+	</target>
+	
+
+    <target name="clean">
+        <delete dir="${target}"/>		
+    </target>
+    
+    <target name="prepare">
+        <mkdir dir="${target}"/>
+        <mkdir dir="${target}/test/classes"/>
+    </target>
+    
+	<target name="test_hib" depends="hibdoclet,copy-config,schemaexport"/>
+	
+    <target name="hibdoclet" depends="prepare">
+        <hibernatedoclet destdir="${target}/${proj.name}/WEB-INF/classes"
+           mergedir="${xdoclet.mergedir}"
+           force="${xdoclet.force}"
+           verbose="true">
+            
+            <fileset dir="${src-app}">
+                <include name="org/webcurator/domain/model/**/*.java"/>
+                <include name="org/webcurator/core/permissionmapping/Mapping.java"/>
+                <include name="org/webcurator/core/permissionmapping/MappingView.java"/>
+            </fileset>
+            
+            <fileset dir="${src-api}">
+                <include name="org/webcurator/domain/model/**/*.java"/>
+            </fileset>			
+            
+            <hibernate version="3.0"/>
+            <hibernatecfg 
+                version="3.0"
+                defaultSchema="@@SCHEMA_NAME@@"
+                jdbcUrl="@@SCHEMA_URL@@"
+                userName="@@SCHEMA_USER@@"
+                password="@@SCHEMA_PASSWORD@@"
+                driver="@@SCHEMA_DRIVER@@"
+                poolSize="2"
+                showSql="true"
+                useOuterJoin="true"
+                dialect="@@SCHEMA_DIALECT@@"
+                transactionManagerFactory="org.hibernate.transaction.JDBCTransactionFactory"
+                destdir="${target}/${proj.name}/WEB-INF/classes"/>
+        </hibernatedoclet>
+    </target>
+    
+    <target name="compile">		
+        <javac srcdir="${src-api}:${src-app}"
+				 destdir="${target}/${proj.name}/WEB-INF/classes"
+				 includes="**/*.java"
+				 debug="true" debuglevel="lines,vars,source">
+            <classpath refid="classpath.wct"/>
+        </javac>
+    </target>
+    
+    <target name="compiletests">		
+        <javac srcdir="${src-api}:${src-app}:${src/test/java}"
+				 destdir="${target}/test/classes"
+				 includes="**/*.java"
+				 debug="true" debuglevel="lines,vars,source">
+            <classpath refid="classpath.wcttests"/>
+        </javac>
+        <copy todir="${target}/test/classes" overwrite="true">
+            <fileset dir="${root}/cfg">
+                <include name="wct-core-security.xml"/>
+                <include name="wct-core-servlet.xml"/>
+                <include name="wct-browse-servlet.xml"/>
+                <include name="wct-core.xml"/>
+                <include name="wct-core.properties"/>
+                <include name="wct-core-report.xml"/>
+                <include name="wct-core-lists.xml"/>
+                <include name="log4j.xml"/>
+                <include name="messages*.properties"/>
+                <include name="default-profile.xml"/>
+            </fileset>
+        </copy>		
+        <jar destfile="${target}/test/test.jar" basedir="${target}/test/classes"/>
+    </target>
+
+    <target name="copy-config">
+        <property file="${system}_config.properties"/>
+        
+        <replace file="${target}/${proj.name}/WEB-INF/classes/hibernate.cfg.xml" token="@@SCHEMA_NAME@@" value="${schema.name}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/hibernate.cfg.xml" token="@@SCHEMA_USER@@" value="${schema.user}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/hibernate.cfg.xml" token="@@SCHEMA_PASSWORD@@" value="${schema.password}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/hibernate.cfg.xml" token="@@SCHEMA_URL@@" value="${schema.url}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/hibernate.cfg.xml" token="@@SCHEMA_DRIVER@@" value="${schema.driver}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/hibernate.cfg.xml" token="@@SCHEMA_DIALECT@@" value="${schema.dialect}"/>
+        
+        <copy todir="${target}/${proj.name}/WEB-INF/classes" overwrite="true">
+            <fileset dir="${root}/cfg">
+                <include name="wct-core-security.xml"/>
+                <include name="wct-core-servlet.xml"/>
+                <include name="wct-browse-servlet.xml"/>
+                <include name="wct-core.xml"/>
+                <include name="wct-core.properties"/>
+                <include name="wct-core-report.xml"/>
+                <include name="wct-core-lists.xml"/>
+                <include name="log4j.xml"/>
+                <include name="messages*.properties"/>
+                <include name="default-profile.xml"/>
+            	<include name="rules.drl"/>
+            </fileset>
+        </copy>		
+        
+        <replace file="${target}/${proj.name}/WEB-INF/classes/log4j.xml" token="@@LOG4J_DIR@@" value="${log4j.dir}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/log4j.xml" token="@@LOG4J_LVL@@" value="${log4j.level}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@SCHEMA_NAME@@" value="${schema.name}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@SCHEMA_DIALECT@@" value="${schema.dialect}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@MAIL_HOST@@" value="${mail.host}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@MAIL_PORT@@" value="${mail.port}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@INTRAY_EMAIL@@" value="${intray.reply.email}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@DAS_HOST@@" value="${das.host}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@DAS_PORT@@" value="${das.port}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@DAS_UPLOADED_DIR@@" value="${das.uploaded.dir}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@CORE_HOST@@" value="${core.host}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@CORE_PORT@@" value="${core.port}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@AGENT_HOST@@" value="${agent.host}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@AGENT_PORT@@" value="${agent.port}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@LDAP_URL@@" value="${ldap.url}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.properties" token="@@LDAP_DN@@" value="${ldap.usr.dn}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core-servlet.xml" token="@@HERITRIX_VERSION@@" value="${heritrix.version}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.xml" token="@@APPLICATION_VERSION@@" value="${wct.application.version}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.xml" token="@@HERITRIX_VERSION@@" value="${heritrix.version}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.xml" token="@@MAIL_PROTOCOL@@" value="${mail.protocol}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HERITRIX_VERSION@@" value="${heritrix.version}"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@PROJECT_URL@@" value="${project.web.site}"/>		
+        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@CONTACT_EMAIL_ADDRESS@@" value="${project.contact.email}"/>		
+        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HTTP_PROXY_NAME@@" value="${http.proxy.name}"/>		
+        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HTTP_PROXY_PORT@@" value="${http.proxy.port}"/>		
+    	
+    	<antcall target="double_escape"/>
+    	
+        
+        <copy file="${root}/WebRoot/WEB-INF/web.xml" todir="${target}/${proj.name}/WEB-INF"/>
+        <copy todir="${target}/${proj.name}/jsp">
+            <fileset dir="${root}/WebRoot/jsp">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${target}/${proj.name}">
+            <fileset dir="${root}/WebRoot">
+                <include name="images/**/*"/>
+                <include name="styles/**/*"/>	
+                <include name="scripts/**/*"/>	
+                <include name="help/**/*"/>
+                <include name="replay/**/*"/>	
+            </fileset>
+        </copy>
+        
+        <copy todir="${target}/${proj.name}">
+            <fileset dir="${docs}">
+                <include name="license.txt"/>
+            </fileset>
+        </copy>
+        
+        <copy file="${root}/cfg/server-config.wsdd" todir="${target}/${proj.name}/WEB-INF/"/>
+        
+        <replace file="${target}/${proj.name}/WEB-INF/server-config.wsdd" token="@@ATTACH_DIR@@" value="${attach.dir}"/>
+        
+        <copy todir="${target}/${proj.name}/WEB-INF">
+            <fileset dir="${root}/WebRoot/WEB-INF">
+                <include name="web.xml"/>
+                <include name="tiles-defs*.xml"/>
+                <include name="struts-tiles.tld"/>
+                <include name="c.tld"/>
+                <include name="wct.tld"/>
+                <include name="authority.tld"/>
+            </fileset>
+        </copy>
+        
+        
+        <copy todir="${target}/${proj.name}">
+            <fileset dir="${root}/WebRoot">
+                <include name="*.jsp"/>
+                <include name="*.htm"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${target}/${proj.name}/WEB-INF/lib">
+            <fileset dir="${root}/WebRoot/WEB-INF/lib">
+                <include name="*"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${target}/${proj.name}/WEB-INF/tags">
+            <fileset dir="${root}/WebRoot/WEB-INF/tags">
+                <include name="*"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${target}/${proj.name}/META-INF">
+            <fileset dir="${root}/cfg">
+                <include name="wct.xml"/>
+            	<include name="mime.types"/>
+            </fileset>
+        </copy>
+        
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_USER@@" value="${schema.user}"/>
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_PASSWORD@@" value="${schema.password}"/>
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_URL@@" value="${schema.url}"/>
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_DRIVER@@" value="${schema.driver}"/>
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_MAXACTIVE@@" value="${schema.maxActive}"/>
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_MAXIDLE@@" value="${schema.maxIdle}"/>
+        <replace file="${target}/${proj.name}/META-INF/wct.xml" token="@@SCHEMA_QUERY@@" value="${schema.query}"/>
+        
+        <move file="${target}/${proj.name}/META-INF/wct.xml" tofile="${target}/${proj.name}/META-INF/context.xml"/> 
+    </target>
+	
+	
+	<target name="double_escape" depends="double_escape_yes,double_escape_no"/>
+	
+	<target name="double_escape_yes" if="browse.double_escape">
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_START@@--&gt;" value=""/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_END@@--&gt;" value=""/>
+	</target>
+	
+	<target name="double_escape_no" unless="browse.double_escape">
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_START@@--&gt;" value="&lt;!--"/>
+        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_END@@--&gt;" value="--&gt;"/>
+	</target>
+	
+	
+    
+    <target name="deploy">
+        <copy todir="${tomcat.webapps}">
+            <fileset dir="${target}" includes="${proj.name}.war"/>
+        </copy>
+    </target>
+    
+    <target name="war" depends="clean, hibdoclet, compile, copy-config">
+        <jar destfile="${target}/${proj.name}.war" basedir="${target}/${proj.name}">
+        <!-- Remove TargetGroup which causes Tomcat to fail to load hibernate.  -->
+        <!-- This may be a build-environment-specific problem for NLNZ-->
+        	<exclude name="WEB-INF/classes/org/webcurator/domain/model/core/TargetGroup.hbm.xml"/>
+        	</jar>
+    </target>
+    
+    <target name="war-with-sql" depends="war,schemaexport"/>
+    
+    <target name="all" depends="clean, hibdoclet, compile, copy-config, deploy, compiletests"/>
+    <target name="quick-compile" depends="compile, copy-config, deploy"/>
+    <target name="all-with-sql" depends="all,schemaexport"/>
+    
+    <target name="deploy-jsps">
+        <copy todir="${tomcat.webapps}/${proj.name}">
+            <fileset dir="${web.root}" includes="**/*.jsp"/>
+        </copy>
+        
+        <copy todir="${tomcat.webapps}/${proj.name}">
+            <fileset dir="${web.root}">
+                <include name="*.jsp"/>
+                <include name="*.htm"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${tomcat.webapps}/${proj.name}">
+            <fileset dir="${web.root}">
+                <include name="images/**/*"/>
+                <include name="styles/**/*"/>	
+                <include name="scripts/**/*"/>	
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="javadoc">
+        <delete dir="${root}/docs/javadoc"/>
+        <javadoc destdir="${root}/docs/javadoc" useexternalfile="yes" access="public">
+            <classpath>
+                <pathelement location="${target}/${proj.name}/WEB-INF/classes"/>
+                <fileset dir="${target}/${proj.name}/WEB-INF/lib" includes="*.jar"/>
+                <fileset dir="${tomcat.lib}" includes="*.jar"/>
+            </classpath>
+            <fileset dir="${src-app}" />
+            <fileset dir="${src-api}" />
+            <fileset dir="${das.root}/src" />
+            <fileset dir="${ha.root}/src" />
+            <!-- prevent warnings from the hibernate tags -->
+            <tag name="hibernate.cache" scope="all" enabled="false" />
+            <tag name="hibernate.class" scope="all" enabled="false" />
+            <tag name="hibernate.discriminator" scope="all" enabled="false" />
+            <tag name="hibernate.jcs-cache" scope="all" enabled="false" />
+            <tag name="hibernate.joined-subclass" scope="all" enabled="false" />
+            <tag name="hibernate.joined-subclass-key" scope="all" enabled="false" />
+            <tag name="hibernate.mapping" scope="all" enabled="false" />
+            <tag name="hibernate.query" scope="all" enabled="false" />
+            <tag name="hibernate.subclass" scope="all" enabled="false" />
+            <tag name="hibernate.any" scope="all" enabled="false" />
+            <tag name="hibernate.any-column" scope="all" enabled="false" />
+            <tag name="hibernate.array" scope="all" enabled="false" />
+            <tag name="hibernate.bag" scope="all" enabled="false" />
+            <tag name="hibernate.collection-cache" scope="all" enabled="false" />
+            <tag name="hibernate.collection-composite-element" scope="all" enabled="false" />
+            <tag name="hibernate.collection-element" scope="all" enabled="false" />
+            <tag name="hibernate.collection-index" scope="all" enabled="false" />
+            <tag name="hibernate.collection-jcs-cache" scope="all" enabled="false" />
+            <tag name="hibernate.collection-key" scope="all" enabled="false" />
+            <tag name="hibernate.collection-key-column" scope="all" enabled="false" />
+            <tag name="hibernate.collection-many-to-many" scope="all" enabled="false" />
+            <tag name="hibernate.collection-one-to-many" scope="all" enabled="false" />
+            <tag name="hibernate.column" scope="all" enabled="false" />
+            <tag name="hibernate.component" scope="all" enabled="false" />
+            <tag name="hibernate.generator-param" scope="all" enabled="false" />
+            <tag name="hibernate.id" scope="all" enabled="false" />
+            <tag name="hibernate.index-many-to-many" scope="all" enabled="false" />
+            <tag name="hibernate.list" scope="all" enabled="false" />
+            <tag name="hibernate.many-to-any" scope="all" enabled="false" />
+            <tag name="hibernate.many-to-any-column" scope="all" enabled="false" />
+            <tag name="hibernate.many-to-one" scope="all" enabled="false" />
+            <tag name="hibernate.map" scope="all" enabled="false" />
+            <tag name="hibernate.one-to-one" scope="all" enabled="false" />
+            <tag name="hibernate.parent" scope="all" enabled="false" />
+            <tag name="hibernate.primitive-array" scope="all" enabled="false" />
+            <tag name="hibernate.property" scope="all" enabled="false" />
+            <tag name="hibernate.set" scope="all" enabled="false" />
+            <tag name="hibernate.timestamp" scope="all" enabled="false" />
+            <tag name="hibernate.version" scope="all" enabled="false" />
+            <tag name="hibernate.key" scope="all" enabled="false" />
+            <doctitle><![CDATA[<h1>Web Curator Tool</h1>]]></doctitle>
+            <bottom><![CDATA[<i></i>]]></bottom>
+        </javadoc>
+    </target>
+    
+	
+	<target name="release-bin" >
+		<delete dir="${root}/release-bin"/>
+		<mkdir dir="${root}/release-bin"/>
+		
+		<!-- WAR Files -->
+		<copy todir="${root}/release-bin/war">
+			<fileset dir="${target}" includes="${proj.name}.war"/>
+			<fileset dir="${root}/../WCTDigitalAssetStore/target/" includes="wct-store.war"/>
+			<fileset dir="${root}/../WCTHarvestAgent/target/" includes="wct-harvest-agent.war"/>
+		</copy>
+
+		<!-- Documentation -->
+		<copy todir="${root}/release-bin/docs">
+			<fileset dir="${root}/docs">
+				<include name="*.pdf"/>
+				<include name="license.txt"/>
+				<include name="readme.html"/>
+			</fileset>
+		</copy>
+		<copy todir="${root}/release-bin/docs/javadocs">
+			<fileset dir="${root}/docs/javadoc" includes="**/*"/>
+		</copy>
+			
+		
+        <!-- Include the etc stuff -->
+		<copy todir="${root}/release-bin/etc">
+			<fileset dir="${root}/etc" includes="jta.jar,postgresql-8.1-404.jdbc3.jar"/>
+		</copy>
+		
+        <!-- Include the MySQL files -->
+		<copy todir="${root}/release-bin/sql/mysql">
+			<fileset dir="${root}/db/sql">
+	            <include name="wct-schema-mysql.sql"/>
+	            <include name="wct-schema-grants-mysql.sql"/>                
+	            <include name="wct-mysql-bootstrap.sql"/>	
+				<include name="wct-indexes-mysql.sql"/>	
+			</fileset>
+		</copy>		
+
+        <!-- Include the PostgreSQL files -->
+		<copy todir="${root}/release-bin/sql/postgres">
+			<fileset dir="${root}/db/sql">
+	            <include name="wct-schema-postgresql.sql"/>
+	            <include name="wct-schema-grants.sql"/>                
+	            <include name="wct-postgres-bootstrap.sql"/>	
+				<include name="wct-indexes-postgresql.sql"/>	
+			</fileset>
+			<fileset dir="${root}/db/upgrade" includes="upgrade-postgres-1_1-to-1_2.sql"/>
+		    <fileset dir="${root}/db/setup" includes="postgres-create-wct.sql"/>			
+		</copy>
+
+        <!-- Include the Oracle files -->
+		<copy todir="${root}/release-bin/sql/oracle">
+			<fileset dir="${root}/db/sql">
+	            <include name="wct-schema-oracle.sql"/>
+	            <include name="wct-schema-grants.sql"/>                
+	            <include name="wct-oracle-bootstrap.sql"/>	
+				<include name="wct-indexes-oracle.sql"/>					
+			</fileset>
+			<fileset dir="${root}/db/upgrade" includes="upgrade-oracle-1_1-to-1_2.sql"/>
+		    <fileset dir="${root}/db/setup" includes="oracle-create-wct.sql"/>			
+		</copy>
+
+		
+		<delete file="${root}/wct-package-bin-v${version}.zip"/>
+		<zip zipfile="${root}/wct-package-bin-v${version}.zip">
+			<fileset dir="${root}/release-bin" includes="**/*"/>
+		</zip>
+		
+		<delete file="${root}/wct-package-bin-v${version}.tar.gz"/>
+		<tar tarfile="${root}/wct-package-bin-v${version}.tar.gz" compression="gzip">
+			<tarfileset dir="${root}/release-bin" includes="**/*"/>
+		</tar>		
+		
+	</target>
+	
+	
+	<target name="release-src">
+    	<delete dir="${root}/release-src"/>
+		<mkdir dir="${root}/release-src"/>
+		<copy todir="${root}/release-src">
+			<fileset dir="${root}/..">
+                <include name="WCTCore/build/**/*"/>
+                <include name="WCTDigitalAssetStore/build/**/*"/>
+                <include name="WCTHarvestAgent/build/**/*"/>
+                <include name="WCTSubmitToRosetta/build/**/*"/>
+                
+                <include name="WCTCore/cfg/**/*"/>
+                <include name="WCTDigitalAssetStore/cfg/**/*"/>
+                <include name="WCTHarvestAgent/cfg/**/*"/>
+                
+                <include name="WCTCore/docs/**/*"/>
+                <include name="WCTDigitalAssetStore/docs/**/*"/>
+                <include name="WCTHarvestAgent/docs/**/*"/>
+                <include name="WCTSubmitToRosetta/docs/**/*"/>
+                
+                <include name="WCTCore/src-api/**/*"/>
+                <include name="WCTCore/src-app/**/*"/>
+                <include name="WCTDigitalAssetStore/src/**/*"/>
+                <include name="WCTHarvestAgent/src/**/*"/>
+                <include name="WCTSubmitToRosetta/src/**/*"/>
+                
+                <include name="WCTCore/WebRoot/**/*"/>
+                <include name="WCTDigitalAssetStore/WebRoot/**/*"/>
+                <include name="WCTHarvestAgent/src/WebRoot/*"/>
+            	
+                <include name="WCTSubmitToRosetta/endorsed-lib/**/*"/>
+                <include name="WCTSubmitToRosetta/lib/**/*"/>
+                <include name="WCTSubmitToRosetta/pom.xml"/>
+                <include name="WCTSubmitToRosetta/Readme.txt"/>
+                
+                <include name="WCTCore/db/**/*"/>
+			</fileset>
+		</copy>
+		
+		<delete file="${root}/wct-package-src-v${version}.zip"/>
+		<zip zipfile="${root}/wct-package-src-v${version}.zip">
+			<fileset dir="${root}/release-src" includes="**/*"/>
+		</zip>
+		
+		<delete file="${root}/wct-package-src-v${version}.tar.gz"/>
+		<tar tarfile="${root}/wct-package-src-v${version}.tar.gz" compression="gzip">
+			<tarfileset dir="${root}/release-src" includes="**/*"/>
+		</tar>		
+				
+ 	</target>
+		
+
+	<target name="build-das">
+        <ant antfile="${root}/../WCTDigitalAssetStore/build/build.xml" target="war" inheritall="false"/>		
+	</target>
+	
+	<target name="build-agent">
+        <ant antfile="${root}/../WCTHarvestAgent/build/build.xml" target="war" inheritall="false"/>		
+	</target>
+	
+	<target name="build-wctsubmittorosetta">
+        <ant antfile="${root}/../WCTSubmitToRosetta/build/build.xml" target="deploy" inheritall="false"/>		
+	</target>
+	
+	<target name="dist" depends="war-with-sql, build-wctsubmittorosetta, build-das, build-agent, javadoc, release-bin, release-src"/>
+</project>
+
+

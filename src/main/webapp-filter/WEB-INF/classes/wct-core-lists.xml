@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="no" default-lazy-init="false"
+	default-dependency-check="none">
+
+	<bean id="accessStatusList" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<value>Open (unrestricted) access</value>
+				<value>Limited to 3 concurrent users</value>
+				<value>Restricted by location</value>
+				<value>Restricted by person</value>
+				<value>Embargoed</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+<!-- 
+	The values in this map should be one of:
+	ACR_OPA (open access)
+	ACR_ONS (restricted by number of concurrent users)
+	ACR_OSR (restricted to a site)
+	ACR_RES (authorized users only)
+	
+	These are converted to Rosetta policy codes in OmsCodeToMetsMapping
+ -->
+	<bean id="accessStatusMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="Open (unrestricted) access" value="ACR_OPA" />
+				<entry key="Limited to 3 concurrent users" value="ACR_OSR" />
+				<entry key="Restricted by location" value="ACR_ONS" />
+				<entry key="Restricted by person" value="ACR_RES" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="dublinCoreTypesList" class="org.webcurator.core.common.WCTTreeSet"
+		abstract="false" singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<constructor-arg index="0" type="java.util.List">
+			<list>
+				<value></value>
+				<value>Collection</value>
+				<value>Dataset</value>
+				<value>Event</value>
+				<value>Image</value>
+				<value>Interactive Resource</value>
+				<value>Moving Image</value>
+				<value>Physical Object</value>
+				<value>Service</value>
+				<value>Software</value>
+				<value>Sound</value>
+				<value>Still Image</value>
+				<value>Text</value>
+				<value>eSerial</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1" type="int">
+			<value>50</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="selectionTypesList" class="org.webcurator.core.common.WCTTreeSet"
+		abstract="false" singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<constructor-arg index="0" type="java.util.List">
+			<list>
+				<value>Producer type</value>
+				<value>Publication type</value>
+				<value>Collection</value>
+				<value>Area</value>
+				<value>Other collections</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1" type="int">
+			<value>50</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="harvestTypesList" class="org.webcurator.core.common.WCTTreeSet"
+		abstract="false" singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<constructor-arg index="0" type="java.util.List">
+			<list>
+				<value>Subject</value>
+				<value>Event</value>
+				<value>Theme</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1" type="int">
+			<value>50</value>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="groupTypesList" class="org.webcurator.core.common.WCTTreeSet"
+		abstract="false" singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<constructor-arg index="0" type="java.util.List">
+			<list>
+				<value></value>
+				<value>Collection</value>
+				<value>Subject</value>
+				<value>Thematic</value>
+				<value>Event</value>
+				<value>Functional</value>
+				<value>${groupTypes.subgroup}</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1" type="int">
+			<value>50</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="subGroupParentTypesList" class="org.webcurator.core.common.WCTTreeSet"
+		abstract="false" singleton="true" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<constructor-arg index="0" type="java.util.List">
+			<list>
+				<value>Collection</value>
+				<value>Thematic</value>
+				<value>Event</value>
+			</list>
+		</constructor-arg>
+		<constructor-arg index="1" type="int">
+			<value>50</value>
+		</constructor-arg>
+	</bean>
+
+</beans>

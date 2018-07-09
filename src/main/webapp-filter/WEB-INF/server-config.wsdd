@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <globalConfiguration>
+  <parameter name="sendMultiRefs" value="true"/>
+  <parameter name="disablePrettyXML" value="true"/>
+  <parameter name="adminPassword" value="admin"/>
+  <parameter name="attachments.Directory" value="${attach.dir}"/>
+  <parameter name="dotNetSoapEncFix" value="true"/>
+  <parameter name="enableNamespacePrefixOptimization" value="false"/>
+  <parameter name="sendXMLDeclaration" value="true"/>
+  <parameter name="sendXsiTypes" value="true"/>
+  <parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <requestFlow>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="session"/>
+   </handler>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="request"/>
+    <parameter name="extension" value=".jwr"/>
+   </handler>
+  </requestFlow>
+ </globalConfiguration>
+ <handler name="soapmonitor" type="java:org.apache.axis.handlers.SOAPMonitorHandler">
+  <parameter name="wsdlURL" value="/axis/SOAPMonitorService-impl.wsdl"/>
+  <parameter name="namespace" value="http://tempuri.org/wsdl/2001/12/SOAPMonitorService-impl.wsdl"/>
+  <parameter name="serviceName" value="SOAPMonitorService"/>
+  <parameter name="portName" value="Demo"/>
+ </handler>
+ <handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+ <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+ <service name="AdminService" provider="java:MSG">
+  <parameter name="allowedMethods" value="AdminService"/>
+  <parameter name="enableRemoteAdmin" value="false"/>
+  <parameter name="className" value="org.apache.axis.utils.Admin"/>
+  <namespace>http://xml.apache.org/axis/wsdd/</namespace>
+ </service>
+ <service name="Version" provider="java:RPC">
+  <parameter name="allowedMethods" value="getVersion"/>
+  <parameter name="className" value="org.apache.axis.Version"/>
+ </service>
+ <service name="SOAPMonitorService" provider="java:RPC">
+  <parameter name="allowedMethods" value="publishMessage"/>
+  <parameter name="className" value="org.apache.axis.monitor.SOAPMonitorService"/>
+  <parameter name="scope" value="Application"/>
+ </service>
+ 
+  		<beanMapping qname="ns:ArcHarvestResourceDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestResourceDTO"/>  
+  		<beanMapping qname="ns:ArcHarvestResultDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestResultDTO"/>  
+  		<beanMapping qname="ns:HarvestAgentStatusDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO"/>  
+  		<beanMapping qname="ns:HarvesterStatusDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO"/>  
+  		<beanMapping qname="ns:ArcHarvestFileDTO" xmlns:ns="urn:WebCuratorTool" languageSpecificType="java:org.webcurator.domain.model.core.ArcHarvestFileDTO"/>  
+ 
+ 
+    <service name="urn:WebCuratorTool" provider="java:RPC">
+      
+        <parameter name="allowedMethods" value="*"/>
+        <parameter name="className" value="org.webcurator.core.harvester.coordinator.HarvestAgentListenerSOAPService"/>
+  
+    </service>
+    
+	 <service name="urn:TargetAPI" provider="java:MSG">
+	  <parameter name="className" value="org.webcurator.bl.TargetAPISOAPService"/>
+	  <parameter name="allowedMethods" value="processTargetXML" />
+	 </service>
+    
+
+ <transport name="http">
+  <requestFlow>
+   <handler type="URLMapper"/>
+   <handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+  </requestFlow>
+  <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+  <parameter name="qs.list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs.method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+  <parameter name="qs.wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+ </transport>
+ <transport name="local">
+  <responseFlow>
+   <handler type="LocalResponder"/>
+  </responseFlow>
+ </transport>
+</deployment>

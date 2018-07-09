@@ -1,0 +1,2 @@
+<%@page contentType="text/html; charset=UTF-8" %>
+<%@ page import="org.webcurator.ui.common.Constants" %><a href="<%= Constants.CNTRL_MANAGEMENT%>" accesskey="8" onMouseOver="rollOn('management')" onMouseOut="rollOff('management')"><img src="images/management-off.gif" alt="Management" width="82" height="38" border="0" name="management" /></a>

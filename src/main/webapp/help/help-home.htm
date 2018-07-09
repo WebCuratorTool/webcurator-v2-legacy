@@ -1,0 +1,1739 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Web Curator Help - Home</title>
+    <link rel="stylesheet" media="screen" href="../styles/styles.css" type="text/css" title="WCT" />
+    <link rel="stylesheet" media="screen" href="../styles/basic.css" type="text/css" title="WCT" />
+  </head>
+  <body>
+  	<h1>Web Curator Help - Home</h1>
+  	<br/>
+  	<h2>Release History of WCT</h2>
+  	<b>Version v1.1 GA</b></br>
+    <br/>
+    Official General Availability release<br/>
+    <b>Known issues</b>
+	<ul>
+	<li>Exception thrown by Review Tool when Anchor Tag Attribute is Empty.<br/>
+	The Wayback TagMagix class throws java.lang.StringIndexOutOfBoundsException if a tag attribute is empty. This prevents the site being successfully reviewed. The Web Curator Team are investigating whether a newer release of the Wayback tool resolves this issue.
+	As an example, if a reviewed HTML page contains the code:<br/>
+	<code>
+	&lt;a href=""&gt;&lt;/a&gt; 
+	</code>
+	<br/>This will throw an exception during the review phase since the HREF attribute is empty. This issue only impacts tags that are rewritten by the TagMagix class from the Wayback project.
+	SourceForge Reference #1541022.
+	</li>
+	<li>Harvesting of websites that use SSL encryption results in Heritrix storing the encrypted data in the ARC file. This means that any
+	Harvested https site will not be reviewable. 
+	</li>
+	</ul>
+	<br/>
+	<b>Fixed Bugs</b>
+    <table border="1"><tr>
+	<td valign="top"><b>1535706</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">activity report - audit </td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1540247</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Homepage "box order"</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1540254</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Homepage - buttons</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534546</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">(Agency) Linking seeds to permissions</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1536373</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">UC04 - Audit Quality Review actions</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1541711</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Requested Object Not Found error</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1528164</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Traget Instance stuck in "Stopping" state</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1529274</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Email address all-lowercase</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1529272</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Icons missing mouseover text</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1528773</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Bad images from compressed ARC files</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1530147</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">User, Role, and Agency sorting</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1529276</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Target Description field is very short</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535893</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">System Activity Report - more detail required</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535563</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">provenance note</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1541022</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Review - String index out of range exception</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533641</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Changes to bandwidth settings not recorded in audit log</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533577</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">field length</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1529291</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Comma instead of fullstop in name abbreviations</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1528745</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Editing the Default Profile sets its state to inactive</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1529285</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">textarea styles</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1531396</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">There is no confirmation on delete of Target or User</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533637</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Target Instance Queue search: "From" field should be empty</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533594</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">pending permission dates</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533597</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">delegated target: new owner's In Tray</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534161</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Rename TargetInstance search result columns </td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533600</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">relabel radio button</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533986</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Target Name field is too short</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533585</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">notification failure</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533582</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">icon repetition Copy/Transfer</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1531668</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Test schedules: form validation</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533589</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">field missing</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534297</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Modifying Target Instances</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535560</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">reviewing harvested target instances</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534148</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Harvest Authorisations: cannot view Permissions or Agents</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533587</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">stranded post action</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535634</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Manage Groups issues</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535656</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">no delete or copy</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535662</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">delete profile</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535665</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">No way to request a harvest of a Target immediately</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535667</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">pause all running harvests</td>
+	
+	
+	
+	<td valign="top">None</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535919</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Harvest Authorisations: privileges </td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1536212</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Adding seeds to a target with 'Auto' Authorisation</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1536179</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">(Agency) Manage Roles privilege allows unrestricted editing</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1530077</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">How to view harvester alerts?</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1530125</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Target Instance search result date column</td>
+	
+	
+	
+	<td valign="top">Enhancement</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1533461</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">permissions privilege</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534290</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">user interface issues</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534303</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">claiming tasks: recording claimer</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1535702</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">UI</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1536699</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Expired permissions - linking and status</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534295</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">user interface issue</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1536571</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Claimed tasks can be deleted by non-owner</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1536706</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Harvest deferred notifications</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1537712</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Some tables of search results don't label Action column</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1537415</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">User address field to small</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1537700</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Search area is smaller than its contents</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1537707</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Default search by "State" checkboxes inconsistent</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+</tr><tr>
+	<td valign="top"><b>1538193</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">User deletion</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1531622</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Object names not visible when leaving the 'General' tab</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1534558</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Changing the base profile</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr><tr>
+	<td valign="top"><b>1537378</b></td>
+	
+	
+	
+	
+	
+	<td valign="top">Agency URL: form validation</td>
+	
+	
+	
+	<td valign="top">Bug</td>
+	
+	
+	
+</tr></table>
+    <hr>
+    <b>Version v1.0 RC 1</b></br>
+    <br/>
+    First official release candidate that incorporates the following bug and enhancement fixes<br/>	
+	<table border="1"><tr>
+	<td valign="top"><b>1540254</b></td>
+	<td valign="top">Homepage - buttons</td>
+	<td valign="top">Enhancement</td>
+	</tr><tr>
+	<td valign="top"><b>1540247</b></td>
+	<td valign="top">Homepage "box order"</td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1534295</b></td>
+
+
+
+
+
+	<td valign="top">user interface issue</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1537700</b></td>
+
+
+
+
+
+	<td valign="top">Search area is smaller than its contents</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533641</b></td>
+
+
+
+
+
+	<td valign="top">Changes to bandwidth settings not recorded in audit log</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535560</b></td>
+
+
+
+
+
+	<td valign="top">reviewing harvested target instances</td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1537415</b></td>
+
+
+
+
+
+	<td valign="top">User address field to small</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533637</b></td>
+
+
+
+
+
+	<td valign="top">Target Instance Queue search: "From" field should be empty</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1535662</b></td>
+
+
+
+
+
+	<td valign="top">delete profile</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1537378</b></td>
+
+
+
+
+
+	<td valign="top">Agency URL: form validation</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1538193</b></td>
+
+
+
+
+
+	<td valign="top">User deletion</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1534558</b></td>
+
+
+
+
+
+	<td valign="top">Changing the base profile</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1531622</b></td>
+
+
+
+
+
+	<td valign="top">Object names not visible when leaving the 'General' tab</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1537707</b></td>
+
+
+
+
+
+	<td valign="top">Default search by "State" checkboxes inconsistent</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1537712</b></td>
+
+
+
+
+
+	<td valign="top">Some tables of search results don't label Action column</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1534303</b></td>
+
+
+
+
+
+	<td valign="top">claiming tasks: recording claimer</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1536373</b></td>
+
+
+
+
+
+	<td valign="top">UC04 - Audit Quality Review actions</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1536179</b></td>
+
+
+
+
+
+	<td valign="top">(Agency) Manage Roles privilege allows unrestricted editing</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1536699</b></td>
+
+
+
+
+
+	<td valign="top">Expired permissions - linking and status</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1536706</b></td>
+
+
+
+
+
+	<td valign="top">Harvest deferred notifications</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1536571</b></td>
+
+
+
+
+
+	<td valign="top">Claimed tasks can be deleted by non-owner</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535702</b></td>
+
+
+
+
+
+	<td valign="top">UI</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1535893</b></td>
+
+
+
+
+
+	<td valign="top">System Activity Report - more detail required</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533587</b></td>
+
+
+
+
+
+	<td valign="top">stranded post action</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1534290</b></td>
+
+
+
+
+
+	<td valign="top">user interface issues</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533461</b></td>
+
+
+
+
+
+	<td valign="top">permissions privilege</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1530125</b></td>
+
+
+
+
+
+	<td valign="top">Target Instance search result date column</td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535563</b></td>
+
+
+
+
+
+	<td valign="top">provenance note</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535919</b></td>
+
+
+
+
+
+	<td valign="top">Harvest Authorisations: privileges </td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1530077</b></td>
+
+
+
+
+
+	<td valign="top">How to view harvester alerts?</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1536212</b></td>
+
+
+
+
+
+	<td valign="top">Adding seeds to a target with 'Auto' Authorisation</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1534546</b></td>
+
+
+
+
+
+	<td valign="top">(Agency) Linking seeds to permissions</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535706</b></td>
+
+
+
+
+
+	<td valign="top">activity report - audit </td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535665</b></td>
+
+
+
+
+
+	<td valign="top">No way to request a harvest of a Target immediately</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533589</b></td>
+
+
+
+
+
+	<td valign="top">field missing</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535656</b></td>
+
+
+
+
+
+	<td valign="top">no delete or copy</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535667</b></td>
+
+
+
+
+
+	<td valign="top">pause all running harvests</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1535634</b></td>
+
+
+
+
+
+	<td valign="top">Manage Groups issues</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1534297</b></td>
+
+
+
+
+
+	<td valign="top">Modifying Target Instances</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1534148</b></td>
+
+
+
+
+
+	<td valign="top">Harvest Authorisations: cannot view Permissions or Agents</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533594</b></td>
+
+
+
+
+
+	<td valign="top">pending permission dates</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1531668</b></td>
+
+
+
+
+
+	<td valign="top">Test schedules: form validation</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533986</b></td>
+
+
+
+
+
+	<td valign="top">Target Name field is too short</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1533582</b></td>
+
+
+
+
+
+	<td valign="top">icon repetition Copy/Transfer</td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533585</b></td>
+
+
+
+
+
+	<td valign="top">notification failure</td>
+
+
+
+	<td valign="top">None</td>
+
+
+</tr><tr>
+	<td valign="top"><b>1533600</b></td>
+
+
+
+
+
+	<td valign="top">relabel radio button</td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1534161</b></td>
+
+
+
+
+
+	<td valign="top">Rename TargetInstance search result columns </td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533597</b></td>
+
+
+
+
+
+	<td valign="top">delegated target: new owner's In Tray</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1533577</b></td>
+
+
+
+
+
+	<td valign="top">field length</td>
+
+
+
+	<td valign="top">None</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1531396</b></td>
+
+
+
+
+
+	<td valign="top">There is no confirmation on delete of Target or User</td>
+
+
+
+	<td valign="top">Enhancement</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1529276</b></td>
+
+
+
+
+
+	<td valign="top">Target Description field is very short</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1529285</b></td>
+
+
+
+
+
+	<td valign="top">textarea styles</td>
+
+
+
+	<td valign="top">Bug</td>
+
+
+
+</tr><tr>
+	<td valign="top"><b>1529291</b></td>
+	<td valign="top">Comma instead of fullstop in name abbreviations</td>
+	<td valign="top">Bug</td>
+	</tr><tr>
+	<td valign="top"><b>1530147</b></td>
+	<td valign="top">User, Role, and Agency sorting</td>
+	<td valign="top">None</td>
+	</tr><tr>
+	<td valign="top"><b>1529272</b></td>
+	<td valign="top">Icons missing mouseover text</td>
+	<td valign="top">Bug</td>
+	</tr><tr>
+	<td valign="top"><b>1529274</b></td>
+	<td valign="top">Email address all-lowercase</td>
+	<td valign="top">Bug</td>
+	</tr></table>
+	<br/>
+	<hr>
+	<b>Version v0.4 Beta including patch 0.4.1</b><br/>
+  	<br/>
+	Patch 0.4.1 includes:<br/>
+	<br/>
+	Bug Fixes:<br/>
+	<table border="1"><tr>
+	<td valign="top"><b>1528164</b></td>
+	<td valign="top">Target Instance stuck in stopping state</td>
+	<td valign="top">Bug</td>
+	</tr>
+	<tr>
+	<td valign="top"><b>1528773</b></td>
+	<td valign="top">Bad image in compressed ARC file</td>
+	<td valign="top">Bug</td>
+	</tr>
+	<tr>
+	<td valign="top"><b>1528745</b></td>
+	<td valign="top">Editing the default profile sets its state to inactive</td>
+	<td valign="top">Bug</td>
+	</tr>
+	</table>
+  </body>
+</html>

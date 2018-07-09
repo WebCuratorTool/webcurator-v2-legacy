@@ -1,0 +1,13 @@
+body { font-family: verdana, arial, sans-serif; }
+.formHeading { text-align: right; vertical-align: top; }
+.tabs input { border: none; }
+.tabs .selected { }
+.tabs .disabled { color: #cccccc; }
+.linkButton { border:none; background-color: white; text-decoration: underline; }
+table tr td { vertical-align: top; }
+.profileMainHeading { background-color: black; color: white; font-weight: bold; margin-top: 1em; padding: 3px; }
+.profileMapHeading { background-color: #999999; color: white; font-weight: bold; padding: 3px; }
+.profileMapHeading a { color: white; font-weight: normal; }
+.profileSublevel { margin-left: 40px; margin-bottom: 1em; margin-top: 3px; }
+.profileMainHeading A { color: white; font-weight: normal; }
+.profileMapHeading .className { font-weight: normal; font-size: smaller; font-style: italic;}

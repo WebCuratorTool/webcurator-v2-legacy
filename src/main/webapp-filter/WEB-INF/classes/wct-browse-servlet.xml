@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
+
+    <bean id="WCTCoreConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:wct-core.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="order" value="150"/>
+    </bean>
+    
+    <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+        <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+    
+    
+    <bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+        <property name="interceptors">
+            <list>
+                <ref bean="openSessionInViewInterceptor"/>
+            </list>
+        </property>
+        
+        <property name="mappings">
+            <map>
+                <entry key="**" value="browseController"></entry>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="requestContextAttribute" value="requestContext"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesView"/>
+    </bean>
+    
+    <bean id="exceptionResolver"
+   class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"
+   abstract="false" singleton="true" lazy-init="default"
+   autowire="default" dependency-check="default">
+        <property name="defaultErrorView">
+            <value type="java.lang.String">browse-tool-error</value>
+        </property>
+        <property name="exceptionMappings">
+            <map>
+                <entry
+                    key="org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException"
+                    value="NoObjectFound">
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    
+    <bean id="browseController" class="org.webcurator.ui.tools.controller.BrowseController"  abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+        <property name="supportedMethods" value="GET"/>
+        <property name="qualityReviewFacade" ref="qualityReviewFacade"/>
+        <property name="browseHelper" ref="browseHelper"/>
+        <property name="fixTokens">
+        <map>
+        <!-- A Map of token fixes to apply.  Sites sometimes use the javascript:'top.location = self.location;' 
+        	 or 'window.location = ..' to issue a client side redirect but this will cause the target instance 
+        	 list to be redirected when using the browse tool in the webpage preview (iframe).  
+        	 We add a comment to this javascript to prevent the redirect.
+         	 NB: 	http-equiv=&quot;refresh&quot; is http-equiv="refresh";
+         -->
+        	<entry key="top.location" value="//top.location"></entry>
+        	<entry key="window.location" value="//window.location"></entry>
+        	<!-- ensure that meta refresh redirect to the root path "/" is replaced by a relative path "./" -->
+        	<entry key="http-equiv=&quot;refresh&quot; content=&quot;0; url=/" value="http-equiv=&quot;refresh&quot; content=&quot;0; url=./"></entry>
+        </map>
+        </property>
+    </bean>
+    
+    <bean id="browseHelper" class="org.webcurator.ui.tools.controller.BrowseHelper">
+        <property name="prefix" value="${browseHelper.prefix}" />
+        
+        <!--  A Map of Content-Type to list of replacement patterns. These
+			  patterns are used by the BrowseHelper to replace URLs within
+			  resources of the particular content-type. For HTML tag/attribute
+			  patterns, please refer to the htmlTagPatterns attribute below
+			  as this is an easier way to create standard patterns. 
+			  To make an expression case insensitive add (?i) to the beginning
+			  of the expression.
+		  -->
+        <property name="contentTypePatterns">
+            <map>
+                <entry key="text/html">
+                    <list>
+                    	<value>(?i)\burl\((?!["'].)([^\)]*)\)</value>
+                    	<value>(?i)\burl\("([^"]*)"\)</value>
+                    	<value>(?i)\burl\('([^']*)'\)</value>         
+                    	                    
+                        <!--  
+                        <value>(?i)background-image\s*:\s+url\(([^\)]*)\)</value> 
+                        <value>(?i)background-image\s*:\s+url\('([^']*)'\)</value> 
+                        <value>(?i)background-image\s*:\s+url\("([^"]*)"\)</value>  
+                        <value>(?i)@import\s+url\("([^"]*)"\)</value>
+                        <value>(?i)@import\s+url\((?!")([^\)]*)\)</value>
+						 -->
+                        
+						<value>(?i)@import\s+"([^"]*)"</value>
+                      
+                        <!--  A:HREF -->
+                        <value>(?i)&lt;\s*A\s+[^&gt;]*\bHREF\s*=\s*"((?!javascript:)[^"]*)"</value>
+                        <value>(?i)&lt;\s*A\s+[^&gt;]*\bHREF\s*=\s*'((?!javascript:)[^']*)'</value>	
+                        <value>(?i)&lt;\s*a\s+[^&gt;]*\bhref=((?!javascript:)[^\t\n\x0B\f\r>\"']+)</value> 
+                        
+                        <!--  META URL --> 
+                        <value>(?i)&lt;\s*META\s+[^&gt;]*\bURL\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*META\s+[^&gt;]*\bURL\s*=\s*'([^']*)'</value>	
+                        <value>(?i)&lt;\s*META\s+[^&gt;]*\bURL=([^\t\n\x0B\f\r>\"']+)</value>                                                     
+
+                        <!--  OBJECT CODEBASE --> 
+                        <value>(?i)&lt;\s*OBJECT\s+[^&gt;]*\bCODEBASE\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*OBJECT\s+[^&gt;]*\bCODEBASE\s*=\s*'([^']*)'</value>	
+                        <value>(?i)&lt;\s*OBJECT\s+[^&gt;]*\bCODEBASE=([^\t\n\x0B\f\r>\"']+)</value>     
+                        
+                        <!--  OBJECT DATA --> 
+                        <value>(?i)&lt;\s*OBJECT\s+[^&gt;]*\bDATA\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*OBJECT\s+[^&gt;]*\bDATA\s*=\s*'([^']*)'</value>	
+                        <value>(?i)&lt;\s*OBJECT\s+[^&gt;]*\bDATA=([^\t\n\x0B\f\r>\"']+)</value>                                                                                                                            
+                        
+                        <!--  APPLET CODEBASE --> 
+                        <value>(?i)&lt;\s*APPLET\s+[^&gt;]*\bCODEBASE\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*APPLET\s+[^&gt;]*\bCODEBASE\s*=\s*'([^']*)'</value>	
+                        <value>(?i)&lt;\s*APPLET\s+[^&gt;]*\bCODEBASE=([^\t\n\x0B\f\r>\"']+)</value>                         
+                                                                       
+                        <!--  APPLET ARCHIVE --> 
+                        <value>(?i)&lt;\s*APPLET\s+[^&gt;]*\bARCHIVE\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*APPLET\s+[^&gt;]*\bARCHIVE\s*=\s*'([^']*)'</value>	
+                        
+                        <!--  BODY/TD BACKGROUND --> 
+                        <value>(?i)&lt;\s*(?:BODY|TD)\s+[^&gt;]*\bBACKGROUND\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*(?:BODY|TD)\s+[^&gt;]*\bBACKGROUND\s*=\s*'([^']*)'</value>	
+                        <value>(?i)&lt;\s*(?:BODY|TD)\s+[^&gt;]*\bBACKGROUND=(?!\\")([^\t\n\x0B\f\r&gt;"']+)</value>    
+                        
+                        <!--  Note that the following regular expressions are merged sets. They have proven
+                              to be slightly faster than specifying each one independently, and prevent a
+                              lot of duplication. -->
+                        
+                        <!-- Regular expression for HREFs attributes -->
+						<value>(?i)&lt;\s*(?:LINK|AREA)\s+[^&gt;]*\bHREF="([^"]*)"</value>
+                        <value>(?i)&lt;\s*(?:LINK|AREA)\s+[^&gt;]*\bHREF='([^']*)'</value>	
+                        <value>(?i)&lt;\s*(?:LINK|AREA)\s+[^&gt;]*\bHREF=([^\\t\\n\\x0B\\f\\r>\"']+)</value>  
+ 
+ 						<!--  Regular expressions for HREF attributes -->
+                        <value>(?i)&lt;\s*(?:IMG|FRAME|SCRIPT|EMBED|INPUT)\s+[^&gt;]*\bSRC\s*=\s*"([^"]*)"</value>
+                        <value>(?i)&lt;\s*(?:IMG|FRAME|SCRIPT|EMBED|INPUT)\s+[^&gt;]*\bSRC\s*=\s*'([^']*)'</value>	
+                        <value>(?i)&lt;\s*(?:IMG|FRAME|SCRIPT|EMBED|INPUT)\s+[^&gt;]*\bSRC=([^\t\n\x0B\f\r>\"']+)</value>   
+                                                
+                        <!--  Simple JavaScript replacement -->
+                        <value>window.location="([^"]*)";</value>
+                    </list>
+                </entry>
+                
+                <entry key="application/javascript">
+	                <list>
+	                        <!--  Simple JavaScript replacement -->
+	                        <value>window.location="([^"]*)";</value>
+	                </list>
+                </entry>
+                
+                <entry key="text/css">
+                    <list>
+                    	<value>(?i)\burl\((?!["'].)([^\)]*)\)</value>
+                    	<value>(?i)\burl\("([^"]*)"\)</value>
+                    	<value>(?i)\burl\('([^']*)'\)</value>                    	
+                    	
+                    	<!-- 
+                        <value>(?i)background-image\s*:\s+url\(([^\)]*)\)</value>
+                        <value>background:\s*url\(([^\)]*)\)</value>
+                        <value>background: transparent url\("([^\"]*)"\)</value>
+                        <value>background: transparent url\('([^\']*)'\)</value>
+                        <value>background: transparent url\((?!'|")([^\)]*)\)</value>                        
+                        <value>@import\s+url\("([^"]*)"\)</value>
+                        <value>@import\s+url\((?!")([^\)]*)\)</value>
+						 -->
+						 
+                    </list>
+                </entry>						
+            </map>
+        </property>
+        
+        
+        <property name="urlConversionReplacements">
+        	<list>
+        	  <!-- Include this Regex when using ModJK and spaces or other escaped characters are 
+        	       being unescaped by ModJK. This will result in Tomcat being passed a URL with
+        	       unescaped character, and the browse tool will fail to find the appropriate 
+        	       resource 
+        	       
+        	       Note this is now enabled/disabled depending on the value of the boolean property
+        	       "useUrlConversionReplacements"
+        		-->
+	        	<bean class="org.webcurator.ui.tools.controller.RegexReplacer">
+					<property name="search" value="%(\d\d)"/>
+					<property name="replace" value="%25$1"/>
+	        	</bean>
+        	</list>
+        </property>
+
+        <property name="useUrlConversionReplacements" value="${browse.double_escape}"/>
+        
+        <!--  A list of HTML tag/attribute patterns that should be used to
+		      replace content in resources with a content-type of text/html.
+		      Each pattern should be in the format TAG:ATTRIBUTE. These
+		      patterns are added to any text/html patterns defined above.
+		      
+		      NOTE: You should prefer additional regex patterns to using these
+		            patterns. Support for the htmlTagPatterns may be discontinued
+		            at a later date.
+		  -->
+        <property name="htmlTagPatterns">
+            <list>
+                <!--  Below is an example of the tag format. However, IMG:SRC is 
+                      already handled in the regular expression above. -->
+                <!--  <value>IMG:SRC</value> -->
+            </list>
+        </property>
+    </bean>	
+    
+</beans>
+
+

@@ -1,0 +1,23 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+  <jsp:directive.attribute name="date"
+                           type="java.util.Date"
+                           required="true"/>
+  <jsp:directive.attribute name="var"
+                           type="java.lang.String"
+                           required="false"/>
+<jsp:declaration>
+	java.text.SimpleDateFormat dateFormatter = new java.text.SimpleDateFormat("yyyy-MM-dd");
+</jsp:declaration>
+<jsp:scriptlet>
+try{
+	String str = dateFormatter.format(date);
+	if(var!=null){
+		request.setAttribute(var,str);
+	}else{
+		out.print(str);
+	}
+}catch(Exception e){
+	// Do nothing
+}
+</jsp:scriptlet>
+</jsp:root>
