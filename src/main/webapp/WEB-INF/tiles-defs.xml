@@ -604,6 +604,13 @@
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
+	<definition name="HibernateTestView" extends=".mainLayout">
+		<put name="title" value="WEB CURATOR TOOL" />
+		<put name="body" value="/jsp/hibernate-test.jsp" />
+		<put name="page-help"
+			 value="http://dia-nz.github.io/webcurator/" />
+	</definition>
+
 	<definition name="QaHomeView" extends=".mainLayout">
 		<put name="title" value="WEB CURATOR TOOL" />
 		<put name="body" value="/jsp/qa-home.jsp" />

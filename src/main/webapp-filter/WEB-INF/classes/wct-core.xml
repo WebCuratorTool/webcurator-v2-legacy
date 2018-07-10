@@ -199,6 +199,11 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
+
+	<bean id="hibernateTestDao" class="org.webcurator.domain.HibernateTestDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="txTemplate" ref="transactionTemplate"/>
+	</bean>
 	
 	<bean id="siteDao" class="org.webcurator.domain.SiteDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>

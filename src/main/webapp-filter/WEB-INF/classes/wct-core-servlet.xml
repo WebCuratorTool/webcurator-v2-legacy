@@ -99,6 +99,7 @@
 				<entry key="/curator/target/group-basic-credentials.html" value="basicCredentialsControllerGroup"/>
 				<entry key="/curator/target/group-form-credentials.html" value="formCredentialsControllerGroup"/>
 				<entry key="/curator/target/ti-harvest-now.html" value="assignToHarvesterController"/>
+				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 			</map>
 		</property>
 	</bean>
@@ -1048,8 +1049,13 @@
 		<property name="searchController" ref="groupSearchController"/>
 		<property name="messageSource" ref="messageSource"/>
 		<property name="authorityManager" ref="authorityManager"/>
-	</bean>	
-	
+	</bean>
+
+	<bean id="hibernateTestController" class="org.webcurator.ui.hibernate.HibernateTestController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
+	</bean>
+
 	<bean id="groupOverrideGetter" class="org.webcurator.ui.util.OverrideGetter"> 
 		<property name="overrideableType" value="Target Group"/>
 	</bean>
