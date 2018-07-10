@@ -14,6 +14,7 @@
 	</parent> -->
 
 	<properties>
+		<powermock.version>1.5.1</powermock.version>
 		<browse.double_escape>false</browse.double_escape>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -213,13 +214,6 @@
 				<configuration>
 					<warName>wct</warName>
 					<webResources>
-						<resource>
-							<!-- include the license file, as per the original build process -->
-							<directory>docs</directory>
-							<includes>
-								<include>license.txt</include>
-							</includes>
-						</resource>
 						<resource>
 							<!-- include the license file, as per the original build process -->
 							<directory>${basedir}/src/main/webapp-filter</directory>
@@ -851,7 +845,53 @@
 			<version>2.7.1</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
+		</dependency>
 	</dependencies>
 
+	<repositories>
+		<repository>
+			<id>maven-forgerock-org</id>
+			<name>maven-forgerock-org</name>
+			<url>http://maven.forgerock.org/repo/repo</url>
+		</repository>
+		<repository>
+			<id>builds-archive-org</id>
+			<name>builds-archive-org</name>
+			<url>http://builds.archive.org:8080/maven2</url>
+		</repository>
+		<repository>
+			<id>download-oracle-com</id>
+			<name>dow-oracle-com</name>
+			<url>http://download.oracle.com/maven</url>
+		</repository>
+		<repository>
+			<id>download-java-net</id>
+			<name>download-java-net</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+
+	</repositories>
 </project>
 
