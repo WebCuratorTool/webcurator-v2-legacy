@@ -21,10 +21,12 @@ local.properties
 .classpath
 
 wct-core/logs/
-wct-harvest-agent/logs/
+harvest-agent-h1/logs/
+harvest-agent-h3/logs/
 wct-store/logs/
 wct-core/target/
-wct-harvest-agent/target/
+harvest-agent-h1/target/
+harvest-agent-h3/target/
 wct-store/target/
 wct-submit-to-rosetta/target/
 wct-assembly/target/
