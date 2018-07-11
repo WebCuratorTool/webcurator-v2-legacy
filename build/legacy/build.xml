@@ -175,7 +175,6 @@
                 <include name="wct-browse-servlet.xml"/>
                 <include name="wct-core.xml"/>
                 <include name="wct-core.properties"/>
-                <include name="wct-core-report.xml"/>
                 <include name="wct-core-lists.xml"/>
                 <include name="log4j.xml"/>
                 <include name="messages*.properties"/>
@@ -202,7 +201,6 @@
                 <include name="wct-browse-servlet.xml"/>
                 <include name="wct-core.xml"/>
                 <include name="wct-core.properties"/>
-                <include name="wct-core-report.xml"/>
                 <include name="wct-core-lists.xml"/>
                 <include name="log4j.xml"/>
                 <include name="messages*.properties"/>

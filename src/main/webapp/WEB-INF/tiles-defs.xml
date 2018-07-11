@@ -700,36 +700,6 @@
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
-	<definition name="reporting-preview" extends=".reportLayout">
-		<put name="title" value="WEB CURATOR TOOL: Reporting Preview" />
-		<put name="body" value="/jsp/reporting-preview.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="reports" />
-		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="reporting-save" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Save Report" />
-		<put name="body" value="/jsp/reporting-save.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="reports" />
-		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="reporting-email" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: E-mail Report" />
-		<put name="body" value="/jsp/reporting-email.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="reports" />
-		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
 	<definition name="intray" extends=".mainLayoutNew">
 		<put name="title" value="In Tray" />
 		<put name="body" value="/jsp/intray.jsp" />

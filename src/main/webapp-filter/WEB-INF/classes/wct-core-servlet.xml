@@ -79,10 +79,6 @@
 				<entry key="/curator/target/show-hop-path.html" value="showHopPathController"></entry>
 				<entry key="/curator/target/permission-popup.html" value="permissionPopupController"/>
 				<entry key="/curator/intray/intray.html" value="inTrayController"/>
-				<entry key="/curator/report/report.html" value="reportController"/>
-				<entry key="/curator/report/report-preview.html" value="reportPreviewController"/>
-				<entry key="/curator/report/report-save.html" value="reportSaveController"/>
-				<entry key="/curator/report/report-email.html" value="reportEmailController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 			</map>
 		</property>
@@ -1238,49 +1234,6 @@
 		</property>
 	</bean>
 
-	<!-- Reporting -->
-	<bean id="reportController" class="org.webcurator.ui.report.controller.ReportController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="reportMngr">
-			<ref bean="reportMngr"/>
-		</property>
-		<property name="commandName" value="reportCommand"/>
-		<property name="commandClass" value="org.webcurator.ui.report.command.ReportCommand"/>
-		<property name="validator"> 
-			<bean class="org.webcurator.ui.report.validator.ReportValidator"/>
-		</property>
-	</bean>
-	
-	<bean id="reportPreviewController" class="org.webcurator.ui.report.controller.ReportPreviewController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="commandName" value="reportPreviewCommand"/>
-		<property name="commandClass" value="org.webcurator.ui.report.command.ReportPreviewCommand"/>
-	</bean>
-	
-	<bean id="reportSaveController" class="org.webcurator.ui.report.controller.ReportSaveController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="commandName" value="reportSaveCommand"/>
-		<property name="commandClass" value="org.webcurator.ui.report.command.ReportSaveCommand"/>
-	</bean>
-
-	<bean id="reportEmailController" class="org.webcurator.ui.report.controller.ReportEmailController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="commandName" value="reportEmailCommand"/>
-		<property name="commandClass" value="org.webcurator.ui.report.command.ReportEmailCommand"/>
-		<property name="mailServer">
-			<ref bean="mailServer"/>
-		</property>
-	</bean>
-
-	
 	<!--  Management Controllers -->
 	<bean id="managementController" class="org.webcurator.ui.management.controller.ManagementController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="supportedMethods">
