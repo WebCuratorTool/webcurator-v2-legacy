@@ -645,35 +645,6 @@
 		<property name="urlMap" value = "${harvestResourceUrlMapper.urlMap}"/>
 	</bean>
 
-	<bean id="qualityReviewToolController" class="org.webcurator.ui.tools.controller.QualityReviewToolController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET</value>
-		</property>
-		<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-		<property name="targetManager" ref="targetManager"/>
-		<property name="archiveUrl" value="${qualityReviewToolController.archiveUrl}"/>
-		<property name="archiveName" value="${qualityReviewToolController.archiveName}"/>
-		<property name="archiveUrlAlternative" value="${qualityReviewToolController.archive.alternative}"/>
-		<property name="archiveUrlAlternativeName" value="${qualityReviewToolController.archive.alternative.name}"/>
-		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
-		<property name="targetInstanceDao" ref="targetInstanceDao"/>
-		<property name="enableBrowseTool" value="${qualityReviewToolController.enableBrowseTool}"/>
-		<property name="enableAccessTool" value="${qualityReviewToolController.enableAccessTool}"/>
-		<property name="webArchiveTarget" value="${qualityReviewToolController.webArchiveTarget}"/>
-		
-	</bean>	
-	<bean id="showHopPathController" class="org.webcurator.ui.target.controller.ShowHopPathController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET</value>
-		</property>
-		<property name="harvestLogManager">
-			<ref bean="harvestLogManager"/>
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-	</bean>
-
 	<bean id="politePolitenessOptions" class="org.webcurator.core.profiles.PolitenessOptions" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- Delay Factor -->
 		<constructor-arg index = "0" type = "double" value = "10.0"/>

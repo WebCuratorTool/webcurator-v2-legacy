@@ -62,39 +62,23 @@ public interface Constants {
     String VIEW_QA_HOME = "QaHomeView";
     /** The target instance queue page */
     String VIEW_TARGET_INSTANCE_QUEUE = "TargetInstanceQueue";
-    /** The target instance QA summary page */
-    String VIEW_TARGET_INSTANCE_QA_SUMMARY = "TargetInstanceQaSummary";
     /** The target instance QA queue page */
     String VIEW_TARGET_INSTANCE_QA_QUEUE = "TargetInstanceQaQueue";
-    /** The target annotation history (via Ajax) page */
-    String VIEW_TARGET_ANNOTATION_HISTORY = "TargetAnnotationHistory";
     /** The Management tab **/
     String VIEW_MANAGEMENT = "management";
     /** The Management tab (when the QA Module is enabled) **/
     String VIEW_QA_MANAGEMENT = "Qamanagement";
-    /** The target instance annotation history (via Ajax) page */
-    String VIEW_TI_ANNOTATION_HISTORY = "TIAnnotationHistory";
-    /** The target instance page */
-    String VIEW_TARGET_INSTANCE = "target-instance";
     /** The logout page */
     String VIEW_LOGOUT = "Logout";
     /** The harvest target instance NOW page */
     String VIEW_HARVEST_NOW = "HarvestNow";
-    /** The log reader page */
-    String VIEW_LOG_READER = "LogReader";
-    /** The hop path reader page */
-    String HOP_PATH__READER = "HopPathReader";
-    /** The AQA reader page */
-    String VIEW_AQA_READER = "AQAReader";
     /** The password changed success view */
     String VIEW_PASSWORD_RESET_SUCCESS = "ResetPasswordSuccess";
     /** The site authorising agencies view */
     String VIEW_SITE_AGENCIES = "site-agencies";
     /** The site permissions view */
     String VIEW_SITE_PERMISSIONS = "site-permissions";
-    /** The edit schedules view */
-    String VIEW_EDIT_SCHEDULE = "schedule-edit";
-    
+
         
     // Controller names.
     /** the name of the controller for managing harvest agents. */

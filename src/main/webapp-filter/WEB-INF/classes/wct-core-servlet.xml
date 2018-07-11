@@ -54,15 +54,7 @@
 				<entry key="/curator/admin/change-password.html" value="changePasswordController"/>
 				<entry key="/curator/admin/management.html" value="managementController"/>
 				<entry key="/curator/admin/templates.html" value="templateController"/>
-				<entry key="/curator/target/show-hop-path.html" value="showHopPathController"></entry>
-				<entry key="/curator/target/permission-popup.html" value="permissionPopupController"/>
-				<entry key="/curator/target/quality-review-toc.html" value="qualityReviewToolController"/>
-				<entry key="/curator/target/deposit-form-envelope.html" value="customDepositFormController"/>
 				<entry key="/curator/target/queue.html" value="queueController"/>
-				<entry key="/curator/target/qatisummary.html" value="qaTiSummaryController"/>
-				<entry key="/curator/target/qa-indicator-report.html" value="qaIndicatorReportController"/>
-				<entry key="/curator/target/qa-indicator-robots-report.html" value="qaIndicatorRobotsReportController"/>
-				<entry key="/curator/target/annotation-ajax.html" value="annotationAjaxController"/>
 				<entry key="/curator/target/target-instance.html" value="tabbedTargetInstanceController"/>
 				<entry key="/curator/target/harvest-now.html" value="harvestNowController"/>
 				<entry key="/curator/target/target.html" value="targetController"/>
@@ -462,57 +454,6 @@
 	 		<ref bean="audit"/>
 	 	</property>
 	 </bean>
-	
-	<bean id="qaTiSummaryController" class="org.webcurator.ui.target.controller.QaTiSummaryController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceManager" ref="targetInstanceManager" />
-		<property name="harvestCoordinator" ref="harvestCoordinator"/>
-		<property name="environment" ref="environment"/>
-		<property name="agencyUserManager" ref="agencyUserManager"/>
-		<property name="profileManager" ref="profileManager"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="businessObjectFactory" ref="businessObjectFactory"/>
-		<property name="targetManager" ref="targetManager" />
-		<property name="messageSource" ref="messageSource" />
-		<property name="validator" ref="qaTiSummaryValidator"/>
-		<property name="digitalAssetStore"><ref bean="digitalAssetStore"></ref></property>
-	</bean>
-	
-	<bean id="qaIndicatorReportController" class="org.webcurator.ui.target.controller.QaIndicatorReportController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceManager" ref="targetInstanceManager" />
-		<property name="indicatorDAO" ref="indicatorDAO" />
-		<property name="agencyUserManager" ref="agencyUserManager"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="messageSource" ref="messageSource" />
-		<property name="excludedIndicators">
-			<map>
-				<!-- 
-					these indicators are excluded from the IndicatorReportLine report since they have
-					and alternative representation built by a seperate report
-					the indicator name is specified by the map key and the report for the indicator is the map value
-				-->
-				<entry key="Robots.txt entries disallowed" value="/curator/target/qa-indicator-robots-report.html" />
-			</map>
-		</property>
-	</bean>
-	
-	<bean id="qaIndicatorRobotsReportController" class="org.webcurator.ui.target.controller.QaIndicatorRobotsReportController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceManager" ref="targetInstanceManager" />
-		<property name="indicatorDAO" ref="indicatorDAO" />
-		<property name="agencyUserManager" ref="agencyUserManager"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="messageSource" ref="messageSource" />
-		<property name="qualityReviewFacade" ref="qualityReviewFacade" />
-		<property name="fileNotFoundMessage" value="robots.txt file not found" />
-	</bean>
-
-	<bean id="annotationAjaxController" class="org.webcurator.ui.target.controller.AnnotationAjaxController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager" />
-		</property>
-		<property name="targetManager">
-			<ref bean="targetManager" />
-		</property>
-	</bean>
  
     <bean id="roleController" class="org.webcurator.ui.admin.controller.RoleController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="supportedMethods">
@@ -714,8 +655,6 @@
 
 	<bean id="createFlagValidator" class="org.webcurator.ui.admin.validator.CreateFlagValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
 	
-	<bean id="qaTiSummaryValidator" class="org.webcurator.ui.target.validator.QaTiSummaryValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
-	
 	<bean id="harvestNowController" class="org.webcurator.ui.target.controller.HarvestNowController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="supportedMethods">
 			<value type="java.lang.String">POST</value>
@@ -740,11 +679,6 @@
 		<property name="targetDao" ref="targetDao"/>
 		<property name="agencyUserManager" ref="agencyUserManager"/>
 		<property name="commandClass" value="org.webcurator.ui.target.command.TargetSearchCommand"/>
-		<property name="targetManager" ref="targetManager"/>
-	</bean>
-	
-	<bean id="permissionPopupController" class="org.webcurator.ui.target.controller.PermissionPopupController">
-		<property name="commandClass" value="org.webcurator.ui.target.command.PermissionPopupCommand"/>
 		<property name="targetManager" ref="targetManager"/>
 	</bean>
 	
@@ -902,9 +836,7 @@
 		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
 	</bean>
 
-	<bean id="customDepositFormController" class="org.webcurator.ui.target.controller.CustomDepositFormController"/>
-
-	<!--  Profile Controller and Tab Configuration -->	
+	<!--  Profile Controller and Tab Configuration -->
 	<bean id="profileListController" class="org.webcurator.ui.profiles.controller.ProfileListController">
 		<property name="supportedMethods" value="GET,POST"/>
 		<property name="profileManager" ref="profileManager"/>
