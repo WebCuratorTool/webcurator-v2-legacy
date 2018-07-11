@@ -23,36 +23,24 @@
 		
 		<property name="mappings">
 			<map>
-				<entry key="/curator/site/site.html" value="siteController"></entry>
-				<entry key="/curator/site/search.html" value="siteSearchController"></entry>
-				<entry key="/curator/site/agencies.html" value="siteAgencyController"></entry>
-				<entry key="/curator/site/site-auth-agency-search.html" value="siteAgencySearchController"></entry>				
-				<entry key="/curator/site/permissions.html" value="sitePermissionController"></entry>
-				<entry key="/curator/site/transfer.html" value="transferSeedsController"/>
-				<entry key="/curator/site/generate.html" value="generatePermissionTemplateController"></entry>
-				<entry key="/curator/credentials/reset-password.html" value="resetPasswordController"></entry>
-				<entry key="/curator/target/quality-review-toc.html" value="qualityReviewToolController"/>
-				<entry key="/curator/target/deposit-form-envelope.html" value="customDepositFormController"/>
 				<entry key="/curator/logout.html" value="logoutController"/>
 				<entry key="/curator/home.html" value="homeController"/>
-				<entry key="/curator/target/queue.html" value="queueController"/>	
-				<entry key="/curator/target/qatisummary.html" value="qaTiSummaryController"/>
-				<entry key="/curator/target/qa-indicator-report.html" value="qaIndicatorReportController"/>
-				<entry key="/curator/target/qa-indicator-robots-report.html" value="qaIndicatorRobotsReportController"/>
-				<entry key="/curator/target/annotation-ajax.html" value="annotationAjaxController"/>
-				<entry key="/curator/target/target-instance.html" value="tabbedTargetInstanceController"/>
-				<entry key="/curator/target/harvest-now.html" value="harvestNowController"/>									
-				<entry key="/curator/target/target.html" value="targetController"/>
-				<entry key="/curator/target/search.html" value="targetSearchController"/>
-				<entry key="/curator/targets/add-parents.html" value="addParentsController"/>
-				<entry key="/curator/admin/role.html" value="roleController"/>
+				<entry key="/curator/credentials/reset-password.html" value="resetPasswordController"/>
+				<entry key="/curator/site/site.html" value="siteController"/>
+				<entry key="/curator/site/search.html" value="siteSearchController"/>
+				<entry key="/curator/site/agencies.html" value="siteAgencyController"/>
+				<entry key="/curator/site/site-auth-agency-search.html" value="siteAgencySearchController"/>
+				<entry key="/curator/site/permissions.html" value="sitePermissionController"/>
+				<entry key="/curator/site/transfer.html" value="transferSeedsController"/>
+				<entry key="/curator/site/generate.html" value="generatePermissionTemplateController"/>
 				<entry key="/curator/profiles/profiles.html" value="profileController"/>
 				<entry key="/curator/profiles/profilesH3.html" value="profileH3Controller"/>
 				<entry key="/curator/profiles/profiletargets.html" value="profileTargetsController"/>
 				<entry key="/curator/profiles/list.html" value="profileListController"/>
 				<entry key="/curator/profiles/view.html" value="profileViewController"/>
 				<entry key="/curator/profiles/delete.html" value="profileDeleteController"/>	
-				<entry key="/curator/profiles/make-default.html" value="makeDefaultProfileController"/>			
+				<entry key="/curator/profiles/make-default.html" value="makeDefaultProfileController"/>
+				<entry key="/curator/admin/role.html" value="roleController"/>
 				<entry key="/curator/admin/rejreason.html" value="rejReasonController"/>
 				<entry key="/curator/admin/create-rejreason.html" value="createRejReasonController"/>
 				<entry key="/curator/admin/qaindicators.html" value="qaIndicatorController"/>
@@ -73,6 +61,18 @@
                 <entry key="/curator/target/log-retriever.html" value="logRetrieverController"/>
 				<entry key="/curator/target/show-hop-path.html" value="showHopPathController"></entry>
 				<entry key="/curator/target/permission-popup.html" value="permissionPopupController"/>
+				<entry key="/curator/target/quality-review-toc.html" value="qualityReviewToolController"/>
+				<entry key="/curator/target/deposit-form-envelope.html" value="customDepositFormController"/>
+				<entry key="/curator/target/queue.html" value="queueController"/>
+				<entry key="/curator/target/qatisummary.html" value="qaTiSummaryController"/>
+				<entry key="/curator/target/qa-indicator-report.html" value="qaIndicatorReportController"/>
+				<entry key="/curator/target/qa-indicator-robots-report.html" value="qaIndicatorRobotsReportController"/>
+				<entry key="/curator/target/annotation-ajax.html" value="annotationAjaxController"/>
+				<entry key="/curator/target/target-instance.html" value="tabbedTargetInstanceController"/>
+				<entry key="/curator/target/harvest-now.html" value="harvestNowController"/>
+				<entry key="/curator/target/target.html" value="targetController"/>
+				<entry key="/curator/target/search.html" value="targetSearchController"/>
+				<entry key="/curator/targets/add-parents.html" value="addParentsController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 			</map>
 		</property>
