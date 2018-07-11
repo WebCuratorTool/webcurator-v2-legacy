@@ -37,7 +37,6 @@ import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.target.command.LogReaderCommand;
 import org.webcurator.ui.target.validator.LogReaderValidator;
-import org.webcurator.ui.tools.controller.TreeToolController.AQAElement;
 import org.xml.sax.SAXException;
 
 /**

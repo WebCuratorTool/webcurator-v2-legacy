@@ -56,10 +56,6 @@ public interface Constants {
     String VIEW_MNG_AGENTS = "ManageHarvestAgents";
     /** The name of the view agent details view. */
     String VIEW_AGENT = "HarvestAgentDetail";
-    /** the name of the manage bandwidth restrictions view. */
-    String VIEW_MNG_BANDWIDTH = "ManageBandwidth";
-    /** the name of the edit bandwidth restrictions view. */
-    String VIEW_EDIT_BANDWIDTH = "EditBandwidth";   
     /** the name of the reset password view */
     String VIEW_RESET_PWD = "ResetPassword";
     /** The generic message screen */

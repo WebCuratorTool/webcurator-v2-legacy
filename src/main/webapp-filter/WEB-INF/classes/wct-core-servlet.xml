@@ -30,11 +30,6 @@
 				<entry key="/curator/site/permissions.html" value="sitePermissionController"></entry>
 				<entry key="/curator/site/transfer.html" value="transferSeedsController"/>
 				<entry key="/curator/site/generate.html" value="generatePermissionTemplateController"></entry>
-				<entry key="/curator/agent/harvest-agent.html" value="manageHarvestAgentController"></entry>
-				<entry key="/curator/agent/bandwidth-restrictions.html" value="bandwidthRestrictionsController"></entry>				
-				<entry key="/curator/tools/treetool.html" value="treeToolController"></entry>
-				<entry key="/curator/tools/treetoolAJAX.html" value="treeToolControllerAJAX"></entry>
-				<entry key="/curator/tools/harvest-history.html" value="harvestHistoryController"></entry>
 				<entry key="/curator/credentials/reset-password.html" value="resetPasswordController"></entry>
 				<entry key="/curator/target/quality-review-toc.html" value="qualityReviewToolController"/>
 				<entry key="/curator/target/deposit-form-envelope.html" value="customDepositFormController"/>
@@ -78,7 +73,6 @@
                 <entry key="/curator/target/log-retriever.html" value="logRetrieverController"/>
 				<entry key="/curator/target/show-hop-path.html" value="showHopPathController"></entry>
 				<entry key="/curator/target/permission-popup.html" value="permissionPopupController"/>
-				<entry key="/curator/intray/intray.html" value="inTrayController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 			</map>
 		</property>
@@ -179,16 +173,6 @@
 	    <bean class="org.webcurator.ui.site.validator.TransferSeedsValidator"/>
 	  </property>  
 	</bean>
-
-
-	
-	<bean id="harvestHistoryController" class="org.webcurator.ui.tools.controller.HarvestHistoryController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods" value="GET,POST"/>
-		<property name="targetInstanceManager" ref="targetInstanceManager"/>
-	</bean>	
-	
-	
-
 
 	<bean id="siteTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="viewName" value="site"/>	
@@ -389,33 +373,8 @@
 		<property name="authorityManager" ref="authorityManager"/>
 		<property name="queueController" ref="queueController"/>
 		<property name="messageSource" ref="messageSource"/>
-	</bean>	
-	
-	<bean id="manageHarvestAgentController" class="org.webcurator.ui.agent.controller.ManageHarvestAgentController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="harvestCoordinator">
-			<ref bean="harvestCoordinator"/>
-		</property>
 	</bean>
-	<bean id="bandwidthRestrictionsController" class="org.webcurator.ui.agent.controller.BandwidthRestrictionsController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="harvestBandwidthManager">
-			<ref bean="harvestBandwidthManager"/>
-		</property>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="heatmapConfigDao" ref="heatmapConfigDao"/>
-		<property name="messageSource" ref="messageSource"/>
-		<property name="validator"> 
-			<ref bean="bandwidthRestrictionValidator"/>
-		</property>
-	</bean>
-	
-	<bean id="bandwidthRestrictionValidator" class="org.webcurator.ui.agent.validator.BandwidthRestrictionValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
-	
+
 	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
@@ -1224,15 +1183,6 @@
 			<ref bean="targetInstanceManager"/>
 		</property>
 	</bean>        
-
-	<bean name="inTrayController"
-		class="org.webcurator.ui.intray.controller.InTrayController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="inTrayManager">
-			<ref bean="inTrayManager"/>
-		</property>
-	</bean>
 
 	<!--  Management Controllers -->
 	<bean id="managementController" class="org.webcurator.ui.management.controller.ManagementController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">

@@ -225,11 +225,6 @@
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>	
 
-	<bean id="heatmapConfigDao" class="org.webcurator.domain.HeatmapDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>	
-	
 	<bean id="permissionTemplateDao" class="org.webcurator.domain.PermissionTemplateDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>
@@ -649,43 +644,6 @@
 	<bean id="harvestResourceUrlMapper" class="org.webcurator.ui.tools.controller.HarvestResourceUrlMapper">
 		<property name="urlMap" value = "${harvestResourceUrlMapper.urlMap}"/>
 	</bean>
-	
-	
-	<bean id="treeToolController" class="org.webcurator.ui.tools.controller.TreeToolController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="qualityReviewFacade">
-			<ref bean="qualityReviewFacade"/>
-		</property>
-		<property name="validator">
-			<bean class="org.webcurator.ui.tools.validator.TreeToolValidator"/>
-		</property>
-		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
-		<property name="enableAccessTool" value="${qualityReviewToolController.enableAccessTool}"/>
-		<property name="uploadedFilesDir" value="${digitalAssetStoreServer.uploadedFilesDir}"/>
-		<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
-		<property name="harvestLogManager">
-			<ref bean="harvestLogManager" />
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-	</bean>	
-	
-	<bean id="treeToolControllerAJAX" class="org.webcurator.ui.tools.controller.TreeToolControllerAJAX" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="qualityReviewFacade">
-			<ref bean="qualityReviewFacade"/>
-		</property>
-		<property name="validator">
-			<bean class="org.webcurator.ui.tools.validator.TreeToolValidator"/>
-		</property>
-		<property name="harvestResourceUrlMapper" ref="harvestResourceUrlMapper"/>
-		
-	</bean>	
 
 	<bean id="qualityReviewToolController" class="org.webcurator.ui.tools.controller.QualityReviewToolController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="supportedMethods">

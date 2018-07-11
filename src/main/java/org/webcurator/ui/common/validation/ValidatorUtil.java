@@ -40,7 +40,6 @@ import org.webcurator.core.util.ApplicationContextFactory;
 import org.webcurator.domain.HarvestCoordinatorDAO;
 import org.webcurator.domain.model.core.BandwidthRestriction;
 import org.webcurator.domain.model.core.TargetInstance;
-import org.webcurator.ui.agent.command.BandwidthRestrictionsCommand;
 
 /**
  * Utility class providing useful validation methods.
@@ -181,56 +180,6 @@ public final class ValidatorUtil {
             }
         }
     }    
-    
-    /**
-     * Helper method to validated that a start time is before and 
-     * not the same as an end time for a specified bandwidth restriction.
-     * @param aErrors the errors object to populate 
-     * @param aCmd the bandwidth restriction command
-     * @param aErrorCode the error code
-     * @param aValues the values to set in the error message
-     * @param aFailureMessage the default failure message
-     */
-    public static void validateNoBandwidthPeriodOverlaps(Errors aErrors, BandwidthRestrictionsCommand aCmd,  String aErrorCode, Object[] aValues, String aFailureMessage) {
-        if (aCmd != null && aCmd.getStart() != null && aCmd.getEnd() != null && aCmd.getDay() != null) {
-            ApplicationContext context = ApplicationContextFactory.getWebApplicationContext();
-            HarvestCoordinatorDAO hcDao = (HarvestCoordinatorDAO) context.getBean(Constants.BEAN_HARVEST_COORDINATOR_DAO);
-            HashMap<String, List<BandwidthRestriction>> allRestrictions = hcDao.getBandwidthRestrictions();
-            List restrictions = allRestrictions.get(aCmd.getDay());            
-            if (restrictions != null && !restrictions.isEmpty()) {
-                BandwidthRestriction newBr = new BandwidthRestriction();
-                newBr.setStartTime(aCmd.getStart());
-                newBr.setEndTime(aCmd.getEnd());
-                
-                BandwidthRestriction element = null;
-                Iterator it = restrictions.iterator();
-                while (it.hasNext()) {
-                    element = (BandwidthRestriction) it.next();
-                    if (aCmd.getOid() == null || !aCmd.getOid().equals(element.getOid())) {
-                        if (newBr.getStartTime().after(element.getStartTime()) && newBr.getStartTime().before(element.getEndTime())) {
-                            aErrors.reject(aErrorCode, aValues, aFailureMessage);
-                            return;
-                        }
-      
-                        if (newBr.getEndTime().after(element.getStartTime()) && newBr.getEndTime().before(element.getEndTime())) {
-                            aErrors.reject(aErrorCode, aValues, aFailureMessage);
-                            return;
-                        }
-                        
-                        if (newBr.getStartTime().equals(element.getStartTime()) || newBr.getStartTime().equals(element.getEndTime())) {
-                            aErrors.reject(aErrorCode, aValues, aFailureMessage);
-                            return;
-                        }
-                        
-                        if (newBr.getEndTime().equals(element.getStartTime()) && newBr.getEndTime().equals(element.getEndTime())) {
-                            aErrors.reject(aErrorCode, aValues, aFailureMessage);
-                            return;
-                        }
-                    }
-                }                 
-            }
-        }
-    }
     
     public static void validateIsDate(Errors errors, String aDate, String aDateFormat, String aErrorCode, Object[] aValues, String aDefaultMessage) {
     	DateFormat simpleDateFormat = new SimpleDateFormat(aDateFormat);

@@ -300,47 +300,6 @@
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
-	<!-- Manage Harvest Agents Views -->
-	<definition name="ManageHarvestAgents" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Manage Harvest Agents" />
-		<put name="body" value="/jsp/harvest-agents.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="HarvestAgentDetail" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Agent Detail" />
-		<put name="body" value="/jsp/harvest-agent-detail.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="ManageBandwidth" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Manage Bandwidth Restrictions" />
-		<put name="body" value="/jsp/bandwidth.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="EditBandwidth" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Edit Bandwidth Restrictions" />
-		<put name="body" value="/jsp/bandwidth-edit.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
 	<definition name="TargetInstanceQueue" extends=".mainLayoutNew">
 		<put name="title" value="WEB CURATOR TOOL: Target Instances" />
 		<put name="body" value="/jsp/queue.jsp" />
@@ -474,32 +433,6 @@
 	<definition name="browse-tool-error" extends=".popup">
 		<put name="title" value="Browse Error" />
 		<put name="body" value="/jsp/browse-error.jsp" />
-	</definition>
-
-	<definition name="TreeTool" extends=".subTabbed">
-		<put name="title" value="Quality Review Tree Tool" />
-		<put name="body" value="/jsp/tree-tool.jsp" />
-		<put name="activeTab" value="instances" />
-		<put name="pageIcon" value="instances" />
-		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
-	</definition>
-
-	<definition name="TreeToolAJAX" extends=".ajax">
-		<put name="body" value="/jsp/tree-tool-AJAX.jsp" />
-	</definition>
-
-	<definition name="harvest-history" extends=".subTabbed">
-		<put name="title" value="Quality Review - Harvest History" />
-		<put name="body" value="/jsp/harvest-history.jsp" />
-		<put name="activeTab" value="instances" />
-		<put name="pageIcon" value="instances" />
-		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
 	<definition name="quality-review-toc" extends=".subTabbed">
@@ -696,36 +629,6 @@
 		<put name="activeTab" value="management" />
 		<put name="pageIcon" value="reports" />
 		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="intray" extends=".mainLayoutNew">
-		<put name="title" value="In Tray" />
-		<put name="body" value="/jsp/intray.jsp" />
-		<put name="activeTab" value="intray" />
-		<put name="pageIcon" value="intray" />
-		<put name="page-title" value="/jsp/layouts/page-title-intray.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="intray-notification" extends=".mainLayoutNew">
-		<put name="title" value="In Tray - View Notification" />
-		<put name="body" value="/jsp/view-notification.jsp" />
-		<put name="activeTab" value="intray" />
-		<put name="pageIcon" value="intray" />
-		<put name="page-title" value="/jsp/layouts/page-title-intray.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="intray-task" extends=".mainLayoutNew">
-		<put name="title" value="In Tray - View Task" />
-		<put name="body" value="/jsp/view-task.jsp" />
-		<put name="activeTab" value="intray" />
-		<put name="pageIcon" value="intray" />
-		<put name="page-title" value="/jsp/layouts/page-title-intray.jsp" />
 		<put name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
