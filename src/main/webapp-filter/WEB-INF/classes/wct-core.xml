@@ -641,18 +641,7 @@
 	
 	<bean id="dateUtils" class="org.webcurator.ui.util.DateUtils" factory-method="get"/>
 
-	<bean id="groupSearchController" class="org.webcurator.ui.groups.controller.GroupSearchController">
-	  <property name="targetManager" ref="targetManager"/>
-	  <property name="agencyUserManager" ref="agencyUserManager"/>
-	  <property name="messageSource" ref="messageSource"/>
-	  <property name="defaultSearchOnAgencyOnly" value="${groupSearchController.defaultSearchOnAgencyOnly}"/>
-	  <property name="groupTypesList" ref="groupTypesList"/>
-	  <property name="subGroupType" value="${groupTypes.subgroup}"/>
-	  <property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
-	</bean>
-	
-	 
-	<!--  	
+	<!--
 	HarvestResourceUrlMapper example urlMap with everything: 
 			http://www.wctTest.com?name={$HarvestResource.Name}&lenght={$HarvestResource.Length}&Oid={$HarvestResource.Oid}&Sc={$HarvestResource.StatusCode}&CreationDate={$HarvestResult.CreationDate,yyyyMMdd}&DerivedFrom={$HarvestResult.DerivedFrom}&HarvestNumber={$HarvestResult.HarvestNumber}&RsltOid={$HarvestResult.Oid}&ProvenanceNote={$HarvestResult.ProvenanceNote}&State={$HarvestResult.State}
 	-->

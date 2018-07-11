@@ -40,7 +40,6 @@ import org.webcurator.domain.model.core.Annotation;
 import org.webcurator.domain.model.core.Target;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.common.editor.CustomIntegerCollectionEditor;
-import org.webcurator.ui.groups.command.SearchCommand;
 import org.webcurator.ui.target.command.TargetSearchCommand;
 
 /**

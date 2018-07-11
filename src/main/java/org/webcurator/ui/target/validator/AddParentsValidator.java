@@ -17,7 +17,6 @@ package org.webcurator.ui.target.validator;
 
 import org.springframework.validation.Errors;
 import org.webcurator.ui.common.validation.AbstractBaseValidator;
-import org.webcurator.ui.groups.command.AddMembersCommand;
 import org.webcurator.ui.target.command.AddParentsCommand;
 
 /**

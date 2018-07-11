@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.webcurator.core.profiles.MockProfileManager;
 import org.webcurator.test.*;
 import org.webcurator.ui.common.Constants;
-import org.webcurator.ui.groups.command.DefaultCommand;
 import org.webcurator.ui.site.command.*;
 import org.webcurator.ui.site.validator.SiteValidator;
 import org.webcurator.auth.*;

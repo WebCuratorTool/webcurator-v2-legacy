@@ -15,12 +15,6 @@ import org.springframework.web.util.WebUtils;
 
 import org.webcurator.test.BaseWCTTest;
 import org.webcurator.ui.common.Constants;
-import org.webcurator.ui.groups.command.GeneralCommand;
-import org.webcurator.ui.groups.command.GroupAnnotationCommand;
-import org.webcurator.ui.groups.controller.GeneralHandler;
-import org.webcurator.ui.groups.controller.GroupAnnotationHandler;
-import org.webcurator.ui.groups.validator.GeneralValidator;
-import org.webcurator.ui.groups.validator.GroupAnnotationValidator;
 import org.webcurator.ui.site.SiteEditorContext;
 import org.webcurator.ui.site.command.*;
 import org.webcurator.ui.util.Tab;

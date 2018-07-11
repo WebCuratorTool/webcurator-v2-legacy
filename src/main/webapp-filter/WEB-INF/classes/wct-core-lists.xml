@@ -94,26 +94,6 @@
 		</constructor-arg>
 	</bean>
 
-
-	<bean id="groupTypesList" class="org.webcurator.core.common.WCTTreeSet"
-		abstract="false" singleton="true" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<constructor-arg index="0" type="java.util.List">
-			<list>
-				<value></value>
-				<value>Collection</value>
-				<value>Subject</value>
-				<value>Thematic</value>
-				<value>Event</value>
-				<value>Functional</value>
-				<value>${groupTypes.subgroup}</value>
-			</list>
-		</constructor-arg>
-		<constructor-arg index="1" type="int">
-			<value>50</value>
-		</constructor-arg>
-	</bean>
-
 	<bean id="subGroupParentTypesList" class="org.webcurator.core.common.WCTTreeSet"
 		abstract="false" singleton="true" lazy-init="default" autowire="default"
 		dependency-check="default">

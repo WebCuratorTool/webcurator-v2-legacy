@@ -31,7 +31,6 @@ import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
 import org.webcurator.test.BaseWCTTest;
-import org.webcurator.ui.groups.command.SearchCommand;
 import org.webcurator.ui.target.command.TargetInstanceCommand;
 import org.webcurator.ui.util.DateUtils;
 
@@ -80,23 +79,6 @@ public class HarvestNowControllerTest extends BaseWCTTest<HarvestNowController> 
 		testInstance.setMessageSource(new MockMessageSource());
 	}
 	
-	@Test
-	public final void testShowForm() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		
-		BindException aErrors = new BindException(new SearchCommand(), null);
-		
-		try
-		{
-			assertNull(testInstance.showForm(request, response, aErrors));
-		}
-		catch(Exception e)
-		{
-			fail(e.getMessage());
-		}
-	}
-
 	@Test
 	public final void testProcessFormSubmission() throws Exception {
 

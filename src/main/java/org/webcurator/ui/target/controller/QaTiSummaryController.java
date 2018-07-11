@@ -316,7 +316,7 @@ public class QaTiSummaryController extends AbstractFormController {
         	scheduleCommands.put(schedule.getOid(), scheduleCommand);
         	
         	// get the month options
-        	scheduleMonthOptions.put(schedule.getOid(), EditScheduleController.getMonthOptionsByType(scheduleCommand.getScheduleType()));
+        	//scheduleMonthOptions.put(schedule.getOid(), EditScheduleController.getMonthOptionsByType(scheduleCommand.getScheduleType()));
         	
         	// if the schedule has changed then note this so that the action buttons can be enabled/disabled in the ui
         	if (!scheduleHasChanged && (!schedule.getCronPattern().equals(scheduleCommand.getCronExpression())

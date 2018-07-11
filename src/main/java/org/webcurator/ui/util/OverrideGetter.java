@@ -21,8 +21,6 @@ import org.webcurator.core.exceptions.WCTRuntimeException;
 import org.webcurator.domain.model.core.Overrideable;
 import org.webcurator.domain.model.core.TargetGroup;
 import org.webcurator.domain.model.core.TargetInstance;
-import org.webcurator.ui.groups.GroupsEditorContext;
-import org.webcurator.ui.groups.controller.TabbedGroupController;
 import org.webcurator.ui.target.TargetEditorContext;
 import org.webcurator.ui.target.command.TargetInstanceCommand;
 import org.webcurator.ui.target.controller.TabbedTargetController;
@@ -37,8 +35,6 @@ public class OverrideGetter {
 	public static final String TYPE_TARGET = "Target";
 	/** The name of the Target Instance Overridable type. */
 	public static final String TYPE_TARGET_INSTANCE = "Target Instance";
-	/** The name of the Target Group Overridable type. */
-	public static final String TYPE_TARGET_GROUP = "Target Group";
 	/** The type of overridable object for this getter to return. */
 	private String OverrideableType; 
 	
@@ -68,13 +64,6 @@ public class OverrideGetter {
 			}
 			
 			o = ti;
-		}
-		else if (OverrideableType.trim().equals(TYPE_TARGET_GROUP)) {
-			TargetGroup tg = ((GroupsEditorContext) aReq.getSession().getAttribute(TabbedGroupController.EDITOR_CONTEXT)).getTargetGroup();
-			if(tg == null) {
-				throw new IllegalStateException("TargetGroup not yet bound to the session");
-			}
-			o = tg;
 		}
 		else {
 			throw new WCTRuntimeException("An unknown overrideable type was provided " + OverrideableType);
@@ -109,15 +98,7 @@ public class OverrideGetter {
 									
 			return editMode.booleanValue();
 		}
-		else if (OverrideableType.trim().equals(TYPE_TARGET_GROUP)) {
-			GroupsEditorContext ctx = (GroupsEditorContext) aReq.getSession().getAttribute(TabbedGroupController.EDITOR_CONTEXT);					
-			if(ctx == null) {
-				return false;
-			}
-			
-			return ctx.isEditMode();
-		}
-		
+
 		return false;
 	}
 	

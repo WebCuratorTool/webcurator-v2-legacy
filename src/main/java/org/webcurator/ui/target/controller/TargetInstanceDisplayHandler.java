@@ -34,7 +34,6 @@ import org.webcurator.domain.model.core.Annotation;
 import org.webcurator.domain.model.core.TargetGroup;
 import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.ui.common.Constants;
-import org.webcurator.ui.groups.command.GroupAnnotationCommand;
 import org.webcurator.ui.target.command.TargetInstanceCommand;
 import org.webcurator.ui.target.command.TargetInstanceProfileCommand;
 import org.webcurator.ui.util.DateUtils;

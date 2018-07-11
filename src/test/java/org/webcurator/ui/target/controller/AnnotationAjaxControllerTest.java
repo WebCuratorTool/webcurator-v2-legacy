@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.webcurator.test.BaseWCTTest;
 import org.webcurator.ui.admin.command.CreateUserCommand;
 import org.webcurator.ui.common.Constants;
-import org.webcurator.ui.groups.command.SearchCommand;
 import org.webcurator.ui.target.command.TargetInstanceCommand;
 import org.webcurator.ui.util.DateUtils;
 import org.webcurator.core.common.*;
