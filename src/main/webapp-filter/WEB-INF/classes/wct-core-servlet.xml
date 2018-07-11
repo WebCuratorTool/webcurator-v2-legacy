@@ -55,8 +55,6 @@
 				<entry key="/curator/admin/management.html" value="managementController"/>
 				<entry key="/curator/admin/templates.html" value="templateController"/>
 				<entry key="/curator/target/queue.html" value="queueController"/>
-				<entry key="/curator/target/target-instance.html" value="tabbedTargetInstanceController"/>
-				<entry key="/curator/target/harvest-now.html" value="harvestNowController"/>
 				<entry key="/curator/target/target.html" value="targetController"/>
 				<entry key="/curator/target/search.html" value="targetSearchController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
@@ -228,137 +226,6 @@
 
 	<bean id="targetInstanceOverrideGetter" class="org.webcurator.ui.util.OverrideGetter"> 
 		<property name="overrideableType" value="Target Instance"/>
-	</bean>
-	
-	<bean id="targetInstanceTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="viewName" value="targetInstance"/>
-		<property name="tabs">
-			<list>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="GENERAL" />
-					<property name="title" value="general" />
-					<property name="jsp" value="../target-instance-general.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-					<property name="validator">
-						<bean class="org.webcurator.ui.target.validator.TargetInstanceValidator"/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceGeneralHandler">
-							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
-							<property name="agencyUserManager"><ref bean="agencyUserManager"/></property>
-							<property name="authorityManager"><ref bean="authorityManager"/></property>
-							<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
-							<property name="enableQaModule">
-								<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
-							</property>	
-						</bean>
-					</property>
-				</bean>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="PROFILE" />
-					<property name="title" value="profile" />
-					<property name="jsp" value="../target-profile.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceProfileCommand"/>
-					<property name="validator">
-						<bean id="tiProfileOverridesValidator" class="org.webcurator.ui.target.validator.ProfilesOverridesValidator" ></bean>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceProfileHandler">
-							<property name="profileManager" ref="profileManager"/>
-							<property name="overrideGetter" ref="targetInstanceOverrideGetter"/>
-							<property name="credentialUrlPrefix" value="ti" />
-						</bean>
-					</property>					
-				</bean>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="STATE" />
-					<property name="title" value="harvest-state" />
-					<property name="jsp" value="../target-instance-state.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-					<property name="validator">
-						<null/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceStateHandler">
-							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
-						</bean>
-					</property>
-				</bean>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="LOGS" />
-					<property name="title" value="logs" />
-					<property name="jsp" value="../target-instance-logs.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-					<property name="validator">
-						<null/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceLogsHandler">
-							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
-						</bean>
-					</property>
-				</bean>				
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="RESULTS" />
-					<property name="title" value="harvest" />
-					<property name="jsp" value="../target-instance-results.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-					<property name="validator">
-						<null/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceResultHandler">
-							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-							<property name="harvestCoordinator"><ref bean="harvestCoordinator"/></property>
-							<property name="digitalAssetStore"><ref bean="digitalAssetStore"></ref></property>
-							<property name="agencyUserManager"><ref bean="agencyUserManager"></ref></property>
-						</bean>
-					</property>
-				</bean>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="ANNOTATIONS" />
-					<property name="title" value="annotations" />
-					<property name="jsp" value="../target-instance-annotations.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-					<property name="validator">
-						<bean class="org.webcurator.ui.target.validator.TargetInstanceValidator"/>
-					</property>					
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceAnnotationHandler">
-							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-						</bean>
-					</property>
-				</bean>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="DISPLAY" />
-					<property name="title" value="display" />
-					<property name="jsp" value="../target-instance-display.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-					<property name="validator">
-						<bean class="org.webcurator.ui.target.validator.TargetInstanceValidator"/>
-					</property>					
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.target.controller.TargetInstanceDisplayHandler">
-							<property name="targetInstanceManager"><ref bean="targetInstanceManager"/></property>
-						</bean>
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="tabbedTargetInstanceController" class="org.webcurator.ui.target.controller.TabbedTargetInstanceController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods" value="GET,POST"/>
-		<property name="tabConfig" ref="targetInstanceTabConfig"/> 
-		<property name="defaultCommandClass" value="org.webcurator.ui.target.command.TargetInstanceCommand"/>
-		<property name="targetInstanceManager" ref="targetInstanceManager"/>
-		<property name="harvestCoordinator" ref="harvestCoordinator"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="queueController" ref="queueController"/>
-		<property name="messageSource" ref="messageSource"/>
 	</bean>
 
 	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
@@ -654,26 +521,6 @@
 	<bean id="createQaIndicatorValidator" class="org.webcurator.ui.admin.validator.CreateQaIndicatorValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
 
 	<bean id="createFlagValidator" class="org.webcurator.ui.admin.validator.CreateFlagValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
-	
-	<bean id="harvestNowController" class="org.webcurator.ui.target.controller.HarvestNowController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">POST</value>
-		</property>
-		<property name="harvestCoordinator">
-			<ref bean="harvestCoordinator" />
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-		<property name="validator"> 
-			<ref bean="harvestNowValidator"/>
-		</property>
-		<property name="messageSource">
-		 <ref bean="messageSource"/>
-		 </property>
-	</bean>
-	
-	<bean id="harvestNowValidator" class="org.webcurator.ui.target.validator.HarvestNowValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
 
 	<bean id="targetSearchController" class="org.webcurator.ui.target.controller.TargetSearchController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="targetDao" ref="targetDao"/>

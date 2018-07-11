@@ -37,7 +37,6 @@ import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.domain.model.dto.ProfileDTO;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.target.command.ProfileCommand;
-import org.webcurator.ui.target.command.TargetInstanceProfileCommand;
 import org.webcurator.ui.util.OverrideGetter;
 import org.webcurator.ui.util.Tab;
 import org.webcurator.ui.util.TabHandler;
@@ -94,22 +93,12 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 	public ProfileCommand buildCommand(Overrideable o) {
 		ProfileCommand command = null;
 		
-		if(o instanceof TargetInstance) {
-			command = new TargetInstanceProfileCommand();
-			TargetInstanceProfileCommand tiCommand = (TargetInstanceProfileCommand) command; 
-			TargetInstance ti = (TargetInstance) o;
-			
-			tiCommand.setOverrideTarget(ti.getOverrides() != null);
-			command.setFromOverrides(ti.getProfileOverrides());
+		command = new ProfileCommand();
+		if(o.getProfile()!=null) {
+			command.setProfileOid(o.getProfile().getOid());
+			command.setFromOverrides(o.getProfileOverrides());
 		}
-		else {
-			command = new ProfileCommand();
-			if(o.getProfile()!=null) {
-				command.setProfileOid(o.getProfile().getOid());
-				command.setFromOverrides(o.getProfileOverrides());
-			}
-		}
-		
+
 		// Prepare the overrides.
 		
 		

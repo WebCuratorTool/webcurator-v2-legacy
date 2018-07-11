@@ -302,17 +302,6 @@
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
-	<definition name="HarvestNow" extends=".subTabbed">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Now" />
-		<put name="body" value="/jsp/harvest-now.jsp" />
-		<put name="activeTab" value="instances" />
-		<put name="pageIcon" value="instances" />
-		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
-	</definition>
-
 	<definition name="MessageView" extends=".mainLayout">
 		<put name="title" value="Message" />
 		<put name="body" value="/jsp/message.jsp" />
