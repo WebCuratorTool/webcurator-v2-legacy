@@ -52,10 +52,6 @@ public interface Constants {
     public static final String AJAX_REQUEST_FOR_TARGET_ANNOTATIONS = "ajax_target_annotations";
     
     // View names.
-    /** the name of the manage harvest agents view. */
-    String VIEW_MNG_AGENTS = "ManageHarvestAgents";
-    /** The name of the view agent details view. */
-    String VIEW_AGENT = "HarvestAgentDetail";
     /** the name of the reset password view */
     String VIEW_RESET_PWD = "ResetPassword";
     /** The generic message screen */

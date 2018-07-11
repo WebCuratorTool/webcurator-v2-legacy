@@ -54,11 +54,6 @@
 				<entry key="/curator/admin/change-password.html" value="changePasswordController"/>
 				<entry key="/curator/admin/management.html" value="managementController"/>
 				<entry key="/curator/admin/templates.html" value="templateController"/>
-				<entry key="/curator/target/log-viewer.html" value="logReaderController"/>
-				<entry key="/curator/target/content-viewer.html" value="contentReaderController"/>
-				<entry key="/curator/target/live-content-retriever.html" value="liveContentRetrieverController"/>
-				<entry key="/curator/target/aqa-viewer.html" value="aqaReaderController"/>
-                <entry key="/curator/target/log-retriever.html" value="logRetrieverController"/>
 				<entry key="/curator/target/show-hop-path.html" value="showHopPathController"></entry>
 				<entry key="/curator/target/permission-popup.html" value="permissionPopupController"/>
 				<entry key="/curator/target/quality-review-toc.html" value="qualityReviewToolController"/>
@@ -72,7 +67,6 @@
 				<entry key="/curator/target/harvest-now.html" value="harvestNowController"/>
 				<entry key="/curator/target/target.html" value="targetController"/>
 				<entry key="/curator/target/search.html" value="targetSearchController"/>
-				<entry key="/curator/targets/add-parents.html" value="addParentsController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 			</map>
 		</property>
@@ -909,17 +903,6 @@
 	</bean>
 
 	<bean id="customDepositFormController" class="org.webcurator.ui.target.controller.CustomDepositFormController"/>
-	
-	<bean id="addParentsController" class="org.webcurator.ui.target.controller.AddParentsController">
-	  <property name="targetManager" ref="targetManager"/>
-	  <property name="targetController" ref="targetController"/>
-	  <property name="authorityManager" ref="authorityManager"/>
-      <property name="subGroupSeparator" value="${groupTypes.subgroupSeparator}"/>
-	  <property name="validator"> 
-	  	<bean name="addParentsValidator" class="org.webcurator.ui.target.validator.AddParentsValidator"></bean>
-	  </property>
-	</bean>
-
 
 	<!--  Profile Controller and Tab Configuration -->	
 	<bean id="profileListController" class="org.webcurator.ui.profiles.controller.ProfileListController">
@@ -1129,60 +1112,6 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean name="logReaderController"
-		class="org.webcurator.ui.target.controller.LogReaderController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="harvestCoordinator">
-			<ref bean="harvestCoordinator"/>
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-	</bean>
-        
-	<bean name="contentReaderController"
-		class="org.webcurator.ui.target.controller.ContentReaderController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="harvestLogManager">
-			<ref bean="harvestLogManager"/>
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-	</bean>
-        
-	<bean name="aqaReaderController"
-		class="org.webcurator.ui.target.controller.AQAReaderController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="harvestCoordinator">
-			<ref bean="harvestCoordinator"/>
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-	</bean>
-	
-	<bean name="liveContentRetrieverController"
-		class="org.webcurator.ui.target.controller.LiveContentRetrieverController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-	</bean>
-        
-	<bean name="logRetrieverController"
-		class="org.webcurator.ui.target.controller.LogRetrieverController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="harvestLogManager">
-			<ref bean="harvestLogManager"/>
-		</property>
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"/>
-		</property>
-	</bean>        
 
 	<!--  Management Controllers -->
 	<bean id="managementController" class="org.webcurator.ui.management.controller.ManagementController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">

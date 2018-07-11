@@ -219,18 +219,6 @@
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
 	</definition>
 
-	<definition name="target-add-parents" extends=".subTabbed">
-		<put name="title" value="WEB CURATOR TOOL: Targets" />
-		<put name="controller" value="curator/target/target.html" />
-		<put name="body" value="/jsp/target-add-parents.jsp" />
-		<put name="activeTab" value="targets" />
-		<put name="pageIcon" value="targets" />
-		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
-	</definition>
-
 	<definition name="profile-view" extends=".popup">
 		<put name="title" value="View Profile" />
 		<put name="body" value="/jsp/profile-view.jsp" />
@@ -377,19 +365,9 @@
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
 	</definition>
 
-	<definition name="LogReader" extends=".popup">
-		<put name="title" value="Log Viewer" />
-		<put name="body" value="/jsp/log-reader.jsp" />
-	</definition>
-
 	<definition name="HopPathReader" extends=".popup">
 		<put name="title" value="Hop path Viewer" />
 		<put name="body" value="/jsp/hop-path-reader.jsp" />
-	</definition>
-
-	<definition name="AQAReader" extends=".popup">
-		<put name="title" value="AQA Viewer" />
-		<put name="body" value="/jsp/aqa-reader.jsp" />
 	</definition>
 
 	<definition name="MessageView" extends=".mainLayout">
