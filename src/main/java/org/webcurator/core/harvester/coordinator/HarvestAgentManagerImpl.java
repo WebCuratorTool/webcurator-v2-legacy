@@ -16,7 +16,6 @@ import org.webcurator.core.common.Environment;
 import org.webcurator.core.common.EnvironmentFactory;
 import org.webcurator.core.harvester.agent.HarvestAgent;
 import org.webcurator.core.harvester.agent.HarvestAgentConfig;
-import org.webcurator.core.harvester.agent.HarvestAgentFactory;
 import org.webcurator.core.harvester.agent.HarvestAgentSOAPClient;
 import org.webcurator.core.reader.LogReader;
 import org.webcurator.core.scheduler.TargetInstanceManager;
@@ -34,7 +33,6 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private TargetInstanceDAO targetInstanceDao;
 	private TargetInstanceManager targetInstanceManager;
-	private HarvestAgentFactory harvestAgentFactory;
 
 	@Override
 	public void heartbeat(HarvestAgentStatusDTO aStatus) {
@@ -122,13 +120,6 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 		String state = ti.getState();
 		if (state.equals(TargetInstance.STATE_RUNNING)) {
 			ti.setState(TargetInstance.STATE_ABORTED);
-			HarvestAgentStatusDTO hs = getHarvestAgentStatusFor(ti.getJobName());
-			if (hs == null) {
-				log.warn("Forced Abort Failed. Failed to find the Harvest Agent for the Job {}.", ti.getJobName());
-			} else {
-				HarvestAgent agent = harvestAgentFactory.getHarvestAgent(hs.getHost(), hs.getPort(), hs.getService());
-				agent.abort(ti.getJobName());
-			}
 		}
 	}
 
@@ -198,8 +189,6 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 					aTargetInstance.getJobName());
 			return;
 		}
-		HarvestAgent agent = harvestAgentFactory.getHarvestAgent(status.getHost(), status.getPort(), status.getService());
-		agent.updateProfileOverrides(aTargetInstance.getJobName(), profileString);
 	}
 
 	@Override
@@ -211,14 +200,10 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 			return;
 		}
 
-		HarvestAgent agent = harvestAgentFactory.getHarvestAgent(status.getHost(), status.getPort(), status.getService());
-
 		// Update the state of the allocated Target Instance
 		aTargetInstance.setState(TargetInstance.STATE_PAUSED);
 		// Note that resume uses a different method to save the target instance!
 		targetInstanceDao.save(aTargetInstance);
-
-		agent.pause(jobName);
 	}
 
 	@Override
@@ -228,14 +213,12 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 			log.warn("RESUME Failed. Failed to find the Harvest Agent for the Job {}.", aTargetInstance.getJobName());
 			return;
 		}
-		HarvestAgent agent = harvestAgentFactory.getHarvestAgent(status.getHost(), status.getPort(), status.getService());
 
 		// Update the state of the allocated Target Instance
 		aTargetInstance.setState(TargetInstance.STATE_RUNNING);
 		// Note that pause uses a different method to save the target instance!
 		targetInstanceManager.save(aTargetInstance);
 
-		agent.resume(aTargetInstance.getJobName());
 	}
 
 	@Override
@@ -245,17 +228,6 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 		targetInstanceDao.save(aTargetInstance);
 
 		HarvestAgentStatusDTO status = getHarvestAgentStatusFor(aTargetInstance.getJobName());
-		if (status == null) {
-			log.warn("ABORT Failed. Failed to find the Harvest Agent for the Job {}.", aTargetInstance.getJobName());
-		} else {
-			HarvestAgent agent = harvestAgentFactory.getHarvestAgent(status.getHost(), status.getPort(), status.getService());
-			try {
-				agent.abort(aTargetInstance.getJobName());
-			} catch (RuntimeException e) {
-				log.warn("ABORT Failed. Failed Abort the Job {} on the Harvest Agent {}.", aTargetInstance.getJobName(),
-						agent.getName());
-			}
-		}
 	}
 
 	@Override
@@ -265,29 +237,17 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 			log.warn("STOP Failed. Failed to find the Harvest Agent for the Job {}.", aTargetInstance.getJobName());
 			return;
 		}
-		HarvestAgent agent = harvestAgentFactory.getHarvestAgent(status.getHost(), status.getPort(), status.getService());
 
-		agent.stop(aTargetInstance.getJobName());
 	}
 
 	@Override
 	public void pauseAll() {
-		for (HarvestAgentStatusDTO agentDTO : harvestAgents.values()) {
-			if (agentDTO.getHarvesterStatus() != null && !agentDTO.getHarvesterStatus().isEmpty()) {
-				HarvestAgent agent = harvestAgentFactory.getHarvestAgent(agentDTO.getHost(), agentDTO.getPort(), agentDTO.getService());
-				agent.pauseAll();
-			}
-		}
+
 	}
 
 	@Override
 	public void resumeAll() {
-		for (HarvestAgentStatusDTO agentDTO : harvestAgents.values()) {
-			if (agentDTO.getHarvesterStatus() != null && !agentDTO.getHarvesterStatus().isEmpty()) {
-				HarvestAgent agent = harvestAgentFactory.getHarvestAgent(agentDTO.getHost(), agentDTO.getPort(), agentDTO.getService());
-				agent.resumeAll();
-			}
-		}
+
 	}
 
 	@Override
@@ -299,8 +259,7 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 			return null;
 		}
 
-		LogReader logReader = harvestAgentFactory.getLogReader(status.getHost(), status.getPort(), status.getLogReaderService());
-		return logReader;
+		return null;
 	}
 
 	@Override
@@ -329,13 +288,11 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 	public void restrictBandwidthFor(TargetInstance targetInstance) {
 		HarvestAgentStatusDTO ha = getHarvestAgentStatusFor(targetInstance.getJobName());
 		if (ha != null) {
-			HarvestAgent agent = harvestAgentFactory.getHarvestAgent(ha.getHost(), ha.getPort(), ha.getService());
 			Long allocated = targetInstance.getAllocatedBandwidth();
 			if (allocated == null || targetInstance.getAllocatedBandwidth().intValue() <= 0) {
 				// zero signifies unlimited bandwidth, prevent this
 				targetInstance.setAllocatedBandwidth(new Long(1));
 			}
-			agent.restrictBandwidth(targetInstance.getJobName(), targetInstance.getAllocatedBandwidth().intValue());
 			targetInstanceDao.save(targetInstance);
 		}
 	}
@@ -360,14 +317,12 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 	@Override
 	public void initiateHarvest(HarvestAgentStatusDTO aHarvestAgent, TargetInstance aTargetInstance, String profile,
 			String seedsString) {
-		HarvestAgent agent = harvestAgentFactory.getHarvestAgent(aHarvestAgent.getHost(), aHarvestAgent.getPort(), aHarvestAgent.getService());
-		agent.initiateHarvest(aTargetInstance.getJobName(), profile, seedsString);
+
 	}
 
 	@Override
 	public void recoverHarvests(String haHost, int haPort, String haService, List<String> activeJobs){
-		HarvestAgent agent  = harvestAgentFactory.getHarvestAgent(haHost, haPort, haService);
-		agent.recoverHarvests(activeJobs);
+
 	}
 
 	@Override
@@ -389,24 +344,13 @@ public class HarvestAgentManagerImpl implements HarvestAgentManager {
 		this.targetInstanceManager = targetInstanceManager;
 	}
 
-	public void setHarvestAgentFactory(HarvestAgentFactory harvestAgentFactory) {
-		this.harvestAgentFactory = harvestAgentFactory;
-	}
-
 	public void setTargetInstanceDao(TargetInstanceDAO targetInstanceDao) {
 		this.targetInstanceDao = targetInstanceDao;
 	}
 
 	@Override
 	public void purgeAbortedTargetInstances(String[] tiNames) {
-		for(HarvestAgentStatusDTO statusDto:harvestAgents.values()) {
-			HarvestAgent ha = harvestAgentFactory.getHarvestAgent(statusDto.getHost(), statusDto.getPort(), statusDto.getService());
-			try {
-				ha.purgeAbortedTargetInstances(tiNames);
-			} catch (Exception e) {
-				log.error(MessageFormat.format("Failed to complete the purge of aborted ti data via HA: {0}", e.getMessage()), e);
-			}
-		}
+
 	}
 
 	@Override
