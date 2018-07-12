@@ -29,21 +29,14 @@ import org.webcurator.domain.model.dto.GroupMemberDTO;
  * 
  * @hibernate.joined-subclass table="TARGET_GROUP" lazy="true"
  * @hibernate.joined-subclass-key column="TG_AT_OID"
- * @hibernate.query name="org.webcurator.domain.model.core.TargetGroup.getGroupDTOsByNameAndType" query="SELECT new org.webcurator.domain.model.dto.AbstractTargetDTO(t.oid, t.name, t.owner.oid, t.owner.username, t.owner.agency.name, t.state, t.profile.oid, t.objectType, t.type) FROM TargetGroup t where lower(t.name) like lower(:name) and t.type IN (:types) ORDER BY UPPER(t.name), t.type"
- * @hibernate.query name="org.webcurator.domain.model.core.TargetGroup.cntGroupDTOsByNameAndType" query="SELECT count(*) FROM TargetGroup t where lower(t.name) like lower(:name) and t.type IN (:types)"
- * 
+ *
  */
 		 
 public class TargetGroup extends AbstractTarget {
 	
 	/** The maximum length of the type field. */
 	public static final int MAX_TYPE_LENGTH = 255;
-	
-	/** Query identifier for retrieving Group DTOs by name */
-	public static final String QUERY_GROUP_DTOS_BY_NAME_AND_TYPE = "org.webcurator.domain.model.core.TargetGroup.getGroupDTOsByNameAndType";
-	public static final String QUERY_CNT_GROUP_DTOS_BY_NAME_AND_TYPE = "org.webcurator.domain.model.core.TargetGroup.cntGroupDTOsByNameAndType";	
-	
-	
+
 	/** The TargetGroup is Active - at least one child can be scheduled */
 	public static final int STATE_ACTIVE = 9;
 	/** The TargetGroup is inactive - the TargetGroup has reached its end date or all of its children have reached their end dates */

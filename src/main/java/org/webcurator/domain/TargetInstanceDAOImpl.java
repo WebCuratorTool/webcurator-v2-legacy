@@ -703,7 +703,7 @@ public class TargetInstanceDAOImpl extends HibernateDaoSupport implements Target
 								log.debug("ati.getTarget().getOwner()==null for targetInstance "+ati.getOid());
 							}
 						}
-						Hibernate.initialize(ati.getTarget().getProfile());
+
 						Hibernate.initialize(ati.getTarget().getOverrides());
 						if(ati.getTarget().getOverrides() != null)
 						{

@@ -123,14 +123,7 @@ public interface TargetDAO extends BaseDAO {
 	 * @param aPermissionCriteria The criteria to use to search the permissions.
 	 * @return A Pagination of permission records.
 	 */
-	public Pagination searchPermissions(PermissionCriteria aPermissionCriteria);	
-	
-	/**
-	 * Load a single AbstractTargetDTO.
-	 * @param oid The OID of the DTO to load.
-	 * @return The abstractTargetDTO.
-	 */
-	public AbstractTargetDTO loadAbstractTargetDTO(Long oid);
+	public Pagination searchPermissions(PermissionCriteria aPermissionCriteria);
 	
 	/**
 	 * Delete a pending target.
@@ -259,37 +252,7 @@ public interface TargetDAO extends BaseDAO {
 	 * @return the page of AbstractTargetDTOs
 	 */
 	public Pagination getAbstractTargetDTOs(String name, int pageNumber, int pageSize);
-	
-	
-	/**
-	 * Return a page of group DTOs where the name matches the 
-	 * name pattern passed.
-	 * @param name the name pattern to return matching AbstractTargetDTO's for 
-	 * @param pageNumber the page to return
-	 * @return the page of AbstractTargetDTOs
-	 */
-	public Pagination getGroupDTOs(String name, int pageNumber, int pageSize);
 
-	/**
-	 * Return a page of group DTOs of the specified types where the name matches the 
-	 * name pattern passed.
-	 * @param name the name pattern to return matching AbstractTargetDTO's for 
-	 * @param types a list of group types 
-	 * @param pageNumber the page to return
-	 * @return the page of AbstractTargetDTOs
-	 */
-	public Pagination getSubGroupParentDTOs(String name, List types, int pageNumber, int pageSize);
-	
-	/**
-	 * Return a page of group DTOs of the specified types where the name matches the 
-	 * name pattern passed.
-	 * @param name the name pattern to return matching AbstractTargetDTO's for 
-	 * @param subGroupType a name of the sub-group type 
-	 * @param pageNumber the page to return
-	 * @return the page of AbstractTargetDTOs
-	 */
-	public Pagination getNonSubGroupDTOs(final String name, final String subGroupType, final int pageNumber, final int pageSize);
-	
 	/**
 	 * Load the specified AbstractTarget from the persistent store.
 	 * @param oid the id of the AbstractTarget to load

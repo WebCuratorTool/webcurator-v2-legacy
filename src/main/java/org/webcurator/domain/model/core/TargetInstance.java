@@ -159,8 +159,6 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
     private boolean flagged = false;
     /** The QA recommendation derived from this target instance's indicators **/
     private String recommendation;
-    /** profile for this target instance (if harvested)*/
-    private Profile lockedProfile = null;
     
     /** The seed history **/
     private Set<SeedHistory> seedHistory = new HashSet<SeedHistory>();
@@ -707,34 +705,6 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
 	 */
 	public void setOverrides(ProfileOverrides aOverrides) {
 		overrides = aOverrides;
-	}
-	
-	/** @see Overrideable#getProfile().
-	*/
-	public Profile getProfile() {
-		if(lockedProfile != null)
-		{
-			return lockedProfile;
-		}
-		else
-		{
-			return getTarget().getProfile();
-		}
-	}
-	
-	/** Hibernate only - get the locked profile.
-	 * @hibernate.many-to-one column="TI_PROFILE_ID"
-	*/
-	public Profile getLockedProfile() {
-		return lockedProfile;
-	}
-	
-	/**
-	 * @param profile profile to set
-	 */
-	public void setLockedProfile(Profile profile)
-	{
-		this.lockedProfile = profile;
 	}
 
 	/**

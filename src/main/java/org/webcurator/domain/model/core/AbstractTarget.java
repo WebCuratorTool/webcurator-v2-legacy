@@ -33,26 +33,12 @@ import org.webcurator.domain.model.auth.User;
  * 
  * @author bbeaumont
  * @hibernate.class table="ABSTRACT_TARGET" lazy="true"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.getAllDTOsByName" query="SELECT new org.webcurator.domain.model.dto.AbstractTargetDTO(t.oid, t.name, t.owner.oid, t.owner.username, t.owner.agency.name, t.state, t.profile.oid, t.objectType) FROM AbstractTarget t where lower(t.name) like lower(?) ORDER BY UPPER(t.name), t.objectType"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.cntAllDTOsByName" query="SELECT count(*) FROM AbstractTarget t where lower(t.name) like lower(?)"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.getGroupDTOsByName" query="SELECT new org.webcurator.domain.model.dto.AbstractTargetDTO(t.oid, t.name, t.owner.oid, t.owner.username, t.owner.agency.name, t.state, t.profile.oid, t.objectType) FROM AbstractTarget t where t.objectType = 0 and lower(t.name) like lower(?) ORDER BY UPPER(t.name), t.objectType"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.cntGroupDTOsByName" query="SELECT count(*) FROM AbstractTarget t where t.objectType = 0 and lower(t.name) like lower(?)"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.getDTOByOid" query="SELECT new org.webcurator.domain.model.dto.AbstractTargetDTO(t.oid, t.name, t.owner.oid, t.owner.username, t.owner.agency.name, t.state, t.profile.oid, t.objectType) FROM AbstractTarget t where t.oid=:oid"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.getTargetDTOsByProfileOid" query="SELECT new org.webcurator.domain.model.dto.AbstractTargetDTO(t.oid, t.name, t.owner.oid, t.owner.username, t.owner.agency.name, t.state, t.creationDate, t.profile.oid, t.objectType) FROM AbstractTarget t where t.objectType = 1 and t.profile.oid=:profileoid ORDER BY UPPER(t.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTarget.cntTargetDTOsByProfileOid" query="SELECT count(*) FROM AbstractTarget t where t.objectType = 1 and t.profile.oid=:profileoid"
  */
 public abstract class AbstractTarget extends AbstractIdentityObject implements UserOwnable, Annotatable, Overrideable, UserInTrayResource {
 	/** Query identifier for retrieving AbstractTargetDTOs by name */
 	public static final String QUERY_DTO_BY_NAME = "org.webcurator.domain.model.core.AbstractTarget.getAllDTOsByName";
 	public static final String QUERY_CNT_DTO_BY_NAME = "org.webcurator.domain.model.core.AbstractTarget.cntAllDTOsByName";
-	
-	/** Query identifier for retrieving Group DTOs by name */
-	public static final String QUERY_GROUP_DTOS_BY_NAME = "org.webcurator.domain.model.core.AbstractTarget.getGroupDTOsByName";
-	public static final String QUERY_CNT_GROUP_DTOS_BY_NAME = "org.webcurator.domain.model.core.AbstractTarget.cntGroupDTOsByName";	
-	
-	/** Query identifier for retrieving an AbstractTargetDTO by OID. */
-	public static final String QUERY_DTO_BY_OID = "org.webcurator.domain.model.core.AbstractTarget.getDTOByOid";
-	
+
 	/** Query identifier for retrieving Target DTOs by agency and profileOid */
 	public static final String QUERY_TARGET_DTOS_BY_PROFILE = "org.webcurator.domain.model.core.AbstractTarget.getTargetDTOsByProfileOid";
 	public static final String QUERY_CNT_TARGET_DTOS_BY_PROFILE = "org.webcurator.domain.model.core.AbstractTarget.cntTargetDTOsByProfileOid";
@@ -103,9 +89,7 @@ public abstract class AbstractTarget extends AbstractIdentityObject implements U
     /** Flag to state if the annotations contain any flagged as alertable, making the whole target/group alertable */
     private boolean alertable = false;    
     /** Removed Schedules */
-    private Set<Schedule> removedSchedules = new HashSet<Schedule>();    
-    /** The target's base profile. */
-    private Profile profile;
+    private Set<Schedule> removedSchedules = new HashSet<Schedule>();
     /** The date the Target was created */
     private Date creationDate;
     /** The parents of this group */
@@ -515,17 +499,7 @@ public abstract class AbstractTarget extends AbstractIdentityObject implements U
 	public Set<Schedule> getRemovedSchedules() {
 		return removedSchedules;
 	}
-	
-	
-	/**
-	 * Gets the associated harvest profile for this AbstractTarget.
-	 * @return Returns the harvest profile associated with this AbstractTarget.
-	 * @hibernate.many-to-one column="T_PROFILE_ID"
-	 */
-	public Profile getProfile() {
-		return profile;
-	}
-	
+
 	/**
 	 * Returns the set of groups to which this AbstractTarget belongs.
 	 * @return Returns a Set of GroupMember objects that identify child/parent
@@ -545,19 +519,7 @@ public abstract class AbstractTarget extends AbstractIdentityObject implements U
 	public void setParents(Set<GroupMember> parents) {
 		this.parents = parents;
 	}	
-	
-	
-	/**
-	 * Set the profile associated with this AbstractTarget.
-	 * @param aProfile The profile to associate this target with.
-	 */
-	public void setProfile(Profile aProfile) {
-		// don't setDirty here anymore..
-		//if(!Utils.hasChanged(profile, aProfile)) { setDirty(true); }
-		this.profile = aProfile;
-	}   	
-	
-	
+
 	/**
 	 * Get the set of seeds that belong to this target.
 	 * @return The set of seeds that belong to this target.

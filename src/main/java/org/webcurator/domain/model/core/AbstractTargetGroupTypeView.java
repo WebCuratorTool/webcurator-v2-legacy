@@ -11,15 +11,10 @@ import org.webcurator.domain.model.auth.User;
  * 
  * @author bbeaumont
  * @hibernate.class table="ABSTRACT_TARGET_GROUPTYPE_VIEW" lazy="true"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTargetGroupTypeView.getNonSubGroupDTOsByNameAndType" query="SELECT new org.webcurator.domain.model.dto.AbstractTargetDTO(t.oid, t.name, t.owner.oid, t.owner.username, t.owner.agency.name, t.state, t.profile.oid, t.objectType, t.type) FROM AbstractTargetGroupTypeView t where lower(t.name) like lower(:name) and ( t.type is null or t.type != :subgrouptype ) ORDER BY UPPER(t.name), t.type"
- * @hibernate.query name="org.webcurator.domain.model.core.AbstractTargetGroupTypeView.cntNonSubGroupDTOsByNameAndType" query="SELECT count(*) FROM AbstractTargetGroupTypeView t where lower(t.name) like lower(:name) and ( t.type is null or t.type != :subgrouptype )"
  */
 
 public class AbstractTargetGroupTypeView {
-	
-	public static final String QUERY_NON_SUBGROUP_DTOS_BY_NAME_AND_TYPE = "org.webcurator.domain.model.core.AbstractTargetGroupTypeView.getNonSubGroupDTOsByNameAndType";
-	public static final String QUERY_CNT_NON_SUBGROUP_DTOS_BY_NAME_AND_TYPE = "org.webcurator.domain.model.core.AbstractTargetGroupTypeView.cntNonSubGroupDTOsByNameAndType";	
-	
+
     /** the primary key of the Target. */
     private Long oid;
     /** The targets name. */
@@ -35,9 +30,7 @@ public class AbstractTargetGroupTypeView {
     /** The loaded state of the target **/
     private int originalState = -1;    
     /** The state of the target **/
-    private int state; 
-    /** The target's base profile. */
-    private Profile profile;
+    private int state;
     /** The date the Target was created */
     private Date creationDate;
     /** The parents of this group */
@@ -205,15 +198,6 @@ public class AbstractTargetGroupTypeView {
 	}
 	
 	/**
-	 * Gets the associated harvest profile for this AbstractTarget.
-	 * @return Returns the harvest profile associated with this AbstractTarget.
-	 * @hibernate.many-to-one column="T_PROFILE_ID"
-	 */
-	public Profile getProfile() {
-		return profile;
-	}
-	
-	/**
 	 * Returns the set of groups to which this AbstractTarget belongs.
 	 * @return Returns a Set of GroupMember objects that identify child/parent
 	 * 		   relationships.
@@ -232,16 +216,7 @@ public class AbstractTargetGroupTypeView {
 	public void setParents(Set<GroupMember> parents) {
 		this.parents = parents;
 	}	
-	
-	
-	/**
-	 * Set the profile associated with this AbstractTarget.
-	 * @param aProfile The profile to associate this target with.
-	 */
-	public void setProfile(Profile aProfile) {
-		this.profile = aProfile;
-	}   	
-	
+
 	/**
 	 * Returns the object type (TYPE_TARGET or TYPE_GROUP). This can be used
 	 * instead of instanceof, which is useful if the object isn't fully 

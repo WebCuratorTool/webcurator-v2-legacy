@@ -26,10 +26,5 @@ public interface Overrideable {
 	 * @return the ProfileOverrides
 	 */
 	ProfileOverrides getProfileOverrides();
-	
-	/** 
-	 * Return the Overrideable objects current profile.
-	 * @return the profile 
-	 */
-	Profile getProfile();
+
 }
