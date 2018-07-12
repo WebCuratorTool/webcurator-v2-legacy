@@ -127,12 +127,6 @@
 	</bean>
 
 	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
-	
-	<bean id="profileManager" class="org.webcurator.core.profiles.ProfileManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="profileDao" ref="profileDao"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="auditor" ref="audit"/>
-	</bean>
 
 	<bean id="audit" class="org.webcurator.core.util.AuditDAOUtil">
 		<property name="sessionFactory">
@@ -164,28 +158,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
-
-	<bean id="agencyUserManager" class="org.webcurator.core.agency.AgencyUserManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="userRoleDAO">
-			<ref bean="userRoleDAO"/>
-		</property>
-		<property name="rejReasonDAO">
-			<ref bean="rejReasonDAO"/>
-		</property>
-		<property name="indicatorCriteriaDAO">
-			<ref bean="indicatorCriteriaDAO"/>
-		</property>
-		<property name="flagDAO">
-			<ref bean="flagDAO"/>
-		</property>
-		<property name="auditor">
-			<ref bean="audit"/>
-		</property>
-		<property name="authorityManager">
-			<ref bean="authorityManager"/>
-		</property>
-		<property name="profileManager" ref="profileManager"/>
-	</bean>
 	
 	<bean id="authorityManager" class="org.webcurator.auth.AuthorityManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
 
@@ -193,27 +165,6 @@
 		class="org.webcurator.domain.AnnotationDAOImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
-	</bean>
-	
-	<bean id="mailServer" class="org.webcurator.core.notification.MailServerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-	  <constructor-arg>
-		<props>
-		  <prop key="mail.transport.protocol">${mail.protocol}</prop>
-		  <prop key="mail.smtp.host">${mailServer.smtp.host}</prop>
-		  <prop key="mail.smtp.port">${mail.smtp.port}</prop>
-		</props>
-      </constructor-arg>
-	</bean>
-
-	<bean id="inTrayManager" class="org.webcurator.core.notification.InTrayManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-	  <property name="inTrayDAO"><ref bean="inTrayDao"/></property>
-	  <property name="userRoleDAO"><ref bean="userRoleDAO"/></property>
-	  <property name="agencyUserManager"><ref bean="agencyUserManager"/></property>
-	  <property name="mailServer"><ref bean="mailServer"/></property>
-	  <property name="audit"><ref bean="audit"/></property>
-	  <property name="sender" value="${inTrayManager.sender}"/>
-	  <property name="messageSource"><ref bean="messageSource"/></property>
-	  <property name="wctBaseUrl" value="${inTrayManager.wctBaseUrl}"/>
 	</bean>
 
 	<bean id="politePolitenessOptions" class="org.webcurator.core.profiles.PolitenessOptions" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
