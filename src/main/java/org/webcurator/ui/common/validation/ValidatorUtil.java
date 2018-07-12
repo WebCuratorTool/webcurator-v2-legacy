@@ -32,7 +32,6 @@ import org.apache.oro.text.regex.Perl5Pattern;
 import org.springframework.context.ApplicationContext;
 import org.springframework.validation.Errors;
 import org.webcurator.core.common.Constants;
-import org.webcurator.core.harvester.coordinator.HarvestBandwidthManager;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.targets.TargetManager;
 import org.webcurator.core.util.ApplicationContextFactory;
@@ -188,48 +187,6 @@ public final class ValidatorUtil {
     	catch (ParseException e) {
     		errors.reject(aErrorCode, aValues, aDefaultMessage);
 		}
-    }
-    
-    /**
-     * Helper method to check to see if adding the new target instance will mean that 
-     * this or any other running harvest has a bandwidth setting below the minimum
-     * @param aErrors the errors object to populate
-     * @param aTargetInstanceOid the target instance id to check
-     * @param aErrorCode the error code for a vaildation failure
-     * @param aValues the values to set for a failure
-     * @param aFailureMessage the default failure message
-     */
-    public static void validateMinimumBandwidthAvailable(Errors aErrors, Long aTargetInstanceOid, String aErrorCode, Object[] aValues, String aFailureMessage) {
-        if (aTargetInstanceOid != null) {
-            ApplicationContext context = ApplicationContextFactory.getWebApplicationContext();
-            TargetInstanceManager targetInstanceManager = (TargetInstanceManager) context.getBean(Constants.BEAN_TARGET_INSTANCE_MNGR);
-            HarvestBandwidthManager harvestBandwidthManager  = (HarvestBandwidthManager) context.getBean(Constants.BEAN_HARVEST_BANDWIDTH_MANAGER);            
-            
-            TargetInstance ti = targetInstanceManager.getTargetInstance(aTargetInstanceOid);
-        	if (!harvestBandwidthManager.isMiniumBandwidthAvailable(ti)) {
-            	// failure bandwidth setting is too low.
-            	aErrors.reject(aErrorCode, aValues, aFailureMessage);
-            }
-        }        
-    }     
-    
-    /**
-     * Helper method to check to see if the bandwidth percentage setting is
-     * less than or equal to the maximum
-     * @param aErrors the errors object to populate
-     * @param aErrorCode the error code for a vaildation failure
-     * @param aPercentage the percentage to check.
-     */
-    public static void validateMaxBandwidthPercentage(Errors aErrors, int aPercentage, String aErrorCode) {    	
-        ApplicationContext context = ApplicationContextFactory.getWebApplicationContext();        
-        HarvestBandwidthManager harvestBandwidthManager  = (HarvestBandwidthManager) context.getBean(Constants.BEAN_HARVEST_BANDWIDTH_MANAGER);            
-                                       
-        if (aPercentage > harvestBandwidthManager.getMaxBandwidthPercent()) {
-        	// failure bandwidth percentage setting is too high.
-        	Object[] vals = new Object[1];
-         	vals[0] = harvestBandwidthManager.getMaxBandwidthPercent();
-        	aErrors.reject(aErrorCode, vals, "max bandwidth percentage exeeded");
-        }           
     }
     
     /**

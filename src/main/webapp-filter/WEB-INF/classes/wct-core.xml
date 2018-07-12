@@ -135,16 +135,6 @@
 		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="targetInstanceDao" ref="targetInstanceDao"/>
 	</bean>
-
-	<bean id="harvestBandwidthManager"
-		class="org.webcurator.core.harvester.coordinator.HarvestBandwidthManagerImpl">
-		<property name="harvestAgentManager" ref="harvestAgentManager" />
-		<property name="targetInstanceDao" ref="targetInstanceDao" />
-		<property name="harvestCoordinatorDao" ref="harvestCoordinatorDao" />
-		<property name="minimumBandwidth" value="${harvestCoordinator.minimumBandwidth}" />
-		<property name="maxBandwidthPercent" value="${harvestCoordinator.maxBandwidthPercent}" />
-		<property name="auditor" ref="audit"/>
-	</bean>
 	
 	<bean id="targetInstanceManager" class="org.webcurator.core.scheduler.TargetInstanceManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="targetInstanceDao">

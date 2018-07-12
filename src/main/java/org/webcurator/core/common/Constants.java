@@ -29,6 +29,4 @@ public interface Constants {
     /** the name of the target instance manager bean. */
     String BEAN_TARGET_MNGR = "targetManager";
 
-    String BEAN_HARVEST_BANDWIDTH_MANAGER= "harvestBandwidthManager";
-
 }
