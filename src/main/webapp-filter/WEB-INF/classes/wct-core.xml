@@ -129,24 +129,15 @@
 	<bean id="harvestCoordinatorDao" class="org.webcurator.domain.HarvestCoordinatorDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>	
-
-	<bean id="sipBuilder" class="org.webcurator.core.archive.SipBuilder">
-		<property name="targetInstanceManager" ref="targetInstanceManager"/>
-		<property name="targetManager" ref="targetManager"/>
 	</bean>
-
 	
 	<bean id="harvestCoordinator" class="org.webcurator.core.harvester.coordinator.HarvestCoordinatorImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="targetInstanceDao" ref="targetInstanceDao"/>
 		<property name="harvestAgentManager" ref="harvestAgentManager"/>
-		<property name="harvestLogManager" ref="harvestLogManager"/>
 		<property name="harvestBandwidthManager" ref="harvestBandwidthManager"/>
-		<property name="harvestQaManager" ref="harvestQaManager"/>
 		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="targetManager" ref="targetManager"/>
 		<property name="inTrayManager" ref="inTrayManager"/>
-		<property name="sipBuilder" ref="sipBuilder"/>
 		<property name="harvestOptimizationEnabled" value="${harvestCoordinator.harvestOptimizationEnabled}"/>
 		<property name="harvestOptimizationLookAheadHours" value="${harvestCoordinator.harvestOptimizationLookaheadHours}"/>
 		<property name="numHarvestersExcludedFromOptimisation" value="${harvestCoordinator.numHarvestersExcludedFromOptimisation}"/>
@@ -159,10 +150,6 @@
 		<property name="targetInstanceDao" ref="targetInstanceDao"/>
 	</bean>
 
-	<bean id="harvestLogManager" class="org.webcurator.core.harvester.coordinator.HarvestLogManagerImpl">
-		<property name="harvestAgentManager" ref="harvestAgentManager"/>
-	</bean>
-
 	<bean id="harvestBandwidthManager"
 		class="org.webcurator.core.harvester.coordinator.HarvestBandwidthManagerImpl">
 		<property name="harvestAgentManager" ref="harvestAgentManager" />
@@ -171,17 +158,6 @@
 		<property name="minimumBandwidth" value="${harvestCoordinator.minimumBandwidth}" />
 		<property name="maxBandwidthPercent" value="${harvestCoordinator.maxBandwidthPercent}" />
 		<property name="auditor" ref="audit"/>
-	</bean>
-
-	<bean id="harvestQaManager"
-		class="org.webcurator.core.harvester.coordinator.HarvestQaManagerImpl">
-		<property name="targetInstanceManager" ref="targetInstanceManager" />
-		<property name="targetInstanceDao" ref="targetInstanceDao" />
-		<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
-		<property name="enableQaModule">
-			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
-		</property>
-		<property name="autoPrunedNote" value="${queueController.autoPrunedNote}" />
 	</bean>
 	
 	<bean id="targetInstanceManager" class="org.webcurator.core.scheduler.TargetInstanceManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">

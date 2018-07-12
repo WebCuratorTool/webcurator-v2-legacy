@@ -30,7 +30,6 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.webcurator.core.archive.SipBuilder;
 import org.webcurator.core.exceptions.DigitalAssetStoreException;
 import org.webcurator.core.exceptions.WCTRuntimeException;
 import org.webcurator.core.harvester.HarvesterType;
@@ -59,9 +58,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 
 	// Functionality segregated to reduce complexity and increase testability
 	private HarvestAgentManager harvestAgentManager;
-	private HarvestLogManager harvestLogManager;
 	private HarvestBandwidthManager harvestBandwidthManager;
-	private HarvestQaManager harvestQaManager;
 
 	private TargetInstanceDAO targetInstanceDao;
 
@@ -82,8 +79,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 * purged from the system.
 	 */
 	private int daysBeforeAbortedTargetInstancePurge = 7;
-
-	private SipBuilder sipBuilder = null;
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private boolean queuePaused = false;
@@ -220,16 +215,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 * @param ti
 	 */
 	private void runAutoPrune(TargetInstance ti) {
-		// auto-prune if this option is enabled on the target and the ti has
-		// only one harvest result
-		try {
-			List<HarvestResult> harvestResults = targetInstanceManager.getHarvestResults(ti.getOid());
-			if (harvestResults.size() == 1) {
-				harvestQaManager.autoPrune(ti);
-			}
-		} catch (DigitalAssetStoreException ex) {
-			log.error("Could not auto-prune the target instance with oid " + ti.getOid(), ex);
-		}
+
 	}
 
 	private void cleanHarvestResult(HarvestResult harvestResult) {
@@ -373,10 +359,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		if (targetInstanceManager.getStoreSeedHistory()) {
 			aTargetInstance.setSeedHistory(seedHistory);
 		}
-		// Generate some of the SIP.
-		Map<String, String> sipParts = sipBuilder.buildSipSections(aTargetInstance);
-		aTargetInstance.setSipParts(sipParts);
-
 		// Save the sip parts and seeds to the database.
 		targetInstanceDao.save(aTargetInstance);
 	}
@@ -870,42 +852,42 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		if (aTargetInstance == null) {
 			throw new WCTRuntimeException("A null target instance was provided to the listLogFiles command.");
 		}
-		return harvestLogManager.listLogFiles(aTargetInstance);
+		return null;
 	}
 
 	/**
 	 * @see HarvestCoordinator#listLogFileAttributes(TargetInstance)
 	 */
 	public LogFilePropertiesDTO[] listLogFileAttributes(TargetInstance aTargetInstance) {
-		return harvestLogManager.listLogFileAttributes(aTargetInstance);
+		return null;
 	}
 
 	/**
 	 * @see HarvestCoordinator#tailLog(TargetInstance, String, int)
 	 */
 	public String[] tailLog(TargetInstance aTargetInstance, String aFileName, int aNoOfLines) {
-		return harvestLogManager.tailLog(aTargetInstance, aFileName, aNoOfLines);
+		return null;
 	}
 
 	/**
 	 * @see HarvestCoordinator#countLogLines(TargetInstance, String)
 	 */
 	public Integer countLogLines(TargetInstance aTargetInstance, String aFileName) {
-		return harvestLogManager.countLogLines(aTargetInstance, aFileName);
+		return null;
 	}
 
 	/**
 	 * @see HarvestCoordinator#headLog(TargetInstance, String, int)
 	 */
 	public String[] headLog(TargetInstance aTargetInstance, String aFileName, int aNoOfLines) {
-		return harvestLogManager.headLog(aTargetInstance, aFileName, aNoOfLines);
+		return null;
 	}
 
 	/**
 	 * @see HarvestCoordinator#getLog(TargetInstance, String, int, int)
 	 */
 	public String[] getLog(TargetInstance aTargetInstance, String aFileName, int aStartLine, int aNoOfLines) {
-		return harvestLogManager.getLog(aTargetInstance, aFileName, aStartLine, aNoOfLines);
+		return null;
 	}
 
 	/**
@@ -913,7 +895,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 *      String)
 	 */
 	public Integer getFirstLogLineBeginning(TargetInstance aTargetInstance, String aFileName, String match) {
-		return harvestLogManager.getFirstLogLineBeginning(aTargetInstance, aFileName, match);
+		return null;
 	}
 
 	/**
@@ -921,7 +903,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 *      String)
 	 */
 	public Integer getFirstLogLineContaining(TargetInstance aTargetInstance, String aFileName, String match) {
-		return harvestLogManager.getFirstLogLineContaining(aTargetInstance, aFileName, match);
+		return null;
 	}
 
 	/**
@@ -929,7 +911,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 *      String, Long)
 	 */
 	public Integer getFirstLogLineAfterTimeStamp(TargetInstance aTargetInstance, String aFileName, Long timestamp) {
-		return harvestLogManager.getFirstLogLineAfterTimeStamp(aTargetInstance, aFileName, timestamp);
+		return null;
 	}
 
 	/**
@@ -937,18 +919,18 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	 */
 	public String[] getLogLinesByRegex(TargetInstance aTargetInstance, String aFileName, int aNoOfLines, String aRegex,
 			boolean prependLineNumbers) {
-		return harvestLogManager.getLogLinesByRegex(aTargetInstance, aFileName, aNoOfLines, aRegex, prependLineNumbers);
+		return null;
 	}
 
 	/**
 	 * @see HarvestCoordinator#getHopPath(TargetInstance, String, String)
 	 */
 	public String[] getHopPath(TargetInstance aTargetInstance, String aFileName, String aUrl) {
-		return harvestLogManager.getHopPath(aTargetInstance, aFileName, aUrl);
+		return null;
 	}
 
 	public File getLogfile(TargetInstance aTargetInstance, String aFilename) {
-		return harvestLogManager.getLogfile(aTargetInstance, aFilename);
+		return null;
 	}
 
 	/**
@@ -1036,14 +1018,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		this.daysBeforeAbortedTargetInstancePurge = daysBeforeAbortedTargetInstancePurge;
 	}
 
-	/**
-	 * @param sipBuilder
-	 *            the sipBuilder to set
-	 */
-	public void setSipBuilder(SipBuilder sipBuilder) {
-		this.sipBuilder = sipBuilder;
-	}
-
 	public void addToHarvestResult(Long harvestResultOid, ArcHarvestFileDTO ahf) {
 		ArcHarvestResult ahr = (ArcHarvestResult) targetInstanceDao.getHarvestResult(harvestResultOid, false);
 		ArcHarvestFile f = new ArcHarvestFile(ahf, ahr);
@@ -1076,15 +1050,13 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	public void finaliseIndex(Long harvestResultOid) {
 		ArcHarvestResult ahr = (ArcHarvestResult) targetInstanceDao.getHarvestResult(harvestResultOid, false);
 		ahr.setState(0);
-		harvestQaManager.triggerAutoQA(ahr);
+
 		targetInstanceDao.save(ahr);
-		// run the QA recommendation service to derive the Quality Indicators
-		harvestQaManager.initialiseQaRecommentationService(harvestResultOid);
 
 	}
 
 	public void runQaRecommentationService(TargetInstance ti) {
-		harvestQaManager.runQaRecommentationService(ti);
+
 	}
 
 	public void notifyAQAComplete(String aqaId) {
@@ -1210,17 +1182,8 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		this.harvestAgentManager = harvestAgentManager;
 	}
 
-	public void setHarvestLogManager(HarvestLogManager harvestLogManager) {
-		this.harvestLogManager = harvestLogManager;
-	}
-
 	public void setHarvestBandwidthManager(HarvestBandwidthManager harvestBandwidthManager) {
 		this.harvestBandwidthManager = harvestBandwidthManager;
 	}
-
-	public void setHarvestQaManager(HarvestQaManager harvestQaManager) {
-		this.harvestQaManager = harvestQaManager;
-	}
-
 
 }
