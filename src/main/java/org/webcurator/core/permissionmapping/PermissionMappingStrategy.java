@@ -18,7 +18,6 @@ package org.webcurator.core.permissionmapping;
 import java.util.Set;
 
 import org.webcurator.domain.model.core.Permission;
-import org.webcurator.domain.model.core.Seed;
 import org.webcurator.domain.model.core.Site;
 import org.webcurator.domain.model.core.UrlPattern;
 
@@ -78,15 +77,6 @@ public abstract class PermissionMappingStrategy {
 	 * @return true if acceptable; otherwise false.
 	 */
 	public abstract boolean isValidPattern(UrlPattern aUrlPattern);
-
-	
-	/**
-	 * Check if a given Url Pattern matches a given seed.
-	 * @param aUrlPattern The URL Pattern.
-	 * @param aSeed		  The seed.
-	 * @return true if they match; otherwise false.
-	 */	
-	public abstract boolean matches(UrlPattern aUrlPattern, Seed aSeed);
 	
 	/**
 	 * Remove all mappings for the site.

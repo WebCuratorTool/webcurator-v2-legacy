@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.webcurator.domain.model.core.Permission;
-import org.webcurator.domain.model.core.Seed;
 import org.webcurator.domain.model.core.Site;
 import org.webcurator.domain.model.core.UrlPattern;
 
@@ -140,17 +139,6 @@ public class HierarchicalPermissionMappingStrategy extends PermissionMappingStra
 		}
 	}
 
-	/**
-	 * Tests if a given pattern matches a given seed.
-	 * @param aUrlPattern The UrlPattern.
-	 * @param aSeed The seed.
-	 * @return ture if they match; otherwise false.
-	 */
-	public boolean matches(UrlPattern aUrlPattern, Seed aSeed) {
-		return matches(aUrlPattern, aSeed.getSeed());
-	}
-
-	
 	/**
 	 * Tests if a given pattern matches a given URL.
 	 * @param aUrlPattern The UrlPattern (entity).
