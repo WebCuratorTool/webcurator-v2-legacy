@@ -3,19 +3,6 @@
 <beans default-autowire="no" default-lazy-init="false"
 	default-dependency-check="none">
 
-	<bean id="accessStatusList" class="java.util.ArrayList">
-		<constructor-arg>
-			<list>
-				<value>Open (unrestricted) access</value>
-				<value>Limited to 3 concurrent users</value>
-				<value>Restricted by location</value>
-				<value>Restricted by person</value>
-				<value>Embargoed</value>
-			</list>
-		</constructor-arg>
-	</bean>
-
-
 <!-- 
 	The values in this map should be one of:
 	ACR_OPA (open access)

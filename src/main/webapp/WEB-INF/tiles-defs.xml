@@ -87,25 +87,6 @@
 		<put name="page-help" value="Subtabbed Layout Help" />
 	</definition>
 
-	<definition name="ResetPassword" path="/jsp/reset-password.jsp">
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-	</definition>
-
-	<definition name="ResetPasswordSuccess" extends=".mainLayout">
-		<put name="title" value="WEB CURATOR TOOL: Password Changed" />
-		<put name="body" value="/jsp/reset-password-success.jsp" />
-	</definition>
-
-	<definition name="site-search" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Search Sites" />
-		<put name="body" value="/jsp/site-search.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="https://github.com/DIA-NZ/webcurator/wiki" />
-	</definition>
-
 	<definition name="site" extends=".tabbedNew">
 		<put name="title" value="WEB CURATOR TOOL: Harvest Authorisation" />
 		<put name="controller" value="curator/site/site.html" />
@@ -114,17 +95,6 @@
 		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
 		<put name="page-help"
 			value="https://github.com/DIA-NZ/webcurator/wiki" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
-	</definition>
-
-	<definition name="site-agencies" extends=".subTabbed">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Authorisation Agencies" />
-		<put name="body" value="/jsp/auth-edit.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
 	</definition>
 
@@ -137,48 +107,6 @@
 		<put name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
-	</definition>
-
-	<definition name="site-permissions" extends=".subTabbed">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Authorisation Permissions" />
-		<put name="body" value="/jsp/site-edit-permission.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
-	</definition>
-
-	<definition name="permission-search" extends=".subTabbed">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Authorisation Permissions" />
-		<put name="body" value="/jsp/permission-search.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
-	</definition>
-
-	<definition name="select-permission" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Site" />
-		<put name="body" value="/jsp/view-permissions.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="generate-request" extends=".reportLayout">
-		<put name="title" value="WEB CURATOR TOOL: Site" />
-		<put name="body" value="/jsp/generate-request.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="templates" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="targetInstance" extends=".tabbedNew">

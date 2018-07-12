@@ -52,20 +52,12 @@ public interface Constants {
     public static final String AJAX_REQUEST_FOR_TARGET_ANNOTATIONS = "ajax_target_annotations";
     
     // View names.
-    /** the name of the reset password view */
-    String VIEW_RESET_PWD = "ResetPassword";
     /** The home page */
     String VIEW_HOME = "HomeView";
     /** The home page when the QA Module is enabled */
     String VIEW_QA_HOME = "QaHomeView";
-    /** The Management tab **/
-    String VIEW_MANAGEMENT = "management";
-    /** The Management tab (when the QA Module is enabled) **/
-    String VIEW_QA_MANAGEMENT = "Qamanagement";
     /** The logout page */
     String VIEW_LOGOUT = "Logout";
-    /** The password changed success view */
-    String VIEW_PASSWORD_RESET_SUCCESS = "ResetPasswordSuccess";
     /** The site authorising agencies view */
     String VIEW_SITE_AGENCIES = "site-agencies";
     /** The site permissions view */

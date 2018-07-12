@@ -225,11 +225,6 @@
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>	
 
-	<bean id="permissionTemplateDao" class="org.webcurator.domain.PermissionTemplateDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>	
-	
 	<bean id="sipBuilder" class="org.webcurator.core.archive.SipBuilder">
 		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="targetManager" ref="targetManager"/>
@@ -566,12 +561,6 @@
 	  <property name="messageSource"><ref bean="messageSource"/></property>
 	  <property name="wctBaseUrl" value="${inTrayManager.wctBaseUrl}"/>
 	</bean>
-	
-	<bean id="permissionTemplateManager" class="org.webcurator.core.admin.PermissionTemplateManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-	  <property name="permissionTemplateDAO"><ref bean="permissionTemplateDao"/></property>
-	  <property name="authorityManager"><ref bean="authorityManager"/></property>
-	</bean>
-	
 	
 	<bean id="groupExpiryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject">

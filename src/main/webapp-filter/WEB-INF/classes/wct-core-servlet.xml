@@ -25,14 +25,6 @@
 			<map>
 				<entry key="/curator/logout.html" value="logoutController"/>
 				<entry key="/curator/home.html" value="homeController"/>
-				<entry key="/curator/credentials/reset-password.html" value="resetPasswordController"/>
-				<entry key="/curator/site/site.html" value="siteController"/>
-				<entry key="/curator/site/search.html" value="siteSearchController"/>
-				<entry key="/curator/site/agencies.html" value="siteAgencyController"/>
-				<entry key="/curator/site/site-auth-agency-search.html" value="siteAgencySearchController"/>
-				<entry key="/curator/site/permissions.html" value="sitePermissionController"/>
-				<entry key="/curator/site/transfer.html" value="transferSeedsController"/>
-				<entry key="/curator/site/generate.html" value="generatePermissionTemplateController"/>
 				<entry key="/curator/profiles/profiles.html" value="profileController"/>
 				<entry key="/curator/profiles/profilesH3.html" value="profileH3Controller"/>
 				<entry key="/curator/profiles/profiletargets.html" value="profileTargetsController"/>
@@ -96,116 +88,6 @@
 			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
 		</property>	
 	</bean>
-	
-	<bean id="siteSearchController" class="org.webcurator.ui.site.controller.SiteSearchController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="siteManager" ref="siteManager"/>
-		<property name="agencyUserManager" ref="agencyUserManager"/>
-		<property name="commandClass" value="org.webcurator.ui.site.command.SiteSearchCommand"/>
-	</bean>
-	
-	<bean id="siteController" class="org.webcurator.ui.site.controller.SiteController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods" value="GET,POST"/>
-		<property name="tabConfig" ref="siteTabConfig"/> 
-		<property name="defaultCommandClass" value="org.webcurator.ui.site.command.DefaultSiteCommand"/>
-		<property name="siteManager" ref="siteManager"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="businessObjectFactory" ref="businessObjectFactory"/>
-		<property name="messageSource" ref="messageSource"/>
-		<property name="siteSearchController" ref="siteSearchController"/>
-	</bean>	
-	
-	<bean id="siteAgencySearchController" class="org.webcurator.ui.site.controller.SiteAgencySearchController">
-		<property name="siteController" ref="siteController"/>
-		<property name="siteManager" ref="siteManager"/>
-		<property name="validator">
-			<bean class="org.webcurator.ui.site.validator.SiteAgencySearchValidator"/>
-		</property>
-	</bean>
-	
-	<bean id="generatePermissionTemplateController" class="org.webcurator.ui.site.controller.GeneratePermissionTemplateController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods" value="GET,POST"/>
-		<property name="siteManager" ref="siteManager"/>
-		<property name="mailServer" ref="mailServer"/>
-		<property name="messageSource" ref="messageSource"/>
-		<property name="permissionTemplateManager" ref="permissionTemplateManager"/>
-	</bean>	
-	
-	<bean id="transferSeedsController" class="org.webcurator.ui.site.controller.TransferSeedsController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-	  <property name="targetManager" ref="targetManager"/>
-	  <property name="siteManager" ref="siteManager"/>
-	  <property name="messageSource" ref="messageSource"/>
-	  <property name="siteController" ref="siteController"/>
-	  <property name="authorityManager" ref="authorityManager"/>
-	  <property name="validator">
-	    <bean class="org.webcurator.ui.site.validator.TransferSeedsValidator"/>
-	  </property>  
-	</bean>
-
-	<bean id="siteTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="viewName" value="site"/>	
-		<property name="tabs">
-			<list>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="GENERAL" />
-					<property name="title" value="general" />
-					<property name="jsp" value="../site-general.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.site.command.SiteCommand"/>
-					<property name="validator">
-						<bean class="org.webcurator.ui.site.validator.SiteValidator"/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.site.controller.SiteGeneralHandler">
-							<property name="siteManager" ref="siteManager" />							
-						</bean>
-					</property>
-				</bean>
-				<bean class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="URLS" />
-					<property name="title" value="url-patterns" />
-					<property name="jsp" value="../site-urls.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.site.command.UrlCommand"/>
-					<property name="validator">
-						<bean class="org.webcurator.ui.site.validator.SiteURLsValidator">
-							<property name="strategy" ref="permissionMappingStrategy" />
-						</bean>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.site.controller.SiteUrlHandler">
-							<property name="businessObjectFactory" ref="businessObjectFactory"/>
-						</bean>
-					</property>					
-				</bean>
-				<bean id="siteAgencyTab" class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="AUTHORISING_AGENCIES" />
-					<property name="title" value="agencies" />
-					<property name="jsp" value="../site-auth-agencies.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.site.command.SiteAuthorisingAgencyCommand"/>
-					<property name="validator">
-						<null/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.site.controller.SiteAuthorisingAgencyHandler"/>
-					</property>					
-				</bean>
-				<bean id="sitePermissionsTab" class="org.webcurator.ui.util.Tab">
-					<property name="pageId" value="PERMISSIONS" />
-					<property name="title" value="permissions" />
-					<property name="jsp" value="../site-permissions.jsp" />
-					<property name="commandClass" value="org.webcurator.ui.site.command.SitePermissionCommand"/>
-					<property name="validator">
-						<null/>
-					</property>
-					<property name="tabHandler">
-						<bean class="org.webcurator.ui.site.controller.SitePermissionHandler">
-							<property name="siteManager" ref="siteManager"/>
-							<property name="accessStatusList" ref="accessStatusList"/>
-							<property name="businessObjectFactory" ref="businessObjectFactory"/>
-						</bean>
-					</property>					
-				</bean>
-			</list>
-		</property>
-	</bean>
 
 	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
@@ -213,26 +95,6 @@
 	
 	<bean id="logoutController" class="org.webcurator.ui.base.LogoutController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
 	
-	<bean id="resetPasswordController" class="org.webcurator.ui.credentials.controller.ResetPasswordController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="supportedMethods">
-			<value type="java.lang.String">GET,POST</value>
-		</property>
-		<property name="validator"> 
-			<ref bean="resetPasswordValidator"/>
-		</property>
-		<property name="authDAO">
-			<ref bean="userRoleDAO"/>
-		</property>
-		<property name="encoder">
-			<ref bean="passwordEncoder"/>
-		</property>
-		<property name="salt">
-			<ref bean="saltSource"/>
-		</property>
-	</bean>
-	
-	<bean id="resetPasswordValidator" class="org.webcurator.ui.credentials.validator.ResetPasswordValidator" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
-
 	<bean id="qualityReviewFacade" class="org.webcurator.core.store.tools.QualityReviewFacade">
 	 	<property name="digialAssetStore">
 	 		<ref bean="digitalAssetStore"/>
@@ -457,31 +319,6 @@
 				</bean>
 			</list>
 		</property>
-	</bean>
-	
-	<bean id="siteAgencyController"
-		class="org.webcurator.ui.site.controller.SiteAgencyController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="siteController" ref="siteController"/>
-		<property name="busObjFactory" ref="businessObjectFactory" />
-		<property name="validator">
-			<bean id="siteAgencyValidator" class="org.webcurator.ui.site.validator.SiteAgencyValidator">
-				<property name="siteManager" ref="siteManager"/>
-			</bean>
-		</property>
-	</bean>
-	
-	<bean id="sitePermissionController"
-		class="org.webcurator.ui.site.controller.SitePermissionController"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		<property name="siteController" ref="siteController"/>
-		<property name="businessObjectFactory" ref="businessObjectFactory" />
-		<property name="validator">
-			<bean id="sitePermissionValidator" class="org.webcurator.ui.site.validator.SitePermissionValidator"></bean>
-		</property>
-		<property name="accessStatusList" ref="accessStatusList"/>
 	</bean>
 	      
 </beans>
