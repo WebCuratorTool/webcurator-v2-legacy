@@ -125,52 +125,8 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
-	
-	<bean id="targetInstanceManager" class="org.webcurator.core.scheduler.TargetInstanceManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceDao">
-			<ref bean="targetInstanceDao"></ref>
-		</property>
-		<property name="auditor">
-			<ref bean="audit"></ref>
-		</property>
-		<property name="annotationDAO">
-			<ref bean="annotationDao"></ref>
-		</property>
-		<property name="indicatorDAO">
-			<ref bean="indicatorDAO"></ref>
-		</property>
-		<property name="indicatorCriteriaDAO">
-			<ref bean="indicatorCriteriaDAO"></ref>
-		</property>
-		<property name="indicatorReportLineDAO">
-			<ref bean="indicatorReportLineDAO" />
-		</property>
-		<property name="profileDAO">
-			<ref bean="profileDao"></ref>
-		</property>
-		<property name="inTrayManager">
-			<ref bean="inTrayManager"></ref>
-		</property>
-		<property name="storeSeedHistory" value="${targetInstanceManager.storeSeedHistory}"/>
-	</bean>
 
 	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
-
-	<bean id="targetManager" class="org.webcurator.core.targets.TargetManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetDao" ref="targetDao"/>
-		<property name="siteDao" ref="siteDao"/>
-		<property name="annotationDAO" ref="annotationDao"/>
-		<property name="authMgr" ref="authorityManager"/>
-		<property name="targetInstanceDao" ref="targetInstanceDao"/>
-		<property name="instanceManager" ref="targetInstanceManager"/>
-		<property name="intrayManager" ref="inTrayManager"/>
-		<property name="messageSource" ref="messageSource"/>
-		<property name="auditor" ref="audit"/>
-		<property name="businessObjectFactory" ref="businessObjectFactory"/>
-		<property name="allowMultiplePrimarySeeds" value="${targetManager.allowMultiplePrimarySeeds}"/>
-		<property name="subGroupParentTypesList" ref="subGroupParentTypesList"/>
-		<property name="subGroupTypeName" value="${groupTypes.subgroup}"/>
-	</bean>
 	
 	<bean id="profileManager" class="org.webcurator.core.profiles.ProfileManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="profileDao" ref="profileDao"/>
@@ -232,11 +188,7 @@
 	</bean>
 	
 	<bean id="authorityManager" class="org.webcurator.auth.AuthorityManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
-	
-	<bean id="businessObjectFactory" class="org.webcurator.domain.model.core.BusinessObjectFactory">
-		<property name="profileManager" ref="profileManager"/>
-	</bean>
-		
+
 	<bean id="annotationDao"
 		class="org.webcurator.domain.AnnotationDAOImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory" ref="sessionFactory"/>
@@ -251,13 +203,6 @@
 		  <prop key="mail.smtp.port">${mail.smtp.port}</prop>
 		</props>
       </constructor-arg>
-	</bean>
-
-	<bean id="checkNotifier"
-		class="org.webcurator.core.check.CoreCheckNotifier" abstract="false"
-		singleton="true" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="inTrayManager" ref="inTrayManager" />
 	</bean>
 
 	<bean id="inTrayManager" class="org.webcurator.core.notification.InTrayManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">

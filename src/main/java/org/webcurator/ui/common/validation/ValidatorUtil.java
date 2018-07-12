@@ -32,8 +32,6 @@ import org.apache.oro.text.regex.Perl5Pattern;
 import org.springframework.context.ApplicationContext;
 import org.springframework.validation.Errors;
 import org.webcurator.core.common.Constants;
-import org.webcurator.core.scheduler.TargetInstanceManager;
-import org.webcurator.core.targets.TargetManager;
 import org.webcurator.core.util.ApplicationContextFactory;
 import org.webcurator.domain.model.core.TargetInstance;
 
@@ -185,26 +183,6 @@ public final class ValidatorUtil {
     	catch (ParseException e) {
     		errors.reject(aErrorCode, aValues, aDefaultMessage);
 		}
-    }
-    
-    /**
-     * Helper method to check to see if the Target of a target instance is approved for harvest.
-     * @param aErrors the errors object to populate
-     * @param aTargetInstanceOid the target instance to check
-     * @param aErrorCode the error code for a vaildation failure
-     */
-    public static void validateTargetApproved(Errors aErrors, Long aTargetInstanceOid, String aErrorCode) {    	
-        ApplicationContext context = ApplicationContextFactory.getWebApplicationContext();        
-        TargetInstanceManager tiManager = (TargetInstanceManager) context.getBean(Constants.BEAN_TARGET_INSTANCE_MNGR);
-        TargetManager targetManager = (TargetManager) context.getBean(Constants.BEAN_TARGET_MNGR);
-        
-        TargetInstance ti = tiManager.getTargetInstance(aTargetInstanceOid);
-        if (!targetManager.isTargetHarvestable(ti)) {
-        	// failure target is not approved to be harvested.        	        
-        	Object[] vals = new Object[1];
-        	vals[0] = ti.getTarget().getOid().toString();        	
-        	aErrors.reject(aErrorCode, vals, "target instance is not approved for harvest");        	
-        }        
     }
     
     /**

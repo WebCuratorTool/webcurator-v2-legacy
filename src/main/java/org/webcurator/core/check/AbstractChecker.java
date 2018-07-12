@@ -28,8 +28,7 @@ public abstract class AbstractChecker implements Checker {
 	private String notificationSubject = "";
 	/** the type of this checker. */
 	private String checkType = "";
-	/** the object to use to send notifications to the core. */
-	private CheckNotifier notifier = null;
+
 	/** the logger. */
 	private static Log log = LogFactory.getLog(AbstractChecker.class);
 	
@@ -51,13 +50,7 @@ public abstract class AbstractChecker implements Checker {
 	public void setNotificationSubject(String aSubject) {
 		notificationSubject = aSubject;
 	}
-	
-	/**
-	 * @see org.webcurator.core.check.Checker#setNotifier(org.webcurator.core.check.CheckNotifier)
-	 */
-	public void setNotifier(CheckNotifier aNotifier) {
-		this.notifier = aNotifier;
-	}
+
 
 	/**
 	 * Send a notification to the core using the notifier.
@@ -65,13 +58,6 @@ public abstract class AbstractChecker implements Checker {
 	 * @param aMessage the message
 	 */
 	protected void notify(String aLevel, String aMessage) {
-		try {
-			notifier.notification(notificationSubject + " " + aLevel + " - " + checkType, MessageType.CATEGORY_HARVESTER_WARNING, aMessage);
-		} 
-		catch (Exception e) {
-			if (log.isErrorEnabled()) {
-				log.error("Failed to send notification to core : " + e.getMessage(), e);
-			}
-		}
+
 	}
 }

@@ -22,11 +22,7 @@ package org.webcurator.core.common;
 public interface Constants {
     /** the name of the auditor bean. */
     String BEAN_AUDITOR = "audit";
-    /** the name of the target instance manager bean. */
-    String BEAN_TARGET_INSTANCE_MNGR = "targetInstanceManager";
     /** the name of the Logon Duration DAO bean */
     String BEAN_LOGON_DURATION_DAO = "logonDuration";
-    /** the name of the target instance manager bean. */
-    String BEAN_TARGET_MNGR = "targetManager";
 
 }

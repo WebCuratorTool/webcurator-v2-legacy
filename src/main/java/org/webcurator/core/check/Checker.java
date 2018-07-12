@@ -40,9 +40,5 @@ public interface Checker {
 	 * @param aType the type of the check.
 	 */
 	void setCheckType(String aType);
-	
-	/**  
-	 * @param aNotifier the notifier used to send the notification messages. 
-	 */
-	void setNotifier(CheckNotifier aNotifier);
+
 }
