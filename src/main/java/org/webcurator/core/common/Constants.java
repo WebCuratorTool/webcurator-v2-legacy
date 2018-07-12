@@ -20,10 +20,6 @@ package org.webcurator.core.common;
  * @author nwaight
  */
 public interface Constants {
-    /** the name of the harvest coordinator bean. */
-    String BEAN_HARVEST_COORDINATOR = "harvestCoordinator";
-    /** the name of the harvest coordinator dao bean. */
-    String BEAN_HARVEST_COORDINATOR_DAO = "harvestCoordinatorDao";    
     /** the name of the auditor bean. */
     String BEAN_AUDITOR = "audit";
     /** the name of the target instance manager bean. */

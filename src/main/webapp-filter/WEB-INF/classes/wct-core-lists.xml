@@ -3,26 +3,6 @@
 <beans default-autowire="no" default-lazy-init="false"
 	default-dependency-check="none">
 
-<!-- 
-	The values in this map should be one of:
-	ACR_OPA (open access)
-	ACR_ONS (restricted by number of concurrent users)
-	ACR_OSR (restricted to a site)
-	ACR_RES (authorized users only)
-	
-	These are converted to Rosetta policy codes in OmsCodeToMetsMapping
- -->
-	<bean id="accessStatusMap" class="java.util.HashMap">
-		<constructor-arg>
-			<map>
-				<entry key="Open (unrestricted) access" value="ACR_OPA" />
-				<entry key="Limited to 3 concurrent users" value="ACR_OSR" />
-				<entry key="Restricted by location" value="ACR_ONS" />
-				<entry key="Restricted by person" value="ACR_RES" />
-			</map>
-		</constructor-arg>
-	</bean>
-
 	<bean id="dublinCoreTypesList" class="org.webcurator.core.common.WCTTreeSet"
 		abstract="false" singleton="true" lazy-init="default" autowire="default"
 		dependency-check="default">

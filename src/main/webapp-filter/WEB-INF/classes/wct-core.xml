@@ -131,20 +131,6 @@
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
 	
-	<bean id="harvestCoordinator" class="org.webcurator.core.harvester.coordinator.HarvestCoordinatorImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceDao" ref="targetInstanceDao"/>
-		<property name="harvestAgentManager" ref="harvestAgentManager"/>
-		<property name="harvestBandwidthManager" ref="harvestBandwidthManager"/>
-		<property name="targetInstanceManager" ref="targetInstanceManager"/>
-		<property name="targetManager" ref="targetManager"/>
-		<property name="inTrayManager" ref="inTrayManager"/>
-		<property name="harvestOptimizationEnabled" value="${harvestCoordinator.harvestOptimizationEnabled}"/>
-		<property name="harvestOptimizationLookAheadHours" value="${harvestCoordinator.harvestOptimizationLookaheadHours}"/>
-		<property name="numHarvestersExcludedFromOptimisation" value="${harvestCoordinator.numHarvestersExcludedFromOptimisation}"/>
-		<property name="daysBeforeDASPurge" value="${harvestCoordinator.daysBeforeDASPurge}" />
-		<property name="daysBeforeAbortedTargetInstancePurge" value="${harvestCoordinator.daysBeforeAbortedTargetInstancePurge}" />
-	</bean>	
-	
 	<bean id="harvestAgentManager" class="org.webcurator.core.harvester.coordinator.HarvestAgentManagerImpl">
 		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="targetInstanceDao" ref="targetInstanceDao"/>
@@ -256,52 +242,10 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
-
-	<bean id="processScheduleJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="group" value="ProcessScheduleGroup"/>
-		<property name="name" value="ProcessSchedule"/>
-		<property name="jobClass" value="org.webcurator.core.scheduler.ScheduleJob"/>
-		<property name="jobDataAsMap">
-    		<map>
-      			<entry key="harvestCoordinator" value-ref="harvestCoordinator"/>
-    		</map>
-	  	</property>
-	</bean>
-	
-    <bean id="processScheduleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="ProcessScheduleTriggerGroup"/>
-		<property name="name" value="ProcessScheduleTrigger"/>
-		<property name="jobDetail" ref="processScheduleJob"/>
-		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${processScheduleTrigger.startDelay}"/>
-		<!-- repeat every xx milliseconds -->
-  		<property name="repeatInterval" value="${processScheduleTrigger.repeatInterval}"/>
-	</bean>	
-	
-	<bean id="checkBandwidthTransitionsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject">
-			<ref bean="harvestCoordinator"/>
-		</property>
-		<property name="targetMethod" value="checkForBandwidthTransition"/>
-	</bean>
-	
-	<bean id="bandwidthCheckTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="BandwidthCheckTriggerGroup"/>
-		<property name="name" value="BandwidthCheckTrigger"/>
-		<property name="jobDetail" ref="checkBandwidthTransitionsJob"/>
-		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${bandwidthCheckTrigger.startDelay}"/>
-		<!-- repeat every xx milliseconds -->
-  		<property name="repeatInterval" value="${bandwidthCheckTrigger.repeatInterval}"/>
-	</bean>		
 	
 	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="triggers">
 			<list>
- 		    	<ref bean="processScheduleTrigger"/>
-		    	<ref bean="bandwidthCheckTrigger"/>
-		    	<ref bean="purgeDigitalAssetsTrigger"/>
-		    	<ref bean="purgeAbortedTargetInstancesTrigger"/>
 		    	<ref bean="groupExpiryJobTrigger"/>	   
 		    	<ref bean="createNewTargetInstancesTrigger"/> 	
 		    </list>
@@ -352,79 +296,11 @@
       </constructor-arg>
 	</bean>
 
-	<bean id="bandwidthChecker"
-		class="org.webcurator.core.check.BandwidthChecker" abstract="false"
-		singleton="true" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="warnThreshold" value="${bandwidthChecker.warnThreshold}"/>
-		<property name="errorThreshold" value="${bandwidthChecker.errorThreshold}"/>
-		<property name="notificationSubject" value="Core"/>
-		<property name="checkType" value="Bandwidth"/>
-		<property name="harvestCoordinator">
-			<ref bean="harvestCoordinator" />
-		</property>
-		<property name="notifier">
-			<ref bean="checkNotifier" />
-		</property>	
-	</bean>
 	<bean id="checkNotifier"
 		class="org.webcurator.core.check.CoreCheckNotifier" abstract="false"
 		singleton="true" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="inTrayManager" ref="inTrayManager" />
-	</bean>
-	<bean id="checkProcessor"
-		class="org.webcurator.core.check.CheckProcessor" abstract="false"
-		singleton="true" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="checks">
-			<list>
-				<ref bean="bandwidthChecker"/>
-			</list>
-		</property>
-	</bean>
-	<bean id="checkProcessorJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject">
-			<ref bean="checkProcessor"/>
-		</property>
-		<property name="targetMethod" value="check"/>
-	</bean>
-	<bean id="checkProcessorTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="CheckProcessorTriggerGroup"/>
-		<property name="name" value="CheckProcessorTrigger"/>
-		<property name="jobDetail" ref="checkProcessorJob"/>
-		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${checkProcessorTrigger.startDelay}"/>
-		<!-- repeat every xx milliseconds -->
-  		<property name="repeatInterval" value="${checkProcessorTrigger.repeatInterval}"/>
-	</bean>
-	
-	<bean id="purgeDigitalAssetsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject">
-			<ref bean="harvestCoordinator"/>
-		</property>
-		<property name="targetMethod" value="purgeDigitalAssets"/>
-	</bean>
-	<bean id="purgeDigitalAssetsTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="PurgeDigitalAssetsTriggerGroup"/>
-		<property name="name" value="PurgeDigitalAssetsTrigger"/>
-		<property name="jobDetail" ref="purgeDigitalAssetsJob"/>
-		<!-- interval in milliseconds.  trigger should run every x days -->
-  		<property name="repeatInterval" value="${purgeDigitalAssetsTrigger.repeatInterval}"/>
-	</bean>
-	
-	<bean id="purgeAbortedTargetInstancesJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject">
-			<ref bean="harvestCoordinator"/>
-		</property>
-		<property name="targetMethod" value="purgeAbortedTargetInstances"/>
-	</bean>
-	<bean id="purgeAbortedTargetInstancesTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="PurgeAbortedTargetInstancesTriggerGroup"/>
-		<property name="name" value="PurgeAbortedTargetInstancesTrigger"/>
-		<property name="jobDetail" ref="purgeAbortedTargetInstancesJob"/>
-		<!-- interval in milliseconds.  trigger should run every day (86400000 msecs) -->
-  		<property name="repeatInterval" value="${purgeAbortedTargetInstancesTrigger.repeatInterval}"/>
 	</bean>
 
 	<bean id="inTrayManager" class="org.webcurator.core.notification.InTrayManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
@@ -469,22 +345,7 @@
   		<property name="startDelay" value="${createNewTargetInstancesTrigger.startDelay}"/>
 		<!-- repeat every xx milliseconds: this job should be run once a day (86,400,000 millseconds) -->
   		<property name="repeatInterval" value="${createNewTargetInstancesTrigger.repeatInterval}"/>
-	</bean>		
-
-	<bean id="archiveAdapter" class="org.webcurator.core.archive.ArchiveAdapterImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager"></ref>
-		</property>
-		<property name="targetManager">
-			<ref bean="targetManager"></ref>
-		</property>
-		
-		<property name="accessStatusMap" ref="accessStatusMap"/>
-		<property name="targetReferenceMandatory" value="${archiveAdapter.targetReferenceMandatory}"/>
 	</bean>
-	
-	
-	<bean id="dateUtils" class="org.webcurator.ui.util.DateUtils" factory-method="get"/>
 
 	<bean id="politePolitenessOptions" class="org.webcurator.core.profiles.PolitenessOptions" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- Delay Factor -->

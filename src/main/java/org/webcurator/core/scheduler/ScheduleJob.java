@@ -21,8 +21,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.webcurator.core.harvester.coordinator.HarvestCoordinator;
-
 /**
  * The Scheduled job for prompting the harvest coordinator to process the 
  * current jobs in the queue.
@@ -31,8 +29,6 @@ import org.webcurator.core.harvester.coordinator.HarvestCoordinator;
 public class ScheduleJob extends QuartzJobBean {	
 	/** the logger. */
 	private static final Log log = LogFactory.getLog(ScheduleJob.class);
-	/** The harvest Coordinator to use to schedule jobs. */	
-	private HarvestCoordinator harvestCoordinator;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.scheduling.quartz.QuartzJobBean#executeInternal(org.quartz.JobExecutionContext)
@@ -43,7 +39,6 @@ public class ScheduleJob extends QuartzJobBean {
 			aContext.getScheduler().pauseTriggerGroup("ProcessScheduleTriggerGroup");
 
 			log.info("Starting processSchedule");
-			harvestCoordinator.processSchedule();
 		}
 		catch (Exception e) {
 			// Dont throw an exception here as this will stop the scheduling job running.
@@ -61,12 +56,5 @@ public class ScheduleJob extends QuartzJobBean {
 				}
 			}
 		}
-	}
-
-	/**  
-	 * @param harvestCoordinator the harvest coordinator to use.
-	 */
-	public void setHarvestCoordinator(HarvestCoordinator harvestCoordinator) {
-		this.harvestCoordinator = harvestCoordinator;
 	}
 }

@@ -33,7 +33,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.validation.Errors;
 import org.webcurator.core.common.Constants;
 import org.webcurator.core.harvester.coordinator.HarvestBandwidthManager;
-import org.webcurator.core.harvester.coordinator.HarvestCoordinator;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.targets.TargetManager;
 import org.webcurator.core.util.ApplicationContextFactory;
