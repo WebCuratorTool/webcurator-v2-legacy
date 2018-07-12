@@ -62,38 +62,6 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="selectionTypesList" class="org.webcurator.core.common.WCTTreeSet"
-		abstract="false" singleton="true" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<constructor-arg index="0" type="java.util.List">
-			<list>
-				<value>Producer type</value>
-				<value>Publication type</value>
-				<value>Collection</value>
-				<value>Area</value>
-				<value>Other collections</value>
-			</list>
-		</constructor-arg>
-		<constructor-arg index="1" type="int">
-			<value>50</value>
-		</constructor-arg>
-	</bean>
-
-	<bean id="harvestTypesList" class="org.webcurator.core.common.WCTTreeSet"
-		abstract="false" singleton="true" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<constructor-arg index="0" type="java.util.List">
-			<list>
-				<value>Subject</value>
-				<value>Event</value>
-				<value>Theme</value>
-			</list>
-		</constructor-arg>
-		<constructor-arg index="1" type="int">
-			<value>50</value>
-		</constructor-arg>
-	</bean>
-
 	<bean id="subGroupParentTypesList" class="org.webcurator.core.common.WCTTreeSet"
 		abstract="false" singleton="true" lazy-init="default" autowire="default"
 		dependency-check="default">

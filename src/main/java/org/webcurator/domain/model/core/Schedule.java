@@ -31,8 +31,6 @@ import org.webcurator.domain.model.auth.User;
  * Schedules may be custom schedules (dependent on a custom cron pattern) or 
  * may be picked from some predefined schedules. 
  * 
- * @see org.webcurator.domain.model.core.SchedulePattern
- * 
  * @author Brett Beaumont
  * @hibernate.class table="SCHEDULE" lazy="false"
  */
@@ -264,7 +262,6 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
 	 * Gets the type of the schedule (custom or predefined).
 	 * @return Returns the scheduleType.
      * @hibernate.property column="S_TYPE" not-null="true"
-     * @see org.webcurator.domain.model.core.SchedulePattern
 	 */
 	public int getScheduleType() {
 		return scheduleType;
@@ -273,7 +270,6 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
 	/**
 	 * Sets the type of the schedule (custom or predefined).
 	 * @param scheduleType The scheduleType to set.
-     * @see org.webcurator.domain.model.core.SchedulePattern
 	 */
 	public void setScheduleType(int scheduleType) {
 		this.scheduleType = scheduleType;

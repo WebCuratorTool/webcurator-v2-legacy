@@ -30,7 +30,6 @@ import org.webcurator.domain.model.core.Site;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.site.SiteEditorContext;
 import org.webcurator.ui.site.command.SiteCommand;
-import org.webcurator.ui.target.command.TargetAnnotationCommand;
 import org.webcurator.ui.util.Tab;
 import org.webcurator.ui.util.TabbedController;
 import org.webcurator.ui.util.TabbedController.TabbedModelAndView;

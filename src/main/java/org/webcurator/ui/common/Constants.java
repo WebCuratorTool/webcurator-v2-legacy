@@ -54,24 +54,16 @@ public interface Constants {
     // View names.
     /** the name of the reset password view */
     String VIEW_RESET_PWD = "ResetPassword";
-    /** The generic message screen */
-    String VIEW_MESSAGE = "MessageView";
     /** The home page */
     String VIEW_HOME = "HomeView";
     /** The home page when the QA Module is enabled */
     String VIEW_QA_HOME = "QaHomeView";
-    /** The target instance queue page */
-    String VIEW_TARGET_INSTANCE_QUEUE = "TargetInstanceQueue";
-    /** The target instance QA queue page */
-    String VIEW_TARGET_INSTANCE_QA_QUEUE = "TargetInstanceQaQueue";
     /** The Management tab **/
     String VIEW_MANAGEMENT = "management";
     /** The Management tab (when the QA Module is enabled) **/
     String VIEW_QA_MANAGEMENT = "Qamanagement";
     /** The logout page */
     String VIEW_LOGOUT = "Logout";
-    /** The harvest target instance NOW page */
-    String VIEW_HARVEST_NOW = "HarvestNow";
     /** The password changed success view */
     String VIEW_PASSWORD_RESET_SUCCESS = "ResetPasswordSuccess";
     /** The site authorising agencies view */

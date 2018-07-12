@@ -26,7 +26,7 @@ import org.webcurator.ui.util.TabHandler;
  */
 public abstract class AbstractTargetTabHandler extends TabHandler {
 	public TargetEditorContext getEditorContext(HttpServletRequest req) {
-		TargetEditorContext ctx = (TargetEditorContext) req.getSession().getAttribute(TabbedTargetController.EDITOR_CONTEXT);
+		TargetEditorContext ctx = (TargetEditorContext) req.getSession().getAttribute("targetEditorContext");
 		if( ctx == null) {
 			throw new IllegalStateException("tabEditorContext not yet bound to the session");
 		}

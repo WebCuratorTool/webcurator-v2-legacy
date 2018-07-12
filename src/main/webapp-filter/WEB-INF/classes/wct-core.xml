@@ -376,18 +376,6 @@
 		<property name="applicationVersion" value="${wct.application.version}"/>
 		<property name="heritrixVersion" value="Heritrix ${heritrix.version}"/>
 	</bean>
-	
-	<bean id="schedulePatternFactory" class="org.webcurator.domain.SpringSchedulePatternFactory">
-		<property name="patterns">
-			<list>
-				<bean class="org.webcurator.domain.model.core.SchedulePattern">
-					<property name="scheduleType" value="1"/>
-					<property name="description" value="Every Monday at 9:00pm"/>
-					<property name="cronPattern" value="00 00 21 ? * MON *"/>
-				</bean>			
-			</list>
-		</property>
-	</bean>
 
 	<bean id="permissionMappingStrategy" class="org.webcurator.core.permissionmapping.HierarchicalPermissionMappingStrategy" singleton="true">
 		<property name="dao" ref="permMappingDao"/>
@@ -635,15 +623,6 @@
 	
 	
 	<bean id="dateUtils" class="org.webcurator.ui.util.DateUtils" factory-method="get"/>
-
-	<!--
-	HarvestResourceUrlMapper example urlMap with everything: 
-			http://www.wctTest.com?name={$HarvestResource.Name}&lenght={$HarvestResource.Length}&Oid={$HarvestResource.Oid}&Sc={$HarvestResource.StatusCode}&CreationDate={$HarvestResult.CreationDate,yyyyMMdd}&DerivedFrom={$HarvestResult.DerivedFrom}&HarvestNumber={$HarvestResult.HarvestNumber}&RsltOid={$HarvestResult.Oid}&ProvenanceNote={$HarvestResult.ProvenanceNote}&State={$HarvestResult.State}
-	-->
-	
-	<bean id="harvestResourceUrlMapper" class="org.webcurator.ui.tools.controller.HarvestResourceUrlMapper">
-		<property name="urlMap" value = "${harvestResourceUrlMapper.urlMap}"/>
-	</bean>
 
 	<bean id="politePolitenessOptions" class="org.webcurator.core.profiles.PolitenessOptions" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- Delay Factor -->
