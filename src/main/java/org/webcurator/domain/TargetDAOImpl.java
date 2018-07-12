@@ -54,7 +54,6 @@ import org.webcurator.domain.model.core.Schedule;
 import org.webcurator.domain.model.core.Seed;
 import org.webcurator.domain.model.core.Target;
 import org.webcurator.domain.model.core.TargetGroup;
-import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.domain.model.dto.AbstractTargetDTO;
 import org.webcurator.domain.model.dto.GroupMemberDTO;
 import org.webcurator.domain.model.dto.GroupMemberDTO.SAVE_STATE;
@@ -679,20 +678,6 @@ public class TargetDAOImpl extends BaseDAOImpl implements TargetDAO {
 		return (Target) getHibernateTemplate().load(Target.class, oid);		
 	}
 	
-	public Date getLatestScheduledDate(final AbstractTarget aTarget, final Schedule aSchedule) {
-		return (Date) getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session aSession) {
-				Query query = aSession.getNamedQuery(TargetInstance.QUERY_GET_LATEST_FOR_TARGET);
-				query.setLong("targetOid", aTarget.getOid());
-				query.setLong("scheduleOid", aSchedule.getOid());
-				
-				Date dt = (Date) query.uniqueResult();
-				return dt;
-			}
-		});
-	}
-	
-	
 	@SuppressWarnings("unchecked")
 	public Set<Seed> getSeeds(final Target aTarget) {
 		Set<Seed> seeds = new HashSet<Seed>();
@@ -1054,63 +1039,6 @@ public class TargetDAOImpl extends BaseDAOImpl implements TargetDAO {
                             ts.setRollbackOnly();
                         }
                         return null;
-                    }
-                }
-        );		
-	}
-	
-	/**
-	 * Delete a TargetGroup as long as it has no Target Instances associated
-	 * with it.
-	 * @param aTargetGroup The target group to delete.
-	 * @return true if deleted; otherwise false.
-	 */
-	public boolean deleteGroup(final TargetGroup aTargetGroup) {
-        return (Boolean) txTemplate.execute(
-                new TransactionCallback() {
-                    public Object doInTransaction(TransactionStatus ts) {
-                        try { 
-                            log.debug("Before Deleting Object");
-                            
-                            // Step one - check that the target group has 
-                            // no target instances.
-                            Criteria criteria = getSession()
-                            	.createCriteria(TargetInstance.class)
-                            	.createCriteria("schedule")
-                            	.createCriteria("target")
-                            	.add(Restrictions.eq("oid", aTargetGroup.getOid()))
-                            	.setProjection(Projections.rowCount());
-                            
-                            Integer count = (Integer) criteria.uniqueResult();
-                                                        
-                            // If there are instances, we can't delete the object.
-                            if(count.intValue() > 0) { 
-                            	log.debug("Delete failed due to target instances existing");
-                            	return false;
-                            }
-                            
-                            // There are no instances, so delete away.
-                            else {
-                            	// Delete all links to parents and children.
-                                getSession()
-                                	.createQuery("delete from GroupMember g where g.child.oid = :groupOid or g.parent.oid = :groupOid")
-                                	.setLong("groupOid", aTargetGroup.getOid())
-                                	.executeUpdate();
-                                
-                                // Finally delete the group.
-                                getSession().delete(aTargetGroup);
-                                
-                                log.debug("Delete Successful");
-                                
-                            	return true;
-                            }
-                        }
-                        catch(Exception ex) {
-                            log.error("Setting Rollback Only", ex);
-                            ts.setRollbackOnly();
-                            return false;
-                        }
-                        
                     }
                 }
         );		

@@ -160,7 +160,6 @@ public class HarvestResource {
 		dto.setName(this.getName());
 		dto.setOid(this.getOid());
 		dto.setStatusCode(this.getStatusCode());
-		dto.setTargetInstanceOid(this.result.targetInstance.getOid());
 		return dto;
 	}
 

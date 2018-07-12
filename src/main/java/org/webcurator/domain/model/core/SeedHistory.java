@@ -30,11 +30,10 @@ public class SeedHistory extends AbstractIdentityObject {
 	/**
 	 * Create the history from a real Seed (use BusinessObjectFactory)
 	 */
-	protected SeedHistory(TargetInstance aTargetInstance, Seed seed)
+	protected SeedHistory(Seed seed)
 	{
 		this.seed = seed.getSeed();
 		this.primary = seed.isPrimary();
-		this.targetInstanceOid = aTargetInstance.getOid();
 	}
 	
     /**

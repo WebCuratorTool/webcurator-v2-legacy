@@ -131,15 +131,6 @@ public interface TargetDAO extends BaseDAO {
 	 */
 	public void delete(Target aTarget);
 	
-	
-	/**
-	 * Delete a TargetGroup as long as it has no Target Instances associated
-	 * with it.
-	 * @param aTargetGroup The target group to delete.
-	 * @return true if deleted; otherwise false.
-	 */
-	public boolean deleteGroup(TargetGroup aTargetGroup);
-	
 	/**
 	 * Load the specified target from the persistent store.
 	 * @param targetOid the id of the target to load
@@ -287,15 +278,6 @@ public interface TargetDAO extends BaseDAO {
 	 * @return the Target
 	 */
 	public Target reloadTarget(Long oid);
-	
-	/**
-	 * Return the date and time of the last scheduled target instance 
-	 * for the specified AbstractTarget and Schedule
-	 * @param aTarget the AbstractTarget to get the date for
-	 * @param aSchedule the schedule to get the date for
-	 * @return the last scheduled date
-	 */
-	public Date getLatestScheduledDate(AbstractTarget aTarget, Schedule aSchedule);
 	
 	/**
 	 * Retrun a Set of seeds for the specified target.

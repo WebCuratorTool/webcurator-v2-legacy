@@ -45,10 +45,8 @@ public class ArcHarvestResult extends HarvestResult {
         arcFiles = new HashSet<ArcHarvestFile>();
     }
     
-    public ArcHarvestResult(TargetInstance aTargetInstance, int harvestNumber) { 
-    	this.targetInstance = aTargetInstance;
+    public ArcHarvestResult(int harvestNumber) {
     	this.creationDate = new Date();
-    	this.createdBy = aTargetInstance.getOwner();
     	this.harvestNumber = harvestNumber;
     }
     
@@ -58,14 +56,12 @@ public class ArcHarvestResult extends HarvestResult {
      * @param aTargetInstance The TargetInstance that this HarvestResult
      * 						  belongs to.
      */
-    public ArcHarvestResult(ArcHarvestResultDTO aResultDTO, TargetInstance aTargetInstance) {
+    public ArcHarvestResult(ArcHarvestResultDTO aResultDTO) {
         super();
         arcFiles = new HashSet<ArcHarvestFile>();
-        targetInstance = aTargetInstance;
         harvestNumber = aResultDTO.getHarvestNumber();
         provenanceNote = aResultDTO.getProvenanceNote();
         creationDate = aResultDTO.getCreationDate();
-        createdBy = aTargetInstance.getOwner();
         
         ArcHarvestResource harvestResource = null;
         ArcHarvestResourceDTO harvestResourceDTO = null;

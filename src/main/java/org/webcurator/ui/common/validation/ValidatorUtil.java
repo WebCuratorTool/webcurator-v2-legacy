@@ -33,7 +33,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.validation.Errors;
 import org.webcurator.core.common.Constants;
 import org.webcurator.core.util.ApplicationContextFactory;
-import org.webcurator.domain.model.core.TargetInstance;
 
 /**
  * Utility class providing useful validation methods.

@@ -57,8 +57,6 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
     private String cronPattern;
     /** the target the schedule is related to. */
     private AbstractTarget target;
-    /** Set of related target instances */
-    private Set<TargetInstance> targetInstances;
     /** Type Identifier for quick schedules. */
     private int scheduleType = CUSTOM_SCHEDULE; 
     /** The owner of the schedule */
@@ -177,26 +175,6 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
         this.target = aTarget;
     }
 
-    /**
-     * Get the list of target instances associated with this schedule.
-	 * @return Returns the targetInstances.
-     * @hibernate.set cascade="save-update"
-     * @hibernate.collection-key column="TI_SCHEDULE_ID"
-     * @hibernate.collection-one-to-many class="org.webcurator.domain.model.core.TargetInstance"
-  
-	 */
-	public Set<TargetInstance> getTargetInstances() {
-		return targetInstances;
-	}
-	
-	/**
-	 * Set the targetinstances associated with this schedule.
-	 * @param targetInstances The targetInstances to set.
-	 */
-	public void setTargetInstances(Set<TargetInstance> targetInstances) {
-		this.targetInstances = targetInstances;
-	}
-	
 	/**
      * Retrieves the next execution time based on the schedule. This
      * method delegates to getNextExecutionDate(Date) assuming the 

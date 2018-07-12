@@ -44,9 +44,7 @@ public class HarvestResult implements UserInTrayResource {
 	public static final int STATE_INDEXING = 3;
 	/** The state constant for a Harvest Result that has been aborted in indexing. */
 	public static final int STATE_ABORTED = 4;
-	
-	/** The TargetInstance that this belongs to */
-	protected TargetInstance targetInstance;
+
 	/** The Harvest number; the original harvest is always number 1, the prune tool can created additional harvest results */
 	protected int harvestNumber = 1;
 	/** The primary key of the harvest result */
@@ -73,32 +71,6 @@ public class HarvestResult implements UserInTrayResource {
         super();
 		this.creationDate = new Date();
 	}
-
-	/**
-	 * Create a new HarvestResult from its DTO.
-	 * @param aResult The DTO.
-	 * @param aTargetInstance The TargetInstance that this HarvestResult belongs to.
-	 */
-    public HarvestResult(HarvestResultDTO aResult, TargetInstance aTargetInstance) {
-        super();
-        targetInstance = aTargetInstance;
-        harvestNumber = aResult.getHarvestNumber();
-        provenanceNote = aResult.getProvenanceNote();
-        creationDate = aResult.getCreationDate();
-        createdBy = aTargetInstance.getOwner();
-        
-        HarvestResource harvestResource = null;
-        HarvestResourceDTO harvestResourceDTO = null;
-        String key = "";        
-        Map resourceDtos = aResult.getResources();
-        Iterator it = resourceDtos.keySet().iterator();
-        while (it.hasNext()) {
-            key = (String) it.next();
-            harvestResourceDTO = (HarvestResourceDTO) resourceDtos.get(key);
-            harvestResource = new HarvestResource(harvestResourceDTO, this);
-            resources.put(key, harvestResource);
-        }
-    }
 
 	/**
 	 * Get the number of the harvest result. This is 1 for the original harvest.
@@ -137,23 +109,6 @@ public class HarvestResult implements UserInTrayResource {
 	 */
 	public void setOid(Long oid) {
 		this.oid = oid;
-	}
-
-	/**
-	 * Get the target instance that this object belongs to.
-	 * @return The target instance that this object belongs to.	  
-	 * @hibernate.many-to-one column="HR_TARGET_INSTANCE_ID" foreign-key="FK_HRC_TARGET_INSTANCE_ID"
-	 */
-	public TargetInstance getTargetInstance() {
-		return targetInstance;
-	}
-
-	/**
-	 * Set the target instance that this belongs to.
-	 * @param targetInstance The target instance that this belongs to.
-	 */
-	public void setTargetInstance(TargetInstance targetInstance) {
-		this.targetInstance = targetInstance;
 	}
 
 	/**
@@ -307,7 +262,7 @@ public class HarvestResult implements UserInTrayResource {
      * @see org.webcurator.core.notification.InTrayResource#getResourceName()
      */
     public String getResourceName() {
-        return this.getTargetInstance().getOid().toString()+"("+this.harvestNumber+")";
+        return "";
     }
 
     /* (non-Javadoc)

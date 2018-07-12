@@ -65,12 +65,6 @@
 		</property>
 	</bean>
 
-	<bean id="targetInstanceDao" class="org.webcurator.domain.TargetInstanceDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-		<property name="auditor" ref="audit"/>
-	</bean>
-
 	<bean id="userRoleDAO" class="org.webcurator.domain.UserRoleDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>

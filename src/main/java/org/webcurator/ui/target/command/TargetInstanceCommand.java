@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.webcurator.domain.model.core.TargetInstance;
-
 /**
  * The command object for the target instance tabs.
  * @author nwaight
@@ -229,23 +227,6 @@ public class TargetInstanceCommand {
     public TargetInstanceCommand() {
         super();
 		username = org.webcurator.core.util.AuthUtil.getRemoteUser();
-    }
-    
-    public TargetInstanceCommand(TargetInstance aTargetInstance) {
-        super();
-        targetInstanceId = aTargetInstance.getOid();
-        scheduledTime = aTargetInstance.getScheduledTime();
-        priority = aTargetInstance.getPriority();
-        state = aTargetInstance.getState();
-        owner = aTargetInstance.getOwner().getUsername();
-        agency = aTargetInstance.getOwner().getAgency().getName();
-        bandwidthPercent = aTargetInstance.getBandwidthPercent();
-		username = org.webcurator.core.util.AuthUtil.getRemoteUser();
-		display = aTargetInstance.getDisplay();
-		displayNote = aTargetInstance.getDisplayNote();
-		displayChangeReason = aTargetInstance.getDisplayChangeReason();
-		flagged = aTargetInstance.getFlagged();
-		useAQA = aTargetInstance.isUseAQA();
     }
     
 	public Long getTargetInstanceId() {
