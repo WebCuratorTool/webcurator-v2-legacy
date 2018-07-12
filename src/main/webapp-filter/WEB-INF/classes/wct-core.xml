@@ -131,11 +131,6 @@
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
 	
-	<bean id="harvestAgentManager" class="org.webcurator.core.harvester.coordinator.HarvestAgentManagerImpl">
-		<property name="targetInstanceManager" ref="targetInstanceManager"/>
-		<property name="targetInstanceDao" ref="targetInstanceDao"/>
-	</bean>
-	
 	<bean id="targetInstanceManager" class="org.webcurator.core.scheduler.TargetInstanceManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="targetInstanceDao">
 			<ref bean="targetInstanceDao"></ref>

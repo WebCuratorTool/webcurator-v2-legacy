@@ -72,11 +72,6 @@
 
 	<bean id="homeController" class="org.webcurator.ui.home.controller.HomeController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="supportedMethods" value="GET"/>
-		<property name="inTrayManager" ref="inTrayManager"/>
-		<property name="authorityManager" ref="authorityManager"/>
-		<property name="siteManager" ref="siteManager"/>
-		<property name="targetManager" ref="targetManager"/>
-		<property name="targetInstanceManager" ref="targetInstanceManager"/>
 		<property name="enableQaModule">
 			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
 		</property>	
