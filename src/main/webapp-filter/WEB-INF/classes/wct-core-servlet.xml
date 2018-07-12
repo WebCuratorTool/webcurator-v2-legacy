@@ -87,19 +87,7 @@
 	</bean>
 	
 	<bean id="logoutController" class="org.webcurator.ui.base.LogoutController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
-	
-	<bean id="qualityReviewFacade" class="org.webcurator.core.store.tools.QualityReviewFacade">
-	 	<property name="digialAssetStore">
-	 		<ref bean="digitalAssetStore"/>
-	 	</property>
-	 	<property name="targetInstanceDao">
-	 		<ref bean="targetInstanceDao"/>
-	 	</property>
-	 	<property name="auditor">
-	 		<ref bean="audit"/>
-	 	</property>
-	 </bean>
-	
+
 	<bean id="hibernateTestController" class="org.webcurator.ui.hibernate.HibernateTestController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="supportedMethods" value="GET,POST"/>
 		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
