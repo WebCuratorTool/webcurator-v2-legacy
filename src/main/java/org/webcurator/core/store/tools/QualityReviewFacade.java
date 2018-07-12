@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.commons.httpclient.Header;
 import org.webcurator.core.exceptions.DigitalAssetStoreException;
-import org.webcurator.core.store.DigitalAssetStore;
 import org.webcurator.core.util.Auditor;
 import org.webcurator.core.util.AuthUtil;
 import org.webcurator.domain.TargetInstanceDAO;
@@ -41,29 +40,11 @@ import org.webcurator.domain.model.core.TargetInstance;
  */
 public class QualityReviewFacade {
 
-	/** A reference to the digital asset store. */
-	private DigitalAssetStore digialAssetStore = null;
 	/** The Target Instance Dao */
 	private TargetInstanceDAO targetInstanceDao = null;
 	/** the auditor. */
 	private Auditor auditor = null;
-	
-	/**
-	 * Get the digital asset store. 
-	 * @return The digital asset store.
-	 */
-	public DigitalAssetStore getDigialAssetStore() {
-		return digialAssetStore;
-	}
-	
-	/**
-	 * Spring setter for the digital asset store.
-	 * @param store The digital asset store.
-	 */
-	public void setDigialAssetStore(DigitalAssetStore store) {
-		this.digialAssetStore = store;
-	}
-	
+
 	/**
 	 * Get the target instance dao.
 	 * @return The target instance dao.
@@ -79,19 +60,7 @@ public class QualityReviewFacade {
 	public void setTargetInstanceDao(TargetInstanceDAO targetInstanceDao) {
 		this.targetInstanceDao = targetInstanceDao;
 	}
-	
-	/**
-	 * Get a harvested resource from the digital asset store.
-	 * @param targetInstanceName The OID of the target instance (as a string).
-	 * @param harvestResultNumber The number of the harvest result to get the resource from.
-	 * @param resource The HarvestResource to get.
-	 * @return The resource.
-	 * @throws DigitalAssetStoreException if there are any errors.
-	 */
-	public File getResource(String targetInstanceName, int harvestResultNumber, HarvestResource resource) throws DigitalAssetStoreException {
-		return digialAssetStore.getResource(targetInstanceName, harvestResultNumber, resource.buildDTO());
-	}
-	
+
 	/**
 	 * Get a harvested resource from the digital asset store.
 	 * @param dto The DTO HarvestResource to retrieve.
@@ -99,7 +68,7 @@ public class QualityReviewFacade {
 	 * @throws DigitalAssetStoreException if there are any errors.
 	 */
 	public File getResource(HarvestResourceDTO dto) throws DigitalAssetStoreException {
-		return digialAssetStore.getResource(dto.buildJobName(), dto.getHarvestResultNumber(), dto);
+		return null;
 	}	
 	
 	/**
@@ -111,7 +80,7 @@ public class QualityReviewFacade {
 	 * @throws DigitalAssetStoreException if there are any errors.
 	 */	
 	public byte[] getSmallResource(HarvestResourceDTO dto) throws DigitalAssetStoreException {
-		return digialAssetStore.getSmallResource(dto.buildJobName(), dto.getHarvestResultNumber(), dto);
+		return null;
 	}		
 	
 	/**
@@ -158,7 +127,7 @@ public class QualityReviewFacade {
 	 * @throws DigitalAssetStoreException if there are any errors.
 	 */
 	public Header[] getHttpHeaders(String targetInstanceName, int harvestResultNumber, HarvestResource resource) throws DigitalAssetStoreException {
-		return digialAssetStore.getHeaders(targetInstanceName, harvestResultNumber, resource.buildDTO());
+		return null;
 	}
 	
 	/**
@@ -168,7 +137,7 @@ public class QualityReviewFacade {
 	 * @throws DigitalAssetStoreException if there are any errors.
 	 */
 	public Header[] getHttpHeaders(HarvestResourceDTO dto) throws DigitalAssetStoreException {
-		return digialAssetStore.getHeaders(dto.buildJobName(), dto.getHarvestResultNumber(), dto);
+		return null;
 	}
 	
 	/**
@@ -204,10 +173,7 @@ public class QualityReviewFacade {
 	public HarvestResult copyAndPrune(long harvestResultOid, List<String> urisToDelete, List<HarvestResourceDTO> hrsToImport, String provenanceNote, List<String> modificationNotes) throws DigitalAssetStoreException {
 		HarvestResult res = targetInstanceDao.getHarvestResult(harvestResultOid);
 		TargetInstance ti = res.getTargetInstance();
-		
-		// Perform the copy and prune.
-		digialAssetStore.copyAndPrune(ti.getJobName(), res.getHarvestNumber(), ti.getHarvestResults().size()+1, urisToDelete, hrsToImport);
-		
+
 		// Create the base record.
         ArcHarvestResult hr = new ArcHarvestResult(ti, ti.getHarvestResults().size()+1);
 		hr.setDerivedFrom(res.getHarvestNumber());
@@ -226,10 +192,7 @@ public class QualityReviewFacade {
 		// Save to the database.
 		targetInstanceDao.save(hr);
 		targetInstanceDao.save(ti);
-		
-		// Ask the Digital Asset Store to create the index.
-		digialAssetStore.initiateIndexing(new ArcHarvestResultDTO( hr.getOid(), hr.getTargetInstance().getOid(), hr.getCreationDate(), hr.getHarvestNumber(), hr.getProvenanceNote() ));
-		
+
 		// Audit the completion of the copy and prune.
 		auditor.audit(ArcHarvestResult.class.getName(), hr.getOid(), Auditor.ACTION_COPY_AND_PRUNE_HARVEST_RESULT, "Created pruned harvest result " + ti.getHarvestResults().size() + " from harvest result " + res.getHarvestNumber() + " for target instance " + ti.getOid());
 		

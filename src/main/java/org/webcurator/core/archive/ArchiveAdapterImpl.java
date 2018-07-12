@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.webcurator.core.exceptions.DigitalAssetStoreException;
 import org.webcurator.core.scheduler.TargetInstanceManager;
-import org.webcurator.core.store.DigitalAssetStore;
 import org.webcurator.core.targets.TargetManager;
 import org.webcurator.domain.model.core.Permission;
 import org.webcurator.domain.model.core.Seed;
@@ -41,8 +40,6 @@ import org.webcurator.ui.util.DateUtils;
 public class ArchiveAdapterImpl implements ArchiveAdapter {
 	/** the logger. */
 	private static Log log = LogFactory.getLog(ArchiveAdapterImpl.class);
-	/** the digital asset store containing the harvests. */
-	private DigitalAssetStore digitalAssetStore = null;
 	/** the manager for accessing target instance data. */
 	private TargetInstanceManager targetInstanceManager;
 	/** the manager for accessing target and group data. */
@@ -60,15 +57,9 @@ public class ArchiveAdapterImpl implements ArchiveAdapter {
 		if (customDepositFormElements != null && customDepositFormElements.isEmpty() == false)
 			map.putAll(customDepositFormElements);
 
-		try {
-			digitalAssetStore.submitToArchive(instance.getOid().toString(),sipXML,map,harvestNumber);
-			// update the state of the target instance to archived
-			instance.setState(TargetInstance.STATE_ARCHIVING);
-			targetInstanceManager.save(instance);			
-		} catch (DigitalAssetStoreException e) {
-			// TODO Auto-generated catch block
-			throw new Exception(e.getMessage(), e);
-		}
+		// update the state of the target instance to archived
+		instance.setState(TargetInstance.STATE_ARCHIVING);
+		targetInstanceManager.save(instance);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -175,10 +166,6 @@ public class ArchiveAdapterImpl implements ArchiveAdapter {
 		} else{
 			return OMS_ACCESS_RESTRICTION_RESTRICTED;
 		}
-	}
-
-	public void setDigitalAssetStore(DigitalAssetStore digitalAssetStore) {
-		this.digitalAssetStore = digitalAssetStore;
 	}
 
 	/**

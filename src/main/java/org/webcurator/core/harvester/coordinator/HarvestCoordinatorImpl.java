@@ -40,8 +40,6 @@ import org.webcurator.core.notification.MessageType;
 import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.core.profiles.HeritrixProfile;
 import org.webcurator.core.scheduler.TargetInstanceManager;
-import org.webcurator.core.store.DigitalAssetStore;
-import org.webcurator.core.store.DigitalAssetStoreFactory;
 import org.webcurator.core.targets.TargetManager;
 import org.webcurator.domain.TargetInstanceCriteria;
 import org.webcurator.domain.TargetInstanceDAO;
@@ -67,8 +65,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	private HarvestQaManager harvestQaManager;
 
 	private TargetInstanceDAO targetInstanceDao;
-
-	private DigitalAssetStoreFactory digitalAssetStoreFactory;
 
 	/** The Target Manager. */
 	private TargetManager targetManager;
@@ -206,14 +202,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 			targetManager.save(t);
 		}
 
-		// Ask the DigitalAssetStore to index the ARC
-		try {
-			digitalAssetStoreFactory.getDAS().initiateIndexing(
-					new ArcHarvestResultDTO(harvestResult.getOid(), harvestResult.getTargetInstance().getOid(), harvestResult
-							.getCreationDate(), harvestResult.getHarvestNumber(), harvestResult.getProvenanceNote()));
-		} catch (DigitalAssetStoreException ex) {
-			log.error("Could not send initiateIndexing message to the DAS", ex);
-		}
 
 		inTrayManager.generateNotification(ti.getOwner().getOid(), MessageType.CATEGORY_MISC, MessageType.TARGET_INSTANCE_COMPLETE,
 				ti);
@@ -266,12 +254,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		// Assume we are already indexing
 		Boolean reIndex = false;
 
-		try {
-			reIndex = !digitalAssetStoreFactory.getDAS().checkIndexing(origHarvestResult.getOid());
-		} catch (DigitalAssetStoreException ex) {
-			log.error("Could not send checkIndexing message to the DAS", ex);
-		}
-
 		if (reIndex) {
 			// Save any unsaved changes
 			targetInstanceDao.save(ti);
@@ -311,18 +293,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 			targetInstanceDao.save(newHarvestResult);
 			targetInstanceDao.save(ti);
 
-			try {
-				digitalAssetStoreFactory.getDAS().initiateIndexing(
-						new ArcHarvestResultDTO(newHarvestResult.getOid(), newHarvestResult.getTargetInstance().getOid(),
-								newHarvestResult.getCreationDate(), newHarvestResult.getHarvestNumber(), newHarvestResult
-										.getProvenanceNote()));
-
-				inTrayManager.generateNotification(ti.getOwner().getOid(), MessageType.CATEGORY_MISC,
-						MessageType.TARGET_INSTANCE_COMPLETE, ti);
-				inTrayManager.generateTask(Privilege.ENDORSE_HARVEST, MessageType.TARGET_INSTANCE_ENDORSE, ti);
-			} catch (DigitalAssetStoreException ex) {
-				log.error("Could not send initiateIndexing message to the DAS", ex);
-			}
 		}
 
 		return reIndex;
@@ -999,13 +969,8 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 				tiNames[index++] = ti.getJobName();
 			}
 
-			try {
-				digitalAssetStoreFactory.getDAS().purge(tiNames);
-				for (TargetInstance ti : tis) {
-					targetInstanceManager.purgeTargetInstance(ti);
-				}
-			} catch (DigitalAssetStoreException e) {
-				log.error(MessageFormat.format("Failed to complete the purge {0}", e.getMessage()), e);
+			for (TargetInstance ti : tis) {
+				targetInstanceManager.purgeTargetInstance(ti);
 			}
 		}
 	}
@@ -1030,14 +995,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 
 			harvestAgentManager.purgeAbortedTargetInstances(tiNames);
 
-			// call the same web-method on the DAS, to delete folders which
-			// may have been created in error while a running harvest was in
-			// transition from running to stopping to harvested.
-			try {
-				digitalAssetStoreFactory.getDAS().purgeAbortedTargetInstances(tiNames);
-			} catch (DigitalAssetStoreException e) {
-				log.error(MessageFormat.format("Failed to complete the purge of aborted ti data via DAS: {0}", e.getMessage()), e);
-			}
 
 			try {
 				for (TargetInstance ti : tis) {
@@ -1050,14 +1007,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 			}
 
 		}
-	}
-
-	/**
-	 * @param digitalAssetStoreFactory
-	 *            the digitalAssetStoreFactory to set
-	 */
-	public void setDigitalAssetStoreFactory(DigitalAssetStoreFactory digitalAssetStoreFactory) {
-		this.digitalAssetStoreFactory = digitalAssetStoreFactory;
 	}
 
 	/**
@@ -1174,17 +1123,6 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	}
 
 	public void removeIndexes(HarvestResult hr) {
-		DigitalAssetStore das = digitalAssetStoreFactory.getDAS();
-		try {
-			log.info("Attempting to remove indexes for TargetInstance " + hr.getTargetInstance().getOid() + " HarvestNumber "
-					+ hr.getHarvestNumber());
-			das.initiateRemoveIndexes(new ArcHarvestResultDTO(hr.getOid(), hr.getTargetInstance().getOid(), hr.getCreationDate(),
-					hr.getHarvestNumber(), hr.getProvenanceNote()));
-		} catch (DigitalAssetStoreException e) {
-			log.error(MessageFormat.format(
-					"Could not send initiateRemoveIndexes message to the DAS for TargetInstance {0} HarvestNumber {1}: {2}", hr
-							.getTargetInstance().getOid(), hr.getHarvestNumber(), e.getMessage()), e);
-		}
 	}
 
 	public void completeArchiving(Long targetInstanceOid, String archiveIID) {

@@ -8,15 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.webcurator.core.exceptions.WCTRuntimeException;
 import org.webcurator.core.reader.LogReader;
-import org.webcurator.core.store.DigitalAssetStoreFactory;
 import org.webcurator.domain.model.core.LogFilePropertiesDTO;
 import org.webcurator.domain.model.core.TargetInstance;
 
 public class HarvestLogManagerImpl implements HarvestLogManager {
 
 	private HarvestAgentManager harvestAgentManager;
-	private DigitalAssetStoreFactory digitalAssetStoreFactory;
-
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Override
@@ -31,10 +28,8 @@ public class HarvestLogManagerImpl implements HarvestLogManager {
 			}
 			return logReader.listLogFiles(targetInstance.getJobName());
 		} else {
-			// if not then check to see if the log files are available from the
-			// digital asset store.
-			LogReader logReader = digitalAssetStoreFactory.getLogReader();
-			return logReader.listLogFiles(targetInstance.getJobName());
+
+			return null;
 		}
 	}
 
@@ -195,10 +190,8 @@ public class HarvestLogManagerImpl implements HarvestLogManager {
 			LogReader logReader = harvestAgentManager.getLogReader(targetInstance);
 			return logReader;
 		} else {
-			// if not then check to see if the log files are available from the
-			// digital asset store.
-			LogReader logReader = digitalAssetStoreFactory.getLogReader();
-			return logReader;
+
+			return null;
 		}
 
 	}
@@ -211,13 +204,4 @@ public class HarvestLogManagerImpl implements HarvestLogManager {
 		this.harvestAgentManager = harvestAgentManager;
 	}
 
-	public DigitalAssetStoreFactory getDigitalAssetStoreFactory() {
-		return digitalAssetStoreFactory;
-	}
-
-	public void setDigitalAssetStoreFactory(DigitalAssetStoreFactory digitalAssetStoreFactory) {
-		this.digitalAssetStoreFactory = digitalAssetStoreFactory;
-	}
-	
-	
 }
