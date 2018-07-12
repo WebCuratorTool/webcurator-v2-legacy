@@ -17,9 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.webcurator.core.exceptions.DigitalAssetStoreException;
 import org.webcurator.core.exceptions.WCTRuntimeException;
-import org.webcurator.core.rules.QaRecommendationService;
 import org.webcurator.core.scheduler.TargetInstanceManager;
-import org.webcurator.core.store.tools.QualityReviewFacade;
 import org.webcurator.domain.TargetInstanceDAO;
 import org.webcurator.domain.model.core.ArcHarvestResult;
 import org.webcurator.domain.model.core.HarvestResource;
@@ -44,15 +42,6 @@ public class HarvestQaManagerImpl implements HarvestQaManager {
 
 
 	private Logger log = LoggerFactory.getLogger(getClass());
-
-	/**
-	 * The component that will provide an <code>Indicator</code> based QA
-	 * recommendation
-	 **/
-	private QaRecommendationService qaRecommendationService;
-
-	/** The interface through which auto-prune is applied **/
-	private QualityReviewFacade qualityReviewFacade;
 
 	@Override
 	public void autoPrune(TargetInstance ti) throws DigitalAssetStoreException {
@@ -114,9 +103,6 @@ public class HarvestQaManagerImpl implements HarvestQaManager {
 				ArrayList<String> modificationNote = new ArrayList<String>();
 				modificationNote.add(autoPrunedNote);
 
-				// prune all the uris that have previously been pruned
-				qualityReviewFacade.copyAndPrune(targetInstanceManager.getHarvestResults(ti.getOid()).get(0).getOid(),
-						new ArrayList<String>(urisToDelete), new ArrayList<HarvestResourceDTO>(), autoPrunedNote, modificationNote);
 			}
 
 		}
@@ -146,25 +132,12 @@ public class HarvestQaManagerImpl implements HarvestQaManager {
 		if (referenceCrawlOid != null) {
 			referenceCrawl = targetInstanceDao.load(referenceCrawlOid);
 		}
+		// fetch the indicator criterias for the ti's agency
+		List<IndicatorCriteria> criteria = targetInstanceManager.getIndicatorCriteriasByAgencyOid(ti.getOwner().getAgency()
+				.getOid());
+		// persist the results
+		targetInstanceManager.save(ti);
 
-		try {
-			// initialise the knowledge session
-			qaRecommendationService.buildKnowledgeSession();
-			// fetch the indicator criterias for the ti's agency
-			List<IndicatorCriteria> criteria = targetInstanceManager.getIndicatorCriteriasByAgencyOid(ti.getOwner().getAgency()
-					.getOid());
-			// process the indicators
-			qaRecommendationService.applyRules(ti, referenceCrawl, criteria);
-			// persist the results
-			targetInstanceManager.save(ti);
-
-		} catch (DroolsParserException e) {
-			log.error("Rules Engine encountered errors when processing indicators", e);
-		} catch (IOException e) {
-			log.error("Error encountered when processing rules file", e);
-		} catch (Exception e) {
-			log.error("Unexpected error encountered during Rules Engine processing of ti " + ti.getOid(), e);
-		}
 	}
 
 	@Override
@@ -211,18 +184,6 @@ public class HarvestQaManagerImpl implements HarvestQaManager {
 
 	public String getAutoQAUrl() {
 		return autoQAUrl;
-	}
-
-	public QaRecommendationService getQaRecommendationService() {
-		return qaRecommendationService;
-	}
-
-	public void setQaRecommendationService(QaRecommendationService qaRecommendationService) {
-		this.qaRecommendationService = qaRecommendationService;
-	}
-
-	public void setQualityReviewFacade(QualityReviewFacade qualityReviewFacade) {
-		this.qualityReviewFacade = qualityReviewFacade;
 	}
 
 	/**

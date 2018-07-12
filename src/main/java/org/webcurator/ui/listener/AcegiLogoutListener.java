@@ -32,7 +32,6 @@ import org.webcurator.core.util.ApplicationContextFactory;
 import org.webcurator.core.util.Auditor;
 import org.webcurator.core.util.LockManager;
 import org.webcurator.domain.model.auth.User;
-import org.webcurator.ui.tools.controller.BrowseController;
 
 /**
  * The a session listener that logs the user out when the session expires.
@@ -40,7 +39,7 @@ import org.webcurator.ui.tools.controller.BrowseController;
  */
 public class AcegiLogoutListener implements HttpSessionListener {
 	/** Logger for the BrowseController. **/
-	private static Log log = LogFactory.getLog(BrowseController.class);
+	private static Log log = LogFactory.getLog(AcegiLogoutListener.class);
 
 	/** The LockManager **/
 	LockManager lockManager = null;

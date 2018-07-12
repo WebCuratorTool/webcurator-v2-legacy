@@ -65,80 +65,6 @@
 		</property>
 	</bean>
 
-	<bean id="qaRecommendationService"
-		class="org.webcurator.core.rules.QaRecommendationServiceImpl"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
-		
-		<!--
-			the state that will be used to denote a failure within the Rules Engine (eg: an unexpected exception).
-			this state will be returned to the user as the state of the failed indicator along with the exception 
-		 -->
-		<property name="stateFailed" value="Failed" />
-		
-		<!--
-			the advice priority is the QA recommendation in rank order,
-			the value of each Map entry being the rank 
-		 -->
-		<property name="advicePriority">
-			<map>
-				<entry key="None"><value type="java.lang.Integer">0</value></entry>
-				<entry key="Running"><value type="java.lang.Integer">1</value></entry>
-				<entry key="Archive"><value type="java.lang.Integer">2</value></entry>
-				<entry key="Investigate"><value type="java.lang.Integer">3</value></entry>
-				<!-- 
-					de-list has highest priority for a valid indicator since we know that nothing has changed (precluding any other advice)
-				 -->
-				<entry key="Delist"><value type="java.lang.Integer">4</value></entry>
-				<entry key="Reject"><value type="java.lang.Integer">5</value></entry>
-				<!--
-					failed has the highest priority overall since any failures are unexpected 
-				 -->
-				<entry key="Failed"><value type="java.lang.Integer">6</value></entry>
-			</map>
-		</property>
-		
-		<!--
-			globals objects used by the rules engine 
-		 -->
-		<property name="globals">
-			<map>
-				<!-- formatted messages that will be returned on an indicator -->
-				<entry key="MSG_WITHIN_TOLERANCE" value="The {0} indicator value of {1} is within {2}% and {3}% of reference crawl tolerance ({4} &lt;= {5} &lt;= {6})"></entry>
-				<entry key="MSG_OUTSIDE_TOLERANCE" value="The {0} indicator value of {1} is outside {2}% and {3}% of reference crawl tolerance ({5} &lt; {4} or {5} &gt; {6})"></entry>
-				<entry key="MSG_EXCEEDED_UPPER_LIMIT" value="The {0} indicator value of {1} has exceeded its upper limit of {2}"></entry>
-				<entry key="MSG_FALLEN_BELOW_LOWER_LIMIT" value="The {0} indicator value of {1} has fallen below its lower limit of {2}"></entry>
-				<!-- advice that will be returned on an indicator -->
-				<entry key="REJECT" value="Reject"></entry>
-				<entry key="INVESTIGATE" value="Investigate"></entry>
-				<entry key="ARCHIVE" value="Archive"></entry>
-			</map>
-		</property>
-		
-		<!-- name of the drools rules file to load into the rules engine -->
-		<property name="rulesFileName" value="rules.drl" />
-		
-		<property name="qualityReviewFacade">
-			<ref bean="qualityReviewFacade" />
-		</property>
-		
-		<property name="harvestCoordinator">
-			<ref bean="harvestCoordinator" />
-		</property>
-		
-		<property name="targetInstanceManager">
-			<ref bean="targetInstanceManager" />
-		</property>
-	</bean>
-
-	<bean id="qualityReviewFacade" class="org.webcurator.core.store.tools.QualityReviewFacade">
-	 	<property name="targetInstanceDao">
-	 		<ref bean="targetInstanceDao"/>
-	 	</property>
-	 	<property name="auditor">
-	 		<ref bean="audit"/>
-	 	</property>
-	 </bean>
 	<bean id="targetInstanceDao" class="org.webcurator.domain.TargetInstanceDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>
@@ -252,8 +178,6 @@
 		<property name="targetInstanceManager" ref="targetInstanceManager" />
 		<property name="targetInstanceDao" ref="targetInstanceDao" />
 		<property name="autoQAUrl" value="${harvestCoordinator.autoQAUrl}" />
-		<property name="qaRecommendationService" ref="qaRecommendationService" />
-		<property name="qualityReviewFacade" ref="qualityReviewFacade" />
 		<property name="enableQaModule">
 			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
 		</property>
