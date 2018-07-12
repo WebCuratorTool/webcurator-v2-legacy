@@ -2,7 +2,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
 <%@page import="org.webcurator.domain.model.auth.Privilege"%>
-<%@page import="org.webcurator.ui.profiles.command.ProfileListCommand"%>
 <script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
 
 <span class="midtitleGrey">Hibernate Test</span>
