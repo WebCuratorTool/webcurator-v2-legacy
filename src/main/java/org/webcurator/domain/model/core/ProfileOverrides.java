@@ -262,54 +262,6 @@ public class ProfileOverrides {
 	}
 
 	/**
-	 * Apply the profile overrides to a Heritrix 3 profile. For each element in
-	 * the profile that is overriden (the flag set to true), this method
-	 * deletes the value from the base profile and replaces it with the value
-	 * from the overrides.
-	 *
-	 * @param profile The Heritrix 3 Profile to override.
-	 */
-	public void apply(Heritrix3Profile profile) {
-		Heritrix3ProfileOptions profileOptions = profile.getHeritrix3ProfileOptions();
-		if (overrideH3DocumentLimit) {
-			profileOptions.setDocumentLimit(h3DocumentLimit);
-		}
-		if (overrideH3DataLimit) {
-			profileOptions.setDataLimitUnit(ProfileDataUnit.valueOf(h3DataLimitUnit));
-			profileOptions.setDataLimit(new BigDecimal(h3DataLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
-		}
-		if (overrideH3TimeLimit) {
-			profileOptions.setTimeLimitUnit(ProfileTimeUnit.valueOf(h3TimeLimitUnit));
-			profileOptions.setTimeLimit(new BigDecimal(h3TimeLimit).setScale(8, BigDecimal.ROUND_HALF_UP));
-		}
-		if (overrideH3MaxPathDepth) {
-			profileOptions.setMaxPathDepth(h3MaxPathDepth);
-		}
-		if (overrideH3MaxHops) {
-			profileOptions.setMaxHops(h3MaxHops);
-		}
-		if (overrideH3MaxTransitiveHops) {
-			profileOptions.setMaxTransitiveHops(h3MaxTransitiveHops);
-		}
-		if (overrideH3IgnoreRobots) {
-			if (h3IgnoreRobots.equals("ignore")) {
-				profileOptions.setIgnoreRobotsTxt(true);
-			} else if (h3IgnoreRobots.equals("obey")) {
-				profileOptions.setIgnoreRobotsTxt(false);
-			}
-		}
-		if (overrideH3IgnoreCookies) {
-			profileOptions.setIgnoreCookies(h3IgnoreCookies);
-		}
-		if (overrideH3BlockedUrls) {
-			profileOptions.setBlockURLsAsList(h3BlockedUrls);
-		}
-		if (overrideH3IncludedUrls) {
-			profileOptions.setIncludeURLsAsList(h3IncludedUrls);
-		}
-	}
-	
-	/**
 	 * Apply the profile overrides to a Heritrix profile. For each element in
 	 * the profile that is overriden (the flag set to true), this method 
 	 * deletes the value from the base profile and replaces it with the value
