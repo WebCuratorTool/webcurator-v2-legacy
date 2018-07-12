@@ -405,11 +405,6 @@ public class TargetInstanceDAOImpl extends HibernateDaoSupport implements Target
 						cntQuery.add(Restrictions.eq("flagged", aCriteria.getFlagged()));
 					}
 					
-					if (aCriteria.getFlag() != null) {
-						query.add(Restrictions.eq("flag", aCriteria.getFlag()));
-						cntQuery.add(Restrictions.eq("flag", aCriteria.getFlag()));
-					}
-					
 					if(aCriteria.getNondisplayonly()) {
 						query.add(Restrictions.eq("display", false));
 						cntQuery.add(Restrictions.eq("display", false));

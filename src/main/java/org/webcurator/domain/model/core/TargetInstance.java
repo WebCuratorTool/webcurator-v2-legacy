@@ -161,8 +161,6 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
     private String displayChangeReason = "";
     /** Is this target instance flagged*/
     private boolean flagged = false;
-    /** The flag group (a coloured flag) **/
-    private Flag flag = null;
     /** The QA recommendation derived from this target instance's indicators **/
     private String recommendation;
     /** profile for this target instance (if harvested)*/
@@ -998,21 +996,6 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
 	public void setFlagged(boolean flagged)
 	{
 		this.flagged = flagged;
-	}
-	
-	/**
-	 * @return the Flag
-	 * @hibernate.many-to-one column="TI_FLAG_OID" foreign-key="FK_F_OID" not-null="false"  
-	 */
-	public Flag getFlag() {
-		return flag;
-	}
-	
-	/**
-	 * @param Flag the Flag to set
-	 */
-	public void setFlag(Flag flag) {
-		this.flag = flag;
 	}
 
 	/**

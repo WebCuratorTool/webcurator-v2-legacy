@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.webcurator.domain.model.core.Flag;
 /** 
  * The criteria to be used when searching for a TargetInstance.
  * @author nwaight
@@ -33,7 +32,6 @@ public class TargetInstanceCriteria {
     private String name = "";
     private Long searchOid = null;
     private boolean flagged = false;
-    private Flag flag = null;
     private boolean nondisplayonly = false;
     private String sortorder = "";
     private Long targetSearchOid = null;
@@ -180,12 +178,7 @@ public class TargetInstanceCriteria {
 	public void setTargetSearchOid(Long targetSearchOid) {
 		this.targetSearchOid = targetSearchOid;
 	}
-	public Flag getFlag() {
-		return flag;
-	}
-	public void setFlag(Flag flag) {
-		this.flag = flag;
-	}
+
 	public Set<String> getRecommendationFilter() {
 		return recommendationFilter;
 	}
