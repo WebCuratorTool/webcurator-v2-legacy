@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.webcurator.domain.model.core.Indicator;
 
 /**
  * Formats a <code>List</code> strings into a comma delimited list and applies the ellipsis symbol, followed by suffix: (+n others) 

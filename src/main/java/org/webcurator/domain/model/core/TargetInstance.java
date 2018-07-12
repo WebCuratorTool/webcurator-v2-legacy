@@ -135,10 +135,6 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
     private List<Annotation> annotations = new LinkedList<Annotation>();
     /** the list of deleted annotations for this target instance. */
     private List<Annotation> deletedAnnotations = new LinkedList<Annotation>();
-    /** the list of indicators for this target instance. */
-    private List<Indicator> indicators = new LinkedList<Indicator>();
-    /** the list of deleted indicators for this target instance. */
-    private List<Indicator> deletedIndicators = new LinkedList<Indicator>();
     /** Flag to state if the annotations have been sorted */
     private boolean annotationsSorted = false;   
     /** Flag to state if the annotations contain any flagged as alertable, making the whole target instance alertable */
@@ -237,29 +233,7 @@ public class TargetInstance implements Annotatable, Overrideable, UserInTrayReso
 	public void setHarvestResults(List<HarvestResult> harvestResults) {
 		this.harvestResults = harvestResults;
 	}
-	
-	/**
-	 * Fetch the <code>Indicator</code>s for this <code>TargetInstance</code> 
-	 * @hibernate.list cascade="all" lazy="true"
-	 * @hibernate.collection-key column="I_TI_OID"
-	 * @hibernate.collection-index column="I_INDEX"
-	 * @hibernate.collection-one-to-many class="org.webcurator.domain.model.core.Indicator"
-	 * @return A <code>List</code> of <code>Indicator</code>s for the specified <code>TargetInstance</code> 
-	 */
-	public List<Indicator> getIndicators() {
-		return indicators;
-	}
-	
-	/**
-	 * Sets the <code>Indicator</code>s for the <code>TargetInstance<code>
-	 * @param indicators
-	 */
-	public void setIndicators(List<Indicator> indicators) {		
-		this.indicators = indicators;
-	}
-	
 
-	
 	/**
 	 * Fetch the HarvestResult whose harvestNumber is specified.
 	 * @param harvestNumber the harvest number to fetch

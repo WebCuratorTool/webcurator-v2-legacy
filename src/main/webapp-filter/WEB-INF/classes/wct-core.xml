@@ -75,21 +75,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
-	
-	<bean id="indicatorDAO" class="org.webcurator.domain.IndicatorDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
-	
-	<bean id="indicatorCriteriaDAO" class="org.webcurator.domain.IndicatorCriteriaDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
-	
-	<bean id="indicatorReportLineDAO" class="org.webcurator.domain.IndicatorReportLineDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
 
 	<bean id="targetDao" class="org.webcurator.domain.TargetDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
