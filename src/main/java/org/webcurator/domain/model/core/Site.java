@@ -37,7 +37,7 @@ import org.webcurator.domain.model.auth.Agency;
  *
  * @hibernate.class table="SITE" lazy="false"
  */
-public class Site extends AbstractIdentityObject implements Annotatable, AgencyOwnable {
+public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /** The database oid of the site */
     private Long oid;
     /** The title of the site */
@@ -68,15 +68,6 @@ public class Site extends AbstractIdentityObject implements Annotatable, AgencyO
      * A set of permissions that have been removed.
      */
     private Set<Permission> removedPermissions = new HashSet<Permission>();
-    
-    /** The list of annotations. */
-    private List<Annotation> annotations = new LinkedList<Annotation>();
-    /** The list of deleted annotations. */
-    private List<Annotation> deletedAnnotations = new LinkedList<Annotation>();
-    /** True if the annotations have been loaded */
-    private boolean annotationsSet = false;
-    /** Flag to state if the annotations have been sorted */
-    private boolean annotationsSorted = false;    
     
     /** The owning agency */
     private Agency owningAgency = null;
@@ -319,78 +310,7 @@ public class Site extends AbstractIdentityObject implements Annotatable, AgencyO
         urlPatterns.remove(url);
         url.setSite(null);
     }
-    
-        /*
-         * Annotatable Implementation
-         */
-    /** @see Annotatable#addAnnotation(Annotation). */
-    public void addAnnotation(Annotation annotation) {
-        annotations.add(annotation);
-        annotationsSorted = false;
-    }
-	
-	/** @see Annotatable#getAnnotation(int). */
-	public Annotation getAnnotation(int index) {
-		return annotations.get(index);	
-	}
-		
-	/** @see Annotatable#deleteAnnotation(int). */
-	public void deleteAnnotation(int index)
-	{
-		Annotation annotation = annotations.get(index);
-		if(annotation != null)
-		{
-			deletedAnnotations.add(annotation);
-			annotations.remove(index);
-		}
-	}
-	
-    /** @see Annotatable#getAnnotations(). */
-    public List<Annotation> getAnnotations() {
-        return annotations;
-    }
-    
-    /** @see Annotatable#getDeletedAnnotations(). */
-    public List<Annotation> getDeletedAnnotations() {
-        return deletedAnnotations;
-    }
-    
-    public void setAnnotations(List<Annotation> aAnnotations) {
-        annotations = aAnnotations;
-        deletedAnnotations.clear();
-        annotationsSet = true;
-        annotationsSorted = false;
-    }
-    
-        /*
-         * (non-Javadoc)
-         * @see org.webcurator.domain.model.core.Annotatable#isAnnotationsSet()
-         */
-    public boolean isAnnotationsSet() {
-        return annotationsSet;
-    }
-    
-	/*(non-Javadoc)
-	 * @see org.webcurator.domain.model.core.Annotatable#getSortedAnnotations()
-	 */
-	public List<Annotation> getSortedAnnotations()
-	{
-		if(!annotationsSorted)
-		{
-			sortAnnotations();
-		}
-		return getAnnotations();
-	}
-		
-	/*(non-Javadoc)
-	 * @see org.webcurator.domain.model.core.Annotatable#sortAnnotations()
-	 */
-	public void sortAnnotations()
-	{
-		Collections.sort(annotations);
-		annotationsSorted = true;
-	}
-		
+
     /**
      * Get whether this site is active. Sites that are not active can be filtered
      * out of searches.

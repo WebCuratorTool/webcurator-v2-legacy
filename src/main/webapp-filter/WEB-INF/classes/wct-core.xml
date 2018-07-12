@@ -110,12 +110,6 @@
 	
 	<bean id="authorityManager" class="org.webcurator.auth.AuthorityManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
 
-	<bean id="annotationDao"
-		class="org.webcurator.domain.AnnotationDAOImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>	
-	</bean>
-
 	<bean id="politePolitenessOptions" class="org.webcurator.core.profiles.PolitenessOptions" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- Delay Factor -->
 		<constructor-arg index = "0" type = "double" value = "10.0"/>

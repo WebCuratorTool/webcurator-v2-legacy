@@ -31,7 +31,7 @@ import java.util.List;
  * 
  * @hibernate.class table="AUTHORISING_AGENT" lazy="false"
  */
-public class AuthorisingAgent extends AbstractIdentityObject implements Annotatable {
+public class AuthorisingAgent extends AbstractIdentityObject {
 	/** The database oid */
 	private Long oid;
 	/** The name of the agent. */
@@ -47,15 +47,6 @@ public class AuthorisingAgent extends AbstractIdentityObject implements Annotata
 	/** The mailing address for the contact. */
 	private String address;
 
-	
-    /** The list of annotations. */
-    private List<Annotation> annotations = new LinkedList<Annotation>();
-    /** The list of deleted annotations. */
-    private List<Annotation> deletedAnnotations = new LinkedList<Annotation>();
-    /** True if the annotations have been loaded */
-    private boolean annotationsSet = false;	
-    /** Flag to state if the annotations have been sorted */
-    private boolean annotationsSorted = false;    
 	
 	/**
 	 * No-arg constructor for Hibernate
@@ -215,82 +206,7 @@ public class AuthorisingAgent extends AbstractIdentityObject implements Annotata
 		return name == null ? 0 : name.hashCode();
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see Annotatable#addAnnotation(Annotation). */
-	public void addAnnotation(Annotation annotation) {
-		annotations.add(annotation);	
-		annotationsSorted = false;
-	}
-	
-	/* (non-Javadoc)
-	 * @see Annotatable#getAnnotation(int). */
-	public Annotation getAnnotation(int index) {
-		return annotations.get(index);	
-	}
-		
-	/* (non-Javadoc)
-	 * @see Annotatable#deleteAnnotation(int). */
-	public void deleteAnnotation(int index)
-	{
-		Annotation annotation = annotations.get(index); 
-		if(annotation != null)
-		{
-			deletedAnnotations.add(annotation);
-			annotations.remove(index);
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see Annotatable#getAnnotations(). */
-	public List<Annotation> getAnnotations() {		
-		return annotations;
-	}
-	
-	/* (non-Javadoc)
-	 * @see Annotatable#getDeletedAnnotations(). */
-	public List<Annotation> getDeletedAnnotations() {		
-		return deletedAnnotations;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.webcurator.domain.model.core.Annotatable#setAnnotations(java.util.List)
-	 */
-	public void setAnnotations(List<Annotation> aAnnotations) {		
-		annotations = aAnnotations;
-		deletedAnnotations.clear();
-		annotationsSet = true;
-		annotationsSorted = false;
-	}
 
-	/* (non-Javadoc)
-	 * @see org.webcurator.domain.model.core.Annotatable#isAnnotationsSet()
-	 */
-	public boolean isAnnotationsSet() {
-		return annotationsSet;
-	}	
-	
-	/*(non-Javadoc)
-	 * @see org.webcurator.domain.model.core.Annotatable#getSortedAnnotations()
-	 */
-	public List<Annotation> getSortedAnnotations()
-	{
-		if(!annotationsSorted)
-		{
-			sortAnnotations();
-		}
-		return getAnnotations();
-	}
-		
-	/*(non-Javadoc)
-	 * @see org.webcurator.domain.model.core.Annotatable#sortAnnotations()
-	 */
-	public void sortAnnotations()
-	{
-		Collections.sort(annotations);
-		annotationsSorted = true;
-	}
-		
 	/**
 	 * This is a comparator to compare two authorisng agents.
 	 * @author bbeaumont
