@@ -87,16 +87,6 @@
 	</servlet>
 	
 	<servlet>
-		<servlet-name>browse</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/classes/wct-browse-servlet.xml</param-value>		
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>	
-	
-	<servlet>
 	<display-name>Apache-Axis Servlet</display-name>
 		<servlet-name>AxisServlet</servlet-name>
 		<servlet-class>
@@ -113,12 +103,7 @@
 	<servlet-mapping>
 		<servlet-name>wct</servlet-name>
 		<url-pattern>*.html</url-pattern>
-	</servlet-mapping>	
-	
-	<servlet-mapping>
-		<servlet-name>browse</servlet-name>
-		<url-pattern>/curator/tools/browse/*</url-pattern>
-	</servlet-mapping>		
+	</servlet-mapping>
 
     <session-config>
       <session-timeout>30</session-timeout> 

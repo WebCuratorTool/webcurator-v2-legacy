@@ -172,7 +172,6 @@
             <fileset dir="${root}/cfg">
                 <include name="wct-core-security.xml"/>
                 <include name="wct-core-servlet.xml"/>
-                <include name="wct-browse-servlet.xml"/>
                 <include name="wct-core.xml"/>
                 <include name="wct-core.properties"/>
                 <include name="wct-core-lists.xml"/>
@@ -198,7 +197,6 @@
             <fileset dir="${root}/cfg">
                 <include name="wct-core-security.xml"/>
                 <include name="wct-core-servlet.xml"/>
-                <include name="wct-browse-servlet.xml"/>
                 <include name="wct-core.xml"/>
                 <include name="wct-core.properties"/>
                 <include name="wct-core-lists.xml"/>
@@ -235,9 +233,7 @@
         <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HTTP_PROXY_NAME@@" value="${http.proxy.name}"/>		
         <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HTTP_PROXY_PORT@@" value="${http.proxy.port}"/>		
     	
-    	<antcall target="double_escape"/>
-    	
-        
+
         <copy file="${root}/WebRoot/WEB-INF/web.xml" todir="${target}/${proj.name}/WEB-INF"/>
         <copy todir="${target}/${proj.name}/jsp">
             <fileset dir="${root}/WebRoot/jsp">
@@ -313,21 +309,6 @@
         
         <move file="${target}/${proj.name}/META-INF/wct.xml" tofile="${target}/${proj.name}/META-INF/context.xml"/> 
     </target>
-	
-	
-	<target name="double_escape" depends="double_escape_yes,double_escape_no"/>
-	
-	<target name="double_escape_yes" if="browse.double_escape">
-        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_START@@--&gt;" value=""/>
-        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_END@@--&gt;" value=""/>
-	</target>
-	
-	<target name="double_escape_no" unless="browse.double_escape">
-        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_START@@--&gt;" value="&lt;!--"/>
-        <replace file="${target}/${proj.name}/WEB-INF/classes/wct-browse-servlet.xml" token="&lt;!--@@DOUBLE_ESCAPE_END@@--&gt;" value="--&gt;"/>
-	</target>
-	
-	
     
     <target name="deploy">
         <copy todir="${tomcat.webapps}">
