@@ -20,7 +20,6 @@ import java.util.Set;
 import org.webcurator.domain.model.core.Permission;
 import org.webcurator.domain.model.core.Seed;
 import org.webcurator.domain.model.core.Site;
-import org.webcurator.domain.model.core.Target;
 import org.webcurator.domain.model.core.UrlPattern;
 
 /**
@@ -79,22 +78,7 @@ public abstract class PermissionMappingStrategy {
 	 * @return true if acceptable; otherwise false.
 	 */
 	public abstract boolean isValidPattern(UrlPattern aUrlPattern);
-	
-	/**
-	 * Get a Set of permissions that match the seed.
-	 * @param aSeed The seed to match.
-	 * @param aTarget the target to match for.
-	 * @return A set of permissions.
-	 */
-	public abstract Set<Permission> getMatchingPermissions(Target aTarget, Seed aSeed);
-	
-	/**
-	 * Get a Set of permissions that match the URL.
-	 * @param aUrl The URL to match.
-	 * @param aTarget the target to match for.
-	 * @return A set of permissions.
-	 */	
-	public abstract Set<Permission> getMatchingPermissions(Target aTarget, String aUrl);
+
 	
 	/**
 	 * Check if a given Url Pattern matches a given seed.

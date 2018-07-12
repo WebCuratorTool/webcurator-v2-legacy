@@ -55,8 +55,6 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
     private Date endDate;
     /** The pattern for deciding how often to run the schedule. */
     private String cronPattern;
-    /** the target the schedule is related to. */
-    private AbstractTarget target;
     /** Type Identifier for quick schedules. */
     private int scheduleType = CUSTOM_SCHEDULE; 
     /** The owner of the schedule */
@@ -157,23 +155,6 @@ public class Schedule extends AbstractIdentityObject implements UserOwnable {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
-	/**
-	 * Get the target that this schedule belongs to.
-     * @return Returns the target.
-     * @hibernate.many-to-one column="S_TARGET_ID" foreign-key="FK_S_TARGET_ID"
-     */
-    public AbstractTarget getTarget() {
-        return target;
-    }
-    
-    /**
-     * Set the target that owns this schedule.
-     * @param aTarget The target to set.
-     */
-    public void setTarget(AbstractTarget aTarget) {
-        this.target = aTarget;
-    }
 
 	/**
      * Retrieves the next execution time based on the schedule. This

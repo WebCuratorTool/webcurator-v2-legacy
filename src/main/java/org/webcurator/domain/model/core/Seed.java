@@ -32,8 +32,6 @@ public class Seed extends AbstractIdentityObject {
 	private Long oid;
 	/** The seed itself **/
 	private String seed;
-	/** The seed's target **/
-	private Target target;
 	/** The set of related permissions */
 	private Set<Permission> permissions = new HashSet<Permission>();
 	/** Sets if the seed is primary or secondary. */
@@ -83,23 +81,6 @@ public class Seed extends AbstractIdentityObject {
 	 */
 	public void setSeed(String seed) {
 		this.seed = seed;
-	}
-	
-	/**
-	 * Get the Target to which this seed belongs.
-	 * @return Returns the target.
-	 * @hibernate.many-to-one column="S_TARGET_ID" foreign-key="FK_SEED_TARGET_ID" 
-	 */
-	public Target getTarget() {
-		return target;
-	}
-	
-	/**
-	 * Set the Target to which this seed belongs.
-	 * @param aTarget The target to set.
-	 */
-	public void setTarget(Target aTarget) {
-		this.target = aTarget;
 	}
 	
 	/**
@@ -194,24 +175,5 @@ public class Seed extends AbstractIdentityObject {
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
 	}
-	
-	
-	/**
-	 * Add a permission to the seed.
-	 * @param aPermission The permission to add.
-	 */
-	public void addPermission(Permission aPermission) {
-		permissions.add(aPermission);
-		target.setDirty(true);
-	}
-	
-	/**
-	 * Remove a permission from the seed.
-	 * @param aPermission The permission to remove.
-	 */
-	public void removePermission(Permission aPermission) {
-		permissions.remove(aPermission);
-		target.setDirty(true);
-	}
-	
+
 }

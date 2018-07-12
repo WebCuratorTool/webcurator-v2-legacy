@@ -24,11 +24,6 @@ import java.util.Comparator;
  * 
  * @author bbeaumont
  * @hibernate.class table="GROUP_MEMBER"
- * @hibernate.query name="org.webcurator.domain.model.core.GroupMember.getMembers" query="select new org.webcurator.domain.model.dto.GroupMemberDTO(gm.oid, gm.parent.oid, gm.parent.name, gm.parent.owner.username, gm.parent.owner.agency.name, gm.child.oid, gm.child.name, gm.child.objectType, gm.child.owner.username, gm.child.owner.agency.name) from GroupMember gm where gm.parent.oid = :parentOid ORDER BY UPPER(gm.child.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.GroupMember.cntMembers" query="select count(*) from GroupMember gm where gm.parent.oid = :parentOid"
- * @hibernate.query name="org.webcurator.domain.model.core.GroupMember.getParents" query="select new org.webcurator.domain.model.dto.GroupMemberDTO(gm.oid, gm.parent.oid, gm.parent.name, gm.parent.owner.username, gm.parent.owner.agency.name, gm.child.oid, gm.child.name, gm.child.objectType, gm.child.owner.username, gm.child.owner.agency.name) from GroupMember gm where gm.child.oid = :childOid ORDER BY UPPER(gm.parent.name)"
- * @hibernate.query name="org.webcurator.domain.model.core.GroupMember.cntParents" query="select count(*) from GroupMember gm where gm.child.oid = :childOid"
- * @hibernate.query name="org.webcurator.domain.model.core.GroupMember.getMemberStates" query="select gm.child.state from GroupMember gm where gm.parent.oid = :parentOid"
  */
 public class GroupMember {
 	/** The query identifier to get the GroupMemberDTO child objects */
@@ -43,11 +38,7 @@ public class GroupMember {
 	public static final String QUERY_GET_MEMBERSTATES = "org.webcurator.domain.model.core.GroupMember.getMemberStates";
 	
 	/** The database oid */
-	private Long oid = null;	
-	/** The parent of the member */
-	private TargetGroup parent = null;
-	/** The child */
-	private AbstractTarget child = null;
+	private Long oid = null;
 
 	
     /**
@@ -69,39 +60,6 @@ public class GroupMember {
      */
     public void setOid(Long aOid) {
         this.oid = aOid;
-    }	
-	
-	/**
-	 * Get the child of the relationship.
-	 * @return Returns the child.
-     * @hibernate.many-to-one column="GM_CHILD_ID" foreign-key="FK_GM_CHILD_ID" 
-	 */
-	public AbstractTarget getChild() {
-		return child;
-	}
-	/**
-	 * Set the child of the relationship.
-	 * @param child The child to set.
-	 */
-	public void setChild(AbstractTarget child) {
-		this.child = child;
-	}
-	
-	/**
-	 * Get the parent of the relationship.
-	 * @return Returns the parent.
-     * @hibernate.many-to-one column="GM_PARENT_ID" foreign-key="FK_GM_PARENT_ID"
-	 */
-	public TargetGroup getParent() {
-		return parent;
-	}
-	
-	/**
-	 * Set the parent of the relationship.
-	 * @param parent The parent to set.
-	 */
-	public void setParent(TargetGroup parent) {
-		this.parent = parent;
-	}
+    }
 
 }

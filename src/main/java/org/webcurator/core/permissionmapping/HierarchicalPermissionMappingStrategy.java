@@ -23,7 +23,6 @@ import java.util.Set;
 import org.webcurator.domain.model.core.Permission;
 import org.webcurator.domain.model.core.Seed;
 import org.webcurator.domain.model.core.Site;
-import org.webcurator.domain.model.core.Target;
 import org.webcurator.domain.model.core.UrlPattern;
 
 /**
@@ -139,71 +138,6 @@ public class HierarchicalPermissionMappingStrategy extends PermissionMappingStra
 		catch (Exception e) {
 			return false;
 		}
-	}
-
-	/**
-	 * Get all the permissions that match the given seed.
-	 * @param aSeed The seed to match.
-	 * @param aTarget the target to match for.
-	 * @return a set of permissions that match. May be empty.
-	 */
-	public Set<Permission> getMatchingPermissions(Target aTarget, Seed aSeed) {
-		return getMatchingPermissions(aTarget, aSeed.getSeed());
-	}
-
-	/**
-	 * Get all the permissions that match the given url.
-	 * @param aUrl The url to match.
-	 * @param aTarget the target to match for.
-	 * @return a set of permissions that match. May be empty.
-	 */	
-	public Set<Permission> getMatchingPermissions(Target aTarget, String aUrl) {
-		Set<Permission> permissions = new HashSet<Permission>();
-		Set<Long> oids = new HashSet<Long>();
-		
-		// Get the ALL mappings.
-		// Use the MappingView entity for performance (data fetched in single call)
-		List<MappingView> mappings = dao.getMappingsView("*");
-		for(MappingView m: mappings) {
-			if( matches(m.getUrlPattern(), aUrl) 
-					&& m.isActiveNowOrInFuture() 
-					&& m.getOwningAgencyId().equals(aTarget.getOwner().getAgency().getOid())
-					&& m.isSiteActive()) {
-				
-				if(!oids.contains(m.getPermissionOId())) {
-					// now fetch the main Mapping entity to get at the associated Permission
-					List<Mapping> mapping = dao.getMapping(m.getOid());
-					for(Mapping map: mapping) {
-						permissions.add(map.getPermission());
-					}
-					oids.add(m.getPermissionOId());
-				}
-			}			
-		}
-
-		DomainIterator di = new DomainIterator(UrlUtils.getHost(aUrl));
-		while(di.hasNext()) {
-			// Use the MappingView entity for performance (data fetched in single call)
-			mappings = dao.getMappingsView(di.next());
-			for(MappingView m: mappings) {
-				if( matches(m.getUrlPattern(), aUrl) 
-						&& m.isActiveNowOrInFuture() 
-						&& m.getOwningAgencyId().equals(aTarget.getOwner().getAgency().getOid())
-						&& m.isSiteActive()) {
-					
-					if(!oids.contains(m.getPermissionOId())) {
-						// now fetch the main Mapping entity to get at the associated Permission
-						List<Mapping> mapping = dao.getMapping(m.getOid());
-						for(Mapping map: mapping) {
-							permissions.add(map.getPermission());
-						}
-						oids.add(m.getPermissionOId());
-					}
-				}			
-			}
-		}
-		
-		return permissions;
 	}
 
 	/**
