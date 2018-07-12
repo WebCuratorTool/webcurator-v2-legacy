@@ -125,11 +125,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
-
-	<bean id="harvestCoordinatorDao" class="org.webcurator.domain.HarvestCoordinatorDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
 	
 	<bean id="targetInstanceManager" class="org.webcurator.core.scheduler.TargetInstanceManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="targetInstanceDao">
@@ -160,20 +155,6 @@
 	</bean>
 
 	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
-
-	<bean id="siteManager" class="org.webcurator.core.sites.SiteManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="siteDao" ref="siteDao"/>
-		<property name="annotationDAO" ref="annotationDao"/>
-		<property name="listeners">
-			<bean class="org.webcurator.core.permissionmapping.PermMappingSiteListener">
-				<property name="strategy" ref="permissionMappingStrategy"/>
-			</bean>
-		</property>
-		<property name="intrayManager" ref="inTrayManager"/>
-		<property name="auditor" ref="audit"/>
-		<property name="agencyUserManager" ref="agencyUserManager"/>
-	</bean>
-
 
 	<bean id="targetManager" class="org.webcurator.core.targets.TargetManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="targetDao" ref="targetDao"/>
@@ -227,15 +208,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
-	
-	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-		<property name="triggers">
-			<list>
-		    	<ref bean="groupExpiryJobTrigger"/>	   
-		    	<ref bean="createNewTargetInstancesTrigger"/> 	
-		    </list>
-		</property>
-	</bean>	
 
 	<bean id="agencyUserManager" class="org.webcurator.core.agency.AgencyUserManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="userRoleDAO">
@@ -297,39 +269,6 @@
 	  <property name="sender" value="${inTrayManager.sender}"/>
 	  <property name="messageSource"><ref bean="messageSource"/></property>
 	  <property name="wctBaseUrl" value="${inTrayManager.wctBaseUrl}"/>
-	</bean>
-	
-	<bean id="groupExpiryJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject">
-			<ref bean="targetManager"/>
-		</property>
-		<property name="targetMethod" value="endDateGroups"/>
-	</bean>
-	
-	<bean id="groupExpiryJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="GroupExpiryJobGroup"/>
-		<property name="name" value="GroupExpiryJobTrigger"/>
-		<property name="jobDetail" ref="groupExpiryJob"/>
-		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${groupExpiryJobTrigger.startDelay}"/>
-		<!-- repeat every xx milliseconds: this should run at most once a day (86,400,000 millseconds) -->
-  		<property name="repeatInterval" value="${groupExpiryJobTrigger.repeatInterval}"/>
-	</bean>		
-
-
-	<bean id="createNewTargetInstancesJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="targetManager"/>
-		<property name="targetMethod" value="processSchedulesJob"/>
-	</bean>
-	
-	<bean id="createNewTargetInstancesTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="group" value="createNewTargetInstancesJobGroup"/>
-		<property name="name" value="createNewTargetInstancesTrigger"/>
-		<property name="jobDetail" ref="createNewTargetInstancesJob"/>
-		<!-- delay before running the job measured in milliseconds -->
-  		<property name="startDelay" value="${createNewTargetInstancesTrigger.startDelay}"/>
-		<!-- repeat every xx milliseconds: this job should be run once a day (86,400,000 millseconds) -->
-  		<property name="repeatInterval" value="${createNewTargetInstancesTrigger.repeatInterval}"/>
 	</bean>
 
 	<bean id="politePolitenessOptions" class="org.webcurator.core.profiles.PolitenessOptions" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">

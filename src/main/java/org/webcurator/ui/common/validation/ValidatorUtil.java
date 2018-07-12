@@ -35,8 +35,6 @@ import org.webcurator.core.common.Constants;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.targets.TargetManager;
 import org.webcurator.core.util.ApplicationContextFactory;
-import org.webcurator.domain.HarvestCoordinatorDAO;
-import org.webcurator.domain.model.core.BandwidthRestriction;
 import org.webcurator.domain.model.core.TargetInstance;
 
 /**
