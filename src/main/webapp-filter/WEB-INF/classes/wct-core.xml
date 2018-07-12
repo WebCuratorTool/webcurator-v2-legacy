@@ -76,11 +76,6 @@
 		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
 	
-	<bean id="rejReasonDAO" class="org.webcurator.domain.RejReasonDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
-	
 	<bean id="indicatorDAO" class="org.webcurator.domain.IndicatorDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>

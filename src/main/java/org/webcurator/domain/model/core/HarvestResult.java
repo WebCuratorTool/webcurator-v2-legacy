@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.webcurator.core.notification.UserInTrayResource;
 import org.webcurator.domain.model.auth.User;
-import org.webcurator.domain.model.core.RejReason;
 
 /**
  * The <code>HarvestResult</code> class describes the result of a harvest. It
@@ -66,8 +65,6 @@ public class HarvestResult implements UserInTrayResource {
 	protected List<String> modificationNotes = new LinkedList<String>();
 	/** The Harvest ID that this harvest was derived from */
 	private Integer derivedFrom;
-	/** Why this harvest result was rejected */
-	protected RejReason rejReason;
 	
 	/**
 	 * Construct a new HarvestResult.
@@ -232,24 +229,6 @@ public class HarvestResult implements UserInTrayResource {
 	 */
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
-	}
-
-	/**
-	 * Get the Rejection Reason of this harvest result (if any).
-	 * @return The RejReason object corresponding to the reason specified when a
-	 * harvest is rejected.
-	 * @hibernate.many-to-one column="HR_RR_OID" foreign-key="FK_HR_RR_OID"
-	 */
-	public RejReason getRejReason() {
-		return rejReason;
-	}
-
-	/**
-	 * Set the rejection reason for this harvest result.
-	 * @param rejReason The RejReason object.
-	 */
-	public void setRejReason(RejReason rejReason) {
-		this.rejReason = rejReason;
 	}
 
 	/**

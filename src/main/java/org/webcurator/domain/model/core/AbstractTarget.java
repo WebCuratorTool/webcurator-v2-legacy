@@ -26,7 +26,6 @@ import org.webcurator.core.notification.UserInTrayResource;
 import org.webcurator.core.util.Utils;
 import org.webcurator.domain.UserOwnable;
 import org.webcurator.domain.model.auth.User;
-import org.webcurator.domain.model.core.RejReason;
 
 /**
  * Base Target object to capture the common behaviour between groups and 
@@ -131,9 +130,6 @@ public abstract class AbstractTarget extends AbstractIdentityObject implements U
     private Set<Long> removedParents = new HashSet<Long>();
     
     private boolean displayTarget = true;
-
-	/** Why this target was rejected */
-	protected RejReason rejReason;
 	
     /** The total number of crawls (<code>TargetInstance</code>s) associated with the Target **/
     private int crawls = 0;
@@ -682,24 +678,6 @@ public abstract class AbstractTarget extends AbstractIdentityObject implements U
 	 */
 	public void setDublinCoreMetaData(DublinCore dublinCoreMetaData) {
 		this.dublinCoreMetaData = dublinCoreMetaData;
-	}
-
-	/**
-	 * Get the Rejection Reason of this target (if any).
-	 * @return The RejReason object corresponding to the reason specified when a
-	 * target is rejected.
-	 * @hibernate.many-to-one column="AT_RR_OID" foreign-key="FK_AT_RR_OID"
-	 */
-	public RejReason getRejReason() {
-		return rejReason;
-	}
-
-	/**
-	 * Set the rejection reason for this target.
-	 * @param rejReason The RejReason object.
-	 */
-	public void setRejReason(RejReason rejReason) {
-		this.rejReason = rejReason;
 	}
 
 	/**
