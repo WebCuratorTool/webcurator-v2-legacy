@@ -110,11 +110,6 @@
 		<property name="sessionFactory" ref="sessionFactory"/>
 		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
-	
-	<bean id="inTrayDao" class="org.webcurator.domain.InTrayDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>	
-	</bean>
 
 	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
 
