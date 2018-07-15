@@ -1,11 +1,10 @@
-<%@ page language="java" pageEncoding="UTF-8"%><%@ page import="org.webcurator.core.common.EnvironmentFactory" %><%@ page import="org.webcurator.core.common.Environment" %><%
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
 String failed = request.getParameter("failed");
 
-Environment env = EnvironmentFactory.getEnv();
-String wctAppVersion = env.getApplicationVersion();
 %><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
@@ -42,7 +41,7 @@ String wctAppVersion = env.getApplicationVersion();
 						<td width="8" background="images/home-box-left.gif"><img src="images/x.gif" width="8" height="1" border="0" /></td>
 						<td valign="top" width="73"><img src="images/login-icon.jpg" alt="" width="73" height="108" border="0" /></td>
 						<td valign="top" width="100%">
-							<div id="homeBoxTitle">Login <%= wctAppVersion %></div>
+							<div id="homeBoxTitle">Login</div>
 							<div id="homeBoxLine"><img src="images/x.gif" width="1" height="5" border="0" /></div>
 						  	<div id="homeBoxText">
 								username<br />
