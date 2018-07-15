@@ -3,7 +3,7 @@ package org.webcurator.ui.hibernate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.webcurator.domain.HibernateTestDAO;
-import org.webcurator.domain.model.HibernateTest;
+import org.webcurator.domain.model.core.HibernateTest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

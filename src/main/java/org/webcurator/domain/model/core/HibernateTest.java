@@ -1,14 +1,14 @@
-package org.webcurator.domain.model;
+package org.webcurator.domain.model.core;
 
 /**
  * Hibernate Test
  * @hibernate.class table="HIBERNATE_TEST" lazy="false"
- * @hibernate.query name="org.webcurator.domain.model.HibernateTest.getAll" query="SELECT ht FROM HibernateTest ht"
+ * @hibernate.query name="org.webcurator.domain.model.core.HibernateTest.getAll" query="SELECT ht FROM HibernateTest ht"
  */
 public class HibernateTest {
 
     /** Query to retrieve all hibernate test data. */
-    public static final String QRY_GET_ALL = "org.webcurator.domain.model.HibernateTest.getAll";
+    public static final String QRY_GET_ALL = "org.webcurator.domain.model.core.HibernateTest.getAll";
 
     private Long id;
     private String column1;

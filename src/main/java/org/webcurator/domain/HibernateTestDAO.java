@@ -1,6 +1,6 @@
 package org.webcurator.domain;
 
-import org.webcurator.domain.model.HibernateTest;
+import org.webcurator.domain.model.core.HibernateTest;
 
 import java.util.List;
 
