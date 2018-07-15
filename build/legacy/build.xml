@@ -176,7 +176,6 @@
                 <include name="wct-core.properties"/>
                 <include name="log4j.xml"/>
                 <include name="messages*.properties"/>
-                <include name="default-profile.xml"/>
             </fileset>
         </copy>		
         <jar destfile="${target}/test/test.jar" basedir="${target}/test/classes"/>
@@ -200,7 +199,6 @@
                 <include name="wct-core.properties"/>
                 <include name="log4j.xml"/>
                 <include name="messages*.properties"/>
-                <include name="default-profile.xml"/>
             </fileset>
         </copy>		
         
@@ -224,12 +222,7 @@
         <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.xml" token="@@APPLICATION_VERSION@@" value="${wct.application.version}"/>
         <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.xml" token="@@HERITRIX_VERSION@@" value="${heritrix.version}"/>
         <replace file="${target}/${proj.name}/WEB-INF/classes/wct-core.xml" token="@@MAIL_PROTOCOL@@" value="${mail.protocol}"/>
-        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HERITRIX_VERSION@@" value="${heritrix.version}"/>
-        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@PROJECT_URL@@" value="${project.web.site}"/>		
-        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@CONTACT_EMAIL_ADDRESS@@" value="${project.contact.email}"/>		
-        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HTTP_PROXY_NAME@@" value="${http.proxy.name}"/>		
-        <replace file="${target}/${proj.name}/WEB-INF/classes/default-profile.xml" token="@@HTTP_PROXY_PORT@@" value="${http.proxy.port}"/>		
-    	
+
 
         <copy file="${root}/WebRoot/WEB-INF/web.xml" todir="${target}/${proj.name}/WEB-INF"/>
         <copy todir="${target}/${proj.name}/jsp">

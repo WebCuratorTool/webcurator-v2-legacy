@@ -77,20 +77,6 @@
 
 	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
 
-	<bean id="audit" class="org.webcurator.core.util.AuditDAOUtil">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory"/>
-		</property>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
-
-	<bean id="logonDuration" class="org.webcurator.core.report.LogonDurationDAOImpl">
-		<property name="sessionFactory">
-			<ref bean="sessionFactory"/>
-		</property>
-		<property name="txTemplate" ref="transactionTemplate"/>
-	</bean>
-
 	<bean id="permissionMappingStrategy" class="org.webcurator.core.permissionmapping.HierarchicalPermissionMappingStrategy" singleton="true">
 		<property name="dao" ref="permMappingDao"/>
 	</bean>

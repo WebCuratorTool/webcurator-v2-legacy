@@ -28,7 +28,6 @@
     </bean>
     
     <bean id="WCTPasswordExpiredFilter" class="org.webcurator.auth.dbms.WCTForcePasswordChange" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
-    	<property name="auditor"><ref bean="audit"/></property>
     </bean>
 
    <!-- ======================== AUTHENTICATION ======================= -->
@@ -173,7 +172,6 @@
       <property name="defaultTargetUrl"><value>/</value></property>
       <property name="filterProcessesUrl"><value>/j_acegi_security_check</value></property>
       <property name="authDAO"><ref bean="userRoleDAO"/></property>
-      <property name="auditor"><ref bean="audit"/></property>
    </bean>
    
    <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">

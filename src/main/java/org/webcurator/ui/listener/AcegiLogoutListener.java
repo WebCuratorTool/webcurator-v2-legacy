@@ -26,10 +26,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
-import org.webcurator.core.common.Constants;
-import org.webcurator.core.report.LogonDurationDAO;
 import org.webcurator.core.util.ApplicationContextFactory;
-import org.webcurator.core.util.Auditor;
 import org.webcurator.core.util.LockManager;
 import org.webcurator.domain.model.auth.User;
 
@@ -81,20 +78,7 @@ public class AcegiLogoutListener implements HttpSessionListener {
 		lockManager.releaseLocksForOwner(remoteUser);
 		
         if (auth != null) {
-            Object blob = auth.getDetails();
-            if (blob instanceof User) {
-                User user = (User) auth.getDetails();
-                Auditor auditor = (Auditor) ctx.getBean(Constants.BEAN_AUDITOR);
-                auditor.audit(user, User.class.getName(), user.getOid(), Auditor.ACTION_LOGOUT, "User " + remoteUser + " has logged out.");        
-            }
-        
-        
             SecurityContextHolder.clearContext();
-            
-            // logout for duration
-            String sessionId = event.getSession().getId();
-            LogonDurationDAO logonDurationDAO = (LogonDurationDAO) ctx.getBean(Constants.BEAN_LOGON_DURATION_DAO);
-            logonDurationDAO.setLoggedOut(sessionId, new Date());
         }
                 
         // Log the logout to the console.

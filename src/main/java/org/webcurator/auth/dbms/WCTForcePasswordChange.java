@@ -32,7 +32,6 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.webcurator.core.util.Auditor;
 import org.webcurator.domain.model.auth.User;
 import org.webcurator.ui.common.Constants;
 
@@ -47,9 +46,7 @@ public class WCTForcePasswordChange implements Filter {
 
     /** Logger. */
     private Log log;
-    /** object for creating audit entries. */
-    private Auditor auditor;
-    
+
     /** Default Constructor. */
     public WCTForcePasswordChange() {
         super();
@@ -82,7 +79,6 @@ public class WCTForcePasswordChange implements Filter {
                                     
                   RequestDispatcher reqDisp = httpRequest.getRequestDispatcher("/"+Constants.CNTRL_RESET_PWD);
                   reqDisp.forward(aRequest, aResponse);  
-                  auditor.audit(User.class.getName(),authUser.getOid(),Auditor.ACTION_FORCE_PWD_CHANGE,"User has been forced to change password");
               }
             }
         }
@@ -100,13 +96,5 @@ public class WCTForcePasswordChange implements Filter {
     
     /** @see javax.servlet.Filter#destroy() */
     public void destroy() {
-    }
-
-    /**
-     * sets the Auditor bean to use for auditing of Password changes
-     * @param auditor the Audit bean
-     */
-    public void setAuditor(Auditor auditor) {
-        this.auditor = auditor;
     }
 }
