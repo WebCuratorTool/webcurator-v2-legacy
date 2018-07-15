@@ -87,82 +87,6 @@
 		<put name="page-help" value="Subtabbed Layout Help" />
 	</definition>
 
-	<definition name="site" extends=".tabbedNew">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Authorisation" />
-		<put name="controller" value="curator/site/site.html" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="https://github.com/DIA-NZ/webcurator/wiki" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
-	</definition>
-
-	<definition name="site-auth-agency-search" extends=".subTabbed">
-		<put name="title" value="WEB CURATOR TOOL: Harvest Authorisation Agencies" />
-		<put name="body" value="/jsp/site-auth-agency-search.jsp" />
-		<put name="activeTab" value="authorisations" />
-		<put name="pageIcon" value="authorisations" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-auth.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-sites.jsp" />
-	</definition>
-
-	<definition name="targetInstance" extends=".tabbedNew">
-		<put name="title" value="WEB CURATOR TOOL: Target Instance" />
-		<put name="controller" value="curator/target/target-instance.html" />
-		<put name="activeTab" value="instances" />
-		<put name="pageIcon" value="instances" />
-		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-tis.jsp" />
-	</definition>
-
-	<definition name="target" extends=".tabbedNew">
-		<put name="title" value="WEB CURATOR TOOL: Target" />
-		<put name="controller" value="curator/target/target.html" />
-		<put name="activeTab" value="targets" />
-		<put name="pageIcon" value="targets" />
-		<put name="page-title" value="/jsp/layouts/page-title-targets.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-targets.jsp" />
-	</definition>
-
-	<definition name="profile" extends=".tabbedNew">
-		<put name="title" value="WEB CURATOR TOOL: Profiles" />
-		<put name="controller" value="curator/profiles/profiles.html" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-heritrix1-config.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-profiles.jsp" />
-	</definition>
-
-	<definition name="profileH3" extends=".tabbedNew">
-		<put name="title" value="WEB CURATOR TOOL: Profiles H3" />
-		<put name="controller" value="curator/profiles/profilesH3.html" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-heritrix3-config.jsp" />
-		<put name="page-help"
-			 value="http://dia-nz.github.io/webcurator/" />
-		<put name="object-identifier" value="/jsp/layouts/object-identifier-profiles.jsp" />
-	</definition>
-
-	<definition name="profile-targets" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Profiles" />
-		<put name="body" value="/jsp/profile-targets.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="harvestConfig" />
-		<put name="page-title" value="/jsp/layouts/page-title-harvest-config.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
 	<definition name="Error" extends=".errorLayout">
 		<put name="title" value="Error" />
 		<put name="body" value="/jsp/layouts/Error.jsp" />
@@ -185,23 +109,6 @@
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
-	<definition name="submit-to-archive" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Submit to archive" />
-		<put name="body" value="/jsp/submit-to-archive.jsp" />
-		<put name="activeTab" value="instances" />
-		<put name="pageIcon" value="instances" />
-		<put name="page-title" value="/jsp/layouts/page-title-target-instances.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="MessageView" extends=".mainLayout">
-		<put name="title" value="Message" />
-		<put name="body" value="/jsp/message.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
 	<definition name="HomeView" extends=".mainLayout">
 		<put name="title" value="WEB CURATOR TOOL" />
 		<put name="body" value="/jsp/home.jsp" />
@@ -219,38 +126,6 @@
 	<definition name="QaHomeView" extends=".mainLayout">
 		<put name="title" value="WEB CURATOR TOOL" />
 		<put name="body" value="/jsp/qa-home.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<!-- Browse Tool does not use any templates -->
-	<definition name="browse-tool-other" path="/jsp/browse-tool-other.jsp" />
-	<definition name="browse-tool-other-small" path="/jsp/browse-tool-other-small.jsp" />
-	<definition name="browse-tool-html" path="/jsp/browse-tool-html.jsp" />
-
-	<definition name="browse-tool-not-found" extends=".popup">
-		<put name="title" value="Resource not found" />
-		<put name="body" value="/jsp/browse-tool-not-found.jsp" />
-	</definition>
-
-	<definition name="browse-tool-error" extends=".popup">
-		<put name="title" value="Browse Error" />
-		<put name="body" value="/jsp/browse-error.jsp" />
-	</definition>
-
-	<definition name="object-locked" extends=".mainLayout">
-		<put name="title" value="Object is Locked" />
-		<put name="body" value="/jsp/object-locked.jsp" />
-		<put name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
-	</definition>
-
-	<definition name="reporting" extends=".mainLayoutNew">
-		<put name="title" value="WEB CURATOR TOOL: Reporting" />
-		<put name="body" value="/jsp/reporting.jsp" />
-		<put name="activeTab" value="management" />
-		<put name="pageIcon" value="reports" />
-		<put name="page-title" value="/jsp/layouts/page-title-reports.jsp" />
 		<put name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>

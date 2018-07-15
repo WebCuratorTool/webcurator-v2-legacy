@@ -9,7 +9,7 @@
     
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/wct-core.xml, /WEB-INF/classes/wct-core-security.xml, /WEB-INF/classes/wct-core-lists.xml</param-value>
+		<param-value>/WEB-INF/classes/wct-core.xml, /WEB-INF/classes/wct-core-security.xml</param-value>
 	</context-param>
 	
 	<filter>
