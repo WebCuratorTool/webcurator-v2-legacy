@@ -22,10 +22,13 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -41,26 +44,32 @@ import org.webcurator.domain.model.dto.UserDTO;
  * and Privilges.
  * @author bprice
  */
-public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
+@Repository
+public class UserRoleDAOImpl implements UserRoleDAO {
     
     private Log log = LogFactory.getLog(UserRoleDAOImpl.class);
-    
-    private TransactionTemplate txTemplate = null;
-    
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    private HibernateTemplate transactionTemplate;
+
     public List getUserDTOs(Long agencyOid) {
-        Object[] params = new Object[] {agencyOid};   
-        List results = getHibernateTemplate().findByNamedQuery(User.QRY_GET_ALL_USER_DTOS_BY_AGENCY, params);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_ALL_USER_DTOS_BY_AGENCY);
+        query.setParameter(0, agencyOid);
+        List results = query.list();
         return results;
     }
 
     public List getUserDTOs() {
-        
-        List results = getHibernateTemplate().findByNamedQuery(User.QRY_GET_ALL_USER_DTOS);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_ALL_USER_DTOS);
+        List results = query.list();
         return results;
     }
 
     public UserDTO getUserDTOByOid(final Long userOid) {
-        return (UserDTO)getHibernateTemplate().execute(
+        return (UserDTO)transactionTemplate.execute(
                 new HibernateCallback() {
                     public Object doInHibernate(Session session) {
                         Query query = session.getNamedQuery(User.QRY_GET_USER_DTO_BY_OID);
@@ -73,22 +82,25 @@ public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
     }
 
     public List getRoles() {
-        return getHibernateTemplate().findByNamedQuery(Role.QRY_GET_ROLES);
+        return sessionFactory.getCurrentSession().getNamedQuery(Role.QRY_GET_ROLES).list();
     }
 
     public List getRoles(Long agencyOid) {
-        Object[] params = new Object[] {agencyOid};
-        return getHibernateTemplate().findByNamedQuery(Role.QRY_GET_ROLES_BY_AGENCY,params);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(Role.QRY_GET_ROLES_BY_AGENCY);
+        query.setParameter(0, agencyOid);
+        List results = query.list();
+        return results;
     }
 
     public User getUserByOid(Long oid) {
-        return (User)getHibernateTemplate().load(User.class,oid);
+        return (User)transactionTemplate.load(User.class,oid);
     }
 
     public User getUserByName(String username) {
-        Object[] params = new Object[] {username};   
-        List results = getHibernateTemplate().findByNamedQuery(User.QRY_GET_USER_BY_NAME,params);
-        
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_BY_NAME);
+        query.setParameter(0, username);
+        List results = query.list();
+
         if(results.size() == 1) {
             return (User) results.get(0);
         }
@@ -98,49 +110,47 @@ public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
     }
 
     public Agency getAgencyByOid(Long oid) {
-        return (Agency)getHibernateTemplate().load(Agency.class,oid);
+        return (Agency)transactionTemplate.load(Agency.class,oid);
     }
     
     public List getUserPrivileges(String username) {
-        Object[] params = new Object[] {username};
-        return getHibernateTemplate().findByNamedQuery(RolePrivilege.QRY_GET_USER_PRIVILEGES,params);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(RolePrivilege.QRY_GET_USER_PRIVILEGES);
+        query.setParameter(0, username);
+        List results = query.list();
+        return results;
     }
 
     public void saveOrUpdate(final Object aObject) {
-        txTemplate.execute(
-                new TransactionCallback() {
-                    public Object doInTransaction(TransactionStatus ts) {
+        transactionTemplate.execute(
+                new HibernateCallback() {
+                    public Object doInHibernate(Session session) {
                         try { 
                             log.debug("Before Saving of Object");
-                            getSession().saveOrUpdate(aObject);
+                            session.saveOrUpdate(aObject);
                             log.debug("After Saving Object");
                         }
                         catch(Exception ex) {
                             log.warn("Setting Rollback Only",ex);
-                            ts.setRollbackOnly();
+                            session.getTransaction().setRollbackOnly();
                         }
                         return null;
                     }
                 }
         );    
     }
-    
-//    public void saveOrUpdate(Object aObject) {
-//        getHibernateTemplate().saveOrUpdate(aObject);
-//    }
-    
+
     public void delete(final Object aObject) {
-        txTemplate.execute(
-                new TransactionCallback() {
-                    public Object doInTransaction(TransactionStatus ts) {
+        transactionTemplate.execute(
+                new HibernateCallback() {
+                    public Object doInHibernate(Session session) {
                         try {
                             log.debug("Before Delete of Object");
-                            getHibernateTemplate().delete(aObject);
+                            transactionTemplate.delete(aObject);
                             log.debug("After Deletes Object");
                         }
                         catch (DataAccessException e) {
                             log.warn("Setting Rollback Only",e);
-                            ts.setRollbackOnly();
+                            session.getTransaction().setRollbackOnly();
                             throw e;
                         }
                         return null;
@@ -150,8 +160,7 @@ public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
     }
     
     public List getUsers() {
-//        return getHibernateTemplate().loadAll(User.class);
-        return (List)getHibernateTemplate().execute(
+        return (List)transactionTemplate.execute(
                 new HibernateCallback() {
                     public Object doInHibernate(Session session) {
                         Criteria query = session.createCriteria(User.class);
@@ -160,61 +169,36 @@ public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
                     }
                 }
             );                          
-
     }
     
     public List getUsers(Long agencyOid) {
-        Object[] params = new Object[] {agencyOid};
-        return getHibernateTemplate().findByNamedQuery(User.QRY_GET_USERS_BY_AGENCY,params);
-    }
-
-    public void setTxTemplate(TransactionTemplate txTemplate) {
-        this.txTemplate = txTemplate;
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USERS_BY_AGENCY);
+        query.setParameter(0, agencyOid);
+        List results = query.list();
+        return results;
     }
 
     public List getAgencies() {
-        return getHibernateTemplate().findByNamedQuery(Agency.QRY_GET_ALL_AGENCIES);
+        return sessionFactory.getCurrentSession().getNamedQuery(Agency.QRY_GET_ALL_AGENCIES).list();
     }
 
     public List getAssociatedRolesForUser(Long userOid) {
-        Object[] params = new Object[] {userOid};
-        return getHibernateTemplate().findByNamedQuery(Role.QRY_GET_ASSOCIATED_ROLES_BY_USER,params);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(Role.QRY_GET_ASSOCIATED_ROLES_BY_USER);
+        query.setParameter(0, userOid);
+        List results = query.list();
+        return results;
     }
 
     public Role getRoleByOid(Long oid) {
-        return (Role)getHibernateTemplate().load(Role.class, oid);
+        return (Role)transactionTemplate.load(Role.class, oid);
     }
-
-//    public void deleteUserRolesForUser(final User user) {
-//        txTemplate.execute(
-//                new TransactionCallback() {
-//                    public Object doInTransaction(TransactionStatus ts) {
-//                        try { 
-//                                Set userRoles = user.getRoles();
-//                                Iterator it = userRoles.iterator();
-//                                while(it.hasNext()) {
-//                                    UserRole userRole = (UserRole) it.next();
-//                                    userRole.getRole().getUsers().remove(userRole);
-//                                    userRole.getUser().getRoles().remove(userRole);
-//                                    userRole.setUser(null);
-//                                    userRole.setRole(null);
-//                                }
-//                                getHibernateTemplate().deleteAll(userRoles);        
-//                        }
-//                        catch(Exception ex) {
-//                            log.warn("Setting Rollback Only",ex);
-//                            ts.setRollbackOnly();
-//                        }
-//                        return null;
-//                    }
-//                }
-//        );    
-//    }
 
     @SuppressWarnings("unchecked")
     public List<UserDTO> getUserDTOsByPrivilege(String privilege) {
-        Object[] params = new Object[] {privilege};
-        return getHibernateTemplate().findByNamedQuery(User.QRY_GET_USER_DTOS_BY_PRIVILEGE,params);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_DTOS_BY_PRIVILEGE);
+        query.setParameter(0, privilege);
+        List results = query.list();
+        return results;
     }
 
     /**
@@ -222,8 +206,11 @@ public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
      */
     @SuppressWarnings("unchecked")
     public List<UserDTO> getUserDTOsByPrivilege(String privilege, Long agencyOid) {
-        Object[] params = new Object[] {privilege, agencyOid};
-        return getHibernateTemplate().findByNamedQuery(User.QRY_GET_USER_DTOS_BY_PRIVILEGE_FOR_AGENCY,params);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_DTOS_BY_PRIVILEGE_FOR_AGENCY);
+        query.setParameter(0, privilege);
+        query.setParameter(1, agencyOid);
+        List results = query.list();
+        return results;
     }
     
     /**
@@ -231,6 +218,9 @@ public class UserRoleDAOImpl extends HibernateDaoSupport implements UserRoleDAO{
      */
     @SuppressWarnings("unchecked")
 	public List<UserDTO> getUserDTOsByTargetPrivilege(Long permissionOid) {
-    	return getHibernateTemplate().findByNamedQuery(User.QRY_GET_USER_DTOS_BY_TARGET_PERMISSION, permissionOid);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_DTOS_BY_TARGET_PERMISSION);
+        query.setParameter(0, permissionOid);
+        List results = query.list();
+        return results;
     }
 }

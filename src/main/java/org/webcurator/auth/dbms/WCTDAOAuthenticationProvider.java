@@ -27,6 +27,7 @@ import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.userdetails.User;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.MappingSqlQuery;
@@ -39,6 +40,9 @@ import org.springframework.jdbc.object.MappingSqlQuery;
  * @author bprice
  */
 public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.jdbc.JdbcDaoImpl {
+
+    @Autowired
+    private DataSource dataSource;
 
     @SuppressWarnings("unchecked")
 	@Override

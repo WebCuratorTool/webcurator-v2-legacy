@@ -9,9 +9,10 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.function.NoArgSQLFunction;
 import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
-import org.hibernate.exception.TemplatedViolatedConstraintNameExtracter;
-import org.hibernate.exception.ViolatedConstraintNameExtracter;
-import org.hibernate.util.ReflectHelper;
+import org.hibernate.exception.spi.TemplatedViolatedConstraintNameExtracter;
+import org.hibernate.exception.spi.ViolatedConstraintNameExtracter;
+import org.hibernate.internal.util.ReflectHelper;
+import org.hibernate.type.*;
 
 /**
  * A dialect compatible with the H2 database.
@@ -64,96 +65,96 @@ public class H2Dialect extends Dialect {
         // where section like 'Function%' order by section, topic
 
 //        registerFunction("abs", new StandardSQLFunction("abs"));
-        registerFunction("acos", new StandardSQLFunction("acos", Hibernate.DOUBLE));
-        registerFunction("asin", new StandardSQLFunction("asin", Hibernate.DOUBLE));
-        registerFunction("atan", new StandardSQLFunction("atan", Hibernate.DOUBLE));
-        registerFunction("atan2", new StandardSQLFunction("atan2", Hibernate.DOUBLE));
-        registerFunction("bitand", new StandardSQLFunction("bitand", Hibernate.INTEGER));
-        registerFunction("bitor", new StandardSQLFunction("bitor", Hibernate.INTEGER));
-        registerFunction("bitxor", new StandardSQLFunction("bitxor", Hibernate.INTEGER));
-        registerFunction("ceiling", new StandardSQLFunction("ceiling", Hibernate.DOUBLE));
-        registerFunction("cos", new StandardSQLFunction("cos", Hibernate.DOUBLE));
-        registerFunction("cot", new StandardSQLFunction("cot", Hibernate.DOUBLE));
-        registerFunction("degrees", new StandardSQLFunction("degrees", Hibernate.DOUBLE));
-        registerFunction("exp", new StandardSQLFunction("exp", Hibernate.DOUBLE));
-        registerFunction("floor", new StandardSQLFunction("floor", Hibernate.DOUBLE));
-        registerFunction("log", new StandardSQLFunction("log", Hibernate.DOUBLE));
-        registerFunction("log10", new StandardSQLFunction("log10", Hibernate.DOUBLE));
-//        registerFunction("mod", new StandardSQLFunction("mod", Hibernate.INTEGER));
-        registerFunction("pi", new NoArgSQLFunction("pi", Hibernate.DOUBLE));
-        registerFunction("power", new StandardSQLFunction("power", Hibernate.DOUBLE));
-        registerFunction("radians", new StandardSQLFunction("radians", Hibernate.DOUBLE));
-        registerFunction("rand", new NoArgSQLFunction("rand", Hibernate.DOUBLE));
-        registerFunction("round", new StandardSQLFunction("round", Hibernate.DOUBLE));
-        registerFunction("roundmagic", new StandardSQLFunction("roundmagic", Hibernate.DOUBLE));
-        registerFunction("sign", new StandardSQLFunction("sign", Hibernate.INTEGER));
-        registerFunction("sin", new StandardSQLFunction("sin", Hibernate.DOUBLE));
-//        registerFunction("sqrt", new StandardSQLFunction("sqrt", Hibernate.DOUBLE));
-        registerFunction("tan", new StandardSQLFunction("tan", Hibernate.DOUBLE));
-        registerFunction("truncate", new StandardSQLFunction("truncate", Hibernate.DOUBLE));
+        registerFunction("acos", new StandardSQLFunction("acos", DoubleType.INSTANCE));
+        registerFunction("asin", new StandardSQLFunction("asin", DoubleType.INSTANCE));
+        registerFunction("atan", new StandardSQLFunction("atan", DoubleType.INSTANCE));
+        registerFunction("atan2", new StandardSQLFunction("atan2", DoubleType.INSTANCE));
+        registerFunction("bitand", new StandardSQLFunction("bitand", IntegerType.INSTANCE));
+        registerFunction("bitor", new StandardSQLFunction("bitor", IntegerType.INSTANCE));
+        registerFunction("bitxor", new StandardSQLFunction("bitxor", IntegerType.INSTANCE));
+        registerFunction("ceiling", new StandardSQLFunction("ceiling", DoubleType.INSTANCE));
+        registerFunction("cos", new StandardSQLFunction("cos", DoubleType.INSTANCE));
+        registerFunction("cot", new StandardSQLFunction("cot", DoubleType.INSTANCE));
+        registerFunction("degrees", new StandardSQLFunction("degrees", DoubleType.INSTANCE));
+        registerFunction("exp", new StandardSQLFunction("exp", DoubleType.INSTANCE));
+        registerFunction("floor", new StandardSQLFunction("floor", DoubleType.INSTANCE));
+        registerFunction("log", new StandardSQLFunction("log", DoubleType.INSTANCE));
+        registerFunction("log10", new StandardSQLFunction("log10", DoubleType.INSTANCE));
+//        registerFunction("mod", new StandardSQLFunction("mod", IntegerType.INSTANCE));
+        registerFunction("pi", new NoArgSQLFunction("pi", DoubleType.INSTANCE));
+        registerFunction("power", new StandardSQLFunction("power", DoubleType.INSTANCE));
+        registerFunction("radians", new StandardSQLFunction("radians", DoubleType.INSTANCE));
+        registerFunction("rand", new NoArgSQLFunction("rand", DoubleType.INSTANCE));
+        registerFunction("round", new StandardSQLFunction("round", DoubleType.INSTANCE));
+        registerFunction("roundmagic", new StandardSQLFunction("roundmagic", DoubleType.INSTANCE));
+        registerFunction("sign", new StandardSQLFunction("sign", IntegerType.INSTANCE));
+        registerFunction("sin", new StandardSQLFunction("sin", DoubleType.INSTANCE));
+//        registerFunction("sqrt", new StandardSQLFunction("sqrt", DoubleType.INSTANCE));
+        registerFunction("tan", new StandardSQLFunction("tan", DoubleType.INSTANCE));
+        registerFunction("truncate", new StandardSQLFunction("truncate", DoubleType.INSTANCE));
 
-        registerFunction("compress", new StandardSQLFunction("compress", Hibernate.BINARY));
-        registerFunction("expand", new StandardSQLFunction("compress", Hibernate.BINARY));
-        registerFunction("decrypt", new StandardSQLFunction("decrypt", Hibernate.BINARY));
-        registerFunction("encrypt", new StandardSQLFunction("encrypt", Hibernate.BINARY));
-        registerFunction("hash", new StandardSQLFunction("hash", Hibernate.BINARY));
+        registerFunction("compress", new StandardSQLFunction("compress", BinaryType.INSTANCE));
+        registerFunction("expand", new StandardSQLFunction("compress", BinaryType.INSTANCE));
+        registerFunction("decrypt", new StandardSQLFunction("decrypt", BinaryType.INSTANCE));
+        registerFunction("encrypt", new StandardSQLFunction("encrypt", BinaryType.INSTANCE));
+        registerFunction("hash", new StandardSQLFunction("hash", BinaryType.INSTANCE));
 
-        registerFunction("ascii", new StandardSQLFunction("ascii", Hibernate.INTEGER));
-//        registerFunction("bit_length", new StandardSQLFunction("bit_length", Hibernate.INTEGER));
-        registerFunction("char", new StandardSQLFunction("char", Hibernate.CHARACTER));
-        registerFunction("concat", new VarArgsSQLFunction(Hibernate.STRING, "(", "||", ")"));
-        registerFunction("difference", new StandardSQLFunction("difference", Hibernate.INTEGER));
-        registerFunction("hextoraw", new StandardSQLFunction("hextoraw", Hibernate.STRING));
-        registerFunction("lower", new StandardSQLFunction("lower", Hibernate.STRING));
-        registerFunction("insert", new StandardSQLFunction("lower", Hibernate.STRING));
-        registerFunction("left", new StandardSQLFunction("left", Hibernate.STRING));
-//        registerFunction("length", new StandardSQLFunction("length", Hibernate.INTEGER));
-//        registerFunction("locate", new StandardSQLFunction("locate", Hibernate.INTEGER));
-//        registerFunction("lower", new StandardSQLFunction("lower", Hibernate.STRING));
-        registerFunction("lcase", new StandardSQLFunction("lcase", Hibernate.STRING));
-        registerFunction("ltrim", new StandardSQLFunction("ltrim", Hibernate.STRING));
-        registerFunction("octet_length", new StandardSQLFunction("octet_length", Hibernate.INTEGER));
-        registerFunction("position", new StandardSQLFunction("position", Hibernate.INTEGER));
-        registerFunction("rawtohex", new StandardSQLFunction("rawtohex", Hibernate.STRING));
-        registerFunction("repeat", new StandardSQLFunction("repeat", Hibernate.STRING));
-        registerFunction("replace", new StandardSQLFunction("replace", Hibernate.STRING));
-        registerFunction("right", new StandardSQLFunction("right", Hibernate.STRING));
-        registerFunction("rtrim", new StandardSQLFunction("rtrim", Hibernate.STRING));
-        registerFunction("soundex", new StandardSQLFunction("soundex", Hibernate.STRING));
-        registerFunction("space", new StandardSQLFunction("space", Hibernate.STRING));
-        registerFunction("stringencode", new StandardSQLFunction("stringencode", Hibernate.STRING));
-        registerFunction("stringdecode", new StandardSQLFunction("stringdecode", Hibernate.STRING));
-//        registerFunction("substring", new StandardSQLFunction("substring", Hibernate.STRING));
-//        registerFunction("upper", new StandardSQLFunction("upper", Hibernate.STRING));
-        registerFunction("ucase", new StandardSQLFunction("ucase", Hibernate.STRING));
+        registerFunction("ascii", new StandardSQLFunction("ascii", IntegerType.INSTANCE));
+//        registerFunction("bit_length", new StandardSQLFunction("bit_length", IntegerType.INSTANCE));
+        registerFunction("char", new StandardSQLFunction("char", CharacterType.INSTANCE));
+        registerFunction("concat", new VarArgsSQLFunction(StringType.INSTANCE, "(", "||", ")"));
+        registerFunction("difference", new StandardSQLFunction("difference", IntegerType.INSTANCE));
+        registerFunction("hextoraw", new StandardSQLFunction("hextoraw", StringType.INSTANCE));
+        registerFunction("lower", new StandardSQLFunction("lower", StringType.INSTANCE));
+        registerFunction("insert", new StandardSQLFunction("lower", StringType.INSTANCE));
+        registerFunction("left", new StandardSQLFunction("left", StringType.INSTANCE));
+//        registerFunction("length", new StandardSQLFunction("length", IntegerType.INSTANCE));
+//        registerFunction("locate", new StandardSQLFunction("locate", IntegerType.INSTANCE));
+//        registerFunction("lower", new StandardSQLFunction("lower", StringType.INSTANCE));
+        registerFunction("lcase", new StandardSQLFunction("lcase", StringType.INSTANCE));
+        registerFunction("ltrim", new StandardSQLFunction("ltrim", StringType.INSTANCE));
+        registerFunction("octet_length", new StandardSQLFunction("octet_length", IntegerType.INSTANCE));
+        registerFunction("position", new StandardSQLFunction("position", IntegerType.INSTANCE));
+        registerFunction("rawtohex", new StandardSQLFunction("rawtohex", StringType.INSTANCE));
+        registerFunction("repeat", new StandardSQLFunction("repeat", StringType.INSTANCE));
+        registerFunction("replace", new StandardSQLFunction("replace", StringType.INSTANCE));
+        registerFunction("right", new StandardSQLFunction("right", StringType.INSTANCE));
+        registerFunction("rtrim", new StandardSQLFunction("rtrim", StringType.INSTANCE));
+        registerFunction("soundex", new StandardSQLFunction("soundex", StringType.INSTANCE));
+        registerFunction("space", new StandardSQLFunction("space", StringType.INSTANCE));
+        registerFunction("stringencode", new StandardSQLFunction("stringencode", StringType.INSTANCE));
+        registerFunction("stringdecode", new StandardSQLFunction("stringdecode", StringType.INSTANCE));
+//        registerFunction("substring", new StandardSQLFunction("substring", StringType.INSTANCE));
+//        registerFunction("upper", new StandardSQLFunction("upper", StringType.INSTANCE));
+        registerFunction("ucase", new StandardSQLFunction("ucase", StringType.INSTANCE));
 
-        registerFunction("stringtoutf8", new StandardSQLFunction("stringtoutf8", Hibernate.BINARY));
-        registerFunction("utf8tostring", new StandardSQLFunction("utf8tostring", Hibernate.STRING));
+        registerFunction("stringtoutf8", new StandardSQLFunction("stringtoutf8", BinaryType.INSTANCE));
+        registerFunction("utf8tostring", new StandardSQLFunction("utf8tostring", StringType.INSTANCE));
 
-        registerFunction("current_date", new NoArgSQLFunction("current_date", Hibernate.DATE));
-        registerFunction("current_time", new NoArgSQLFunction("current_time", Hibernate.TIME));
-        registerFunction("current_timestamp", new NoArgSQLFunction("current_timestamp", Hibernate.TIMESTAMP));
-        registerFunction("datediff", new StandardSQLFunction("datediff", Hibernate.INTEGER));
-        registerFunction("dayname", new StandardSQLFunction("dayname", Hibernate.STRING));
-        registerFunction("dayofmonth", new StandardSQLFunction("dayofmonth", Hibernate.INTEGER));
-        registerFunction("dayofweek", new StandardSQLFunction("dayofweek", Hibernate.INTEGER));
-        registerFunction("dayofyear", new StandardSQLFunction("dayofyear", Hibernate.INTEGER));
-//        registerFunction("hour", new StandardSQLFunction("hour", Hibernate.INTEGER));
-//        registerFunction("minute", new StandardSQLFunction("minute", Hibernate.INTEGER));
-//        registerFunction("month", new StandardSQLFunction("month", Hibernate.INTEGER));
-        registerFunction("monthname", new StandardSQLFunction("monthname", Hibernate.STRING));
-        registerFunction("quarter", new StandardSQLFunction("quarter", Hibernate.INTEGER));
-//        registerFunction("second", new StandardSQLFunction("second", Hibernate.INTEGER));
-        registerFunction("week", new StandardSQLFunction("week", Hibernate.INTEGER));
-//        registerFunction("year", new StandardSQLFunction("year", Hibernate.INTEGER));
+        registerFunction("current_date", new NoArgSQLFunction("current_date", DateType.INSTANCE));
+        registerFunction("current_time", new NoArgSQLFunction("current_time", TimeType.INSTANCE));
+        registerFunction("current_timestamp", new NoArgSQLFunction("current_timestamp", TimestampType.INSTANCE));
+        registerFunction("datediff", new StandardSQLFunction("datediff", IntegerType.INSTANCE));
+        registerFunction("dayname", new StandardSQLFunction("dayname", StringType.INSTANCE));
+        registerFunction("dayofmonth", new StandardSQLFunction("dayofmonth", IntegerType.INSTANCE));
+        registerFunction("dayofweek", new StandardSQLFunction("dayofweek", IntegerType.INSTANCE));
+        registerFunction("dayofyear", new StandardSQLFunction("dayofyear", IntegerType.INSTANCE));
+//        registerFunction("hour", new StandardSQLFunction("hour", IntegerType.INSTANCE));
+//        registerFunction("minute", new StandardSQLFunction("minute", IntegerType.INSTANCE));
+//        registerFunction("month", new StandardSQLFunction("month", IntegerType.INSTANCE));
+        registerFunction("monthname", new StandardSQLFunction("monthname", StringType.INSTANCE));
+        registerFunction("quarter", new StandardSQLFunction("quarter", IntegerType.INSTANCE));
+//        registerFunction("second", new StandardSQLFunction("second", IntegerType.INSTANCE));
+        registerFunction("week", new StandardSQLFunction("week", IntegerType.INSTANCE));
+//        registerFunction("year", new StandardSQLFunction("year", IntegerType.INSTANCE));
 
-        registerFunction("curdate", new NoArgSQLFunction("curdate", Hibernate.DATE));
-        registerFunction("curtime", new NoArgSQLFunction("curtime", Hibernate.TIME));
-        registerFunction("curtimestamp", new NoArgSQLFunction("curtimestamp", Hibernate.TIME));
-        registerFunction("now", new NoArgSQLFunction("now", Hibernate.TIMESTAMP));
+        registerFunction("curdate", new NoArgSQLFunction("curdate", DateType.INSTANCE));
+        registerFunction("curtime", new NoArgSQLFunction("curtime", TimeType.INSTANCE));
+        registerFunction("curtimestamp", new NoArgSQLFunction("curtimestamp", TimeType.INSTANCE));
+        registerFunction("now", new NoArgSQLFunction("now", TimestampType.INSTANCE));
 
-        registerFunction("database", new NoArgSQLFunction("database", Hibernate.STRING));
-        registerFunction("user", new NoArgSQLFunction("user", Hibernate.STRING));
+        registerFunction("database", new NoArgSQLFunction("database", StringType.INSTANCE));
+        registerFunction("user", new NoArgSQLFunction("user", StringType.INSTANCE));
 
         getDefaultProperties().setProperty(Environment.STATEMENT_BATCH_SIZE, DEFAULT_BATCH_SIZE);
 
@@ -251,7 +252,8 @@ public class H2Dialect extends Dialect {
          * @param sqle The exception that was the result of the constraint violation.
          * @return The extracted constraint name.
          */
-        public String extractConstraintName(SQLException sqle) {
+        @Override
+        protected String doExtractConstraintName(SQLException sqle) throws NumberFormatException {
             String constraintName = null;
             // 23000: Check constraint violation: {0}
             // 23001: Unique index or primary key violation: {0}

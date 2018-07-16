@@ -19,7 +19,13 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -29,35 +35,36 @@ import org.webcurator.core.exceptions.WCTRuntimeException;
  * The implementation of the BaseDAO interface.
  * @author bbeaumont
  */
-public class BaseDAOImpl extends HibernateDaoSupport implements BaseDAO {
+@Repository
+public class BaseDAOImpl implements BaseDAO {
 	private Log log = LogFactory.getLog(BaseDAOImpl.class);
-	
-	protected TransactionTemplate txTemplate;
-	
-	public void setTxTemplate(TransactionTemplate txTemplate) {
-		this.txTemplate = txTemplate;
-	}
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@Autowired
+	private HibernateTemplate transactionTemplate;
 	
 	public void evict(Object anObject) {
-		getHibernateTemplate().evict(anObject);
+		transactionTemplate.evict(anObject);
 	}
 	
 	/**
 	 * Delete all objects in the collection.
 	 * @param anObject The object to remove.
 	 */	
-	public void delete(final Object anObject) { 
-		txTemplate.execute(
-				new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus ts) {
+	public void delete(final Object anObject) {
+		transactionTemplate.execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
 						try { 
 							log.debug("Before Delete");
-							getSession().delete(anObject);
+							session.delete(anObject);
 							log.debug("After Delete");
 						}
 						catch(Exception ex) {
 							log.error("Setting Rollback Only", ex);
-							ts.setRollbackOnly();							
+							session.getTransaction().setRollbackOnly();
 							throw new WCTRuntimeException("Failed to delete object", ex);
 						}
 						return null;
@@ -70,20 +77,20 @@ public class BaseDAOImpl extends HibernateDaoSupport implements BaseDAO {
 	 * Delete all objects in the collection.
 	 * @param aCollection The collection of objects to remove.
 	 */
-	public void deleteAll(final Collection aCollection) {	
-		txTemplate.execute(
-				new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus ts) {
+	public void deleteAll(final Collection aCollection) {
+		transactionTemplate.execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
 						try { 
 							log.debug("Before Delete");
 							for(Object anObject: aCollection) {
-								getSession().delete(anObject);
+								session.delete(anObject);
 							}
 							log.debug("After Delete");
 						}
 						catch(Exception ex) {
 							log.error("Setting Rollback Only", ex);
-							ts.setRollbackOnly();
+							session.getTransaction().setRollbackOnly();
 						}
 						return null;
 					}
@@ -92,7 +99,7 @@ public class BaseDAOImpl extends HibernateDaoSupport implements BaseDAO {
 	}	
 
 	public void initialize(Object anObject) {
-		getHibernateTemplate().initialize(anObject);
+		transactionTemplate.initialize(anObject);
 	}
 	
 }

@@ -1,15 +1,24 @@
 package org.webcurator.domain;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.webcurator.domain.model.core.HibernateTest;
 
 import java.util.List;
 
 public class HibernateTestDAOImpl extends BaseDAOImpl implements HibernateTestDAO {
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     @SuppressWarnings("unchecked")
     public List<HibernateTest> getAll() {
-        return getHibernateTemplate().findByNamedQuery(HibernateTest.QRY_GET_ALL);
+        Query query = sessionFactory.getCurrentSession().getNamedQuery(HibernateTest.QRY_GET_ALL);
+        List results = query.list();
+        return results;
     }
 
 }

@@ -22,8 +22,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -36,12 +41,16 @@ import org.webcurator.domain.model.core.Site;
  * @author bbeaumont
  *
  */
-public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierPermMappingDAO {
+@Repository
+public class HierPermMappingDAOImpl implements HierPermMappingDAO {
 	/** The logger for this class */
 	private final static Log log = LogFactory.getLog(HierPermMappingDAOImpl.class);
-	
-	/** The transaction template to use. */
-	private TransactionTemplate txTemplate = null;
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@Autowired
+	private HibernateTemplate transactionTemplate;
 
 	/* (non-Javadoc)
 	 * @see org.webcurator.core.permissionmapping.HierPermMappingDAO#saveOrUpdate(org.webcurator.core.permissionmapping.Mapping)
@@ -52,25 +61,22 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 		   aMapping.getUrlPattern().getOid() == null) {
 			return;
 		}
-		
-		txTemplate.execute(
-				new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus ts) {
+
+		transactionTemplate.execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
 						try { 
-							//log.debug("Before Saving of Target");
-							getSession().save(aMapping);
-							//log.debug("After Saving Target");
+							session.save(aMapping);
 						}
 						catch(Exception ex) {
 							log.debug("Setting Rollback Only", ex);
-							ts.setRollbackOnly();
+							session.getTransaction().setRollbackOnly();
 						}
 						return null;
 					}
 				}
 		);
-		
-	}	
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.webcurator.core.permissionmapping.HierPermMappingDAO#delete(org.webcurator.core.permissionmapping.Mapping)
@@ -83,12 +89,12 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 		}		
 		
 		// Run the deletion.
-		txTemplate.execute(
-				new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus ts) {
+		transactionTemplate.execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
 						try { 
 							
-							Query q = getSession().getNamedQuery(Mapping.DELETE);
+							Query q = session.getNamedQuery(Mapping.DELETE);
 							q.setLong("urlPatternOid", aMapping.getUrlPattern().getOid());
 							q.setLong("permissionOid", aMapping.getPermission().getOid());
 							
@@ -100,21 +106,23 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 						}
 						catch(Exception ex) {
 							log.debug("Setting Rollback Only", ex);
-							ts.setRollbackOnly();
+							session.getTransaction().setRollbackOnly();
 						}
 						return null;
 					}
 				}
 		);
-		
-	}		
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.webcurator.core.permissionmapping.HierPermMappingDAO#getMapping(java.lang.Long)
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Mapping> getMapping(Long mappingOid) {
-		return getHibernateTemplate().findByNamedQuery(Mapping.QUERY_BY_OID, mappingOid);
+		Query query = sessionFactory.getCurrentSession().getNamedQuery(Mapping.QUERY_BY_OID);
+		query.setParameter(0, mappingOid);
+		List results = query.list();
+		return results;
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +130,10 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Mapping> getMappings(String domain) {
-		return getHibernateTemplate().findByNamedQuery(Mapping.QUERY_BY_DOMAIN, domain);
+		Query query = sessionFactory.getCurrentSession().getNamedQuery(Mapping.QUERY_BY_DOMAIN);
+		query.setParameter(0, domain);
+		List results = query.list();
+		return results;
 	}
 
 	/* (non-Javadoc)
@@ -130,7 +141,10 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 	 */
 	@SuppressWarnings("unchecked")
 	public List<MappingView> getMappingsView(String domain) {
-		return getHibernateTemplate().findByNamedQuery(MappingView.QUERY_BY_DOMAIN, domain);
+		Query query = sessionFactory.getCurrentSession().getNamedQuery(MappingView.QUERY_BY_DOMAIN);
+		query.setParameter(0, domain);
+		List results = query.list();
+		return results;
 	}
 
 	/* (non-Javadoc)
@@ -139,13 +153,13 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 	public void updateMappings(final Site aSite, final Set<Mapping> newMappings) {
 		log.debug("Into updateMappings method");
 		// Run the deletion.
-		txTemplate.execute(
-				new TransactionCallback() {
+		transactionTemplate.execute(
+				new HibernateCallback() {
 					@SuppressWarnings("unchecked")
-					public Object doInTransaction(TransactionStatus ts) {
+					public Object doInHibernate(Session session) {
 						try { 
 							
-							Criteria query = getSession().createCriteria(Mapping.class);
+							Criteria query = session.createCriteria(Mapping.class);
 							query.createCriteria("permission")
 							     .createCriteria("site")
 							     .add(Restrictions.eq("oid", aSite.getOid()));
@@ -155,7 +169,7 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 							for(Mapping m: mappings) {
 								if(!newMappings.contains(m)) {
 									log.debug("Deleting: " + m.getOid());
-									getSession().delete(m);
+									session.delete(m);
 								}
 								else {
 									log.debug("Keeping: " + m.getOid());
@@ -164,12 +178,12 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 							}
 							
 							for(Mapping m: newMappings) {
-								getSession().save(m);
+								session.save(m);
 							}
 						}
 						catch(Exception ex) {
 							log.debug("Setting Rollback Only", ex);
-							ts.setRollbackOnly();
+							session.getTransaction().setRollbackOnly();
 						}
 						return null;
 					}
@@ -182,24 +196,24 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 	 */	
 	public void deleteMappings(final Site aSite) {
 		// Run the deletion.
-		txTemplate.execute(
-				new TransactionCallback() {
+		transactionTemplate.execute(
+				new HibernateCallback() {
 					@SuppressWarnings("unchecked")
-					public Object doInTransaction(TransactionStatus ts) {
+					public Object doInHibernate(Session session) {
 						try { 
-							Criteria query = getSession().createCriteria(Mapping.class);
+							Criteria query = session.createCriteria(Mapping.class);
 							query.createCriteria("permission")
 							     .createCriteria("site")
 							     .add(Restrictions.eq("oid", aSite.getOid()));
 							
 							List<Mapping> mappings = query.list();
 							for(Mapping m: mappings) {
-								getSession().delete(m);
+								session.delete(m);
 							}
 						}
 						catch(Exception ex) {
 							log.debug("Setting Rollback Only", ex);
-							ts.setRollbackOnly();
+							session.getTransaction().setRollbackOnly();
 						}
 						return null;
 					}
@@ -208,7 +222,7 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 		
 		// Clear the session to evict anything
 		// that we don't want hanging around.	
-		getSession().clear();
+		sessionFactory.getCurrentSession().clear();
 		
 	}
 
@@ -219,18 +233,18 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 	 * @param mappings The mappings to save.
 	 */
 	public void saveMappings(final List<Mapping> mappings) {
-		txTemplate.execute(
-				new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus ts) {
+		transactionTemplate.execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
 						try { 
 							
 							for(Mapping m: mappings) {
-								getSession().save(m);
+								session.save(m);
 							}
 						}
 						catch(Exception ex) {
 							log.debug("Setting Rollback Only", ex);
-							ts.setRollbackOnly();
+							session.getTransaction().setRollbackOnly();
 						}
 						return null;
 					}
@@ -239,18 +253,8 @@ public class HierPermMappingDAOImpl extends HibernateDaoSupport implements HierP
 		
 		// Clear the session to evict anything
 		// that we don't want hanging around.	
-		getSession().clear();
+		sessionFactory.getCurrentSession().clear();
 		
-	}
-	
-	
-	
-	/**
-	 * Set the template.
-	 * @param txTemplate The txTemplate to set.
-	 */
-	public void setTxTemplate(TransactionTemplate txTemplate) {
-		this.txTemplate = txTemplate;
 	}
 
 }

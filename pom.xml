@@ -7,13 +7,10 @@
 	<name>Hibernate POC</name>
 	<description>Hibernate POC web application</description>
 
-<!--	<parent>
-		<artifactId>wct-parent</artifactId>
-		<groupId>org.webcurator</groupId>
-		<version>1.7.0</version>
-	</parent> -->
-
 	<properties>
+		<spring.version>5.0.7.RELEASE</spring.version>
+		<spring-security.version>5.0.6.RELEASE</spring-security.version>
+		<hibernate.version>5.3.2.Final</hibernate.version>
 		<powermock.version>1.5.1</powermock.version>
 		<browse.double_escape>false</browse.double_escape>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,58 +56,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- This plugin should eventually be replaced by Hibernate or JPA annotations -->
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>xdoclet-maven-plugin</artifactId>
-				<version>1.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>xdoclet</groupId>
-						<artifactId>xdoclet</artifactId>
-						<version>1.2.3-updated</version>
-					</dependency>
-					<dependency>
-						<groupId>xdoclet</groupId>
-						<artifactId>xjavadoc</artifactId>
-						<version>1.5-snapshot050611</version>
-					</dependency>
-					<dependency>
-						<groupId>xdoclet</groupId>
-						<artifactId>xdoclet-hibernate-module</artifactId>
-						<version>1.2.3</version>
-					</dependency>
-					<dependency>
-						<groupId>dom4j</groupId>
-						<artifactId>dom4j</artifactId>
-						<version>1.6.1</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>xdoclet</goal>
-						</goals>
-						<configuration>
-							<tasks>
-								<hibernatedoclet destdir="${project.build.directory}/classes" mergedir="${project.build.directory}/merge" force="true" verbose="true">
-									<fileset dir="${project.build.sourceDirectory}">
-										<include name="org/webcurator/domain/model/**/*.java" />
-										<include name="org/webcurator/core/permissionmapping/Mapping.java" />
-										<include name="org/webcurator/core/permissionmapping/MappingView.java" />
-									</fileset>
-									<hibernate version="3.0" />
-									<hibernatecfg version="3.0" defaultSchema="${schema.name}" jdbcUrl="${schema.url}" userName="${schema.user}" password="${schema.password}" driver="${schema.driver}" poolSize="2" showSql="true" useOuterJoin="true" dialect="${schema.dialect}" transactionManagerFactory="org.hibernate.transaction.JDBCTransactionFactory" destdir="${project.build.directory}/classes">
-									</hibernatecfg>
-
-								</hibernatedoclet>
-
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 				<executions>
@@ -148,65 +93,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>prepare-package</phase>
-						<configuration>
-							<!-- The maven plugin is not compatible with the way hibernate files 
-								are generated. Perhaps this will change if/when WCT uses JPA -->
-							<target name="generate_sql">
-								<taskdef name="schemaexport" classname="org.hibernate.tool.hbm2ddl.SchemaExportTask" classpathref="maven.plugin.classpath" />
-
-								<schemaexport properties="build/hib_mysql.properties" quiet="no" text="yes" drop="no" delimiter=";" output="target/wct-schema-mysql.sql">
-									<fileset dir="${project.build.directory}/classes">
-										<include name="**/*.hbm.xml" />
-									</fileset>
-								</schemaexport>
-								<replace file="target/wct-schema-mysql.sql" token="TIMESTAMP(9)," value="TIMESTAMP(9) NULL," />
-
-								<schemaexport properties="build/hib_postgres.properties" quiet="no" text="yes" drop="no" delimiter=";" output="target/wct-schema-postgres.sql">
-									<fileset dir="${project.build.directory}/classes">
-										<include name="**/*.hbm.xml" />
-									</fileset>
-								</schemaexport>
-								<replace file="target/wct-schema-postgres.sql" token="TIMESTAMP(9)," value="TIMESTAMP(9) NULL," />
-
-								<schemaexport properties="build/hib_oracle.properties" quiet="no" text="yes" drop="no" delimiter=";" output="target/wct-schema-oracle.sql">
-									<fileset dir="${project.build.directory}/classes">
-										<include name="**/*.hbm.xml" />
-									</fileset>
-								</schemaexport>
-								<replace file="target/wct-schema-oracle.sql" token="TIMESTAMP(9)," value="TIMESTAMP(9) NULL," />
-
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate</artifactId>
-						<version>3.1.3</version>
-					</dependency>
-					<dependency>
-						<groupId>javax.transaction</groupId>
-						<artifactId>jta</artifactId>
-						<version>1.1</version>
-					</dependency>
-					<dependency>
-						<groupId>commons-collections</groupId>
-						<artifactId>commons-collections</artifactId>
-						<version>3.2.2</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -559,9 +445,18 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate</artifactId>
-			<version>3.1.3</version>
-			<scope>compile</scope>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.2</version>
 		</dependency>
 		<dependency>
 			<groupId>httpunit</groupId>
@@ -746,73 +641,61 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>1.2.7</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-dao</artifactId>
-			<version>1.2.7</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-hibernate</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<version>1.2.7</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>1.2.7</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-remoting</artifactId>
-			<version>2.0.7</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-support</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>1.2.7</version>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-security.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
