@@ -24,7 +24,7 @@ import javax.persistence.*;
 @Table(name = "PERMISSION_EXCLUSION")
 public class PermissionExclusion {
 	/** The URL excluded */
-	@Column(name = "PEX_URL", length = 1024)
+	@Column(name = "PEX_URL", length = 1024, columnDefinition = "text")
 	private String url;
 	
 	/** The reason for exclusion */

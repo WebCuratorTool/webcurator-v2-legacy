@@ -40,7 +40,7 @@ public class UrlPattern extends AbstractIdentityObject {
 			valueColumnName = "IG_VALUE", pkColumnValue = "General")
 	private Long oid;
 	/** The url pattern. */
-	@Column(name = "UP_PATTERN", length = 2048)
+	@Column(name = "UP_PATTERN", length = 2048, columnDefinition = "text")
 	private String pattern;
 	/** A reference to the owning site. */
 	@ManyToOne(targetEntity = Site.class)

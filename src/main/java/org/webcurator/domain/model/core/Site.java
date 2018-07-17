@@ -55,10 +55,10 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     @Column(name = "ST_TITLE", unique = true, length = 255, nullable = false)
     private String title;
     /** A description of the site */
-    @Column(name = "ST_DESC", length = 4000)
+    @Column(name = "ST_DESC", length = 4000, columnDefinition = "text")
     private String description;
     /** A set of notes about the site. */
-    @Column(name = "ST_NOTES", length = 4000)
+    @Column(name = "ST_NOTES", length = 4000, columnDefinition = "text")
     private String notes;
     /** A library order no. */
     @Column(name = "ST_LIBRARY_ORDER_NO", length = 32)
@@ -91,6 +91,7 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * A set of permissions that have been removed.
      */
+    @Transient
     private Set<Permission> removedPermissions = new HashSet<Permission>();
     
     /** The owning agency */

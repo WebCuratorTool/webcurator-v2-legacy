@@ -10,7 +10,9 @@ import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.webcurator.core.permissionmapping.Mapping;
 import org.webcurator.core.permissionmapping.MappingView;
@@ -21,6 +23,7 @@ import org.webcurator.domain.model.core.*;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 import java.util.Properties;
 import static org.hibernate.cfg.Environment.*;
 
@@ -28,7 +31,7 @@ import static org.hibernate.cfg.Environment.*;
 @PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
 @ComponentScans(value = {@ComponentScan("org.webcurator.domain")})
-public class AppConfig {
+public class AppConfig implements TransactionManagementConfigurer {
     private Log log = LogFactory.getLog(AppConfig.class);
 
     @Autowired
@@ -81,5 +84,10 @@ public class AppConfig {
     public HibernateTemplate getTransactionTemplate() {
         HibernateTemplate hibernateTemplate = new HibernateTemplate(getSessionFactory().getObject());
         return hibernateTemplate;
+    }
+
+    @Override
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return getTransactionManager();
     }
 }

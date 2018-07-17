@@ -44,14 +44,14 @@ public class MappingView {
 	private Long oid;
 
 	/** The UrlPattern */
-	@Column(name = "UP_PATTERN", length = 2048)
+	@Column(name = "UP_PATTERN", length = 2048, columnDefinition = "text")
 	private String urlPattern;
 	/** The Permission end date*/
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "PE_END_DATE")
 	private Date endDate;
 	/** The calculated base domain */
-	@Column(name = "UPM_DOMAIN", length = 1024)
+	@Column(name = "UPM_DOMAIN", length = 1024, columnDefinition = "text")
 	private String domain;
 	/** The database id of the owning agency. */
 	@Column(name = "PE_OWNING_AGENCY_ID")

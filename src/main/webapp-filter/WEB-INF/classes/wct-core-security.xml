@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
 
-<beans>
+	<context:component-scan base-package="org.webcurator.spring" />
+	<context:annotation-config />
 
 	<import resource="security-userdn-list.xml"/>
    <!-- ======================== FILTER CHAIN ======================= -->
@@ -27,12 +33,12 @@
       </property>
     </bean>
     
-    <bean id="WCTPasswordExpiredFilter" class="org.webcurator.auth.dbms.WCTForcePasswordChange" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+    <bean id="WCTPasswordExpiredFilter" class="org.webcurator.auth.dbms.WCTForcePasswordChange" abstract="false" scope="singleton" lazy-init="default" autowire="default">
     </bean>
 
    <!-- ======================== AUTHENTICATION ======================= -->
 
-	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="providers">
 			<list>
 				<!-- Remove the comments if you want LDAP authentication to occur -->
@@ -51,10 +57,10 @@
 
 	
 	<!-- Note that the distinguished name patterns are in the file "security-userdn-list.xml" -->
-	<bean id="ldapAuthenticator" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="ldapAuthenticator" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<constructor-arg>
 	        <bean class="org.acegisecurity.providers.ldap.authenticator.BindAuthenticator">
-	           <constructor-arg><ref local="initialDirContextFactory"/></constructor-arg>
+	           <constructor-arg><ref bean="initialDirContextFactory"/></constructor-arg>
 <!-- 				Use this if your users have the same ldap dn pattern, and the only difference  -->
 <!-- 				is the user name -->
 	           <property name="userDnPatterns"><list><value>${ldap.dn}</value></list></property>
@@ -76,22 +82,6 @@
 	        </bean>
 	      </constructor-arg>
 	</bean>
-	
-<!-- 	Active directory user search -->
-<!-- 	<bean id="userSearch" class="org.acegisecurity.ldap.search.FilterBasedLdapUserSearch"> -->
-<!-- 		<constructor-arg index="0"> -->
-<!-- 			<value>OU=Users,DC=webcurator,DC=org</value> -->
-<!-- 		</constructor-arg> -->
-<!-- 		<constructor-arg index="1"> -->
-<!-- 			<value>(sAMAccountName={0})</value> -->
-<!-- 		</constructor-arg> -->
-<!-- 		<constructor-arg index="2"> -->
-<!-- 			<ref local="initialDirContextFactory"/> -->
-<!-- 		</constructor-arg> -->
-<!-- 		<property name="searchSubtree"> -->
-<!-- 			<value>true</value> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
 	
 	<bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
   		<property name="userDetailsService"><ref bean="jdbcDaoImpl"/></property>
@@ -138,7 +128,7 @@
         <filter-mapping> in web.xml for the following beans to be used -->
 
    <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
-      <property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
+      <property name="channelDecisionManager"><ref bean="channelDecisionManager"/></property>
       <property name="filterInvocationDefinitionSource">
          <value>
 			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
@@ -151,8 +141,8 @@
    <bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
       <property name="channelProcessors">
          <list>
-            <ref local="secureChannelProcessor"/>
-            <ref local="insecureChannelProcessor"/>
+            <ref bean="secureChannelProcessor"/>
+            <ref bean="insecureChannelProcessor"/>
          </list>
       </property>
    </bean>
@@ -163,7 +153,7 @@
    <!-- ===================== HTTP REQUEST SECURITY ==================== -->
 
    <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
-      <property name="authenticationEntryPoint"><ref local="authenticationProcessingFilterEntryPoint"/></property>
+      <property name="authenticationEntryPoint"><ref bean="authenticationProcessingFilterEntryPoint"/></property>
    </bean>
 
    <bean id="authenticationProcessingFilter" class="org.webcurator.auth.WCTAuthenticationProcessingFilter">
@@ -174,7 +164,7 @@
       <property name="authDAO"><ref bean="userRoleDAO"/></property>
    </bean>
    
-   <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+   <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="loginFormUrl">
 			<value>/logon.jsp</value>
 		</property>
@@ -199,7 +189,7 @@
         Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
    <bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
       <property name="authenticationManager"><ref bean="authenticationManager"/></property>
-      <property name="accessDecisionManager"><ref local="httpRequestAccessDecisionManager"/></property>
+      <property name="accessDecisionManager"><ref bean="httpRequestAccessDecisionManager"/></property>
       <property name="objectDefinitionSource">
          <value>
 			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON

@@ -97,7 +97,7 @@ public class Permission extends AbstractIdentityObject implements AgencyOwnable,
 	@Column(name = "PE_STATUS")
 	private int status;
 	/** Any authorising agency acceptance notes attached to the permission. */
-	@Column(name = "PE_NOTES", length = 4000)
+	@Column(name = "PE_NOTES", length = 4000, columnDefinition = "text")
 	private String authResponse;
 	/** The access status */
 	@Column(name = "PE_ACCESS_STATUS", length = 255)
@@ -110,17 +110,17 @@ public class Permission extends AbstractIdentityObject implements AgencyOwnable,
 	@Column(name = "PE_AVAILABLE_YN")
 	private boolean availableFlag;
 	/** Any special requirements attached to this permission. */
-	@Column(name = "PE_SPECIAL_REQUIREMENTS", length = 2048)
+	@Column(name = "PE_SPECIAL_REQUIREMENTS", length = 2048, columnDefinition = "text")
 	private String specialRequirements;
 	/** The creation date of this permission. */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "PE_CREATION_DATE")
 	private Date creationDate;
 	/** The copyright URL to use during the access component. */
-	@Column(name = "PE_COPYRIGHT_URL", length = 2048)
+	@Column(name = "PE_COPYRIGHT_URL", length = 2048, columnDefinition = "text")
 	private String copyrightUrl;
 	/** The copyright statement to display in the access system. */
-	@Column(name = "PE_COPYRIGHT_STATEMENT", length = 2048)
+	@Column(name = "PE_COPYRIGHT_STATEMENT", length = 2048, columnDefinition = "text")
 	private String copyrightStatement;
 	/** The date that a permission requested was sent to the authorising agent. */
 	@Temporal(TemporalType.TIMESTAMP)
@@ -149,14 +149,17 @@ public class Permission extends AbstractIdentityObject implements AgencyOwnable,
 	private String fileReference;
 	/** A dirty flag to track if this permission has been updated. This is 
 	 * managed by the SiteController, not self-managed. */
+	@Transient
 	private boolean dirty = false;
 	/** 
 	 * The initial state of the permission. This is initialised when setStatus 
 	 * is called for the first time, which will either be by Hibernate or the
 	 * BusinessObjectFactory. 
 	 */
+	@Transient
 	private int originalStatus = -1;
 	/** Flag to determine if a "Seek Permission" task should be created. */
+	@Transient
 	private boolean createSeekPermissionTask = false;
 	/** List of excluded URLs */
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "permission", targetEntity = PermissionExclusion.class)

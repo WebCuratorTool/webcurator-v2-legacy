@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="no" default-lazy-init="false" xmlns="http://www.springframework.org/schema/beans"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+		   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
 
-<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
-	
-    <bean id="WCTCoreServletConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+	<bean id="WCTCoreServletConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath:wct-core.properties</value>
@@ -14,7 +18,7 @@
         <property name="order" value="150"/>
     </bean>
 	
-	<bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="simpleUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="interceptors">
 			<list>
             	<ref bean="openSessionInViewInterceptor"/>
@@ -52,8 +56,7 @@
 
 	<bean id="exceptionResolver"
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"
-		abstract="false" singleton="true" lazy-init="default"
-		autowire="default" dependency-check="default">
+		abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="defaultErrorView">
 			<value type="java.lang.String">Error</value>
 		</property>
@@ -70,20 +73,20 @@
 		</property>
 	</bean>
 
-	<bean id="homeController" class="org.webcurator.ui.home.controller.HomeController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="homeController" class="org.webcurator.ui.home.controller.HomeController" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="supportedMethods" value="GET"/>
 		<property name="enableQaModule">
 			<value type="java.lang.Boolean">${queueController.enableQaModule}</value>
 		</property>	
 	</bean>
 
-	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	
-	<bean id="logoutController" class="org.webcurator.ui.base.LogoutController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
+	<bean id="logoutController" class="org.webcurator.ui.base.LogoutController" abstract="false" scope="singleton" lazy-init="default" autowire="default"/>
 
-	<bean id="hibernateTestController" class="org.webcurator.ui.hibernate.HibernateTestController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="hibernateTestController" class="org.webcurator.ui.hibernate.HibernateTestController" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="supportedMethods" value="GET,POST"/>
 		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
 	</bean>

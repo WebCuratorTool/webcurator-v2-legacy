@@ -13,8 +13,9 @@ public class HibernateTest {
     /** Query to retrieve all hibernate test data. */
     public static final String QRY_GET_ALL = "org.webcurator.domain.model.core.HibernateTest.getAll";
 
+    @Id
     @Column(name = "ID")
-    private Long id;
+    private Integer id;
     @Column(name = "COLUMN1", length = 100)
     private String column1;
     @Column(name = "COLUMN2", length = 100)
@@ -24,7 +25,7 @@ public class HibernateTest {
      * gets the id, this is its primary key
      * @return the id
      */
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -32,7 +33,7 @@ public class HibernateTest {
      * Set the database ID.
      * @param id The database OID.
      */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

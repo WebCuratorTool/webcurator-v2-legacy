@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="no" default-lazy-init="false" xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
 
-<beans default-autowire="no" default-lazy-init="false" default-dependency-check="none">
+<!--	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<context:component-scan base-package="org.webcurator.spring" />
+	<context:annotation-config />-->
 
     <bean id="WCTCoreConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -30,26 +40,20 @@
 	</bean>
 	
 	<bean id="userRoleDAO" class="org.webcurator.domain.UserRoleDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
 
 	<bean id="hibernateTestDao" class="org.webcurator.domain.HibernateTestDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>
 	</bean>
 
-	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"/>
+	<bean id="lockManager" class="org.webcurator.core.util.LockManager" abstract="false" scope="singleton" lazy-init="default" autowire="default"/>
 
-	<bean id="permissionMappingStrategy" class="org.webcurator.core.permissionmapping.HierarchicalPermissionMappingStrategy" singleton="true">
+	<bean id="permissionMappingStrategy" class="org.webcurator.core.permissionmapping.HierarchicalPermissionMappingStrategy" scope="singleton">
 		<property name="dao" ref="permMappingDao"/>
 	</bean>
 
 	<bean id="permMappingDao" class="org.webcurator.core.permissionmapping.HierPermMappingDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
-		<property name="txTemplate" ref="transactionTemplate"/>	
 	</bean>
 	
-	<bean id="authorityManager" class="org.webcurator.auth.AuthorityManagerImpl" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default"></bean>
+	<bean id="authorityManager" class="org.webcurator.auth.AuthorityManagerImpl" abstract="false" scope="singleton" lazy-init="default" autowire="default"></bean>
 
 </beans>

@@ -54,7 +54,7 @@ public class Mapping {
 	@JoinColumn(name = "UPM_PERMISSION_ID", foreignKey = @ForeignKey(name = "FK_UPM_PERMISSION_ID"))
 	private Permission permission;
 	/** The calculate base domain */
-	@Column(name = "UPM_DOMAIN", length = 1024)
+	@Column(name = "UPM_DOMAIN", length = 1024, columnDefinition = "text")
 	private String domain;
 	/** The Oid */
 	@Id

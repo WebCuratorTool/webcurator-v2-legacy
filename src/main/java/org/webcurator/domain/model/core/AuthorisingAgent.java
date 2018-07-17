@@ -45,7 +45,7 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	@Column(name = "AA_NAME", unique = true, length = 255)
 	private String name;
 	/** A description of the agent. */
-	@Column(name = "AA_DESC", length = 2048)
+	@Column(name = "AA_DESC", length = 2048, columnDefinition = "text")
 	private String description;
 	/** The name of the contact within the agency. */
 	@Column(name = "AA_CONTACT", length = 255)
@@ -57,7 +57,7 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	@Column(name = "AA_EMAIL", length = 255)
 	private String email;
 	/** The mailing address for the contact. */
-	@Column(name = "AA_ADRESS", length = 2048)
+	@Column(name = "AA_ADRESS", length = 2048, columnDefinition = "text")
 	private String address;
 
 	
