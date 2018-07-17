@@ -15,8 +15,11 @@
  */
 package org.webcurator.core.permissionmapping;
 
+import org.webcurator.domain.model.auth.Agency;
 import org.webcurator.domain.model.core.Permission;
 import org.webcurator.domain.model.core.UrlPattern;
+
+import javax.persistence.*;
 
 
 /**
@@ -25,12 +28,13 @@ import org.webcurator.domain.model.core.UrlPattern;
  * provide fast lookups for the HierarchicalPermissionMappingStrategy.
  * 
  * @author bbeaumont
- * @hibernate.class table="URL_PERMISSION_MAPPING" lazy="true"
- * @hibernate.query name="org.webcurator.core.permissionmapping.Mapping.LIST" query="from Mapping where domain=?"
- * @hibernate.query name="org.webcurator.core.permissionmapping.Mapping.FETCH" query="from Mapping where oid=?"
- * @hibernate.query name="org.webcurator.core.permissionmapping.Mapping.DELETE" query="delete from Mapping where urlPattern.oid = :urlPatternOid and permission.oid = :permissionOid"
- * @hibernate.query name="org.webcurator.core.permissionmapping.Mapping.DELETE_BY_SITE" query="delete from Mapping where permission.site.oid = :siteOid"
  */
+@Entity
+@Table(name = "URL_PERMISSION_MAPPING")
+@NamedQueries({@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.LIST", query = "from Mapping where domain=?"),
+		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.FETCH", query = "from Mapping where oid=?"),
+		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.DELETE", query = "delete from Mapping where urlPattern.oid = :urlPatternOid and permission.oid = :permissionOid"),
+		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.DELETE_BY_SITE", query = "delete from Mapping where permission.site.oid = :siteOid")})
 public class Mapping {
 	/** Query identifier for fetching Mapping by oid */
 	public static final String QUERY_BY_OID = "org.webcurator.core.permissionmapping.Mapping.FETCH";
@@ -42,12 +46,22 @@ public class Mapping {
 	public static final String QUIERY_DELETE_BY_SITE = "org.webcurator.core.permissionmapping.Mapping.DELETE_BY_SITE";
 	
 	/** The UrlPattern */
+	@ManyToOne(targetEntity = UrlPattern.class)
+	@JoinColumn(name = "UPM_URL_PATTERN_ID", foreignKey = @ForeignKey(name = "FK_UPM_URL_PATTERN_ID"))
 	private UrlPattern urlPattern;
 	/** The Permission */
+	@ManyToOne(targetEntity = Permission.class)
+	@JoinColumn(name = "UPM_PERMISSION_ID", foreignKey = @ForeignKey(name = "FK_UPM_PERMISSION_ID"))
 	private Permission permission;
 	/** The calculate base domain */
+	@Column(name = "UPM_DOMAIN", length = 1024)
 	private String domain;
 	/** The Oid */
+	@Id
+	@Column(name = "UPM_OID", nullable = false)
+	@GeneratedValue(generator = "mappingGen", strategy = GenerationType.TABLE)
+	@TableGenerator(name = "mappingGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+			valueColumnName = "IG_VALUE", pkColumnValue = "General")
 	private Long oid;
 
 	/**
@@ -70,11 +84,6 @@ public class Mapping {
     /**
      * Get the OID of the Mapping.
      * @return Returns the oid.
-     * @hibernate.id column="UPM_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="General" 
      */
     public Long getOid() {
         return oid;
@@ -93,7 +102,6 @@ public class Mapping {
 	/**
 	 * Returns the permission.
 	 * @return Returns the permission.
-	 * @hibernate.many-to-one column="UPM_PERMISSION_ID" foreign-key="FK_UPM_PERMISSION_ID" cascade="none"
 	 */
 	public Permission getPermission() {
 		return permission;
@@ -112,7 +120,6 @@ public class Mapping {
 	/**
 	 * Returns the UrlPattern
 	 * @return Returns the urlPattern.
-	 * @hibernate.many-to-one column="UPM_URL_PATTERN_ID" foreign-key="FK_UPM_URL_PATTERN_ID" cascade="none"
 	 */
 	public UrlPattern getUrlPattern() {
 		return urlPattern;
@@ -133,7 +140,6 @@ public class Mapping {
 	/**
 	 * Gets the effective base domain.
 	 * @return Returns the effective base domain.
-	 * @hibernate.property column="UPM_DOMAIN" length="1024"
 	 */
 	public String getDomain() {
 		return domain;
