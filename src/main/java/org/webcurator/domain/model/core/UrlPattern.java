@@ -15,6 +15,11 @@
  */
 package org.webcurator.domain.model.core;
 
+import org.hibernate.annotations.Cascade;
+import org.webcurator.domain.model.auth.Agency;
+import org.webcurator.domain.model.auth.Role;
+
+import javax.persistence.*;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,16 +28,29 @@ import java.util.Set;
  * Represents a pattern that can identify a site, or portion of a site, to 
  * which a Permission record applies.
  * 
- * @hibernate.class table="URL_PATTERN" lazy="false"
  */
+@Entity
+@Table(name = "URL_PATTERN")
 public class UrlPattern extends AbstractIdentityObject {
 	/** The database oid of the UrlPattern. */
+	@Id
+	@Column(name = "UP_OID", nullable = false)
+	@GeneratedValue(generator = "urlPatternGen", strategy = GenerationType.TABLE)
+	@TableGenerator(name = "urlPatternGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+			valueColumnName = "IG_VALUE", pkColumnValue = "General")
 	private Long oid;
 	/** The url pattern. */
+	@Column(name = "UP_PATTERN", length = 2048)
 	private String pattern;
 	/** A reference to the owning site. */
+	@ManyToOne(targetEntity = Site.class)
+	@JoinColumn(name = "UP_SITE_ID", foreignKey = @ForeignKey(name = "FK_UP_SITE_ID"))
 	private Site site;
 	/** A set of permissions. */
+	@ManyToMany(targetEntity = Permission.class)
+	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@JoinTable(name = "PERMISSION_URLPATTERN", joinColumns = {@JoinColumn(name = "PU_URLPATTERN_ID")}, foreignKey = @ForeignKey(name = "PU_FK_1"),
+			inverseJoinColumns = {@JoinColumn(name = "PU_PERMISSION_ID")}, inverseForeignKey = @ForeignKey(name = "PU_FK_2"))
 	private Set<Permission> permissions = new HashSet<Permission>();
 	
 	/**
@@ -58,11 +76,6 @@ public class UrlPattern extends AbstractIdentityObject {
 
 	/**
 	 * Get the OID of the UrlPattern.
-     * @hibernate.id column="UP_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="General"  
 	 */
 	public Long getOid() {
 		return oid;
@@ -79,7 +92,6 @@ public class UrlPattern extends AbstractIdentityObject {
 	/**
 	 * Gets the url pattern.
 	 * @return The pattern.
-     * @hibernate.property column="UP_PATTERN" length="2048"
 	 */
 	public String getPattern() {
 		return pattern;
@@ -98,7 +110,6 @@ public class UrlPattern extends AbstractIdentityObject {
 	/**
 	 * Get the site that owns this UrlPattern object.
      * @return Returns the site.
-     * @hibernate.many-to-one column="UP_SITE_ID" foreign-key="FK_UP_SITE_ID"
      */
     public Site getSite() {
         return site;
@@ -140,10 +151,6 @@ public class UrlPattern extends AbstractIdentityObject {
 	/**
 	 * Get the set of permissions associated with this UrlPattern.
 	 * @return Returns the permissions.
-	 * 
-	 * @hibernate.set table="PERMISSION_URLPATTERN" cascade="save-update"
-     * @hibernate.collection-key column="PU_URLPATTERN_ID"
-     * @hibernate.collection-many-to-many class="org.webcurator.domain.model.core.Permission" column="PU_PERMISSION_ID" foreign-key="PU_FK_2"
  	 */
 	public Set<Permission> getPermissions() {
 		return permissions;

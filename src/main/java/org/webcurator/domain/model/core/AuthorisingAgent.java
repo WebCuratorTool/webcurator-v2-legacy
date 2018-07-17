@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.core;
 
+import javax.persistence.*;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -29,22 +30,34 @@ import java.util.List;
  * permission to a Library to harvest content within a particular domain
  * space.
  * 
- * @hibernate.class table="AUTHORISING_AGENT" lazy="false"
  */
+@Entity
+@Table(name = "AUTHORISING_AGENT")
 public class AuthorisingAgent extends AbstractIdentityObject {
 	/** The database oid */
+	@Id
+	@Column(name = "AA_OID", nullable = false)
+	@GeneratedValue(generator = "authorisingAgentGen", strategy = GenerationType.TABLE)
+	@TableGenerator(name = "authorisingAgentGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+			valueColumnName = "IG_VALUE", pkColumnValue = "General")
 	private Long oid;
 	/** The name of the agent. */
+	@Column(name = "AA_NAME", unique = true, length = 255)
 	private String name;
 	/** A description of the agent. */
+	@Column(name = "AA_DESC", length = 2048)
 	private String description;
 	/** The name of the contact within the agency. */
+	@Column(name = "AA_CONTACT", length = 255)
 	private String contact;
 	/** The phone number for the contact. */
+	@Column(name = "AA_PHONE_NUMBER", length = 32)
 	private String phoneNumber;
 	/** The e-mail address for the contact. */
-	private String email;	
+	@Column(name = "AA_EMAIL", length = 255)
+	private String email;
 	/** The mailing address for the contact. */
+	@Column(name = "AA_ADRESS", length = 2048)
 	private String address;
 
 	
@@ -56,11 +69,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	/**
 	 * Get the OID of the Authorising Agent.
 	 * @return Returns the oid.
-     * @hibernate.id column="AA_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="General"  
 	 */
 	public Long getOid() {
 		return oid;
@@ -76,7 +84,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	/**
 	 * Gets the name of the Authorising Agent.
 	 * @return Returns the name.
-	 * @hibernate.property column="AA_NAME" length="255" unique="true"
 	 */
 	public String getName() {
 		return name;
@@ -99,7 +106,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	/**
 	 * Returns the mailing address.
 	 * @return Returns the address.
-     * @hibernate.property column="AA_ADRESS" length="2048"
 	 */
 	public String getAddress() {
 		return address;
@@ -115,7 +121,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	/**
 	 * Returns the contact name.
 	 * @return Returns the contact.
-     * @hibernate.property column="AA_CONTACT" length="255"
 	 */
 	public String getContact() {
 		return contact;
@@ -132,7 +137,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	/**
 	 * Gets the e-mail address for the contact.
 	 * @return Returns the email.
-     * @hibernate.property column="AA_EMAIL" length="255" 
 	 */
 	public String getEmail() {
 		return email;
@@ -149,7 +153,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	/**
 	 * Gets the phone number for the contact.
 	 * @return Returns the phoneNumber.
-     * @hibernate.property column="AA_PHONE_NUMBER" length="32" 
 	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -167,7 +170,6 @@ public class AuthorisingAgent extends AbstractIdentityObject {
 	 * Gets the description of the authorising agency. Possibly used to 
 	 * indicate information such as "this is government legislation". 
 	 * @return Returns the description.
-     * @hibernate.property column="AA_DESC" length="2048" 
 	 */
 	public String getDescription() {
 		return description;

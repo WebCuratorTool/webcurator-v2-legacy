@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.auth;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -23,9 +24,10 @@ import java.util.Set;
  * Web Curator Tool. An Agency contains a set of Users
  * that logically belong to the agency. 
  * @author bprice
- * @hibernate.class table="AGENCY" lazy="false"
- * @hibernate.query name="org.webcurator.domain.model.auth.Agency.getAllAgencies" query="from Agency agc order by agc.name"
  */
+@Entity
+@Table(name = "AGENCY")
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.Agency.getAllAgencies", query = "from Agency agc order by agc.name")})
 public class Agency implements Serializable {
     /** Identifier for query to get all agencies in an ordered list */
     public static final String QRY_GET_ALL_AGENCIES = "org.webcurator.domain.model.auth.Agency.getAllAgencies";
@@ -34,29 +36,45 @@ public class Agency implements Serializable {
     private static final long serialVersionUID = -126650342213891294L;
     
     /** The database OID of the Agency */
+    @Id
+    @Column(name = "AGC_OID", nullable = false)
+    @GeneratedValue(generator = "agencyGen", strategy = GenerationType.TABLE)
+    @TableGenerator(name = "agencyGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+            valueColumnName = "IG_VALUE", pkColumnValue = "Agency")
     private Long oid;
     /** The name of the agency */
+    @Column(name = "AGC_NAME", length = 80, unique = true, nullable = false)
     private String name;
     /** The address of the agency */
+    @Column(name = "AGC_ADDRESS", length = 255, nullable = false)
     private String address;
     /** The phone number for the agency */
+    @Column(name = "AGC_PHONE", length = 20, nullable = true)
     private String phone;
     /** The URL for the agency - such as their home page */
+    @Column(name = "AGC_URL", length = 255, nullable = true)
     private String agencyURL;
     /** The URL to a logo that can be used in the Permission Request templates */
+    @Column(name = "AGC_LOGO_URL", length = 255, nullable = true)
     private String agencyLogoURL;
     /** The email to use to contact the agency */
+    @Column(name = "AGC_EMAIL", length = 80, nullable = true)
     private String email;
     /** The fax number to use to contact the agency */
+    @Column(name = "AGC_FAX", length = 20, nullable = true)
     private String fax;
     /** The set of users in this agency */
-    private Set users;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "agency", targetEntity = User.class)
+    private Set<User> users;
     /** The set of roles in this agency */
-    private Set roles;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agency", targetEntity = Role.class)
+    private Set<Role> roles;
 
     /** Flag for displaying tasks on the intray screen */
+    @Column(name = "AGC_SHOW_TASKS")
     private boolean showTasks = false;
     /** Default description used for creating targets */
+    @Column(name = "AGC_DEFAULT_DESC_TYPE")
 	private String defaultDescriptionType;
 
     
@@ -65,7 +83,6 @@ public class Agency implements Serializable {
      * This property can be used in
      * the permission request templates.  
      * @return the Agency Name
-     * @hibernate.property column="AGC_NAME" length="80" unique="true" not-null="true"
      */
     public String getName() {
         return name;
@@ -82,11 +99,6 @@ public class Agency implements Serializable {
     /**
      * gets the primary key of the Agency
      * @return the Agency Oid
-     * @hibernate.id column="AGC_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="Agency"
      */
     public Long getOid() {
         return oid;
@@ -103,11 +115,8 @@ public class Agency implements Serializable {
     /**
      * gets the Set of Users associated with this Agency 
      * @return a Set of User objects
-     * @hibernate.set cascade="all-delete-orphan" lazy="true" inverse="true"
-     * @hibernate.collection-key column="USR_AGC_OID" 
-     * @hibernate.collection-one-to-many class="org.webcurator.domain.model.auth.User" 
      */
-    public Set getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
     
@@ -115,7 +124,7 @@ public class Agency implements Serializable {
      * Set the set of users belonging to this agency.
      * @param users The set of users belonging to this agency.
      */
-    public void setUsers(Set users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
     
@@ -124,7 +133,6 @@ public class Agency implements Serializable {
      * This property can be used in
      * the permission request templates.
      * @return the Agency Address
-     * @hibernate.property column="AGC_ADDRESS" length="255" not-null="true"
      */
     public String getAddress() {
         return address;
@@ -143,7 +151,6 @@ public class Agency implements Serializable {
      * This property can be used in
      * the permission request templates.
      * @return the AgencyLogoURL
-     * @hibernate.property column="AGC_LOGO_URL" length="255" not-null="false"
      */
     public String getAgencyLogoURL() {
         return agencyLogoURL;
@@ -162,7 +169,6 @@ public class Agency implements Serializable {
      * gets the URL for this agencies website. This property can be used in
      * the permission request templates.
      * @return the Agency URL
-     * @hibernate.property column="AGC_URL" length="255" not-null="false"
      */
     public String getAgencyURL() {
         return agencyURL;
@@ -179,7 +185,6 @@ public class Agency implements Serializable {
     /**
      * gets the generic email address for the agency
      * @return the email address
-     * @hibernate.property column="AGC_EMAIL" length="80" not-null="false"
      */
     public String getEmail() {
         return email;
@@ -196,7 +201,6 @@ public class Agency implements Serializable {
     /**
      * gets the main fax number for the agency
      * @return the agency fax number
-     * @hibernate.property column="AGC_FAX" length="20" not-null="false"
      */
     public String getFax() {
         return fax;
@@ -213,7 +217,6 @@ public class Agency implements Serializable {
     /**
      * gets the main phone number for the agency
      * @return the agency phone number
-     * @hibernate.property column="AGC_PHONE" length="20" not-null="false"
      */
     public String getPhone() {
         return phone;
@@ -230,11 +233,8 @@ public class Agency implements Serializable {
     /**
      * gets the Set of Roles that belong to this agency
      * @return Set of Roles
-     * @hibernate.set lazy="true" inverse="true"
-     * @hibernate.collection-key column="ROL_AGENCY_OID" 
-     * @hibernate.collection-one-to-many class="org.webcurator.domain.model.auth.Role" 
      */
-    public Set getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
     
@@ -242,14 +242,13 @@ public class Agency implements Serializable {
      * Set the set of roles that belong to this agency.
      * @param aRoles The set of roles contained in this agency.
      */
-    public void setRoles(Set aRoles) {
+    public void setRoles(Set<Role> aRoles) {
         this.roles = aRoles;
     }
 
     /**
      * Flag to show tasks in the in-tray, as some agencies do not use the intray.
      * @return true if tasks should be displayed in the intray, false otherwise.
-     * @hibernate.property column="AGC_SHOW_TASKS"
      */
     public boolean getShowTasks() {
     	return showTasks;
@@ -261,7 +260,6 @@ public class Agency implements Serializable {
 
     /**
      * The default description type for this agency, used when creating targets
-    * @hibernate.property column="AGC_DEFAULT_DESC_TYPE"
      */
 	public String getDefaultDescriptionType() {
 		return defaultDescriptionType;

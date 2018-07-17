@@ -18,18 +18,22 @@ package org.webcurator.domain.model.auth;
 import java.io.Serializable;
 import java.util.Set;
 
+import org.hibernate.annotations.Cascade;
 import org.webcurator.domain.AgencyOwnable;
+
+import javax.persistence.*;
 
 /**
  * The Role class defines the relationship between users and privilege
  * within the WCT system. Users are assigned to roles, that in turn
  * have privileges. A user may belong to more than one role.
  * @author bprice
- * @hibernate.class  table="WCTROLE" lazy="false" 
- * @hibernate.query name="org.webcurator.domain.model.auth.Role.getRoles" query="FROM Role rol order by rol.agency.name, rol.name"
- * @hibernate.query name="org.webcurator.domain.model.auth.Role.getAssociatedRolesByUser" query="SELECT rol FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND usr.oid=? order by rol.name"
- * @hibernate.query name="org.webcurator.domain.model.auth.Role.getRolesByAgency" query="SELECT rol FROM Role rol WHERE rol.agency.oid = ?"
  */
+@Entity
+@Table(name = "WCTROLE")
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.Role.getRoles", query = "FROM Role rol order by rol.agency.name, rol.name"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.Role.getAssociatedRolesByUser", query = "SELECT rol FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND usr.oid=? order by rol.name"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.Role.getRolesByAgency", query = "SELECT rol FROM Role rol WHERE rol.agency.oid = ?")})
 public class Role implements AgencyOwnable, Serializable{
 
    /** The query constant for retrieving an ordered list of roles */
@@ -43,23 +47,36 @@ public class Role implements AgencyOwnable, Serializable{
    private static final long serialVersionUID = 3846098707837858936L;
    
    /** The database OID of the Role */
-   private Long oid;
+   @Id
+   @Column(name = "ROL_OID", nullable = false)
+   @GeneratedValue(generator = "roleGen", strategy = GenerationType.TABLE)
+   @TableGenerator(name = "roleGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+           valueColumnName = "IG_VALUE", pkColumnValue = "Role")
+    private Long oid;
    /** The name of the role */
+   @Column(name = "ROL_NAME", length = 80, nullable = false)
    private String name;
    /** A descrption for the role */
+   @Column(name = "ROL_DESCRIPTION", length = 255, nullable = true)
    private String description;
    /** The set of Users that hold this role */
-   private Set users;
+   @ManyToMany(targetEntity = User.class)
+   @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+   @JoinTable(name = "USER_ROLE", joinColumns = {@JoinColumn(name = "URO_ROL_OID")}, foreignKey = @ForeignKey(name = "FK_USERROLE_TO_ROLE"),
+           inverseJoinColumns = {@JoinColumn(name = "URO_USR_OID")}, inverseForeignKey = @ForeignKey(name = "FK_USERROLE_TO_USER"))
+   private Set<User> users;
    /** The set of privileges that this role is made up from. */
-   private Set rolePrivileges;
+   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "role", targetEntity = RolePrivilege.class)
+   private Set<RolePrivilege> rolePrivileges;
    /** The agency that this role belongs to */
+   @ManyToOne(targetEntity = Agency.class)
+   @JoinColumn(name = "ROL_AGENCY_OID", nullable = false, foreignKey = @ForeignKey(name = "FK_ROLE_AGENCY_OID"))
    private Agency agency;
 
 
    /**
     * gets the display description of the role
     * @return the role description
-    * @hibernate.property column="ROL_DESCRIPTION" length="255" not-null="false"
     */
    public String getDescription() {
 	   return description;
@@ -76,7 +93,6 @@ public class Role implements AgencyOwnable, Serializable{
     /**
      * gets the name of the Role
      * @return the Role name
-     * @hibernate.property column="ROL_NAME" not-null="true" length="80"
      */
     public String getName() {
         return name;
@@ -94,11 +110,8 @@ public class Role implements AgencyOwnable, Serializable{
     /**
      * gets the Set of Users that have this role
      * @return a set of Users
-     * @hibernate.set table="USER_ROLE" cascade="save-update" lazy="false" inverse="true"
-     * @hibernate.collection-key column="URO_ROL_OID"
-     * @hibernate.collection-many-to-many class="org.webcurator.domain.model.auth.User" column="URO_USR_OID" foreign-key="FK_USERROLE_TO_USER"
      */
-    public Set getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
     
@@ -106,18 +119,13 @@ public class Role implements AgencyOwnable, Serializable{
      * Set the set of Users that have this role.
      * @param users The set of Users that have this role.
      */
-    public void setUsers(Set users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
     
     /**
      * get the primary key for the role
      * @return the role primary key
-     * @hibernate.id column="ROL_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="Role"
      */
     public Long getOid() {
         return oid;
@@ -134,11 +142,8 @@ public class Role implements AgencyOwnable, Serializable{
     /**
      * Get the set of privileges that this role has access to.
      * @return gets the set of privileges for this role
-     * @hibernate.set cascade="all-delete-orphan" lazy="false" inverse="true"
-     * @hibernate.collection-key column="PRV_ROLE_OID"
-     * @hibernate.collection-one-to-many class="org.webcurator.domain.model.auth.RolePrivilege"
      */
-    public Set getRolePrivileges() {
+    public Set<RolePrivilege> getRolePrivileges() {
         return rolePrivileges;
     }
     
@@ -146,7 +151,7 @@ public class Role implements AgencyOwnable, Serializable{
      * Set the set of privileges that this role has access to.
      * @param rolePrivileges The set of privileges that this role has access to.
      */
-    public void setRolePrivileges(Set rolePrivileges) {
+    public void setRolePrivileges(Set<RolePrivilege> rolePrivileges) {
     	//Hibernate uses it's own collections, so this should NEVER be used in objects that
     	//you expect to be managed by Hibernate.  Use clear/addRolePrivileges instead.
     	this.rolePrivileges = rolePrivileges;
@@ -173,7 +178,6 @@ public class Role implements AgencyOwnable, Serializable{
     /**
      * gets the Agency associated with this role
      * @return the Agency
-     * @hibernate.many-to-one not-null="true" class="org.webcurator.domain.model.auth.Agency" column="ROL_AGENCY_OID" foreign-key="FK_ROLE_AGENCY_OID"
      */
     public Agency getAgency() {
         return agency;

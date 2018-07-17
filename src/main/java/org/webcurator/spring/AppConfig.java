@@ -25,7 +25,7 @@ import java.util.Properties;
 import static org.hibernate.cfg.Environment.*;
 
 @Configuration
-@PropertySource("classpath:mysql.db.properties")
+@PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
 @ComponentScans(value = {@ComponentScan("org.webcurator.domain")})
 public class AppConfig {
@@ -50,15 +50,10 @@ public class AppConfig {
 
         Properties props = new Properties();
 
-        // Setting JDBC properties
-//        props.put(DRIVER, env.getProperty("mysql.driver"));
-//        props.put(URL, env.getProperty("mysql.url"));
-//        props.put(USER, env.getProperty("mysql.user"));
-//        props.put(PASS, env.getProperty("mysql.password"));
-
         // Setting Hibernate properties
         props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
         props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
+        props.put(USE_NEW_ID_GENERATOR_MAPPINGS, env.getProperty("hibernate.id.new_generator_mappings"));
 
         // Setting C3P0 properties
         props.put(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));

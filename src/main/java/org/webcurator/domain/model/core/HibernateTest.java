@@ -1,27 +1,28 @@
 package org.webcurator.domain.model.core;
 
+import javax.persistence.*;
+
 /**
  * Hibernate Test
- * @hibernate.class table="HIBERNATE_TEST" lazy="false"
- * @hibernate.query name="org.webcurator.domain.model.core.HibernateTest.getAll" query="SELECT ht FROM HibernateTest ht"
  */
+@Entity
+@Table(name = "HIBERNATE_TEST")
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.core.HibernateTest.getAll", query = "SELECT ht FROM HibernateTest ht")})
 public class HibernateTest {
 
     /** Query to retrieve all hibernate test data. */
     public static final String QRY_GET_ALL = "org.webcurator.domain.model.core.HibernateTest.getAll";
 
+    @Column(name = "ID")
     private Long id;
+    @Column(name = "COLUMN1", length = 100)
     private String column1;
+    @Column(name = "COLUMN2", length = 100)
     private String column2;
 
     /**
      * gets the id, this is its primary key
      * @return the id
-     * @hibernate.id column="ID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="HibernateTest"
      */
     public Long getId() {
         return id;
@@ -38,7 +39,6 @@ public class HibernateTest {
     /**
      * gets column 1
      * @return column 1
-     * @hibernate.property column="COLUMN1" not-null="false" length="100"
      */
     public String getColumn1() {
         return column1;
@@ -55,7 +55,6 @@ public class HibernateTest {
     /**
      * gets column 2
      * @return column 2
-     * @hibernate.property column="COLUMN2" not-null="false" length="100"
      */
     public String getColumn2() {
         return column2;

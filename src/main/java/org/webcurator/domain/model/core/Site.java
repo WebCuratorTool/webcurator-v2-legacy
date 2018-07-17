@@ -23,8 +23,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.Cascade;
 import org.webcurator.domain.AgencyOwnable;
 import org.webcurator.domain.model.auth.Agency;
+import org.webcurator.domain.model.auth.Role;
+import org.webcurator.domain.model.auth.User;
+
+import javax.persistence.*;
 
 /**
  * Represents a Site object. A site is a collection of related URL patterns
@@ -35,34 +40,53 @@ import org.webcurator.domain.model.auth.Agency;
  * project. They are thus called in the User Interface but keep the "Site"
  * names throughout the code-base.
  *
- * @hibernate.class table="SITE" lazy="false"
  */
+@Entity
+@Table(name = "SITE")
 public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /** The database oid of the site */
+    @Id
+    @Column(name = "ST_OID", nullable = false)
+    @GeneratedValue(generator = "siteGen", strategy = GenerationType.TABLE)
+    @TableGenerator(name = "siteGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+            valueColumnName = "IG_VALUE", pkColumnValue = "General")
     private Long oid;
     /** The title of the site */
+    @Column(name = "ST_TITLE", unique = true, length = 255, nullable = false)
     private String title;
     /** A description of the site */
+    @Column(name = "ST_DESC", length = 4000)
     private String description;
     /** A set of notes about the site. */
+    @Column(name = "ST_NOTES", length = 4000)
     private String notes;
     /** A library order no. */
+    @Column(name = "ST_LIBRARY_ORDER_NO", length = 32)
     private String libraryOrderNo;
     /** Whether the site has been published or not. */
+    @Column(name = "ST_PUBLISHED", nullable = false)
     private boolean published;
     /** Site is active flag. */
+    @Column(name = "ST_ACTIVE", nullable = false)
     private boolean active = true;
     /** The date the Site was created */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ST_CREATION_DATE")
     private Date creationDate;
     /** The set of authorising agents (those who must provide permission to
      * harvest the site.
      */
+    @ManyToMany(targetEntity = AuthorisingAgent.class)
+    @JoinTable(name = "SITE_AUTH_AGENCY", joinColumns = {@JoinColumn(name = "SA_SITE_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "SA_AGENT_ID")}, inverseForeignKey = @ForeignKey(name = "FK_SA_AGENT_ID"))
     private Set<AuthorisingAgent> authorisingAgents = new HashSet<AuthorisingAgent>();
     /** A set of URL patterns that are encompassed by this site. */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "site", targetEntity = UrlPattern.class)
     private Set<UrlPattern> urlPatterns = new HashSet<UrlPattern>();
     /** A set of permissions that have been requested, granted, or refused by
      * the authorising agents.
      */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "site", targetEntity = Permission.class)
     private Set<Permission> permissions = new HashSet<Permission>();
     /**
      * A set of permissions that have been removed.
@@ -70,17 +94,14 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     private Set<Permission> removedPermissions = new HashSet<Permission>();
     
     /** The owning agency */
+    @ManyToOne(targetEntity = Agency.class)
+    @JoinColumn(name = "ST_OWNING_AGENCY_ID")
     private Agency owningAgency = null;
     
     
     /**
      * Get the database OID of the site.
      * @return Returns the oid.
-     * @hibernate.id column="ST_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="General"
      */
     public Long getOid() {
         return oid;
@@ -97,7 +118,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * Get the title of the site.
      * @return Returns the name of the site.
-     * @hibernate.property not-null="true" unique="true" column="ST_TITLE" length="255"
      */
     public String getTitle() {
         return title;
@@ -117,7 +137,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * Get the description of the site.
      * @return Returns the description of the site.
-     * @hibernate.property column="ST_DESC" length="4000"
      */
     public String getDescription() {
         return description;
@@ -137,7 +156,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * Returns the library order number for the site.
      * @return The library order number.
-     * @hibernate.property column="ST_LIBRARY_ORDER_NO" length="32"
      */
     public String getLibraryOrderNo() {
         return libraryOrderNo;
@@ -157,7 +175,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * Gets the notes for the site.
      * @return The notes for the site.
-     * @hibernate.property column="ST_NOTES" type="text"
      */
     public String getNotes() {
         return notes;
@@ -177,7 +194,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * Checks if the site is published.
      * @return true if the site is published; otherwise false.
-     * @hibernate.property column="ST_PUBLISHED" not-null="true"
      */
     public boolean isPublished() {
         return published;
@@ -194,8 +210,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
 	/**
 	 * Get the date that the Site was created.
 	 * @return Returns the creation date.
-     * @hibernate.property type="timestamp"
-     * @hibernate.column name="ST_CREATION_DATE" sql-type="TIMESTAMP(9)"   
 	 */
 	public Date getCreationDate() {
 		return creationDate;
@@ -212,9 +226,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     /**
      * Returns the associated permissions.
      * @return The associated permissions.
-     * @hibernate.set cascade="all-delete-orphan"
-     * @hibernate.collection-key column="PE_SITE_ID"
-     * @hibernate.collection-one-to-many class="org.webcurator.domain.model.core.Permission"
      */
     public Set<Permission> getPermissions() {
         return permissions;
@@ -257,9 +268,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
     
     /**
      * Gets the set of authorising agents.
-     * @hibernate.set table="SITE_AUTH_AGENCY"
-     * @hibernate.collection-key column="SA_SITE_ID"
-     * @hibernate.collection-many-to-many class="org.webcurator.domain.model.core.AuthorisingAgent" column="SA_AGENT_ID" foreign-key="FK_SA_AGENT_ID"
      */
     public Set<AuthorisingAgent> getAuthorisingAgents() {
         return authorisingAgents;
@@ -278,9 +286,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
      * be treated as read only. To add or remove URL patterns, use the
      * addUrlPattern/removeUrlPattern methods.
      * @return The set of URL Patterns associated with this site.
-     * @hibernate.set cascade="all-delete-orphan"
-     * @hibernate.collection-key column="UP_SITE_ID"
-     * @hibernate.collection-one-to-many class="org.webcurator.domain.model.core.UrlPattern"
      */
     public Set<UrlPattern> getUrlPatterns() {
         return urlPatterns;
@@ -315,7 +320,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
      * Get whether this site is active. Sites that are not active can be filtered
      * out of searches.
      * @return true if active; otherwise false.
-     * @hibernate.property column="ST_ACTIVE" not-null="true"
      */
     public boolean isActive() {
         return active;
@@ -344,7 +348,6 @@ public class Site extends AbstractIdentityObject implements AgencyOwnable {
 	/**
 	 * Returns the agency to which this site belongs.
 	 * @return Returns the owner.
-	 * @hibernate.many-to-one column="ST_OWNING_AGENCY_ID"
 	 */
 	public Agency getOwningAgency() {
 		return owningAgency;

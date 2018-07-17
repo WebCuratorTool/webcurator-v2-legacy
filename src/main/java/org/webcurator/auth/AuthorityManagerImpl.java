@@ -95,13 +95,13 @@ public class AuthorityManagerImpl implements AuthorityManager {
     public HashMap<String,RolePrivilege> getPrivilegesForUser(User user) {
         
         HashMap<String,RolePrivilege> allRolePrivileges = new HashMap<String,RolePrivilege>();
-        Set roles = user.getRoles();
+        Set<Role> roles = user.getRoles();
         if (roles != null) {
             Iterator it = roles.iterator();
             while (it.hasNext()) {             
                 Role role = (Role) it.next();
                 // log.debug("User "+user.getUsername()+" has a Role of "+role.getName());
-                Set rolePrivileges = role.getRolePrivileges();
+                Set<RolePrivilege> rolePrivileges = role.getRolePrivileges();
                 if (rolePrivileges != null) {
                     // log.debug("RolePrivilege list for Role is "+rolePrivileges.toString());
                     Iterator it2 = rolePrivileges.iterator();

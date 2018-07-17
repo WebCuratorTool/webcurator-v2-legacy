@@ -15,6 +15,12 @@
  */
 package org.webcurator.domain.model.auth;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.TimestampType;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,15 +29,16 @@ import java.util.Set;
 /**
  * The User object holds the information related to a logged in User.
  * @author bprice
- * @hibernate.class table="WCTUSER" lazy="false"
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getUserByName" query="SELECT usr FROM User usr WHERE usr.username=? "
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getUsersByAgency" query="SELECT usr FROM User usr WHERE usr.agency.oid=? ORDER BY usr.username"
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getAllUserDTOs" query="SELECT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM User usr ORDER BY usr.agency.name, usr.username"
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getAllUserDTOsByAgency" query="SELECT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM User usr WHERE usr.agency.oid=? ORDER BY usr.username"
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getUserDTOsByPrivilege" query="SELECT DISTINCT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND rol.rolePrivileges.privilege=?"
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getUserDTOByOid" query="SELECT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM User usr WHERE usr.oid=?"
- * @hibernate.query name="org.webcurator.domain.model.auth.User.getUserDTOsByPrivAgency" query="SELECT DISTINCT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND rol.rolePrivileges.privilege=? AND usr.agency.oid=?"
  */
+@Entity
+@Table(name = "WCTUSER")
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.User.getUserByName", query = "SELECT usr FROM User usr WHERE usr.username=? "),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.User.getUsersByAgency", query = "SELECT usr FROM User usr WHERE usr.agency.oid=? ORDER BY usr.username"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.User.getAllUserDTOs", query = "SELECT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM User usr ORDER BY usr.agency.name, usr.username"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.User.getAllUserDTOsByAgency", query = "SELECT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM User usr WHERE usr.agency.oid=? ORDER BY usr.username"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.User.getUserDTOsByPrivilege", query = "SELECT DISTINCT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND rol.rolePrivileges.privilege=?"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.User.getUserDTOByOid", query = "SELECT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM User usr WHERE usr.oid=?"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.User.getUserDTOsByPrivAgency", query = "SELECT DISTINCT new org.webcurator.domain.model.dto.UserDTO(usr.oid, usr.username, usr.email, usr.notificationsByEmail, usr.tasksByEmail, usr.title, usr.firstname, usr.lastname, usr.phone, usr.address, usr.active, usr.agency.name, usr.notifyOnHarvestWarnings, usr.notifyOnGeneral) FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND rol.rolePrivileges.privilege=? AND usr.agency.oid=?")})
 public class User implements Serializable {
     
 	/** Version ID for serialization */
@@ -55,49 +62,76 @@ public class User implements Serializable {
     public static final String QRY_GET_USER_DTOS_BY_TARGET_PERMISSION = "org.webcurator.domain.model.auth.User.getUserDTOsByTargetPermission";
     
     /** The database OID of the User object */
+    @Id
+    @Column(name = "USR_OID", nullable = false)
+    @GeneratedValue(generator = "userGen", strategy = GenerationType.TABLE)
+    @TableGenerator(name = "userGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+            valueColumnName = "IG_VALUE", pkColumnValue = "User")
     private Long oid;
     /** The login username */
+    @Column(name = "USR_USERNAME", unique = true, length = 80, nullable = false)
     private String username;
     /** The contact email address */
+    @Column(name = "USR_EMAIL", length = 100, nullable = false)
     private String email;
     /** True to enable notifications to be sent by e-mail as well as to the intray */
+    @Column(name = "USR_NOTIFICATIONS_BY_EMAIL", nullable = false)
     private boolean notificationsByEmail;
     /** True to enable tasks to be sent by e-mail as well as to the intray */
-    private boolean tasksByEmail;    
+    @Column(name = "USR_TASKS_BY_EMAIL", nullable = false)
+    private boolean tasksByEmail;
     /** The title of the user: Mr., Mrs., etc */
+    @Column(name = "USR_TITLE", length = 10, nullable = true)
     private String title;
     /** The first name of the user */
+    @Column(name = "USR_FIRSTNAME", length = 50, nullable = false)
     private String firstname;
     /** The last name of the user */
+    @Column(name = "USR_LASTNAME", length = 50, nullable = false)
     private String lastname;
     /** True if the user account is active */
+    @Column(name = "USR_ACTIVE", nullable = false)
     private boolean active;
     /** True if the user must change their password on the next login */
+    @Column(name = "USR_FORCE_PWD_CHANGE", nullable = false)
     private boolean forcePasswordChange;
     /** True if the user authentication should use an external authentication source such as LDAP */
+    @Column(name = "USR_EXTERNAL_AUTH", nullable = false)
     private boolean externalAuth;
     /** The user's password */
+    @Column(name = "USR_PASSWORD", length = 255, nullable = true)
     private String password;
     /** The user's phone number */
+    @Column(name = "USR_PHONE", length = 16, nullable = true)
     private String phone;
     /** The user's address */
+    @Column(name = "USR_ADDRESS", length = 200, nullable = true)
     private String address;
     /** The set of roles the user belongs to */
-    private Set roles;
+    @ManyToMany(targetEntity = Role.class)
+    @Cascade({CascadeType.SAVE_UPDATE})
+    @JoinTable(name = "USER_ROLE", joinColumns = {@JoinColumn(name = "URO_USR_OID")}, foreignKey = @ForeignKey(name = "FK_USERROLE_TO_USER"),
+            inverseJoinColumns = {@JoinColumn(name = "URO_ROL_OID")}, inverseForeignKey = @ForeignKey(name = "FK_USERROLE_TO_ROLE"))
+    private Set<Role> roles;
     /** The agency the user belongs to */
+    @ManyToOne(targetEntity = Agency.class)
+    @JoinColumn(name = "USR_AGC_OID", nullable = false, foreignKey = @ForeignKey(name = "FK_USER_AGENCY_OID"))
     private Agency agency;
     /** For inactive users, the date the user was deactivated */
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "USR_DEACTIVATE_DATE", nullable = true)
     private Date deactivateDate;
     
     /** Enable notifications for changes to objects the user owns */
+    @Column(name = "USR_NOTIFY_ON_GENERAL", nullable = false)
     private boolean notifyOnGeneral = true;
     /** Enable notifications for harvester warnings. */
+    @Column(name = "USR_NOTIFY_ON_WARNINGS", nullable = false)
     private boolean notifyOnHarvestWarnings = false;
     
     /**
      * checks if this account is actually active
      * @return true if the account is still active
-     * @hibernate.property column="USR_ACTIVE" not-null="true"
      */
     public boolean isActive() {
         return active;
@@ -115,7 +149,6 @@ public class User implements Serializable {
      * Gets the Address of this user, as it may be different to the
      * agency address that they belong to
      * @return the Address of this user
-     * @hibernate.property column="USR_ADDRESS" not-null="false" length="200"
      */
     public String getAddress() {
         return address;
@@ -132,7 +165,6 @@ public class User implements Serializable {
     /**
      * Gets the email address of the user.
      * @return the email address
-     * @hibernate.property column="USR_EMAIL" not-null="true" length="100" 
      */
     public String getEmail() {
         return email;
@@ -152,7 +184,6 @@ public class User implements Serializable {
      * external repository, like a Directory server. Refer to the wct-security.xml for
      * configuration parameters for external authentication sources.
      * @return true if this user is authenticated externally
-     * @hibernate.property column="USR_EXTERNAL_AUTH" not-null="true"
      */
     public boolean isExternalAuth() {
         return externalAuth;
@@ -172,7 +203,6 @@ public class User implements Serializable {
     /**
      * gets the users firstname
      * @return the users firstname
-     * @hibernate.property column="USR_FIRSTNAME" not-null="true" length="50"
      */
     public String getFirstname() {
         return firstname;
@@ -189,7 +219,6 @@ public class User implements Serializable {
     /**
      * checks to see if a user is forced to change their password at logon
      * @return true if they must change password
-     * @hibernate.property column="USR_FORCE_PWD_CHANGE" not-null="true"
      */
     public boolean isForcePasswordChange() {
         return forcePasswordChange;
@@ -206,7 +235,6 @@ public class User implements Serializable {
     /**
      * gets the users lastname
      * @return the users lastname
-     * @hibernate.property column="USR_LASTNAME" not-null="true" length="50"
      */
     public String getLastname() {
         return lastname;
@@ -250,7 +278,6 @@ public class User implements Serializable {
     /**
      * checks if this user is notified by email for events in the system.
      * @return true if the user is notified via email
-     * @hibernate.property column="USR_NOTIFICATIONS_BY_EMAIL" not-null="true"
      */
     public boolean isNotificationsByEmail() {
         return notificationsByEmail;
@@ -268,7 +295,6 @@ public class User implements Serializable {
     /**
      * obtains the users password as a one-way hash for comparision
      * @return the password as a one-way hash
-     * @hibernate.property column="USR_PASSWORD" not-null="false" length="255"
      */
     public String getPassword() {
         return password;
@@ -285,7 +311,6 @@ public class User implements Serializable {
     /**
      * gets a users direct phone number, this may differ from the agency phone number
      * @return the users phone number
-     * @hibernate.property column="USR_PHONE" not-null="false" length="16"
      */
     public String getPhone() {
         return phone;
@@ -302,7 +327,6 @@ public class User implements Serializable {
     /**
      * gets the users title, e.g Mr, Mrs, Ms
      * @return the users title
-     * @hibernate.property column="USR_TITLE" not-null="false" length="10"
      */
     public String getTitle() {
         return title;
@@ -319,7 +343,6 @@ public class User implements Serializable {
     /**
      * gets the username of the logged in user. This must be unique across the system
      * @return the username
-     * @hibernate.property column="USR_USERNAME" unique="true" length="80" not-null="true"
      */
     public String getUsername() {
         return username;
@@ -337,12 +360,6 @@ public class User implements Serializable {
     /**
      * get the primary key oid for a user
      * @return the User Oid
-     * @hibernate.id column="USR_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="User"
-     * @hibernate.generator-param name="max-lo" value="16"
      */
     public Long getOid() {
         return oid;
@@ -359,11 +376,8 @@ public class User implements Serializable {
     /**
      * gets the Set of Roles that this user has
      * @return Set of User Roles
-     * @hibernate.set table="USER_ROLE" cascade="save-update" lazy="false"
-     * @hibernate.collection-key column="URO_USR_OID" 
-     * @hibernate.collection-many-to-many class="org.webcurator.domain.model.auth.Role" column="URO_ROL_OID" foreign-key="FK_USERROLE_TO_ROLE"  
      */
-    public Set getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
     
@@ -371,13 +385,12 @@ public class User implements Serializable {
      * Set the roles that the user belongs to.
      * @param aRoles The roles that the user belongs to.
      */
-    public void setRoles(Set aRoles) {
+    public void setRoles(Set<Role> aRoles) {
         this.roles = aRoles;
     }
     
     /**
      * gets the Agency this user belongs to
-     * @hibernate.many-to-one not-null="true" class="org.webcurator.domain.model.auth.Agency" column="USR_AGC_OID" foreign-key="FK_USER_AGENCY_OID"
      */
     public Agency getAgency() {
         return agency;
@@ -393,8 +406,6 @@ public class User implements Serializable {
     
     /**
      * gets the Date the user was deactivated, this is null if the user is currently active
-     * @hibernate.property type="timestamp" 
-     * @hibernate.column name="USR_DEACTIVATE_DATE" not-null="false" sql-type="TIMESTAMP(9)"
      */
     public Date getDeactivateDate() {
         return deactivateDate;
@@ -492,7 +503,6 @@ public class User implements Serializable {
 
 	/**
 	 * Checks if we should send tasks by email.
-	 * @hibernate.property column="USR_TASKS_BY_EMAIL" not-null="true" 
 	 */
 	public boolean isTasksByEmail() {
 		return tasksByEmail;
@@ -504,8 +514,7 @@ public class User implements Serializable {
 
 	/**
 	 * Checks if we should notifications for Harvester Warnings to this user.
-	 * @hibernate.property column="USR_NOTIFY_ON_GENERAL" not-null="true" 
-	 */		
+	 */
 	public boolean isNotifyOnGeneral() {
 		return notifyOnGeneral;
 	}
@@ -516,8 +525,7 @@ public class User implements Serializable {
 
 	/**
 	 * Checks if we should notifications for Harvester Warnings to this user.
-	 * @hibernate.property column="USR_NOTIFY_ON_WARNINGS" not-null="true" 
-	 */	
+	 */
 	public boolean isNotifyOnHarvestWarnings() {
 		return notifyOnHarvestWarnings;
 	}

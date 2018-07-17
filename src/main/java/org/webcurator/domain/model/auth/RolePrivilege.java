@@ -15,6 +15,7 @@
  */
 package org.webcurator.domain.model.auth;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -30,9 +31,10 @@ import java.io.Serializable;
  * @see org.webcurator.domain.model.auth.Privilege
  * 
  * @author bprice
- * @hibernate.class table="ROLE_PRIVILEGE" lazy="true" 
- * @hibernate.query name="org.webcurator.domain.model.auth.RolePrivilege.getUserPrivileges" query="SELECT distinct rolpriv FROM RolePrivilege rolpriv WHERE rolpriv.role.users.username=? "
  */
+@Entity
+@Table(name = "ROLE_PRIVILEGE")
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.RolePrivilege.getUserPrivileges", query = "SELECT distinct rolpriv FROM RolePrivilege rolpriv WHERE rolpriv.role.users.username=? ")})
 public class RolePrivilege implements Serializable {
 
 	/** Version ID for serialization */
@@ -42,18 +44,26 @@ public class RolePrivilege implements Serializable {
     public static final String QRY_GET_USER_PRIVILEGES = "org.webcurator.domain.model.auth.RolePrivilege.getUserPrivileges";
 
     /** The database OID for the Role Privilege. */
+    @Id
+    @Column(name = "PRV_OID", nullable = false)
+    @GeneratedValue(generator = "rolePrivGen", strategy = GenerationType.TABLE)
+    @TableGenerator(name = "rolePrivGen", table = "ID_GENERATOR", pkColumnName = "IG_TYPE",
+            valueColumnName = "IG_VALUE", pkColumnValue = "RolePriv")
     private Long oid;
     /** The identifier of the privilege */
+    @Column(name = "PRV_CODE", length = 40, nullable = false)
     private String privilege;
     /** The scope of the privilege - i.e. how widely the privilege applies */
+    @Column(name = "PRV_SCOPE", nullable = false)
     private int privilegeScope;
     /** The role that this privilege belongs to. */
+    @ManyToOne(targetEntity = Role.class)
+    @JoinColumn(name = "PRV_ROLE_OID", foreignKey = @ForeignKey(name = "FK_PRIV_ROLE_OID"))
     private Role role;
     
     /**
      * get the privilege name
      * @return the name of the privilege
-     * @hibernate.property column="PRV_CODE" not-null="true" length="40"
      */
     public String getPrivilege() {
         return privilege;
@@ -70,7 +80,6 @@ public class RolePrivilege implements Serializable {
     /**
      * gets the Role that this privilege belongs to
      * @return the Role object
-     * @hibernate.many-to-one class="org.webcurator.domain.model.auth.Role" column="PRV_ROLE_OID" foreign-key="FK_PRIV_ROLE_OID" 
      */
     public Role getRole() {
         return role;
@@ -87,7 +96,6 @@ public class RolePrivilege implements Serializable {
     /**
      * gets the Scope of this privilege
      * @return the scope
-     * @hibernate.property column="PRV_SCOPE" not-null="true"
      */
     public int getPrivilegeScope() {
         return privilegeScope;
@@ -104,11 +112,6 @@ public class RolePrivilege implements Serializable {
     /**
      * gets the Primary key for the Privilege
      * @return the Oid
-     * @hibernate.id column="PRV_OID" generator-class="org.hibernate.id.MultipleHiLoPerTableGenerator"
-     * @hibernate.generator-param name="table" value="ID_GENERATOR"
-     * @hibernate.generator-param name="primary_key_column" value="IG_TYPE"
-     * @hibernate.generator-param name="value_column" value="IG_VALUE"
-     * @hibernate.generator-param name="primary_key_value" value="RolePriv"
      */
     public Long getOid() {
         return oid;
