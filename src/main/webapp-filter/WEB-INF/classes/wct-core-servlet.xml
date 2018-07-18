@@ -6,6 +6,8 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<context:component-scan base-package="org.webcurator.spring" />
+	<context:annotation-config />
 
 	<bean id="WCTCoreServletConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -45,7 +47,7 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesView"/>
 	</bean>
 	
-	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles.TilesConfigurer">
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 	<property name="factoryClass" value="org.apache.struts.tiles.xmlDefinition.I18nFactorySet"/>
 	<property name="definitions">
 	<list>
@@ -63,7 +65,7 @@
 		<property name="exceptionMappings">
 			<map>
 				<entry
-					key="org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException"
+					key="org.springframework.orm.hibernate5.HibernateObjectRetrievalFailureException"
 					value="NoObjectFound">
 				</entry>
 				<entry
@@ -80,7 +82,7 @@
 		</property>	
 	</bean>
 
-	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" abstract="false" scope="singleton" lazy-init="default" autowire="default">
+	<bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="sessionFactory"><ref bean="sessionFactory"/></property>
 	</bean>
 	

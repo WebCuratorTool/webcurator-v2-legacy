@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:hibernate.properties" />
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>${datasource.jndi.name}</value>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" id="sessionFactory">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="annotatedClasses">
+			<list>
+				<value>org.webcurator.domain.model.auth.Agency</value>
+				<value>org.webcurator.domain.model.auth.Role</value>
+				<value>org.webcurator.domain.model.auth.RolePrivilege</value>
+				<value>org.webcurator.domain.model.auth.User</value>
+				<value>org.webcurator.domain.model.core.AuthorisingAgent</value>
+				<value>org.webcurator.domain.model.core.PermissionExclusion</value>
+				<value>org.webcurator.domain.model.core.Permission</value>
+				<value>org.webcurator.domain.model.core.UrlPattern</value>
+				<value>org.webcurator.domain.model.core.Site</value>
+				<value>org.webcurator.core.permissionmapping.Mapping</value>
+				<value>org.webcurator.core.permissionmapping.MappingView</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.id.new_generator_mappings">${hibernate.id.new_generator_mappings}</prop>
+				<prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</prop>
+				<prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</prop>
+				<prop key="hibernate.c3p0.acquire_increment">${hibernate.c3p0.acquire_increment}</prop>
+				<prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout}</prop>
+				<prop key="hibernate.c3p0.max_statements">${hibernate.c3p0.max_statements}</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

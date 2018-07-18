@@ -41,9 +41,6 @@ import org.springframework.jdbc.object.MappingSqlQuery;
  */
 public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.jdbc.JdbcDaoImpl {
 
-    @Autowired
-    private DataSource dataSource;
-
     @SuppressWarnings("unchecked")
 	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
