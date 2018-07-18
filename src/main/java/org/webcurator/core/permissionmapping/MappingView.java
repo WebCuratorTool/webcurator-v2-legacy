@@ -30,7 +30,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "URL_PERMISSION_MAPPING_VIEW")
-@NamedQueries({@NamedQuery(name = "org.webcurator.core.permissionmapping.MappingView.LIST", query = "from MappingView where domain=?")})
+@NamedQueries({@NamedQuery(name = "org.webcurator.core.permissionmapping.MappingView.LIST", query = "from MappingView where domain=?1")})
 public class MappingView {
 	/** Query identifier for listing Mappings by domain */
 	public static final String QUERY_BY_DOMAIN = "org.webcurator.core.permissionmapping.MappingView.LIST";

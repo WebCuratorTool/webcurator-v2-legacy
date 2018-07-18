@@ -34,7 +34,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "ROLE_PRIVILEGE")
-@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.RolePrivilege.getUserPrivileges", query = "SELECT distinct rolpriv FROM RolePrivilege rolpriv WHERE rolpriv.role.users.username=? ")})
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.RolePrivilege.getUserPrivileges", query = "SELECT distinct rolpriv FROM RolePrivilege rolpriv JOIN rolpriv.role.users rp_r_users WHERE rp_r_users.username=?1 ")})
 public class RolePrivilege implements Serializable {
 
 	/** Version ID for serialization */

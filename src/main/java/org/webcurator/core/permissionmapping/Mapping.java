@@ -31,8 +31,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "URL_PERMISSION_MAPPING")
-@NamedQueries({@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.LIST", query = "from Mapping where domain=?"),
-		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.FETCH", query = "from Mapping where oid=?"),
+@NamedQueries({@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.LIST", query = "from Mapping where domain=?1"),
+		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.FETCH", query = "from Mapping where oid=?1"),
 		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.DELETE", query = "delete from Mapping where urlPattern.oid = :urlPatternOid and permission.oid = :permissionOid"),
 		@NamedQuery(name = "org.webcurator.core.permissionmapping.Mapping.DELETE_BY_SITE", query = "delete from Mapping where permission.site.oid = :siteOid")})
 public class Mapping {

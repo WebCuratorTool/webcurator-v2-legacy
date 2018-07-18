@@ -32,8 +32,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "WCTROLE")
 @NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.auth.Role.getRoles", query = "FROM Role rol order by rol.agency.name, rol.name"),
-        @NamedQuery(name = "org.webcurator.domain.model.auth.Role.getAssociatedRolesByUser", query = "SELECT rol FROM Role rol, User usr WHERE usr.roles.oid = rol.oid AND usr.oid=? order by rol.name"),
-        @NamedQuery(name = "org.webcurator.domain.model.auth.Role.getRolesByAgency", query = "SELECT rol FROM Role rol WHERE rol.agency.oid = ?")})
+        @NamedQuery(name = "org.webcurator.domain.model.auth.Role.getAssociatedRolesByUser", query = "SELECT rol FROM Role rol, User usr JOIN usr.roles usr_roles WHERE usr_roles.oid = rol.oid AND usr.oid=?1 order by rol.name"),
+        @NamedQuery(name = "org.webcurator.domain.model.auth.Role.getRolesByAgency", query = "SELECT rol FROM Role rol WHERE rol.agency.oid = ?1")})
 public class Role implements AgencyOwnable, Serializable{
 
    /** The query constant for retrieving an ordered list of roles */
