@@ -42,18 +42,18 @@
 	    <property name="maxUploadSize" value="1500000"/>
 	</bean>	
 
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
 		<property name="requestContextAttribute" value="requestContext"/>
-		<property name="viewClass" value="org.springframework.web.servlet.view.tiles.TilesView"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
 	</bean>
 	
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
-	<property name="factoryClass" value="org.apache.struts.tiles.xmlDefinition.I18nFactorySet"/>
-	<property name="definitions">
-	<list>
-	<value>/WEB-INF/tiles-defs.xml</value>
-	</list>
-	</property>
+	<!--<property name="factoryClass" value="org.apache.struts.tiles.xmlDefinition.I18nFactorySet"/>-->
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles-defs.xml</value>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="exceptionResolver"
