@@ -110,7 +110,7 @@
 														  PRV_ROLE_OID = ROL_OID and
 														  URO_USR_OID = USR_OID and
 														  URO_ROL_OID = ROL_OID and
-														  usr_username = ?1
+														  usr_username = ?
 	</value></property>
 	<property name="rolePrefix"><value>ROLE_</value></property>
 	</bean>

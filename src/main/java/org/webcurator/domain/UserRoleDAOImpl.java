@@ -30,6 +30,7 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.webcurator.domain.model.auth.Agency;
@@ -45,6 +46,7 @@ import org.webcurator.domain.model.dto.UserDTO;
  * @author bprice
  */
 @Repository
+@Transactional
 public class UserRoleDAOImpl implements UserRoleDAO {
     
     private Log log = LogFactory.getLog(UserRoleDAOImpl.class);
