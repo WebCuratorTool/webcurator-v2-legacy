@@ -18,15 +18,17 @@ package org.webcurator.auth.dbms;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.userdetails.User;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.SqlParameter;
@@ -39,7 +41,9 @@ import org.springframework.jdbc.object.MappingSqlQuery;
  * WCT database.
  * @author bprice
  */
-public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.jdbc.JdbcDaoImpl {
+public class WCTDAOAuthenticationProvider extends org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl {
+    private UsersByUsernameMapping usersByUsernameMapping;
+    private AuthoritiesByUsernameMapping authoritiesByUsernameMapping;
 
     @SuppressWarnings("unchecked")
 	@Override
@@ -52,26 +56,19 @@ public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.
 
         UserDetails user = (UserDetails) users.get(0); // contains no GrantedAuthority[]
 
-        List dbAuths = authoritiesByUsernameMapping.execute(user.getUsername());
+        List<GrantedAuthority> dbAuths = authoritiesByUsernameMapping.execute(user.getUsername());
 
         if (dbAuths.size() == 0) {
             throw new UsernameNotFoundException("User has no GrantedAuthority");
         }
-
-        GrantedAuthority[] arrayAuths = {};
-
         addCustomAuthorities(user.getUsername(), dbAuths);
-
-        arrayAuths = (GrantedAuthority[]) dbAuths.toArray(arrayAuths);
-
         String returnUsername = user.getUsername();
-
         if (!isUsernameBasedPrimaryKey()) {
             returnUsername = username;
         }
 
         return new User(returnUsername, user.getPassword(), user.isEnabled(),
-            true, true, true, arrayAuths);
+            true, true, true, dbAuths);
     }
 
     
@@ -79,7 +76,7 @@ public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.
      * Extension point to allow other MappingSqlQuery objects to be substituted
      * in a subclass
      */
-    protected void initMappingSqlQueries() {
+    protected void initDao() {
         this.usersByUsernameMapping = new UsersByUsernameMapping(getDataSource());
         this.authoritiesByUsernameMapping = new AuthoritiesByUsernameMapping(getDataSource());
     }
@@ -97,7 +94,7 @@ public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.
         protected Object mapRow(ResultSet rs, int rownum)
             throws SQLException {
             String roleName = getRolePrefix() + rs.getString(1);
-            GrantedAuthorityImpl authority = new GrantedAuthorityImpl(roleName);
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(roleName);
 
             return authority;
         }
@@ -126,7 +123,7 @@ public class WCTDAOAuthenticationProvider extends org.acegisecurity.userdetails.
             }
             UserDetails user = new User(username, password, enabled, true,
                     !credentialsNonExpired, true,
-                    new GrantedAuthority[] {new GrantedAuthorityImpl("HOLDER")});
+                    new ArrayList<SimpleGrantedAuthority>(Arrays.asList(new SimpleGrantedAuthority("HOLDER"))));
 
             return user;
         }

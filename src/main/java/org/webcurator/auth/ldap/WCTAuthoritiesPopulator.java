@@ -15,14 +15,14 @@
  */
 package org.webcurator.auth.ldap;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.ldap.LdapDataAccessException;
-import org.acegisecurity.providers.ldap.LdapAuthoritiesPopulator;
-import org.acegisecurity.userdetails.ldap.LdapUserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.webcurator.domain.UserRoleDAO;
 import org.webcurator.domain.model.auth.RolePrivilege;
 
@@ -46,7 +46,7 @@ public class WCTAuthoritiesPopulator implements LdapAuthoritiesPopulator {
      * @return the list of granted authorities
      * @throws LdapDataAccessException thrown if there is an error
      */
-    private GrantedAuthority[] getGrantedAuthorities(String username) throws LdapDataAccessException {
+    private GrantedAuthority[] getGrantedAuthorities(String username) {
        
         List privileges = auth.getUserPrivileges(username);
         if (privileges != null) {
@@ -57,7 +57,7 @@ public class WCTAuthoritiesPopulator implements LdapAuthoritiesPopulator {
             Iterator it = privileges.iterator();
             while (it.hasNext()) {
                 RolePrivilege priv = (RolePrivilege) it.next();
-                GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_"+priv.getPrivilege());
+                GrantedAuthority ga = new SimpleGrantedAuthority("ROLE_"+priv.getPrivilege());
                 roles[i++] = ga;
             }
             
@@ -74,8 +74,8 @@ public class WCTAuthoritiesPopulator implements LdapAuthoritiesPopulator {
         this.auth = auth;
     }
 
-    /** @see LdapAuthoritiesPopulator#getGrantedAuthorities(LdapUserDetails) .*/
-    public GrantedAuthority[] getGrantedAuthorities(LdapUserDetails userDetails) throws LdapDataAccessException {        
-        return getGrantedAuthorities(userDetails.getUsername());
+    @Override
+    public Collection<? extends GrantedAuthority> getGrantedAuthorities(org.springframework.ldap.core.DirContextOperations dirContextOperations, String username) {
+        return Arrays.asList(getGrantedAuthorities(username));
     }
 }
