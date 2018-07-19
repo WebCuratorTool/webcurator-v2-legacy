@@ -20,7 +20,7 @@
 	      
 	      
 	      -->
-	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
       <property name="filterInvocationDefinitionSource">
          <value>
 		    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
@@ -38,7 +38,7 @@
 
    <!-- ======================== AUTHENTICATION ======================= -->
 
-	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager" abstract="false" scope="singleton" lazy-init="default" autowire="default">
+	<bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="providers">
 			<list>
 				<!-- Remove the comments if you want LDAP authentication to occur -->
@@ -48,7 +48,7 @@
 		</property>
 	</bean>
 	
-   <bean id="initialDirContextFactory" class="org.acegisecurity.ldap.DefaultInitialDirContextFactory">
+   <bean id="initialDirContextFactory" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
       <constructor-arg value="${ldap.url}"/>
 <!--       <property name="managerDn"><value>OU=WCT Users,DC=webcurator,DC=org</value></property> -->
 <!--       <property name="managerPassword"><value>itsAsecretWord</value></property> -->
@@ -57,9 +57,9 @@
 
 	
 	<!-- Note that the distinguished name patterns are in the file "security-userdn-list.xml" -->
-	<bean id="ldapAuthenticator" class="org.acegisecurity.providers.ldap.LdapAuthenticationProvider" abstract="false" scope="singleton" lazy-init="default" autowire="default">
+	<bean id="ldapAuthenticator" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<constructor-arg>
-	        <bean class="org.acegisecurity.providers.ldap.authenticator.BindAuthenticator">
+	        <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
 	           <constructor-arg><ref bean="initialDirContextFactory"/></constructor-arg>
 <!-- 				Use this if your users have the same ldap dn pattern, and the only difference  -->
 <!-- 				is the user name -->
@@ -83,18 +83,22 @@
 	      </constructor-arg>
 	</bean>
 	
-	<bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider">
+	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
   		<property name="userDetailsService"><ref bean="jdbcDaoImpl"/></property>
+<!--
   		<property name="saltSource"><ref bean="saltSource"/></property>
   		<property name="passwordEncoder"><ref bean="passwordEncoder"/></property>
+-->
 	</bean>
 	
+<!--
 	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.SystemWideSaltSource">
 		<property name="systemWideSalt"><value>Rand0mS4lt</value></property>
 	</bean>
 	
 	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
 	</bean>
+-->
 
 	<bean id="jdbcDaoImpl" class="org.webcurator.auth.dbms.WCTDAOAuthenticationProvider">
 	  <property name="dataSource"><ref bean="dataSource"/></property>
@@ -117,9 +121,9 @@
    
 
    <!-- Automatically receives AuthenticationEvent messages -->
-   <bean id="loggerListener" class="org.acegisecurity.event.authentication.LoggerListener"/>
+   <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
 
-   <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+   <bean id="httpSessionContextIntegrationFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
    </bean>
 
    <!-- ===================== HTTP CHANNEL REQUIREMENTS ==================== -->
@@ -127,7 +131,7 @@
    <!-- You will need to uncomment the "Acegi Channel Processing Filter"
         <filter-mapping> in web.xml for the following beans to be used -->
 
-   <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+   <bean id="channelProcessingFilter" class="org.springframework.security.web.access.channel.ChannelProcessingFilter">
       <property name="channelDecisionManager"><ref bean="channelDecisionManager"/></property>
       <property name="filterInvocationDefinitionSource">
          <value>
@@ -138,7 +142,7 @@
       </property>
    </bean>
 
-   <bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+   <bean id="channelDecisionManager" class="org.springframework.security.web.access.channel.ChannelDecisionManagerImpl">
       <property name="channelProcessors">
          <list>
             <ref bean="secureChannelProcessor"/>
@@ -147,12 +151,12 @@
       </property>
    </bean>
 
-   <bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor"/>
-   <bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>
+   <bean id="secureChannelProcessor" class="org.springframework.security.web.access.channel.SecureChannelProcessor"/>
+   <bean id="insecureChannelProcessor" class="org.springframework.security.web.access.channel.InsecureChannelProcessor"/>
 
    <!-- ===================== HTTP REQUEST SECURITY ==================== -->
 
-   <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+   <bean id="exceptionTranslationFilter" class="org.springframework.security.web.access.ExceptionTranslationFilter">
       <property name="authenticationEntryPoint"><ref bean="authenticationProcessingFilterEntryPoint"/></property>
    </bean>
 
@@ -164,7 +168,7 @@
       <property name="authDAO"><ref bean="userRoleDAO"/></property>
    </bean>
    
-   <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint" abstract="false" scope="singleton" lazy-init="default" autowire="default">
+   <bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint" abstract="false" scope="singleton" lazy-init="default" autowire="default">
 		<property name="loginFormUrl">
 			<value>/logon.jsp</value>
 		</property>
@@ -173,7 +177,7 @@
 		</property>
 	</bean>
 
-   <bean id="httpRequestAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+   <bean id="httpRequestAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
       <property name="allowIfAllAbstainDecisions"><value>false</value></property>
       <property name="decisionVoters">
          <list>
@@ -182,12 +186,12 @@
       </property>
    </bean>
    
-   <bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter"/>
+   <bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter"/>
 
    <!-- Note the order that entries are placed against the objectDefinitionSource is critical.
         The FilterSecurityInterceptor will work from the top of the list down to the FIRST pattern that matches the request URL.
         Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
-   <bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+   <bean id="filterInvocationInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
       <property name="authenticationManager"><ref bean="authenticationManager"/></property>
       <property name="accessDecisionManager"><ref bean="httpRequestAccessDecisionManager"/></property>
       <property name="objectDefinitionSource">
