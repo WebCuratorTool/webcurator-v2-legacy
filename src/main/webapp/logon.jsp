@@ -22,7 +22,7 @@ String failed = request.getParameter("failed");
 <div id="topBar"><img src="images/web-curator-tool-logo.gif" alt="Web Curator Tool" width="320" height="68" border="0" /></div>
 <br class="clear" />
 
-		<form name="login" action="j_acegi_security_check" method="POST">
+		<form name="login" action="j_spring_security_check" method="POST">
 			<div id="loginBox">
 			<%
 				if (failed != null && failed.equals("true")) {

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:sec="http://www.springframework.org/schema/security"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd">
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<context:component-scan base-package="org.webcurator.spring" />
 	<context:annotation-config />
@@ -16,21 +20,23 @@
 	      of "httpSessionContextIntegrationFilter" in the list below 
 	        
 	        /jsp/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
-            /j_acegi_security_check=httpSessionContextIntegrationFilter, authenticationProcessingFilter, exceptionTranslationFilter,filterInvocationInterceptor
+            /j_spring_security_check=httpSessionContextIntegrationFilter, authenticationProcessingFilter, exceptionTranslationFilter,filterInvocationInterceptor
 	      
 	      
 	      -->
-	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
-      <property name="filterInvocationDefinitionSource">
-         <value>
-		    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-		    PATTERN_TYPE_APACHE_ANT
-		    /curator/credentials/reset-password.html=httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
-		    /curator/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor, WCTPasswordExpiredFilter
-		    /jsp/**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
-            /j_acegi_security_check=httpSessionContextIntegrationFilter, authenticationProcessingFilter, exceptionTranslationFilter,filterInvocationInterceptor
-         </value>
-      </property>
+	<bean id="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+		<constructor-arg>
+			<list>
+				<sec:filter-chain pattern="/curator/credentials/reset-password.html"
+								  filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor" />
+				<sec:filter-chain pattern="/curator/**"
+								  filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor, WCTPasswordExpiredFilter" />
+				<sec:filter-chain pattern="/jsp/**"
+								  filters="httpSessionContextIntegrationFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor" />
+				<sec:filter-chain pattern="/j_spring_security_check"
+								  filters="httpSessionContextIntegrationFilter, authenticationProcessingFilter, exceptionTranslationFilter,filterInvocationInterceptor" />
+			</list>
+		</constructor-arg>
     </bean>
     
     <bean id="WCTPasswordExpiredFilter" class="org.webcurator.auth.dbms.WCTForcePasswordChange" abstract="false" scope="singleton" lazy-init="default" autowire="default">
@@ -39,13 +45,13 @@
    <!-- ======================== AUTHENTICATION ======================= -->
 
 	<bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager" abstract="false" scope="singleton" lazy-init="default" autowire="default">
-		<property name="providers">
+		<constructor-arg>
 			<list>
 				<!-- Remove the comments if you want LDAP authentication to occur -->
-<!--      			<ref bean="ldapAuthenticator" /> -->
+				<!--      			<ref bean="ldapAuthenticator" /> -->
 				<ref bean="daoAuthenticationProvider" />
 			</list>
-		</property>
+		</constructor-arg>
 	</bean>
 	
    <bean id="initialDirContextFactory" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
@@ -133,13 +139,12 @@
 
    <bean id="channelProcessingFilter" class="org.springframework.security.web.access.channel.ChannelProcessingFilter">
       <property name="channelDecisionManager"><ref bean="channelDecisionManager"/></property>
-      <property name="filterInvocationDefinitionSource">
-         <value>
-			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-				\A/acegilogin.jsp.*\Z=REQUIRES_SECURE_CHANNEL
-				\A.*\Z=REQUIRES_INSECURE_CHANNEL
-         </value>
-      </property>
+	  <property name="securityMetadataSource">
+		   <sec:filter-security-metadata-source request-matcher="regex" use-expressions="false">
+			   <sec:intercept-url pattern="\A/acegilogin.jsp.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
+			   <sec:intercept-url pattern="\A.*\Z" access="REQUIRES_INSECURE_CHANNEL"/>
+		   </sec:filter-security-metadata-source>
+	  </property>
    </bean>
 
    <bean id="channelDecisionManager" class="org.springframework.security.web.access.channel.ChannelDecisionManagerImpl">
@@ -157,21 +162,31 @@
    <!-- ===================== HTTP REQUEST SECURITY ==================== -->
 
    <bean id="exceptionTranslationFilter" class="org.springframework.security.web.access.ExceptionTranslationFilter">
-      <property name="authenticationEntryPoint"><ref bean="authenticationProcessingFilterEntryPoint"/></property>
+	  <constructor-arg>
+		  <ref bean="authenticationProcessingFilterEntryPoint"/>
+	  </constructor-arg>
    </bean>
 
    <bean id="authenticationProcessingFilter" class="org.webcurator.auth.WCTAuthenticationProcessingFilter">
       <property name="authenticationManager"><ref bean="authenticationManager"/></property>
-      <property name="authenticationFailureUrl"><value>/logon.jsp?failed=true</value></property>
-      <property name="defaultTargetUrl"><value>/</value></property>
-      <property name="filterProcessesUrl"><value>/j_acegi_security_check</value></property>
+	  <property name="authenticationFailureHandler" ref="failureHandler" />
+	  <property name="authenticationSuccessHandler" ref="successHandler" />
+      <property name="filterProcessesUrl"><value>/j_spring_security_check</value></property>
       <property name="authDAO"><ref bean="userRoleDAO"/></property>
    </bean>
+
+	<bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler" >
+		<property name="defaultTargetUrl" value="/" />
+	</bean>
+
+	<bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >
+		<property name="defaultFailureUrl" value="/logon.jsp?failed=true" />
+	</bean>
    
    <bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint" abstract="false" scope="singleton" lazy-init="default" autowire="default">
-		<property name="loginFormUrl">
-			<value>/logon.jsp</value>
-		</property>
+	    <constructor-arg>
+		   <value>/logon.jsp</value>
+	    </constructor-arg>
 		<property name="forceHttps">
 			<value>false</value>
 		</property>
@@ -179,30 +194,29 @@
 
    <bean id="httpRequestAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
       <property name="allowIfAllAbstainDecisions"><value>false</value></property>
-      <property name="decisionVoters">
+	   <constructor-arg>
          <list>
+			<bean class="org.springframework.security.web.access.expression.WebExpressionVoter" />
             <ref bean="roleVoter"/>
          </list>
-      </property>
+      </constructor-arg>
    </bean>
    
    <bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter"/>
 
-   <!-- Note the order that entries are placed against the objectDefinitionSource is critical.
+   <!-- Note the order that entries are placed against the securityMetadataSource is critical.
         The FilterSecurityInterceptor will work from the top of the list down to the FIRST pattern that matches the request URL.
         Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
    <bean id="filterInvocationInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
       <property name="authenticationManager"><ref bean="authenticationManager"/></property>
       <property name="accessDecisionManager"><ref bean="httpRequestAccessDecisionManager"/></property>
-      <property name="objectDefinitionSource">
-         <value>
-			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-			    PATTERN_TYPE_APACHE_ANT
-			    /index.jsp=ROLE_ANONYMOUS,ROLE_USER
-			    /logon.jsp*=ROLE_ANONYMOUS,ROLE_USER
-				/**=ROLE_ADM,ROLE_LOGIN
-         </value>
-      </property>
+ 	  <property name="securityMetadataSource">
+		   <sec:filter-security-metadata-source>
+			   <sec:intercept-url pattern="/index.jsp" access="hasAnyRole('ROLE_ANONYMOUS','ROLE_USER')"/>
+			   <sec:intercept-url pattern="/logon.jsp*" access="hasAnyRole('ROLE_ANONYMOUS','ROLE_USER')"/>
+			   <sec:intercept-url pattern="/**" access="hasAnyRole('ROLE_ADM','ROLE_LOGIN')"/>
+		   </sec:filter-security-metadata-source>
+	  </property>
    </bean>
 
 </beans>
