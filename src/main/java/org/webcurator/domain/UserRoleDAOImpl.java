@@ -59,7 +59,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
     public List getUserDTOs(Long agencyOid) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_ALL_USER_DTOS_BY_AGENCY);
-        query.setParameter(0, agencyOid);
+        query.setParameter(1, agencyOid);
         List results = query.list();
         return results;
     }
@@ -89,7 +89,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
     public List getRoles(Long agencyOid) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(Role.QRY_GET_ROLES_BY_AGENCY);
-        query.setParameter(0, agencyOid);
+        query.setParameter(1, agencyOid);
         List results = query.list();
         return results;
     }
@@ -100,7 +100,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
     public User getUserByName(String username) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_BY_NAME);
-        query.setParameter(0, username);
+        query.setParameter(1, username);
         List results = query.list();
 
         if(results.size() == 1) {
@@ -117,7 +117,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
     
     public List getUserPrivileges(String username) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(RolePrivilege.QRY_GET_USER_PRIVILEGES);
-        query.setParameter(0, username);
+        query.setParameter(1, username);
         List results = query.list();
         return results;
     }
@@ -175,7 +175,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
     
     public List getUsers(Long agencyOid) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USERS_BY_AGENCY);
-        query.setParameter(0, agencyOid);
+        query.setParameter(1, agencyOid);
         List results = query.list();
         return results;
     }
@@ -186,7 +186,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
 
     public List getAssociatedRolesForUser(Long userOid) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(Role.QRY_GET_ASSOCIATED_ROLES_BY_USER);
-        query.setParameter(0, userOid);
+        query.setParameter(1, userOid);
         List results = query.list();
         return results;
     }
@@ -198,7 +198,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
     @SuppressWarnings("unchecked")
     public List<UserDTO> getUserDTOsByPrivilege(String privilege) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_DTOS_BY_PRIVILEGE);
-        query.setParameter(0, privilege);
+        query.setParameter(1, privilege);
         List results = query.list();
         return results;
     }
@@ -209,8 +209,8 @@ public class UserRoleDAOImpl implements UserRoleDAO {
     @SuppressWarnings("unchecked")
     public List<UserDTO> getUserDTOsByPrivilege(String privilege, Long agencyOid) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_DTOS_BY_PRIVILEGE_FOR_AGENCY);
-        query.setParameter(0, privilege);
-        query.setParameter(1, agencyOid);
+        query.setParameter(1, privilege);
+        query.setParameter(2, agencyOid);
         List results = query.list();
         return results;
     }
@@ -221,7 +221,7 @@ public class UserRoleDAOImpl implements UserRoleDAO {
     @SuppressWarnings("unchecked")
 	public List<UserDTO> getUserDTOsByTargetPrivilege(Long permissionOid) {
         Query query = sessionFactory.getCurrentSession().getNamedQuery(User.QRY_GET_USER_DTOS_BY_TARGET_PERMISSION);
-        query.setParameter(0, permissionOid);
+        query.setParameter(1, permissionOid);
         List results = query.list();
         return results;
     }

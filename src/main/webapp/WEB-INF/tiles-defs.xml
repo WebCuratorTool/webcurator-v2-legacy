@@ -1,142 +1,139 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
- <!DOCTYPE tiles-definitions PUBLIC
-       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
-       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<definition name=".header" path="/jsp/layouts/header.jsp">
-		<put name="page-help" value="Header Help" />
+	<definition name=".header" template="/jsp/layouts/header.jsp">
+		<put-attribute name="page-help" value="Header Help" />
 	</definition>
 
-	<definition name=".generic-object-identifier"
-		path="/jsp/layouts/object-identifier-generic.jsp">
-		<put name="object-name" value="name" />
+	<definition name=".generic-object-identifier" template="/jsp/layouts/object-identifier-generic.jsp">
+		<put-attribute name="object-name" value="name" />
 	</definition>
 
-	<definition name=".subTabbedNamed" path="/jsp/layouts/sub-tabbed-named.jsp">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="header" value=".header" />
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-		<put name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Subtabbed Layout Help" />
-		<put name="object-identifier" value=".generic-object-identifier" />
-		<put name="object-name" value="Name" />
+	<definition name=".subTabbedNamed" template="/jsp/layouts/sub-tabbed-named.jsp">
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
+		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Subtabbed Layout Help" />
+		<put-attribute name="object-identifier" value=".generic-object-identifier" />
+		<put-attribute name="object-name" value="Name" />
 	</definition>
 
-	<definition name=".reportLayout" path="/jsp/layouts/basic-report.jsp">
-		<put name="title" value="Web Curator Tool" />
-		<put name="header" value=".header" />
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Report Layout Help" />
+	<definition name=".reportLayout" template="/jsp/layouts/basic-report.jsp">
+		<put-attribute name="title" value="Web Curator Tool" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Report Layout Help" />
 	</definition>
 
-	<definition name=".mainLayout" path="/jsp/layouts/basic.jsp">
-		<put name="title" value="Web Curator Tool" />
-		<put name="header" value=".header" />
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Main Layout Help" />
+	<definition name=".mainLayout" template="/jsp/layouts/basic.jsp">
+		<put-attribute name="title" value="Web Curator Tool" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Main Layout Help" />
 	</definition>
 
-	<definition name=".popup" path="/jsp/layouts/popup.jsp">
-		<put name="title" value="Web Curator Tool" />
+	<definition name=".popup" template="/jsp/layouts/popup.jsp">
+		<put-attribute name="title" value="Web Curator Tool" />
 	</definition>
 
 
-	<definition name=".ajax" path="/jsp/layouts/blank-AJAX.jsp">
+	<definition name=".ajax" template="/jsp/layouts/blank-AJAX.jsp">
 	</definition>
 
-	<definition name=".mainLayoutNew" path="/jsp/layouts/basic-new.jsp">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="header" value=".header" />
-		<put name="tab-nav" value="/jsp/layouts/tab-nav.jsp" />
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-		<put name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Main Layout New Help" />
+	<definition name=".mainLayoutNew" template="/jsp/layouts/basic-new.jsp">
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="tab-nav" value="/jsp/layouts/tab-nav.jsp" />
+		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
+		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Main Layout New Help" />
 	</definition>
 
-	<definition name=".errorLayout" path="/jsp/layouts/error-template.jsp">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="header" value=".header" />
-		<put name="page-icon" value="/jsp/layouts/page-icon-error.jsp" />
-		<put name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Error Help" />
+	<definition name=".errorLayout" template="/jsp/layouts/error-template.jsp">
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="page-icon" value="/jsp/layouts/page-icon-error.jsp" />
+		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Error Help" />
 	</definition>
 
-	<definition name=".tabbedNew" path="/jsp/layouts/tabbed-new.jsp">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="header" value=".header" />
-		<put name="tab-nav" value="/jsp/layouts/tab-nav.jsp" />
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-		<put name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Tabbed Layout Help" />
+	<definition name=".tabbedNew" template="/jsp/layouts/tabbed-new.jsp">
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="tab-nav" value="/jsp/layouts/tab-nav.jsp" />
+		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
+		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Tabbed Layout Help" />
 	</definition>
 
-	<definition name=".subTabbed" path="/jsp/layouts/sub-tabbed.jsp">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="header" value=".header" />
-		<put name="validation" value="/jsp/layouts/validation-messages.jsp" />
-		<put name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
-		<put name="footer" value="/jsp/layouts/footer.jsp" />
-		<put name="page-help" value="Subtabbed Layout Help" />
+	<definition name=".subTabbed" template="/jsp/layouts/sub-tabbed.jsp">
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="header" value=".header" />
+		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
+		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
+		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
+		<put-attribute name="page-help" value="Subtabbed Layout Help" />
 	</definition>
 
 	<definition name="Error" extends=".errorLayout">
-		<put name="title" value="Error" />
-		<put name="body" value="/jsp/layouts/Error.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="Error" />
+		<put-attribute name="body" value="/jsp/layouts/Error.jsp" />
+		<put-attribute name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 
 	<definition name="max-file-size-exceeeded" extends=".errorLayout">
-		<put name="title" value="Maximum File Upload Size Exceeeded" />
-		<put name="body" value="/jsp/max-file-size-exceeeded.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="Maximum File Upload Size Exceeeded" />
+		<put-attribute name="body" value="/jsp/max-file-size-exceeeded.jsp" />
+		<put-attribute name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="NoObjectFound" extends=".errorLayout">
-		<put name="title" value="Object Not Found" />
-		<put name="body" value="/jsp/no-object-found.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="Object Not Found" />
+		<put-attribute name="body" value="/jsp/no-object-found.jsp" />
+		<put-attribute name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="HomeView" extends=".mainLayout">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="body" value="/jsp/home.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="body" value="/jsp/home.jsp" />
+		<put-attribute name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="HibernateTestView" extends=".mainLayout">
-		<put name="title" value="Hibernate Test" />
-		<put name="body" value="/jsp/hibernate-test.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="Hibernate Test" />
+		<put-attribute name="body" value="/jsp/hibernate-test.jsp" />
+		<put-attribute name="page-help"
 			 value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="QaHomeView" extends=".mainLayout">
-		<put name="title" value="WEB CURATOR TOOL" />
-		<put name="body" value="/jsp/qa-home.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="WEB CURATOR TOOL" />
+		<put-attribute name="body" value="/jsp/qa-home.jsp" />
+		<put-attribute name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
 	<definition name="authorisation-failure" extends=".mainLayout">
-		<put name="title" value="Authorisation Failure" />
-		<put name="body" value="/jsp/authorisation-failure.jsp" />
-		<put name="page-help"
+		<put-attribute name="title" value="Authorisation Failure" />
+		<put-attribute name="body" value="/jsp/authorisation-failure.jsp" />
+		<put-attribute name="page-help"
 			value="http://dia-nz.github.io/webcurator/" />
 	</definition>
 
-	<definition name="Logout" path="/jsp/logout.jsp" />
+	<definition name="Logout" template="/jsp/logout.jsp" />
 
 </tiles-definitions>

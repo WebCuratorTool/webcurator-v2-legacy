@@ -15,8 +15,6 @@
  */
 package org.webcurator.ui.listener;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
@@ -28,20 +26,19 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.webcurator.core.util.ApplicationContextFactory;
 import org.webcurator.core.util.LockManager;
-import org.webcurator.domain.model.auth.User;
 
 /**
  * The a session listener that logs the user out when the session expires.
  * @author bbeaumont
  */
-public class AcegiLogoutListener implements HttpSessionListener {
+public class SpringSecurityLogoutListener implements HttpSessionListener {
 	/** Logger for the BrowseController. **/
-	private static Log log = LogFactory.getLog(AcegiLogoutListener.class);
+	private static Log log = LogFactory.getLog(SpringSecurityLogoutListener.class);
 
 	/** The LockManager **/
 	LockManager lockManager = null;
 	
-	public AcegiLogoutListener() {
+	public SpringSecurityLogoutListener() {
 	}
 	
 	public void sessionCreated(HttpSessionEvent arg0) {

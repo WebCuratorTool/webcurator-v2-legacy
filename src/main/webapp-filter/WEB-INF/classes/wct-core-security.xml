@@ -93,18 +93,18 @@
   		<property name="userDetailsService"><ref bean="jdbcDaoImpl"/></property>
 <!--
   		<property name="saltSource"><ref bean="saltSource"/></property>
-  		<property name="passwordEncoder"><ref bean="passwordEncoder"/></property>
 -->
+  		<property name="passwordEncoder"><ref bean="passwordEncoder"/></property>
 	</bean>
 	
 <!--
 	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.SystemWideSaltSource">
 		<property name="systemWideSalt"><value>Rand0mS4lt</value></property>
 	</bean>
-	
-	<bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.ShaPasswordEncoder">
-	</bean>
 -->
+
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
 
 	<bean id="jdbcDaoImpl" class="org.webcurator.auth.dbms.WCTDAOAuthenticationProvider">
 	  <property name="dataSource"><ref bean="dataSource"/></property>
@@ -175,8 +175,10 @@
       <property name="authDAO"><ref bean="userRoleDAO"/></property>
    </bean>
 
-	<bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler" >
-		<property name="defaultTargetUrl" value="/" />
+	<bean id="successHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler" >
+		<constructor-arg>
+			<value>/curator/home.html</value>
+		</constructor-arg>
 	</bean>
 
 	<bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" >

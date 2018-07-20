@@ -59,7 +59,7 @@
 	</listener>
 	
 	<listener>
-		<listener-class>org.webcurator.ui.listener.AcegiLogoutListener</listener-class>
+		<listener-class>org.webcurator.ui.listener.SpringSecurityLogoutListener</listener-class>
 	</listener>
 	
     <listener>

@@ -120,7 +120,7 @@ public class HierPermMappingDAOImpl implements HierPermMappingDAO {
 	@SuppressWarnings("unchecked")
 	public List<Mapping> getMapping(Long mappingOid) {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery(Mapping.QUERY_BY_OID);
-		query.setParameter(0, mappingOid);
+		query.setParameter(1, mappingOid);
 		List results = query.list();
 		return results;
 	}
@@ -131,7 +131,7 @@ public class HierPermMappingDAOImpl implements HierPermMappingDAO {
 	@SuppressWarnings("unchecked")
 	public List<Mapping> getMappings(String domain) {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery(Mapping.QUERY_BY_DOMAIN);
-		query.setParameter(0, domain);
+		query.setParameter(1, domain);
 		List results = query.list();
 		return results;
 	}
@@ -142,7 +142,7 @@ public class HierPermMappingDAOImpl implements HierPermMappingDAO {
 	@SuppressWarnings("unchecked")
 	public List<MappingView> getMappingsView(String domain) {
 		Query query = sessionFactory.getCurrentSession().getNamedQuery(MappingView.QUERY_BY_DOMAIN);
-		query.setParameter(0, domain);
+		query.setParameter(1, domain);
 		List results = query.list();
 		return results;
 	}

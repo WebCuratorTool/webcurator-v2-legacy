@@ -61,8 +61,8 @@ public class WCTAuthenticationProcessingFilter extends UsernamePasswordAuthentic
         
         if (wctUser != null) {
 	        log.debug("loaded WCT User object "+wctUser.getUsername()+" from database");
-	        UsernamePasswordAuthenticationToken auth =  (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-	        auth.setDetails(wctUser);
+            UsernamePasswordAuthenticationToken auth = (UsernamePasswordAuthenticationToken)authResult;
+            auth.setDetails(wctUser);
 	        log.debug("pushing back upat into SecurityContext with populated WCT User");
 	        SecurityContextHolder.getContext().setAuthentication(auth);
         
@@ -82,10 +82,15 @@ public class WCTAuthenticationProcessingFilter extends UsernamePasswordAuthentic
     protected void unsuccessfulAuthentication(HttpServletRequest aReq, HttpServletResponse aRes, AuthenticationException e) throws IOException, ServletException {
         super.unsuccessfulAuthentication(aReq, aRes, e);
         
-        String username = aReq.getParameter("j_username");
+        String username = aReq.getParameter("username");
         
     }
-    
+/*
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        return super.attemptAuthentication(request, response);
+    }*/
+
     /**
      * Spring setter.
      * @param authDAO set the authentication dao bean.

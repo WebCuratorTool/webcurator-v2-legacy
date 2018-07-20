@@ -45,9 +45,9 @@ String failed = request.getParameter("failed");
 							<div id="homeBoxLine"><img src="images/x.gif" width="1" height="5" border="0" /></div>
 						  	<div id="homeBoxText">
 								username<br />
-								<input type="text" name="j_username" width="20" style="width:200px"><br />
+								<input type="text" name="username" width="20" style="width:200px"><br />
 								password<br />
-								<input type="password" name="j_password" width="20" style="width:200px"><br />
+								<input type="password" name="password" width="20" style="width:200px"><br />
 								<input type="image" src="images/home-btn-login.gif" alt="login" width="67" height="18" border="0" vspace="5" />
 							</div>
 						</td>
