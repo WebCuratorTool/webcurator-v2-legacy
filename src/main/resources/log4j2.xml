@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="name1">value</Property>
+        <Property name="name2" value="value2"/>
+    </Properties>
+    <filter/>
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+        </Console>
+        <!-- Rolling File Appender -->
+        <RollingFile name="GeneralLog">
+            <FileName>${log4j.dir}/wct-core.log</FileName>
+            <FilePattern>${log4j.dir}/wct-core.log.%d{yyyy-MM-dd}</FilePattern>
+            <PatternLayout>
+                <Pattern>%d %-5p [%t] %C{2} (%F:%L) - %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="2" modulate="true" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.webcurator" level="${log4j.level}">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Logger name="org.hibernate" level="WARN">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Logger name="org.springframework" level="WARN">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Logger name="org.springframework.security" level="WARN">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Logger name="org.springframework.web.servlet" level="FATAL">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -49,7 +49,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -57,7 +57,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<id>copy-jetty-env</id>
@@ -96,7 +96,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
+				<version>3.2.2</version>
 				<configuration>
 					<warName>wct</warName>
 					<webResources>
@@ -122,13 +122,13 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
+				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.5.4.v20111024</version>
+				<version>9.4.11.v20180605</version>
 				<configuration>
 					<stopKey>${core.stopKey}</stopKey>
 					<stopPort>${core.stopPort}</stopPort>
-					<!--<useProvidedScope>true</useProvidedScope>-->
+					<useProvidedScope>true</useProvidedScope>
 					<webApp>
 						<contextPath>/wct</contextPath>
 						<jettyEnvXml>${project.build.directory}/jetty-env.xml</jettyEnvXml>
@@ -137,25 +137,21 @@
 							<resourceBase>src/main/webapp</resourceBase>
 						</resourceBases>
 					</webApp>
-					<connectors>
-						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-							<port>${core.port}</port>
-							<maxIdleTime>10000</maxIdleTime>
-						</connector>
-					</connectors>
+					<httpConnector>
+						<port>${core.port}</port>
+						<idleTimeout>10000</idleTimeout>
+					</httpConnector>
+					<supportedPackagings>
+						<supportedPackaging>jar</supportedPackaging>
+					</supportedPackagings>
 				</configuration>
 				<dependencies>
 					<dependency>
-						<groupId>commons-dbcp</groupId>
-						<artifactId>commons-dbcp</artifactId>
-						<version>1.4</version>
+						<groupId>org.apache.commons</groupId>
+						<artifactId>commons-dbcp2</artifactId>
+						<version>2.5.0</version>
 					</dependency>
-					<dependency>
-						<groupId>javax.servlet</groupId>
-						<artifactId>javax.servlet-api</artifactId>
-						<version>3.1.0</version>
-					</dependency>
-				</dependencies>
+                </dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -293,21 +289,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.archive</groupId>
-			<artifactId>aheritrix</artifactId>
-			<version>1.14.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>antlr</groupId>
 			<artifactId>antlr</artifactId>
 			<version>2.7.7</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>axis</groupId>
-			<artifactId>axis</artifactId>
-			<version>1.4</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -359,21 +343,14 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-discovery</groupId>
-			<artifactId>commons-discovery</artifactId>
-			<version>0.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.3.3</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
-			<scope>compile</scope>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.6</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -388,12 +365,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.6</version>
@@ -405,8 +376,18 @@
 			<version>2.1</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
 			<version>2.11.0</version>
 		</dependency>
 		<dependency>
@@ -426,6 +407,26 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-servlet</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-el</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-extras</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-template</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-request-api</artifactId>
 			<version>1.0.7</version>
 		</dependency>
@@ -433,6 +434,16 @@
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-request-servlet</artifactId>
 			<version>1.0.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-request-jsp</artifactId>
+			<version>1.0.7</version>
+		</dependency>
+		<dependency>
+			<groupId>ognl</groupId>
+			<artifactId>ognl</artifactId>
+			<version>3.2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>dnsjava</groupId>
@@ -466,9 +477,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>ehcache</groupId>
+			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<version>1.1</version>
+			<version>3.5.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -517,21 +528,14 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>javassist</groupId>
+			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.6.0.GA</version>
-			<scope>compile</scope>
+			<version>3.22.0-GA</version>
 		</dependency>
 		<dependency>
 			<groupId>com.anotherbigidea</groupId>
 			<artifactId>javaswf</artifactId>
 			<version>CVS-SNAPSHOT-1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml</groupId>
-			<artifactId>jaxrpc-api</artifactId>
-			<version>1.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -550,18 +554,17 @@
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>javax.servlet.jsp-api</artifactId>
 			<version>2.3.1</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
+			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>1.1</version>
-			<scope>compile</scope>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -572,31 +575,19 @@
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jzlib</artifactId>
-			<version>1.0.7</version>
+			<version>1.1.3</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.gnu.inet</groupId>
 			<artifactId>libidn</artifactId>
-			<version>0.6.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
+			<version>1.15</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mailapi</artifactId>
-			<version>1.4.2</version>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.6.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -608,19 +599,13 @@
 		<dependency>
 			<groupId>org.mvel</groupId>
 			<artifactId>mvel2</artifactId>
-			<version>2.1.0.drools4</version>
+			<version>2.4.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jdt.core</groupId>
-			<artifactId>org.eclipse.jdt.core</artifactId>
-			<version>3.7.3</version>
+			<version>8.0.11</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -630,27 +615,21 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>poi</groupId>
+			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>2.5.1-final-20040804</version>
+			<version>3.17</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>poi</groupId>
+			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-scratchpad</artifactId>
-			<version>2.5.1-final-20040804</version>
+			<version>3.17</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>quartz</groupId>
+			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>1.5.2</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml</groupId>
-			<artifactId>saaj-api</artifactId>
-			<version>1.2</version>
+			<version>2.3.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -662,8 +641,13 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.5</version>
+			<version>1.7.20</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.20</version>
 		</dependency>
 		<dependency>
 			<groupId>smalltext-0.1.4</groupId>
@@ -752,38 +736,6 @@
 			<artifactId>spring-ldap-core</artifactId>
 			<version>2.3.2.RELEASE</version>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.taglibs</groupId>
-			<artifactId>taglibs-standard-impl</artifactId>
-			<version>1.2.5</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.taglibs</groupId>
-			<artifactId>taglibs-standard-spec</artifactId>
-			<version>1.2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-core</artifactId>
-			<version>2.5.16</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-spring-plugin</artifactId>
-			<version>2.5.16</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-tiles-plugin</artifactId>
-			<version>2.5.16</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.struts</groupId>
-			<artifactId>struts2-tiles3-plugin</artifactId>
-			<version>2.3.34</version>
 		</dependency>
 		<dependency>
 			<groupId>org.archive.wayback</groupId>
