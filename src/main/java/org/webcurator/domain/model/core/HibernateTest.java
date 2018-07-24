@@ -7,11 +7,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "HIBERNATE_TEST")
-@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.core.HibernateTest.getAll", query = "SELECT ht FROM HibernateTest ht")})
+@NamedQueries({@NamedQuery(name = "org.webcurator.domain.model.core.HibernateTest.getAll", query = "SELECT ht FROM HibernateTest ht"),
+               @NamedQuery(name = "org.webcurator.domain.model.core.HibernateTest.maxID", query = "SELECT max(ht.id) FROM HibernateTest ht")})
 public class HibernateTest {
 
     /** Query to retrieve all hibernate test data. */
     public static final String QRY_GET_ALL = "org.webcurator.domain.model.core.HibernateTest.getAll";
+    public static final String QRY_MAX_ID = "org.webcurator.domain.model.core.HibernateTest.maxID";
 
     @Id
     @Column(name = "ID")

@@ -32,6 +32,7 @@
 				<entry key="/curator/logout.html" value="logoutController"/>
 				<entry key="/curator/home.html" value="homeController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
+				<entry key="/curator/hibernate-test-add.html" value="hibernateTestAddController"/>
 			</map>
 		</property>
 	</bean>
@@ -92,6 +93,10 @@
 		<property name="supportedMethods" value="GET,POST"/>
 		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
 	</bean>
-	      
+
+	<bean id="hibernateTestAddController" class="org.webcurator.ui.hibernate.HibernateTestAddController" abstract="false" scope="singleton" lazy-init="default" autowire="default">
+		<property name="supportedMethods" value="POST"/>
+		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
+	</bean>
 </beans>
 

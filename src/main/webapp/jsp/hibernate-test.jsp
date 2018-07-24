@@ -20,4 +20,7 @@
 		</tr>
 	</c:forEach>
 	</table>
+    <form id="addHibernateTestData" name="addHibernateTestData" method="post" action="curator/hibernate-test-add.html">
+        <input type="submit" value="Add Data">
+    </form>
 </div>
