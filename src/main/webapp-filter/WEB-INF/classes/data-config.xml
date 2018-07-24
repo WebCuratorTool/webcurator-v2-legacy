@@ -22,6 +22,7 @@
 				<value>org.webcurator.domain.model.auth.Role</value>
 				<value>org.webcurator.domain.model.auth.RolePrivilege</value>
 				<value>org.webcurator.domain.model.auth.User</value>
+				<value>org.webcurator.domain.model.core.HibernateTest</value>
 				<value>org.webcurator.domain.model.core.AuthorisingAgent</value>
 				<value>org.webcurator.domain.model.core.PermissionExclusion</value>
 				<value>org.webcurator.domain.model.core.Permission</value>

@@ -46,16 +46,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body> 
 <a name="top"></a>
-<tiles:insert attribute="header">
-  <tiles:put name="page-help">
-    <tiles:getAsString name="page-help"/> 
-  </tiles:put>
-</tiles:insert>
-<tiles:insert attribute="page-icon" />
+<c:set var="pageHelpValue" scope="request"><tiles:getAsString name="page-help"/></c:set>
+<tiles:insertAttribute name="header">
+  <tiles:putAttribute name="page-help" type="string"><c:out value="${pageHelpValue}"/></tiles:putAttribute>
+</tiles:insertAttribute>
+<tiles:insertAttribute name="page-icon" />
 <div id="pageBody">
 	<div id="pageContent">
-		<tiles:insert attribute="body" />		
-		<tiles:insert attribute="footer-nav" />		
+		<tiles:insertAttribute name="body" />
+		<tiles:insertAttribute name="footer-nav" />
 	</div>
 </div>
 

@@ -5,7 +5,7 @@
 <%@taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<span class="midtitleGrey">Home</span>
+<span class="midtitleGrey">QA Home</span>
 <div class="homeContainer">
 <a href="curator/hibernate-test.html">Hibernate Test</a>
 </div>

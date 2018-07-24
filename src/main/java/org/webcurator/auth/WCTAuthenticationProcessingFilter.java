@@ -60,14 +60,9 @@ public class WCTAuthenticationProcessingFilter extends UsernamePasswordAuthentic
         User wctUser = authDAO.getUserByName(userName);
         
         if (wctUser != null) {
-	        log.debug("loaded WCT User object "+wctUser.getUsername()+" from database");
+	        log.debug("loaded WCT User object "+wctUser.getUsername()+" from database to update authentication token details");
             UsernamePasswordAuthenticationToken auth = (UsernamePasswordAuthenticationToken)authResult;
             auth.setDetails(wctUser);
-	        log.debug("pushing back upat into SecurityContext with populated WCT User");
-	        SecurityContextHolder.getContext().setAuthentication(auth);
-        
-	        // Get the Spring Application Context.
-			WebApplicationContext ctx = ApplicationContextFactory.getWebApplicationContext();
 
 			// set or re-set the page size cookie..
 			// ..first get the value of the page size cookie
@@ -75,6 +70,12 @@ public class WCTAuthenticationProcessingFilter extends UsernamePasswordAuthentic
 			// ..then refresh the page size cookie, to expire in a year
 			CookieUtils.setPageSize(response, currentPageSize);
 
+			// goto the home page
+            try {
+                super.successfulAuthentication(request, response, chain, authResult);
+            } catch (ServletException e) {
+                log.error(e);
+            }
         }
     }
 
@@ -85,11 +86,6 @@ public class WCTAuthenticationProcessingFilter extends UsernamePasswordAuthentic
         String username = aReq.getParameter("username");
         
     }
-/*
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        return super.attemptAuthentication(request, response);
-    }*/
 
     /**
      * Spring setter.

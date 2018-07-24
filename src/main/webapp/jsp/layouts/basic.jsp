@@ -46,7 +46,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body> 
 <a name="top"></a>
+<c:set var="pageHelpValue" scope="request"><tiles:getAsString name="page-help"/></c:set>
 <tiles:insertAttribute name="header">
+  <tiles:putAttribute name="page-help" type="string"><c:out value="${pageHelpValue}"/></tiles:putAttribute>
 </tiles:insertAttribute>
 <br class="clear" />
 <tiles:insertAttribute name="validation" />

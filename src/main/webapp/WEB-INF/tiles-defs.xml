@@ -4,7 +4,7 @@
 
 <tiles-definitions>
 	<definition name=".header" template="/jsp/layouts/header.jsp">
-		<put-attribute name="page-help" value="Header Help" />
+		<put-attribute name="page-help" value="Header Help" type="string" cascade="true" />
 	</definition>
 
 	<definition name=".generic-object-identifier" template="/jsp/layouts/object-identifier-generic.jsp">
@@ -17,7 +17,7 @@
 		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
 		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Subtabbed Layout Help" />
+		<put-attribute name="page-help" value="Subtabbed Layout Help" type="string" />
 		<put-attribute name="object-identifier" value=".generic-object-identifier" />
 		<put-attribute name="object-name" value="Name" />
 	</definition>
@@ -27,7 +27,7 @@
 		<put-attribute name="header" value=".header" />
 		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Report Layout Help" />
+		<put-attribute name="page-help" value="Report Layout Help" type="string" />
 	</definition>
 
 	<definition name=".mainLayout" template="/jsp/layouts/basic.jsp">
@@ -35,7 +35,7 @@
 		<put-attribute name="header" value=".header" />
 		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Main Layout Help" />
+		<put-attribute name="page-help" value="Main Layout Help" type="string" />
 	</definition>
 
 	<definition name=".popup" template="/jsp/layouts/popup.jsp">
@@ -53,7 +53,7 @@
 		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
 		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Main Layout New Help" />
+		<put-attribute name="page-help" value="Main Layout New Help" type="string" />
 	</definition>
 
 	<definition name=".errorLayout" template="/jsp/layouts/error-template.jsp">
@@ -62,7 +62,7 @@
 		<put-attribute name="page-icon" value="/jsp/layouts/page-icon-error.jsp" />
 		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Error Help" />
+		<put-attribute name="page-help" value="Error Help" type="string" />
 	</definition>
 
 	<definition name=".tabbedNew" template="/jsp/layouts/tabbed-new.jsp">
@@ -72,7 +72,7 @@
 		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
 		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Tabbed Layout Help" />
+		<put-attribute name="page-help" value="Tabbed Layout Help" type="string" />
 	</definition>
 
 	<definition name=".subTabbed" template="/jsp/layouts/sub-tabbed.jsp">
@@ -81,57 +81,50 @@
 		<put-attribute name="validation" value="/jsp/layouts/validation-messages.jsp" />
 		<put-attribute name="footer-nav" value="/jsp/layouts/footer-nav.jsp" />
 		<put-attribute name="footer" value="/jsp/layouts/footer.jsp" />
-		<put-attribute name="page-help" value="Subtabbed Layout Help" />
+		<put-attribute name="page-help" value="Subtabbed Layout Help" type="string" />
 	</definition>
 
 	<definition name="Error" extends=".errorLayout">
 		<put-attribute name="title" value="Error" />
 		<put-attribute name="body" value="/jsp/layouts/Error.jsp" />
-		<put-attribute name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 
 	<definition name="max-file-size-exceeeded" extends=".errorLayout">
 		<put-attribute name="title" value="Maximum File Upload Size Exceeeded" />
 		<put-attribute name="body" value="/jsp/max-file-size-exceeeded.jsp" />
-		<put-attribute name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 	<definition name="NoObjectFound" extends=".errorLayout">
 		<put-attribute name="title" value="Object Not Found" />
 		<put-attribute name="body" value="/jsp/no-object-found.jsp" />
-		<put-attribute name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 	<definition name="HomeView" extends=".mainLayout">
 		<put-attribute name="title" value="WEB CURATOR TOOL" />
 		<put-attribute name="body" value="/jsp/home.jsp" />
-		<put-attribute name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 	<definition name="HibernateTestView" extends=".mainLayout">
 		<put-attribute name="title" value="Hibernate Test" />
 		<put-attribute name="body" value="/jsp/hibernate-test.jsp" />
-		<put-attribute name="page-help"
-			 value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 	<definition name="QaHomeView" extends=".mainLayout">
 		<put-attribute name="title" value="WEB CURATOR TOOL" />
 		<put-attribute name="body" value="/jsp/qa-home.jsp" />
-		<put-attribute name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 	<definition name="authorisation-failure" extends=".mainLayout">
 		<put-attribute name="title" value="Authorisation Failure" />
 		<put-attribute name="body" value="/jsp/authorisation-failure.jsp" />
-		<put-attribute name="page-help"
-			value="http://dia-nz.github.io/webcurator/" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
 	<definition name="Logout" template="/jsp/logout.jsp" />

@@ -27,6 +27,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.webcurator.core.exceptions.WCTRuntimeException;
@@ -36,6 +37,7 @@ import org.webcurator.core.exceptions.WCTRuntimeException;
  * @author bbeaumont
  */
 @Repository
+@Transactional
 public class BaseDAOImpl implements BaseDAO {
 	private Log log = LogFactory.getLog(BaseDAOImpl.class);
 

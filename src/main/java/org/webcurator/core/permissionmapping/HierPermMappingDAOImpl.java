@@ -30,6 +30,7 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.webcurator.domain.model.core.Site;
@@ -42,6 +43,7 @@ import org.webcurator.domain.model.core.Site;
  *
  */
 @Repository
+@Transactional
 public class HierPermMappingDAOImpl implements HierPermMappingDAO {
 	/** The logger for this class */
 	private final static Log log = LogFactory.getLog(HierPermMappingDAOImpl.class);

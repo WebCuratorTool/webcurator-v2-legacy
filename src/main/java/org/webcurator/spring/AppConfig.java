@@ -18,7 +18,8 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScans(value = {@ComponentScan("org.webcurator.domain")})
+@ComponentScans(value = {@ComponentScan("org.webcurator.domain"),
+                         @ComponentScan("org.webcurator.core.permissionmapping")})
 public class AppConfig implements TransactionManagementConfigurer {
     private Log log = LogFactory.getLog(AppConfig.class);
 
