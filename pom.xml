@@ -797,6 +797,11 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring-ws.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.archive.wayback</groupId>
 			<artifactId>wayback-core</artifactId>
 			<version>1.2.0</version>
