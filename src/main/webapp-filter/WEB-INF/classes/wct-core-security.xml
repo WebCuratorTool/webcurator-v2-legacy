@@ -91,18 +91,9 @@
 	
 	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
   		<property name="userDetailsService"><ref bean="jdbcDaoImpl"/></property>
-<!--
-  		<property name="saltSource"><ref bean="saltSource"/></property>
--->
   		<property name="passwordEncoder"><ref bean="passwordEncoder"/></property>
 	</bean>
 	
-<!--
-	<bean id="saltSource" class="org.acegisecurity.providers.dao.salt.SystemWideSaltSource">
-		<property name="systemWideSalt"><value>Rand0mS4lt</value></property>
-	</bean>
--->
-
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 	</bean>
 

@@ -35,7 +35,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.MappingSqlQuery;
 
 /**
- * This authentication provider is used by the Acegi security framework to log a user in 
+ * This authentication provider is used by the Spring security framework to log a user in
  * by checking the provided username and credential against the WCT core database.
  * If the user is authenticated then the users granted authorities are also loaded from the 
  * WCT database.

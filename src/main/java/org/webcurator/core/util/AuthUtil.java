@@ -29,7 +29,7 @@ public class AuthUtil {
     private static User user;
 
 	/**
-     * obtains the logged in Username as populated by the acegi security framework
+     * obtains the logged in Username as populated by the Spring security framework
      * @return the logged in username
      */
     public static String getRemoteUser() {

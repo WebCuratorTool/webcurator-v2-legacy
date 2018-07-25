@@ -55,12 +55,12 @@ public class SpringSecurityLogoutListener implements HttpSessionListener {
         
 		// We need to get the authentication context out of the 
         // event, as it doesn't necessarily exist through the
-        // standard Acegi tools.
+        // standard Spring tools.
         String remoteUser = null;
         Authentication auth = null;        
-        SecurityContext acegiCtx = (SecurityContext) event.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-        if( acegiCtx != null) {
-            auth = acegiCtx.getAuthentication();
+        SecurityContext springCtx = (SecurityContext) event.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+        if( springCtx != null) {
+            auth = springCtx.getAuthentication();
             if (auth != null) {
                 remoteUser = auth.getName();
             }

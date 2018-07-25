@@ -36,7 +36,7 @@ import org.webcurator.domain.model.auth.User;
 import org.webcurator.ui.common.Constants;
 
 /**
- * This filter is used by the Acegi security framework.  
+ * This filter is used by the Spring security framework.
  * The filter checks that the users password has expired or 
  * must be changed and redirects the user to the password
  * change view if nessacary.
