@@ -17,8 +17,8 @@ package org.webcurator.domain;
 
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ import org.webcurator.core.exceptions.WCTRuntimeException;
 @Repository
 @Transactional
 public class BaseDAOImpl implements BaseDAO {
-	private Log log = LogFactory.getLog(BaseDAOImpl.class);
+	private Logger log = LogManager.getLogger(BaseDAOImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;

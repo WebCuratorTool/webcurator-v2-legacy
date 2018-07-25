@@ -1,7 +1,7 @@
 package org.webcurator.spring;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 @ComponentScans(value = {@ComponentScan("org.webcurator.domain"),
                          @ComponentScan("org.webcurator.core.permissionmapping")})
 public class AppConfig implements TransactionManagementConfigurer {
-    private Log log = LogFactory.getLog(AppConfig.class);
+    private Logger log = LogManager.getLogger(AppConfig.class);
 
     @Autowired
     private DataSource dataSource;

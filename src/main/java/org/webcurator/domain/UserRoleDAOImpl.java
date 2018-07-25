@@ -17,8 +17,8 @@ package org.webcurator.domain;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -49,7 +49,7 @@ import org.webcurator.domain.model.dto.UserDTO;
 @Transactional
 public class UserRoleDAOImpl implements UserRoleDAO {
     
-    private Log log = LogFactory.getLog(UserRoleDAOImpl.class);
+    private Logger log = LogManager.getLogger(UserRoleDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;

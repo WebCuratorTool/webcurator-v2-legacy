@@ -10,6 +10,7 @@
 	<properties>
 		<spring.version>5.0.7.RELEASE</spring.version>
 		<spring-security.version>5.0.6.RELEASE</spring-security.version>
+		<spring-ws.version>3.0.1.RELEASE</spring-ws.version>
 		<hibernate.version>5.3.2.Final</hibernate.version>
 		<powermock.version>1.5.1</powermock.version>
 		<browse.double_escape>false</browse.double_escape>
@@ -152,6 +153,28 @@
 						<version>2.5.0</version>
 					</dependency>
                 </dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.14.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<strict>false</strict>
+					<schemaLanguage>WSDL</schemaLanguage>
+					<generatePackage>org.webcurator.ws</generatePackage>
+					<schemaDirectory>src/main/resources/wsdl</schemaDirectory>
+					<schemaIncludes>
+						<include>*.wsdl</include>
+					</schemaIncludes>
+					<catalog>src/main/resources/wsdl/catalog.cat</catalog>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -391,6 +414,16 @@
 			<version>2.11.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-core</artifactId>
 			<version>3.0.8</version>
@@ -454,26 +487,19 @@
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
-			<version>5.3.0.Final</version>
+			<version>7.8.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-core</artifactId>
-			<version>5.3.0.Final</version>
+			<version>7.8.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-decisiontables</artifactId>
-			<version>5.3.0.Final</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>droolsjbpm-knowledge</artifactId>
-			<version>5.4.0.Final</version>
-			<type>pom</type>
+			<version>7.8.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -638,16 +664,19 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.20</version>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.25</version>
 			<scope>compile</scope>
 		</dependency>
+-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.20</version>
+			<version>1.7.25</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>smalltext-0.1.4</groupId>
@@ -735,6 +764,36 @@
 			<groupId>org.springframework.ldap</groupId>
 			<artifactId>spring-ldap-core</artifactId>
 			<version>2.3.2.RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-core</artifactId>
+			<version>${spring-ws.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-security</artifactId>
+			<version>${spring-ws.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-support</artifactId>
+			<version>${spring-ws.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-ws-test</artifactId>
+			<version>${spring-ws.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ws</groupId>
+			<artifactId>spring-xml</artifactId>
+			<version>${spring-ws.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

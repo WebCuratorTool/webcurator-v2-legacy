@@ -28,10 +28,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.webcurator.domain.model.auth.User;
 import org.webcurator.ui.common.Constants;
 
@@ -45,12 +45,12 @@ import org.webcurator.ui.common.Constants;
 public class WCTForcePasswordChange implements Filter {
 
     /** Logger. */
-    private Log log;
+    private Logger log;
 
     /** Default Constructor. */
     public WCTForcePasswordChange() {
         super();
-        log = LogFactory.getLog(WCTForcePasswordChange.class);
+        log = LogManager.getLogger(WCTForcePasswordChange.class);
     }
 
     /** @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain) */
