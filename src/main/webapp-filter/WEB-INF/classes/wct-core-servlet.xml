@@ -33,7 +33,7 @@
 				<entry key="/curator/home.html" value="homeController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 				<entry key="/curator/hibernate-test-add.html" value="hibernateTestAddController"/>
-				<entry key="/curator/harvest-agent-soap-client.html" value="harvestAgentSOAPClientController"/>
+				<entry key="/curator/ws-test.html" value="harvestAgentSOAPClientController"/>
 			</map>
 		</property>
 	</bean>
@@ -101,7 +101,7 @@
 	</bean>
 
 	<bean id="harvestAgentSOAPClientController" class="org.webcurator.ui.hibernate.HarvestAgentSOAPClientController" abstract="false" scope="singleton" lazy-init="default" autowire="default">
-		<property name="supportedMethods" value="POST"/>
+		<property name="supportedMethods" value="GET,POST"/>
 		<property name="harvestAgentSOAPClient" ref="harvestAgentSOAPClient"/>
 	</bean>
 

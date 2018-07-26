@@ -115,6 +115,12 @@
 		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
 	</definition>
 
+	<definition name="WSTestView" extends=".mainLayout">
+		<put-attribute name="title" value="WS Test" />
+		<put-attribute name="body" value="/jsp/ws-test.jsp" />
+		<put-attribute name="page-help" value="http://dia-nz.github.io/webcurator/" type="string" />
+	</definition>
+
 	<definition name="QaHomeView" extends=".mainLayout">
 		<put-attribute name="title" value="WEB CURATOR TOOL" />
 		<put-attribute name="body" value="/jsp/qa-home.jsp" />

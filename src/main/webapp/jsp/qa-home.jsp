@@ -7,5 +7,6 @@
 
 <span class="midtitleGrey">QA Home</span>
 <div class="homeContainer">
-<a href="curator/hibernate-test.html">Hibernate Test</a>
+<a href="curator/hibernate-test.html">Hibernate Test</a><p/>
+<a href="curator/ws-test.html">WS Test</a>
 </div>

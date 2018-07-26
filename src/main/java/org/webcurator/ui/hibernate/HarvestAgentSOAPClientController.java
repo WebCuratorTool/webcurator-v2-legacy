@@ -28,7 +28,7 @@ public class HarvestAgentSOAPClientController extends AbstractController {
         // update model
         ModelAndView mav = new ModelAndView();
         mav.addObject("harvestAgentStatusDTO", harvestAgentStatusDTO);
-        mav.setViewName("HibernateTestView");
+        mav.setViewName("WSTestView");
         return mav;
     }
 
