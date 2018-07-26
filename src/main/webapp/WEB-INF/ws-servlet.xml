@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-autowire="no" default-lazy-init="false" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--     PayloadRootAnnotationMethodEndpointMapping is the Mapping that             detects and handles the @PayloadRoot Annotation -->
+    <bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+        <property name="interceptors">
+            <list>
+                <bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="harvestAgentEndpoint" class="org.webcurator.soap.service.HarvestAgentEndpoint">
+    </bean>
+
+    <bean id="harvestAgentWsdl" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+        <property name="schema" ref="harvestAgentSchema"/>
+        <property name="portTypeName" value="HarvestAgentPort"/>
+        <property name="locationUri" value="/service/harvest-agent" />
+        <property name="targetNamespace" value="http://webcurator.org/xml/harvestagent"/>
+    </bean>
+
+    <bean id="harvestAgentSchema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+        <property name="xsd" value="/WEB-INF/classes/schemas/harvestAgent.xsd"/>
+    </bean>
+
+</beans>

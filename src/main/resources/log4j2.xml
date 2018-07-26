@@ -22,19 +22,22 @@
         <Logger name="org.webcurator" level="${log4j.level}">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Logger name="org.hibernate" level="WARN">
+        <Logger name="org.hibernate" level="warn">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Logger name="org.springframework" level="WARN">
+        <Logger name="org.springframework" level="warn">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Logger name="org.springframework.security" level="WARN">
+        <Logger name="org.springframework.security" level="warn">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Logger name="org.springframework.web.servlet" level="FATAL">
+        <Logger name="org.springframework.web.servlet" level="fatal">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Logger name="org.apache.tiles" level="WARN">
+        <Logger name="org.springframework.ws" level="debug">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Logger name="org.apache.tiles" level="warn">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
         <Root level="debug">

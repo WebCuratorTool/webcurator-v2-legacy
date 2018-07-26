@@ -168,12 +168,30 @@
 				<configuration>
 					<strict>false</strict>
 					<schemaLanguage>WSDL</schemaLanguage>
-					<generatePackage>org.webcurator.ws</generatePackage>
+					<generatePackage>org.webcurator.wsclient</generatePackage>
 					<schemaDirectory>src/main/resources/wsdl</schemaDirectory>
 					<schemaIncludes>
 						<include>*.wsdl</include>
 					</schemaIncludes>
 					<catalog>src/main/resources/wsdl/catalog.cat</catalog>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<schemaDirectory>src/main/resources/schemas</schemaDirectory>
+					<outputDirectory>src/main/java</outputDirectory>
+					<clearOutputDir>false</clearOutputDir>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -800,6 +818,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
 			<version>${spring-ws.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+			<version>2.0.3.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.archive.wayback</groupId>

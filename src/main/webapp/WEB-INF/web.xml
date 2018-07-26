@@ -61,7 +61,20 @@
 	<listener>
 		<listener-class>org.webcurator.ui.listener.SpringSecurityLogoutListener</listener-class>
 	</listener>
-	
+
+	<servlet>
+		<servlet-name>ws</servlet-name>
+		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>transformWsdlLocations</param-name>
+            <param-value>true</param-value>
+        </init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ws</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>SchedulerServlet</servlet-name>
 		<servlet-class>org.webcurator.core.common.StartupServlet</servlet-class>

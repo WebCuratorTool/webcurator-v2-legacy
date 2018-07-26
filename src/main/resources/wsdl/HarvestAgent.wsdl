@@ -1,0 +1,56 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://webcurator.org/xml/harvestagent" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webcurator.org/xml/harvestagent" targetNamespace="http://webcurator.org/xml/harvestagent">
+    <wsdl:types xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://webcurator.org/xml/harvestagent" elementFormDefault="qualified" targetNamespace="http://webcurator.org/xml/harvestagent">
+            <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="HarvestAgentStatusRequest">
+                <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                        <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="jobNumber" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="HarvestAgentStatusResponse">
+                <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                        <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="HarvestAgentStatus" type="tns:HarvestAgentStatus"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType xmlns:xs="http://www.w3.org/2001/XMLSchema" name="HarvestAgentStatus">
+                <xs:sequence xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                    <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="jobNumber" type="xs:string"/>
+                    <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="status" type="xs:int"/>
+                    <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentStatusRequest">
+        <wsdl:part xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" element="tns:HarvestAgentStatusRequest" name="HarvestAgentStatusRequest"/>
+    </wsdl:message>
+    <wsdl:message xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentStatusResponse">
+        <wsdl:part xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" element="tns:HarvestAgentStatusResponse" name="HarvestAgentStatusResponse"/>
+    </wsdl:message>
+    <wsdl:portType xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentPort">
+        <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentStatus">
+            <wsdl:input xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" message="tns:HarvestAgentStatusRequest" name="HarvestAgentStatusRequest"/>
+            <wsdl:output xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" message="tns:HarvestAgentStatusResponse" name="HarvestAgentStatusResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentPortSoap11" type="tns:HarvestAgentPort">
+        <soap:binding xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentStatus">
+            <soap:operation xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" soapAction=""/>
+            <wsdl:input xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentStatusRequest">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentStatusResponse">
+                <soap:body xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="HarvestAgentPortService">
+        <wsdl:port xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" binding="tns:HarvestAgentPortSoap11" name="HarvestAgentPortSoap11">
+            <soap:address xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" location="http://localhost:8080/wct/service/harvest-agent"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
