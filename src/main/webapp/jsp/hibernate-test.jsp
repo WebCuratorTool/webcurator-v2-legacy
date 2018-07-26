@@ -20,7 +20,28 @@
 		</tr>
 	</c:forEach>
 	</table>
-    <form id="addHibernateTestData" name="addHibernateTestData" method="post" action="curator/hibernate-test-add.html">
-        <input type="submit" value="Add Data">
+    <form id="addHibernateTestDataForm" name="addHibernateTestDataForm" method="post" action="curator/hibernate-test-add.html">
+        <input type="submit" value="Add Data"/>
+    </form><p/>
+    <form id="harvestAgentSOAPClientForm" name="harvestAgentSOAPClientForm" method="post" action="curator/harvest-agent-soap-client.html">
+        <table>
+            <tr>
+                <td>Job Number:</td>
+                <td><input type="text" name="jobNumber" id="jobNumber"/></td>
+            </tr>
+            <tr>
+                <td>Job Number in response:</td>
+                <td><c:out value="${harvestAgentStatusDTO.jobNumber}"/></td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td><c:out value="${harvestAgentStatusDTO.status}"/></td>
+            </tr>
+            <tr>
+                <td>Message:</td>
+                <td><c:out value="${harvestAgentStatusDTO.message}"/></td>
+            </tr>
+        </table>
+        <input type="submit" value="Test WS"/>
     </form>
 </div>

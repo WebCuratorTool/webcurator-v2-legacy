@@ -33,6 +33,7 @@
 				<entry key="/curator/home.html" value="homeController"/>
 				<entry key="/curator/hibernate-test.html" value="hibernateTestController"/>
 				<entry key="/curator/hibernate-test-add.html" value="hibernateTestAddController"/>
+				<entry key="/curator/harvest-agent-soap-client.html" value="harvestAgentSOAPClientController"/>
 			</map>
 		</property>
 	</bean>
@@ -98,5 +99,26 @@
 		<property name="supportedMethods" value="POST"/>
 		<property name="hibernateTestDAO" ref="hibernateTestDao"/>
 	</bean>
+
+	<bean id="harvestAgentSOAPClientController" class="org.webcurator.ui.hibernate.HarvestAgentSOAPClientController" abstract="false" scope="singleton" lazy-init="default" autowire="default">
+		<property name="supportedMethods" value="POST"/>
+		<property name="harvestAgentSOAPClient" ref="harvestAgentSOAPClient"/>
+	</bean>
+
+	<bean id="harvestAgentJAXBMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<!-- this is the package name specified in the <generatePackage> in the pom.xml -->
+		<property name="contextPath" value="org.webcurator.wsclient"/>
+	</bean>
+
+	<bean id="harvestAgentSOAPConnector" class="org.webcurator.soap.client.SOAPConnector">
+		<property name="defaultUri" value="http://localhost:8080/wct/service/harvest-agent"/>
+		<property name="marshaller" ref="harvestAgentJAXBMarshaller"/>
+		<property name="unmarshaller" ref="harvestAgentJAXBMarshaller"/>
+	</bean>
+
+	<bean id="harvestAgentSOAPClient" class="org.webcurator.soap.client.HarvestAgentSOAPClient">
+		<property name="soapConnector" ref="harvestAgentSOAPConnector"/>
+	</bean>
+
 </beans>
 

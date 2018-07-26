@@ -173,7 +173,6 @@
 					<schemaIncludes>
 						<include>*.wsdl</include>
 					</schemaIncludes>
-					<catalog>src/main/resources/wsdl/catalog.cat</catalog>
 				</configuration>
 			</plugin>
 			<plugin>
