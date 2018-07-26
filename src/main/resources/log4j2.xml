@@ -34,13 +34,16 @@
         <Logger name="org.springframework.web.servlet" level="fatal">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Logger name="org.springframework.ws" level="debug">
+        <Logger name="org.springframework.ws" level="warn">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
         <Logger name="org.apache.tiles" level="warn">
             <AppenderRef ref="GeneralLog"/>
         </Logger>
-        <Root level="debug">
+        <Logger name="org.apache.commons" level="warn">
+            <AppenderRef ref="GeneralLog"/>
+        </Logger>
+        <Root level="warn">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>

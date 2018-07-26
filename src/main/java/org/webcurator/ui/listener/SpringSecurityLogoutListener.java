@@ -18,8 +18,8 @@ package org.webcurator.ui.listener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +33,7 @@ import org.webcurator.core.util.LockManager;
  */
 public class SpringSecurityLogoutListener implements HttpSessionListener {
 	/** Logger for the BrowseController. **/
-	private static Logger log = LogManager.getLogger(SpringSecurityLogoutListener.class);
+	private static Log log = LogFactory.getLog(SpringSecurityLogoutListener.class);
 
 	/** The LockManager **/
 	LockManager lockManager = null;

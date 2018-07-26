@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.webcurator.core.exceptions.NoPrivilegeException;
 import org.webcurator.core.exceptions.WCTRuntimeException;
 import org.webcurator.core.util.AuthUtil;
@@ -37,10 +37,10 @@ import org.webcurator.domain.model.auth.User;
  */
 public class AuthorityManagerImpl implements AuthorityManager {
 
-    private Logger log = null;
+    private Log log = null;
     
     public AuthorityManagerImpl() {
-        log = LogManager.getLogger(AuthorityManagerImpl.class);
+        log = LogFactory.getLog(AuthorityManagerImpl.class);
     }
 
     public boolean hasPrivilege(String privilege, int scope) {

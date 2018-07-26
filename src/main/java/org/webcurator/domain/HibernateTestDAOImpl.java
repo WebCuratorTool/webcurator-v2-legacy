@@ -1,7 +1,7 @@
 package org.webcurator.domain;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class HibernateTestDAOImpl extends BaseDAOImpl implements HibernateTestDAO {
-    private Logger log = LogManager.getLogger(HibernateTestDAOImpl.class);
+    private static Log log = LogFactory.getLog(HibernateTestDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;

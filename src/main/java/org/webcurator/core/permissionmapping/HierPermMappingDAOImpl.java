@@ -18,8 +18,8 @@ package org.webcurator.core.permissionmapping;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -46,7 +46,7 @@ import org.webcurator.domain.model.core.Site;
 @Transactional
 public class HierPermMappingDAOImpl implements HierPermMappingDAO {
 	/** The logger for this class */
-	private final static Logger log = LogManager.getLogger(HierPermMappingDAOImpl.class);
+	private final static Log log = LogFactory.getLog(HierPermMappingDAOImpl.class);
 
 	@Autowired
 	private SessionFactory sessionFactory;

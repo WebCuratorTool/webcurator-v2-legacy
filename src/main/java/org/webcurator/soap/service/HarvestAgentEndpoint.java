@@ -1,7 +1,7 @@
 package org.webcurator.soap.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -12,7 +12,7 @@ import org.webcurator.xml.harvestagent.HarvestAgentStatusResponse;
 
 @Endpoint
 public class HarvestAgentEndpoint {
-    private static Logger log = LogManager.getLogger(HarvestAgentEndpoint.class);
+    private static Log log = LogFactory.getLog(HarvestAgentEndpoint.class);
     public static final String NAMESPACE_URI = "http://webcurator.org/xml/harvestagent";
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "HarvestAgentStatusRequest")
