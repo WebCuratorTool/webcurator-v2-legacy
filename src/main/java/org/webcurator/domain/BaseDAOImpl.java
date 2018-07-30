@@ -36,7 +36,7 @@ import java.util.Collection;
 public class BaseDAOImpl extends HibernateDaoSupport implements BaseDAO {
 	private static Log log = LogFactory.getLog(BaseDAOImpl.class);
 
-	private TransactionTemplate txTemplate;
+	protected TransactionTemplate txTemplate;
 	
 	public void evict(Object anObject) {
 		getHibernateTemplate().evict(anObject);
