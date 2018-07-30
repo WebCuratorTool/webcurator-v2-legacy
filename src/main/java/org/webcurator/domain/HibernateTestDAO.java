@@ -4,7 +4,7 @@ import org.webcurator.domain.model.core.HibernateTest;
 
 import java.util.List;
 
-public interface HibernateTestDAO extends BaseDAO {
+public interface HibernateTestDAO {
 
     public List<HibernateTest> getAll();
 

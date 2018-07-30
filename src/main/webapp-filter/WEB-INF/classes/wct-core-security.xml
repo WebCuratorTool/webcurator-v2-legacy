@@ -10,9 +10,6 @@
     http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<context:component-scan base-package="org.webcurator.spring" />
-	<context:annotation-config />
-
 	<import resource="security-userdn-list.xml"/>
    <!-- ======================== FILTER CHAIN ======================= -->
 
