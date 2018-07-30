@@ -178,7 +178,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>1.6</version>
+				<version>2.1</version>
 				<executions>
 					<execution>
 						<id>xjc</id>
@@ -188,9 +188,14 @@
 					</execution>
 				</executions>
 				<configuration>
-					<schemaDirectory>src/main/resources/schemas</schemaDirectory>
+					<!--<schemaDirectory>src/main/resources/schemas</schemaDirectory>-->
 					<outputDirectory>src/main/java</outputDirectory>
 					<clearOutputDir>false</clearOutputDir>
+					<sources>
+						<source>src/main/resources/schemas</source>
+					</sources>
+					<noGeneratedHeaderComments>true</noGeneratedHeaderComments>
+					<generateEpisode>false</generateEpisode>
 				</configuration>
 			</plugin>
 		</plugins>
