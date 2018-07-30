@@ -38,17 +38,13 @@ import org.webcurator.core.exceptions.WCTRuntimeException;
  */
 @Repository
 @Transactional
-public class BaseDAOImpl implements BaseDAO {
+public class BaseDAOImpl extends HibernateDaoSupport implements BaseDAO {
 	private static Log log = LogFactory.getLog(BaseDAOImpl.class);
 
-	@Autowired
-	private SessionFactory sessionFactory;
-
-	@Autowired
-	private HibernateTemplate transactionTemplate;
+	private TransactionTemplate txTemplate;
 	
 	public void evict(Object anObject) {
-		transactionTemplate.evict(anObject);
+		getHibernateTemplate().evict(anObject);
 	}
 	
 	/**
@@ -56,17 +52,17 @@ public class BaseDAOImpl implements BaseDAO {
 	 * @param anObject The object to remove.
 	 */	
 	public void delete(final Object anObject) {
-		transactionTemplate.execute(
-				new HibernateCallback() {
-					public Object doInHibernate(Session session) {
+		txTemplate.execute(
+				new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus ts) {
 						try { 
 							log.debug("Before Delete");
-							session.delete(anObject);
+							currentSession().delete(anObject);
 							log.debug("After Delete");
 						}
 						catch(Exception ex) {
 							log.error("Setting Rollback Only", ex);
-							session.getTransaction().setRollbackOnly();
+							ts.setRollbackOnly();
 							throw new WCTRuntimeException("Failed to delete object", ex);
 						}
 						return null;
@@ -80,19 +76,19 @@ public class BaseDAOImpl implements BaseDAO {
 	 * @param aCollection The collection of objects to remove.
 	 */
 	public void deleteAll(final Collection aCollection) {
-		transactionTemplate.execute(
-				new HibernateCallback() {
-					public Object doInHibernate(Session session) {
+		txTemplate.execute(
+				new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus ts) {
 						try { 
 							log.debug("Before Delete");
 							for(Object anObject: aCollection) {
-								session.delete(anObject);
+								currentSession().delete(anObject);
 							}
 							log.debug("After Delete");
 						}
 						catch(Exception ex) {
 							log.error("Setting Rollback Only", ex);
-							session.getTransaction().setRollbackOnly();
+							ts.setRollbackOnly();
 						}
 						return null;
 					}
@@ -101,7 +97,7 @@ public class BaseDAOImpl implements BaseDAO {
 	}	
 
 	public void initialize(Object anObject) {
-		transactionTemplate.initialize(anObject);
+		getHibernateTemplate().initialize(anObject);
 	}
 	
 }
