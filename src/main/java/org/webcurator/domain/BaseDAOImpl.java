@@ -38,6 +38,10 @@ public class BaseDAOImpl extends HibernateDaoSupport implements BaseDAO {
 
 	protected TransactionTemplate txTemplate;
 	
+	public void setTxTemplate(TransactionTemplate txTemplate) {
+		this.txTemplate = txTemplate;
+	}
+
 	public void evict(Object anObject) {
 		getHibernateTemplate().evict(anObject);
 	}
