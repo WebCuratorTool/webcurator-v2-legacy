@@ -53,18 +53,18 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler implements Appli
 		// Use the command object to update the profile.
 		ImportedHeritrix3ProfileCommand command = (ImportedHeritrix3ProfileCommand) comm;
 
-		Profile profile = (Profile)req.getSession().getAttribute("profile");
+		Heritrix3Profile heritrix3Profile = (Heritrix3Profile) req.getSession().getAttribute("heritrixProfile");
+		Profile profile = (Profile) req.getSession().getAttribute("profile");
 
 		// Validate the profile before saving
 		HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
 		String rawProfile = command.getRawProfile();
 		if (!harvestAgent.isValidProfile(rawProfile)) {
-			Object[] vals = new Object[]{rawProfile};
+			Object[] vals = new Object[]{profile.getName()};
+			// This error will be caught at save time
 			errors.reject("profile.invalid", vals, "The profile is invalid.");
-		} else {
-			Heritrix3Profile heritrix3Profile = (Heritrix3Profile) req.getSession().getAttribute("heritrixProfile");
-			heritrix3Profile.setProfileXml(rawProfile);
 		}
+		heritrix3Profile.setProfileXml(rawProfile);
 	}
 
 
@@ -81,10 +81,13 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler implements Appli
 		Profile profile = (Profile)req.getSession().getAttribute("profile");
 		ImportedHeritrix3ProfileCommand command = new ImportedHeritrix3ProfileCommand();
 		command.setRawProfile(heritrix3Profile.getProfileXml());
-		profile.setProfile(heritrix3Profile.getProfileXml());
 
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
+
+		if (errors.hasErrors()) {
+			tmav.addObject(Constants.GBL_ERRORS, errors);
+		}
 
 		return tmav;
 	}

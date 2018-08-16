@@ -62,6 +62,9 @@ public class ProfileGeneralHandler extends TabHandler {
 		GeneralCommand command = GeneralCommand.buildFromModel(profile);
 		
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
+		if (errors.hasErrors()) {
+			tmav.addObject(Constants.GBL_ERRORS, errors);
+		}
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
 		
 		return tmav;
