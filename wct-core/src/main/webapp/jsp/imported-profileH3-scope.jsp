@@ -14,6 +14,7 @@
 
 
 <table cellpadding="3" cellspacing="0" border="0">
+<input type="hidden" name="profileName" value="${command.profileName}"/>
 <textarea id="rawProfile" name="rawProfile">
 <c:out value="${command.rawProfile}"/>
 </textarea>

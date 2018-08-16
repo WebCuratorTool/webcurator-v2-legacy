@@ -1513,11 +1513,9 @@
 					<property name="title" value="scope" />
 					<property name="jsp" value="../imported-profileH3-scope.jsp" />
 					<property name="commandClass" value="org.webcurator.ui.profiles.command.ImportedHeritrix3ProfileCommand"/>
-					<!--
 					<property name="validator">
-						<bean class="org.webcurator.ui.profiles.validator.Heritrix3ProfileValidator" />
+						<bean class="org.webcurator.ui.profiles.validator.ImportedHeritrix3ProfileValidator" />
 					</property>
-					-->
 					<property name="tabHandler">
 						<bean class="org.webcurator.ui.profiles.controller.ImportedHeritrix3ProfileHandler"/>
 					</property>

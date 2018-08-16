@@ -15,16 +15,12 @@
  */
 package org.webcurator.ui.profiles.controller;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
-import org.webcurator.core.harvester.agent.HarvestAgent;
 import org.webcurator.core.profiles.Heritrix3Profile;
 import org.webcurator.domain.model.core.Profile;
 import org.webcurator.ui.common.Constants;
 import org.webcurator.ui.profiles.command.ImportedHeritrix3ProfileCommand;
-import org.webcurator.ui.util.HarvestAgentUtil;
 import org.webcurator.ui.util.Tab;
 import org.webcurator.ui.util.TabHandler;
 import org.webcurator.ui.util.TabbedController;
@@ -38,9 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author bbeaumont
  *
  */
-public class ImportedHeritrix3ProfileHandler extends TabHandler implements ApplicationContextAware {
-
-	ApplicationContext applicationContext;
+public class ImportedHeritrix3ProfileHandler extends TabHandler {
 
 	/* (non-Javadoc)
 	 * @see org.webcurator.ui.util.TabHandler#processTab(org.webcurator.ui.util.TabbedController, org.webcurator.ui.util.Tab, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
@@ -52,19 +46,8 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler implements Appli
 		
 		// Use the command object to update the profile.
 		ImportedHeritrix3ProfileCommand command = (ImportedHeritrix3ProfileCommand) comm;
-
 		Heritrix3Profile heritrix3Profile = (Heritrix3Profile) req.getSession().getAttribute("heritrixProfile");
-		Profile profile = (Profile) req.getSession().getAttribute("profile");
-
-		// Validate the profile before saving
-		HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
-		String rawProfile = command.getRawProfile();
-		if (!harvestAgent.isValidProfile(rawProfile)) {
-			Object[] vals = new Object[]{profile.getName()};
-			// This error will be caught at save time
-			errors.reject("profile.invalid", vals, "The profile is invalid.");
-		}
-		heritrix3Profile.setProfileXml(rawProfile);
+		heritrix3Profile.setProfileXml(command.getRawProfile());
 	}
 
 
@@ -78,16 +61,13 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler implements Appli
 
 		// Create the command object
 		Heritrix3Profile heritrix3Profile = (Heritrix3Profile)req.getSession().getAttribute("heritrixProfile");
-		Profile profile = (Profile)req.getSession().getAttribute("profile");
+		Profile profile = (Profile) req.getSession().getAttribute("profile");
 		ImportedHeritrix3ProfileCommand command = new ImportedHeritrix3ProfileCommand();
 		command.setRawProfile(heritrix3Profile.getProfileXml());
+		command.setProfileName(profile.getName());
 
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
-
-		if (errors.hasErrors()) {
-			tmav.addObject(Constants.GBL_ERRORS, errors);
-		}
 
 		return tmav;
 	}
@@ -103,12 +83,4 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler implements Appli
 		return null;
 	}
 
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
 }

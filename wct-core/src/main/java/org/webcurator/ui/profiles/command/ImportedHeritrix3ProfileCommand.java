@@ -23,6 +23,7 @@ package org.webcurator.ui.profiles.command;
 public class ImportedHeritrix3ProfileCommand {
 
     String profile;
+    String profileName;
 
 
 	public String getRawProfile() {
@@ -33,4 +34,11 @@ public class ImportedHeritrix3ProfileCommand {
 		this.profile = profile;
 	}
 
+	public String getProfileName() {
+		return profileName;
+	}
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
+	}
 }
