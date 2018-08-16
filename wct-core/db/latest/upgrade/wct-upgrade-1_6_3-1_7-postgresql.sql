@@ -34,6 +34,6 @@ alter table DB_WCT.PO_H3_INCLUDE_URL add constraint PIU_FK_1 foreign key (PIU_PR
 GRANT SELECT, INSERT, UPDATE, DELETE ON DB_WCT.PO_H3_BLOCK_URL TO USR_WCT;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DB_WCT.PO_H3_INCLUDE_URL TO USR_WCT;
 
-alter table DB_WCT.PROFILE add column IMPORTED bool not null default false;
+alter table DB_WCT.PROFILE add column P_IMPORTED bool not null default false;
 
 

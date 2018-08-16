@@ -51,14 +51,21 @@ public class Heritrix3Profile {
         this.profileXml = toProfileXml();
     }
 
+
+    public Heritrix3Profile(String profileXml, boolean imported) {
+        this.profileXml = profileXml;
+        if (!imported) {
+            // Convert xml to profile options
+            this.heritrix3ProfileOptions = convertXmlToProfileOptions(profileXml);
+        }
+    }
+
     /**
      * Parses the profile xml into the profile options
      * @param profileXml
      */
     public Heritrix3Profile(String profileXml) {
-        this.profileXml = profileXml;
-        // Convert xml to profile options
-        this.heritrix3ProfileOptions = convertXmlToProfileOptions(profileXml);
+        this(profileXml, false);
     }
 
     /**

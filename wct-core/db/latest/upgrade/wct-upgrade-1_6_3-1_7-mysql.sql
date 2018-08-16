@@ -34,4 +34,4 @@ alter table DB_WCT.PO_H3_INCLUDE_URL add index PIU_FK_1 (PIU_PROF_OVER_OID), add
 GRANT SELECT, INSERT, UPDATE, DELETE ON DB_WCT.PO_H3_BLOCK_URL TO usr_wct@localhost;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DB_WCT.PO_H3_INCLUDE_URL TO usr_wct@localhost;
 
-alter table DB_WCT.PROFILE add column IMPORTED bit not null default 0;
+alter table DB_WCT.PROFILE add column P_IMPORTED bit not null default 0;

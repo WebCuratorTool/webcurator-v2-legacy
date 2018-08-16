@@ -286,7 +286,8 @@ public class MockProfileDAO implements ProfileDAO {
 			    profile.getDataLimitUnit(),
 			    profile.getMaxFileSizeUnit(),
 			    profile.getTimeLimitUnit(),
-			    profile.isDefaultProfile());
+			    profile.isDefaultProfile(),
+				profile.isImported());
 	}
 	
     private Set<Profile> loadProfilesFromNodeList(NodeList pNodes)
@@ -370,6 +371,10 @@ public class MockProfileDAO implements ProfileDAO {
 					else if (child.getNodeName().equals("timeLimitUnit"))
 					{
 						p.setTimeLimitUnit(getString(child));
+					}
+					else if (child.getNodeName().equals("imported"))
+					{
+						p.setImported(getBool(child));
 					}
 				}
 			}

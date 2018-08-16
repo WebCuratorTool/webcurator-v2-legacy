@@ -97,6 +97,7 @@ public class ProfileListController extends AbstractCommandController {
             Profile profile = new Profile();
             profile.setProfile(new String(uploadedFile.getBytes()));
             profile.setDescription("Imported profile");
+            profile.setImported(true);
             String importAgency = req.getParameter("importAgency");
             String importType = req.getParameter("importType");
             String importName = req.getParameter("importName");

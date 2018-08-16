@@ -54,6 +54,7 @@
 				<entry key="/curator/admin/role.html" value="roleController"/>
 				<entry key="/curator/profiles/profiles.html" value="profileController"/>
 				<entry key="/curator/profiles/profilesH3.html" value="profileH3Controller"/>
+				<entry key="/curator/profiles/imported-profilesH3.html" value="importedProfileH3Controller"/>
 				<entry key="/curator/profiles/profiletargets.html" value="profileTargetsController"/>
 				<entry key="/curator/profiles/list.html" value="profileListController"/>
 				<entry key="/curator/profiles/view.html" value="profileViewController"/>
@@ -1324,6 +1325,14 @@
 		<property name="authorityManager" ref="authorityManager"/>
 	</bean>
 
+	<bean id="importedProfileH3Controller" class="org.webcurator.ui.profiles.controller.ProfileController" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="supportedMethods" value="GET,POST"/>
+		<property name="tabConfig" ref="importedProfileH3TabConfig"/>
+		<property name="defaultCommandClass" value="org.webcurator.ui.profiles.command.DefaultCommand"/>
+		<property name="profileManager" ref="profileManager"/>
+		<property name="authorityManager" ref="authorityManager"/>
+	</bean>
+
 	<bean id="profileTabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<property name="viewName" value="profile"/>	
 		<property name="tabs">
@@ -1477,6 +1486,40 @@
 					</property>
 					<property name="tabHandler">
 						<bean class="org.webcurator.ui.profiles.controller.Heritrix3ProfileHandler"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="importedProfileH3TabConfig" class="org.webcurator.ui.util.TabConfig" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<property name="viewName" value="imported-profileH3"/>
+		<property name="tabs">
+			<list>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="GENERAL" />
+					<property name="title" value="general" />
+					<property name="jsp" value="../profileH3-general.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.profiles.command.GeneralCommand"/>
+					<property name="validator">
+						<bean class="org.webcurator.ui.profiles.validator.ProfileGeneralValidator" />
+					</property>
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.ProfileGeneralHandler"/>
+					</property>
+				</bean>
+				<bean class="org.webcurator.ui.util.Tab">
+					<property name="pageId" value="SCOPE-IMPORTED" />
+					<property name="title" value="scope" />
+					<property name="jsp" value="../imported-profileH3-scope.jsp" />
+					<property name="commandClass" value="org.webcurator.ui.profiles.command.ImportedHeritrix3ProfileCommand"/>
+					<!--
+					<property name="validator">
+						<bean class="org.webcurator.ui.profiles.validator.Heritrix3ProfileValidator" />
+					</property>
+					-->
+					<property name="tabHandler">
+						<bean class="org.webcurator.ui.profiles.controller.ImportedHeritrix3ProfileHandler"/>
 					</property>
 				</bean>
 			</list>

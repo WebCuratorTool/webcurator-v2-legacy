@@ -65,6 +65,8 @@ public class ProfileDTO implements AgencyOwnable {
 	/** The time limit unit SECOND/MINUTE/DAY/HOUR */
 	private String timeLimitUnit;
 
+	private boolean imported;
+
 	/**
 	 * Constructor for the DTO.
 	 * @param anOid				The database OID of the profile.
@@ -78,6 +80,7 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param dataLimitUnit		The data limit unit.
 	 * @param maxFileSizeUnit	The max file size unit.
 	 * @param timeLimitUnit 	The time limit unit.
+	 * @param imported 			Is this an imported profile.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -89,7 +92,8 @@ public class ProfileDTO implements AgencyOwnable {
 				      String dataLimitUnit,
 				      String maxFileSizeUnit,
 				      String timeLimitUnit,
-				      boolean defaultProfile) {
+				      boolean defaultProfile,
+					  boolean imported) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
@@ -102,6 +106,7 @@ public class ProfileDTO implements AgencyOwnable {
 		this.maxFileSizeUnit = maxFileSizeUnit;
 		this.timeLimitUnit = timeLimitUnit;
 		this.origOid = null;
+		this.imported = imported;
 	}
 
 	/**
@@ -118,6 +123,7 @@ public class ProfileDTO implements AgencyOwnable {
 	 * @param dataLimitUnit		The data limit unit.
 	 * @param maxFileSizeUnit	The max file size unit.
 	 * @param timeLimitUnit 	The time limit unit.
+	 * @param imported 			Is this an imported profile.
 	 */
 	public ProfileDTO(Long anOid,
 				      String aName,
@@ -130,7 +136,8 @@ public class ProfileDTO implements AgencyOwnable {
 					  String harvesterType,
 					  String dataLimitUnit,
 					  String maxFileSizeUnit,
-					  String timeLimitUnit) {
+					  String timeLimitUnit,
+					  boolean imported) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
@@ -143,6 +150,7 @@ public class ProfileDTO implements AgencyOwnable {
 		this.dataLimitUnit = dataLimitUnit;
 		this.maxFileSizeUnit = maxFileSizeUnit;
 		this.timeLimitUnit = timeLimitUnit;
+		this.imported = imported;
 	}
 
 	/**
@@ -323,5 +331,13 @@ public class ProfileDTO implements AgencyOwnable {
 	 */
 	public void setTimeLimitUnit(String timeLimitUnit) {
 		this.timeLimitUnit = timeLimitUnit;
+	}
+
+	public boolean isImported() {
+		return imported;
+	}
+
+	public void setImported(boolean imported) {
+		this.imported = imported;
 	}
 }
