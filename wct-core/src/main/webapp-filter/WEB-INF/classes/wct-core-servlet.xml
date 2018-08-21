@@ -1467,7 +1467,7 @@
 				<bean class="org.webcurator.ui.util.Tab">
 					<property name="pageId" value="GENERAL" />
 					<property name="title" value="general" />
-					<property name="jsp" value="../profileH3-general.jsp" />
+					<property name="jsp" value="../profile-general.jsp" />
 					<property name="commandClass" value="org.webcurator.ui.profiles.command.GeneralCommand"/>
 					<property name="validator">
 						<bean class="org.webcurator.ui.profiles.validator.ProfileGeneralValidator" />
@@ -1499,7 +1499,7 @@
 				<bean class="org.webcurator.ui.util.Tab">
 					<property name="pageId" value="GENERAL" />
 					<property name="title" value="general" />
-					<property name="jsp" value="../profileH3-general.jsp" />
+					<property name="jsp" value="../profile-general.jsp" />
 					<property name="commandClass" value="org.webcurator.ui.profiles.command.GeneralCommand"/>
 					<property name="validator">
 						<bean class="org.webcurator.ui.profiles.validator.ProfileGeneralValidator" />

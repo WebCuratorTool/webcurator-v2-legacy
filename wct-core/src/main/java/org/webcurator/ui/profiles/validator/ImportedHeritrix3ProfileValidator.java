@@ -27,8 +27,8 @@ import org.webcurator.ui.profiles.command.ImportedHeritrix3ProfileCommand;
 import org.webcurator.ui.util.HarvestAgentUtil;
 
 /**
- * Validate the profile general tab.
- * @author nwaight
+ * Validate the imported heritrix 3 profile.
+ * @author hannakoppelaar
  */
 public class ImportedHeritrix3ProfileValidator extends AbstractBaseValidator implements ApplicationContextAware {
 
@@ -40,6 +40,7 @@ public class ImportedHeritrix3ProfileValidator extends AbstractBaseValidator imp
 
 	public void validate(Object comm, Errors errors) {
 		ImportedHeritrix3ProfileCommand command = (ImportedHeritrix3ProfileCommand) comm;
+
 
 		HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
 		String rawProfile = command.getRawProfile();

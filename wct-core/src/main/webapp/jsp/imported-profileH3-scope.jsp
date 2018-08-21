@@ -24,7 +24,7 @@
 var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
                                         {mode: "text/xml",
                                         lineNumbers: true,
-                                        lineWrapping: false});
+                                        lineWrapping: true});
 </script>
 
 

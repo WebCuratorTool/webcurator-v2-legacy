@@ -457,15 +457,14 @@ public abstract class TabbedController extends BaseCommandController {
 	@Override
 	protected void onBindAndValidate(HttpServletRequest req, Object command,
 			BindException errors) throws Exception {
-		// TODO Auto-generated method stub
 		if (WebUtils.hasSubmitParameter(req, "_tab_current_page")) {
 			String currentPage = req.getParameter("_tab_current_page");
 			Tab currentTab = tabConfig.getTabByID(currentPage);
-			if (currentTab.getValidator() != null) {
+			if (currentTab.getValidator() != null && !WebUtils.hasSubmitParameter(req, "_tab_cancel")) {
 				currentTab.getValidator().validate(command, errors);
 			}
 		} else {
-			if (defaultValidator != null) {
+			if (defaultValidator != null && !WebUtils.hasSubmitParameter(req, "_tab_cancel")) {
 				defaultValidator.validate(command, errors);
 			}
 		}
