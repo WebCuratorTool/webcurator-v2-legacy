@@ -251,7 +251,7 @@ public class ProfileController extends TabbedController {
 						HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profile.getProfile());
 						req.getSession().setAttribute("heritrixProfile", heritrixProfile);
 					} else if (profile.isHeritrix3Profile()) {
-						Heritrix3Profile heritrix3Profile = new Heritrix3Profile(profile.getProfile());
+						Heritrix3Profile heritrix3Profile = new Heritrix3Profile(profile.getProfile(), profile.isImported());
 						req.getSession().setAttribute("heritrixProfile", heritrix3Profile);
 					}
 				}
@@ -300,7 +300,7 @@ public class ProfileController extends TabbedController {
 				if (getTabConfig().getViewName().equals("profile")) {
 					profile.setHarvesterType(HarvesterType.HERITRIX1.name());
 					req.getSession().setAttribute("heritrixProfile", HeritrixProfile.create());
-				} else if (getTabConfig().getViewName().equals("profileH3")) {
+				} else if (getTabConfig().getViewName().contains("profileH3")) {
 					profile.setHarvesterType(HarvesterType.HERITRIX3.name());
 					req.getSession().setAttribute("heritrixProfile", new Heritrix3Profile());
 				}

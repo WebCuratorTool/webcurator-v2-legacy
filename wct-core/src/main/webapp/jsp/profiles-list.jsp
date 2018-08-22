@@ -204,9 +204,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				        </a>
 			            </c:if>
                 		<c:if test="${profile.harvesterType eq 'HERITRIX3'}">
-    				        <a href="curator/profiles/profilesH3.html?profileOid=<c:out value="${profile.oid}"/>&mode=edit" title="Edit">
-    				            <img src="images/action-icon-edit.gif" alt="click here to EDIT this item" width="18" height="18" border="0" />
-    				        </a>
+                		    <c:choose>
+                		    <c:when test="${profile.imported}">
+    				            <a href="curator/profiles/imported-profilesH3.html?profileOid=<c:out value="${profile.oid}"/>&mode=edit" title="Edit">
+    				                <img src="images/action-icon-edit.gif" alt="click here to EDIT this item" width="18" height="18" border="0" />
+    				            </a>
+    				        </c:when>
+                		    <c:otherwise>
+    				            <a href="curator/profiles/profilesH3.html?profileOid=<c:out value="${profile.oid}"/>&mode=edit" title="Edit">
+    				                <img src="images/action-icon-edit.gif" alt="click here to EDIT this item" width="18" height="18" border="0" />
+    				            </a>
+    				        </c:otherwise>
+    				        </c:choose>
 			            </c:if>
 			        </c:if>
 			    </authority:hasAgencyOwnedPriv>

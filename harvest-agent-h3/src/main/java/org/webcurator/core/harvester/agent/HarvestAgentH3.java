@@ -461,17 +461,21 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         Iterator it = harvesters.values().iterator();
         while (it.hasNext()) {
             harvester = (Harvester) it.next();
-            hs.put(harvester.getName(), harvester.getStatus());
 
-            s = harvester.getStatus();
+            // Exclude the H3 profile validation job
+            if(!harvester.getName().equals("validateJob")){
+                hs.put(harvester.getName(), harvester.getStatus());
 
-            currentURIs += s.getCurrentURIs();
-            averageURIs += s.getAverageURIs();
-            currentKBs += s.getCurrentKBs();
-            averageKBs += s.getAverageKBs();
-            urlsDownloaded += s.getUrlsDownloaded();
-            urlsQueued += s.getUrlsQueued();
-            dataDownloaded += s.getDataDownloaded();
+                s = harvester.getStatus();
+
+                currentURIs += s.getCurrentURIs();
+                averageURIs += s.getAverageURIs();
+                currentKBs += s.getCurrentKBs();
+                averageKBs += s.getAverageKBs();
+                urlsDownloaded += s.getUrlsDownloaded();
+                urlsQueued += s.getUrlsQueued();
+                dataDownloaded += s.getDataDownloaded();
+            }
         }
 
         status.setHarvesterStatus(hs);
