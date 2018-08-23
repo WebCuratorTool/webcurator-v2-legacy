@@ -66,12 +66,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
       $('#h3ProfileOverrides').hide();
       $('#h1Credentials').hide();
       $('#editorDiv').show();
-      var editorTextarea = document.getElementById("rawProfile");
-      editorTextarea.value = selectedProfile.rawProfile;
-      var myCodeMirror = CodeMirror.fromTextArea(editorTextarea,
-                                              {mode: "text/xml",
-                                              lineNumbers: true,
-                                              lineWrapping: true});
+      codeMirrorInstance.setValue(selectedProfile.rawProfile);
     } else {
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
@@ -473,10 +468,17 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
 <textarea id="rawProfile" name="rawProfile"/>
+<c:out value="${command.rawProfile}"/>
+</textarea>
 </authority:show>
 </authority:showControl>
 </div>
-
+<script>
+      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+                                              {mode: "text/xml",
+                                              lineNumbers: true,
+                                              lineWrapping: true});
+</script>
 
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
 <div id="h1Credentials">
