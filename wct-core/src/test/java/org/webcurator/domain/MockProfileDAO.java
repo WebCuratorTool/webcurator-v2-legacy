@@ -287,7 +287,8 @@ public class MockProfileDAO implements ProfileDAO {
 			    profile.getMaxFileSizeUnit(),
 			    profile.getTimeLimitUnit(),
 			    profile.isDefaultProfile(),
-				profile.isImported());
+				profile.isImported(),
+				profile.getProfile());
 	}
 	
     private Set<Profile> loadProfilesFromNodeList(NodeList pNodes)

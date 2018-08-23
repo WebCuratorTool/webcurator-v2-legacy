@@ -5,6 +5,16 @@
 <%@taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script src="scripts/codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css"/>
+<script src="scripts/codemirror/mode/xml/xml.js"></script>
+
+<style>
+.CodeMirror {
+  height: 40em;
+}
+</style>
+
 
 <script language="javascript">
 <!--
@@ -25,8 +35,6 @@
 <script type="text/javascript">
 
   function changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid) {
-//      alert(JSON.stringify(profilesList));
-//      alert("harvesterTypeValueSelected: " + harvesterTypeValueSelected);
       // Change the base profile list to those profiles that match the selected harvester type.
       var matchingProfiles = [];
       $.each(profilesList, function(index, value) {
@@ -34,11 +42,9 @@
           matchingProfiles.push(value);
         }
       });
-//      alert(JSON.stringify(matchingProfiles));
       $("#profileOid").html('');
       $(matchingProfiles).each(function(i) {
         if (matchingProfiles[i].oid == commandProfileOid) {
-          //alert(matchingProfiles[i].oid + " = " + commandProfileOid);
           $("#profileOid").append("<option value=" + matchingProfiles[i].oid + " SELECTED>" + matchingProfiles[i].name + "</option>");
         } else {
           $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
@@ -46,17 +52,34 @@
       });
   }
 
-  function toggleProvideOverrides(harvesterTypeValueSelected) {
+function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
+
+    var selectedProfile = getSelectedProfile(profilesList);
+
     if (harvesterTypeValueSelected == 'HERITRIX1') {
       $('#h1ProfileOverrides').show();
       $('#h1Credentials').show();
       $('#h3ProfileOverrides').hide();
+      $('#editorDiv').hide();
+    } else if (selectedProfile.imported == "true") {
+      $('#h1ProfileOverrides').hide();
+      $('#h3ProfileOverrides').hide();
+      $('#h1Credentials').hide();
+      $('#editorDiv').show();
+      var editorTextarea = document.getElementById("rawProfile");
+      editorTextarea.value = selectedProfile.rawProfile;
+      var myCodeMirror = CodeMirror.fromTextArea(editorTextarea,
+                                              {mode: "text/xml",
+                                              lineNumbers: true,
+                                              lineWrapping: true});
     } else {
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
       $('#h1Credentials').hide();
+      $('#editorDiv').hide();
     }
   }
+
 
   $(document).ready(function() {
     var profilesList = [];
@@ -64,7 +87,9 @@
       var jsProfile = {
         name: "${prf.name}",
         oid: "${prf.oid}",
-        harvesterType: "${prf.harvesterType}"
+        harvesterType: "${prf.harvesterType}",
+        <c:if test="${prf.harvesterType eq 'HERITRIX3' && prf.imported eq 'true'}">rawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
+        imported: "${prf.imported}"
       };
       profilesList.push(jsProfile);
     </c:forEach>
@@ -72,16 +97,31 @@
     var commandProfileOid = "<c:out value='${command.profileOid}' />";
     $("#harvesterType option[value='" + selectedHarvesterTypeName + "']").prop('selected', true);
     changeBaseProfileList(profilesList, selectedHarvesterTypeName, commandProfileOid);
-    toggleProvideOverrides(selectedHarvesterTypeName);
+    toggleProvideOverrides(profilesList, selectedHarvesterTypeName);
 
     $('#harvesterType').change(function() {
       var harvesterTypeValueSelected = this.value;
       changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid);
-      toggleProvideOverrides(harvesterTypeValueSelected);
+      toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
+    });
+
+    $('#profileOid').change(function() {
+      var harvesterType = document.getElementById('harvesterType');
+      var harvesterTypeValueSelected = harvesterType.options[harvesterType.selectedIndex].value;
+      toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
     });
 
   });
+
+    function getSelectedProfile(profilesList) {
+        var oid = document.getElementById('profileOid');
+        var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(oid.options[oid.selectedIndex].value);
+        return profilesList[prfIdx];
+    }
+
 </script>
+
+
 
 <% Object ownable = request.getAttribute("ownable");
    if(ownable instanceof AbstractTarget && 
@@ -429,6 +469,15 @@
 </table>
 </div>
 
+<div id="editorDiv">
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
+<textarea id="rawProfile" name="rawProfile"/>
+</authority:show>
+</authority:showControl>
+</div>
+
+
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
 <div id="h1Credentials">
 <span class="subBoxTitle">Credentials Override</span>
@@ -456,9 +505,9 @@
 </authority:show>
 </authority:showControl>
 
-  
+
   <input type="hidden" id="credentialToRemove" name="credentialToRemove">
-  
+
   <c:choose>
     <c:when test="${empty credentials}">
       <p>No credentials provided in the overrides</p>

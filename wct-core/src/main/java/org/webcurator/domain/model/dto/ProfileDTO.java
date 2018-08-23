@@ -15,7 +15,6 @@
  */
 package org.webcurator.domain.model.dto;
 
-import org.webcurator.core.harvester.HarvesterType;
 import org.webcurator.domain.AgencyOwnable;
 import org.webcurator.domain.model.auth.Agency;
 
@@ -65,7 +64,11 @@ public class ProfileDTO implements AgencyOwnable {
 	/** The time limit unit SECOND/MINUTE/DAY/HOUR */
 	private String timeLimitUnit;
 
+	/** Is this an imported profile or one created by WCT? */
 	private boolean imported;
+
+	/** The profile XML */
+	private String profile;
 
 	/**
 	 * Constructor for the DTO.
@@ -93,7 +96,8 @@ public class ProfileDTO implements AgencyOwnable {
 				      String maxFileSizeUnit,
 				      String timeLimitUnit,
 				      boolean defaultProfile,
-					  boolean imported) {
+					  boolean imported,
+					  String profile) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
@@ -107,6 +111,7 @@ public class ProfileDTO implements AgencyOwnable {
 		this.timeLimitUnit = timeLimitUnit;
 		this.origOid = null;
 		this.imported = imported;
+		this.profile = profile;
 	}
 
 	/**
@@ -137,7 +142,8 @@ public class ProfileDTO implements AgencyOwnable {
 					  String dataLimitUnit,
 					  String maxFileSizeUnit,
 					  String timeLimitUnit,
-					  boolean imported) {
+					  boolean imported,
+					  String profile) {
 		oid = anOid;
 		name = aName;
 		description = aDescription;
@@ -151,6 +157,7 @@ public class ProfileDTO implements AgencyOwnable {
 		this.maxFileSizeUnit = maxFileSizeUnit;
 		this.timeLimitUnit = timeLimitUnit;
 		this.imported = imported;
+		this.profile = profile;
 	}
 
 	/**
@@ -339,5 +346,13 @@ public class ProfileDTO implements AgencyOwnable {
 
 	public void setImported(boolean imported) {
 		this.imported = imported;
+	}
+
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 }

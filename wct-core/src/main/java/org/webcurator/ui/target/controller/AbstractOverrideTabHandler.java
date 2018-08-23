@@ -109,6 +109,8 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 				command.setFromOverrides(o.getProfileOverrides());
 			}
 		}
+
+		command.setRawProfile(o.getProfile().getProfile());
 		
 		// Prepare the overrides.
 		
@@ -135,6 +137,10 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
 		List<ProfileDTO> profiles = new ArrayList<ProfileDTO>();
 		if(o.getProfile()!=null) {
+		    /*
+		     * TODO introduce (add) a getAvailableProfiles that actually gets Profiles not DTOs
+			 * so we can use those in the JSP.
+			 */
 			profiles = profileManager.getAvailableProfiles(o.getProfile().getOid());
 			tmav.addObject("profileName", o.getProfile().getName());
 			tmav.addObject("harvesterTypeName", o.getProfile().getHarvesterType());
