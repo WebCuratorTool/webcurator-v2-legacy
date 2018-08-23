@@ -52,7 +52,7 @@
       });
   }
 
-function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
+function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPageLoad=false) {
 
     var selectedProfile = getSelectedProfile(profilesList);
 
@@ -69,7 +69,9 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
       $('#overrideRawProfileCheckbox').show();
       if ($('#overrideRawProfile').is(":checked")) {
         $('#editorDiv').show();
-        codeMirrorInstance.setValue(selectedProfile.rawProfile);
+        if (!onPageLoad) {
+          codeMirrorInstance.setValue(selectedProfile.rawProfile);
+        }
       } else {
         $('#editorDiv').hide();
       }
@@ -99,7 +101,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
     var commandProfileOid = "<c:out value='${command.profileOid}' />";
     $("#harvesterType option[value='" + selectedHarvesterTypeName + "']").prop('selected', true);
     changeBaseProfileList(profilesList, selectedHarvesterTypeName, commandProfileOid);
-    toggleProvideOverrides(profilesList, selectedHarvesterTypeName);
+    toggleProvideOverrides(profilesList, selectedHarvesterTypeName, true);
 
     $('#harvesterType').change(function() {
       var harvesterTypeValueSelected = this.value;
@@ -490,9 +492,6 @@ Override Imported Profile:
 </table>
 </div>
 <div id="editorDiv">
-<table>
-<tr>
-<td>
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
 <textarea id="rawProfile" name="rawProfile"/>
@@ -500,9 +499,6 @@ Override Imported Profile:
 </textarea>
 </authority:show>
 </authority:showControl>
-</td>
-</tr>
-</table>
 </div>
 <script>
       codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
@@ -590,7 +586,7 @@ Override Imported Profile:
 <c:if test="${urlPrefix ne 'ti'}">
 <table>
   <tr> 
-    <td class="annotationsLiteRow">Profile Note</td>
+    <td class="subBoxTextHdr">Profile Note:</td>
     <td class="annotationsLiteRow">
       <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
         <authority:show>

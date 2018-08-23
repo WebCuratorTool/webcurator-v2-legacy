@@ -71,6 +71,10 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator {
 		if (command.isOverrideRobots()) {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "robots", "required", getObjectArrayForLabel("robots"), "robots is a required field");
 		}
+
+		if (command.isOverrideRawProfile()) {
+			// TODO validate profile
+		}
 		
 		ValidatorUtil.validateStringMaxLength(errors, command.getProfileNote(), AbstractTarget.MAX_PROFILE_NOTE_LENGTH, "string.maxlength", getObjectArrayForLabelAndInt(ProfileCommand.PARAM_PROFILE_NOTE, AbstractTarget.MAX_PROFILE_NOTE_LENGTH), "Evaluation Note is too long");
 	}

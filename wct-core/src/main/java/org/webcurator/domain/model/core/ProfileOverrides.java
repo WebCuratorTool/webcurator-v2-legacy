@@ -175,6 +175,9 @@ public class ProfileOverrides {
 	/** True to override the included urls; otherwise false */
 	private boolean overrideH3IncludedUrls = false;
 
+	private String h3RawProfile;
+	private boolean overrideH3RawProfile = false;
+
 	/**
      * Gets the database OID of the object.
      * @return Returns the oid.
@@ -1139,5 +1142,29 @@ public class ProfileOverrides {
 	 */
 	public void setOverrideH3IncludedUrls(boolean overrideH3IncludedUrls) {
 		this.overrideH3IncludedUrls = overrideH3IncludedUrls;
+	}
+
+	/**
+	 *
+	 * @hibernate.property column="PO_H3_RAW_PROFILE"
+	 */
+	public String getH3RawProfile() {
+		return h3RawProfile;
+	}
+
+	public void setH3RawProfile(String h3RawProfile) {
+		this.h3RawProfile = h3RawProfile;
+	}
+
+	/**
+	 *
+	 * @hibernate.property column="PO_H3_OR_RAW_PROFILE"
+	 */
+	public boolean isOverrideH3RawProfile() {
+		return overrideH3RawProfile;
+	}
+
+	public void setOverrideH3RawProfile(boolean overrideH3RawProfile) {
+		this.overrideH3RawProfile = overrideH3RawProfile;
 	}
 }

@@ -110,7 +110,9 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 			}
 		}
 
-		command.setRawProfile(o.getProfile().getProfile());
+		if (o.getProfileOverrides().isOverrideH3RawProfile()) {
+			command.setRawProfile(o.getProfileOverrides().getH3RawProfile());
+		}
 		
 		// Prepare the overrides.
 		

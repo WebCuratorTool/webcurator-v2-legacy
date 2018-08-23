@@ -609,6 +609,9 @@ public class ProfileCommand {
 
 		setH3IncludedUrls(listToString(overrides.getH3IncludedUrls()));
 		setOverrideH3IncludedUrls(overrides.isOverrideH3IncludedUrls());
+
+		setOverrideRawProfile(overrides.isOverrideH3RawProfile());
+		setRawProfile(overrides.getH3RawProfile());
 	}
 
 	public void updateOverrides(ProfileOverrides overrides) {
@@ -679,6 +682,9 @@ public class ProfileCommand {
 
 		overrides.setH3IncludedUrls(stringToList(h3IncludedUrls));
 		overrides.setOverrideH3IncludedUrls(overrideH3IncludedUrls);
+
+		overrides.setOverrideH3RawProfile(overrideRawProfile);
+		overrides.setH3RawProfile(rawProfile);
 	}
 
 	public List<String> stringToList(String str) {
