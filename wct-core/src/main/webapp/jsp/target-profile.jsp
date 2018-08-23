@@ -61,16 +61,23 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
       $('#h1Credentials').show();
       $('#h3ProfileOverrides').hide();
       $('#editorDiv').hide();
+      $('#overrideRawProfileCheckbox').hide();
     } else if (selectedProfile.imported == "true") {
       $('#h1ProfileOverrides').hide();
       $('#h3ProfileOverrides').hide();
       $('#h1Credentials').hide();
-      $('#editorDiv').show();
-      codeMirrorInstance.setValue(selectedProfile.rawProfile);
+      $('#overrideRawProfileCheckbox').show();
+      if ($('#overrideRawProfile').is(":checked")) {
+        $('#editorDiv').show();
+        codeMirrorInstance.setValue(selectedProfile.rawProfile);
+      } else {
+        $('#editorDiv').hide();
+      }
     } else {
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
       $('#h1Credentials').hide();
+      $('#overrideRawProfileCheckbox').hide();
       $('#editorDiv').hide();
     }
   }
@@ -106,6 +113,12 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
       toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
     });
 
+    $('#overrideRawProfile').change(function() {
+      var harvesterType = document.getElementById('harvesterType');
+      var harvesterTypeValueSelected = harvesterType.options[harvesterType.selectedIndex].value;
+      toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
+    });
+
   });
 
     function getSelectedProfile(profilesList) {
@@ -119,7 +132,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
 
 
 <% Object ownable = request.getAttribute("ownable");
-   if(ownable instanceof AbstractTarget && 
+   if(ownable instanceof AbstractTarget &&
       ((AbstractTarget)ownable).getObjectType() == AbstractTarget.TYPE_GROUP &&
       ((TargetGroup)ownable).getSipType() == TargetGroup.MANY_SIP) { %>
 <p style="color: red;"><b><spring:message code="ui.label.target.profile.warning"/>:</b> <spring:message code="ui.label.target.profile.warningManySip"/></p>
@@ -148,7 +161,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
   </tr>
   <tr>
     <td class="subBoxTextHdr">Base Profile:</td>
-    <td class="subBoxText">    
+    <td class="subBoxText">
 		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode && urlPrefix ne 'ti'}">
         	<authority:show>
 		      <select name="profileOid" id="profileOid">
@@ -163,11 +176,11 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
 		    </authority:dont>
 		</authority:showControl>
     </td>
-  </tr> 
+  </tr>
   <c:if test="${urlPrefix eq 'ti'}">
   <tr>
     <td class="subBoxTextHdr">Override Target Overrides:</td>
-    <td class="subBoxText">    
+    <td class="subBoxText">
 		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode}">
         	<authority:show>
 		      <input type="checkbox" name="overrideTarget" ${command.overrideTarget ? 'checked' : ''} onclick="toggleOverride();">
@@ -178,8 +191,8 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
 		    </authority:dont>
 		</authority:showControl>
     </td>
-  </tr>   
-  </c:if> 
+  </tr>
+  </c:if>
 </table>
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
 <span class="subBoxTitle">Profile Overrides</span>
@@ -464,7 +477,22 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
 </table>
 </div>
 
+<div id="overrideRawProfileCheckbox">
+<table>
+<tr>
+<td class="subBoxTextHdr">
+Override Imported Profile:
+</td>
+<td>
+<input type="checkbox" id="overrideRawProfile" name="overrideRawProfile" ${command.overrideRawProfile ? 'checked' : ''}/>
+</td>
+</tr>
+</table>
+</div>
 <div id="editorDiv">
+<table>
+<tr>
+<td>
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
 <textarea id="rawProfile" name="rawProfile"/>
@@ -472,6 +500,9 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected) {
 </textarea>
 </authority:show>
 </authority:showControl>
+</td>
+</tr>
+</table>
 </div>
 <script>
       codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
