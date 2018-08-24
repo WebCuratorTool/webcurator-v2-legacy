@@ -485,7 +485,8 @@ public class ProfileOverrides {
 				isOverrideH3IgnoreRobots() ||
 				isOverrideH3IgnoreCookies() ||
 				isOverrideH3BlockedUrls() ||
-				isOverrideH3IncludedUrls()) {
+				isOverrideH3IncludedUrls() ||
+				isOverrideH3RawProfile()) {
 			return true;
 		}
 

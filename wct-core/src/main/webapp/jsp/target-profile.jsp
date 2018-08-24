@@ -52,6 +52,7 @@
       });
   }
 
+
 function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPageLoad=false) {
 
     var selectedProfile = getSelectedProfile(profilesList);
@@ -124,9 +125,26 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
   });
 
     function getSelectedProfile(profilesList) {
+		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode && urlPrefix ne 'ti'}">
+        	<authority:show>
         var oid = document.getElementById('profileOid');
         var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(oid.options[oid.selectedIndex].value);
         return profilesList[prfIdx];
+		    </authority:show>
+		    <authority:dont>
+		        <c:forEach items="${profiles}" var="prf">
+		          <c:if test="${prf.oid == command.profileOid}">
+        var jsProfile = {
+          name: "${prf.name}",
+          oid: "${prf.oid}",
+          harvesterType: "${prf.harvesterType}",
+          imported: "${prf.imported}"
+        };
+		          </c:if>
+		        </c:forEach>
+        return jsProfile;
+		    </authority:dont>
+		</authority:showControl>
     }
 
 </script>
@@ -174,7 +192,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 		    </authority:show>
 		    <authority:dont>
 		      <c:out value="${profileName}"/>
-		      <input type="hidden" name="profileOid" value="<c:out value="${command.profileOid}"/>" />
+		      <input type="hidden" id="profileOid" name="profileOid" value="<c:out value="${command.profileOid}"/>" />
 		    </authority:dont>
 		</authority:showControl>
     </td>
@@ -480,6 +498,8 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 </div>
 
 <div id="overrideRawProfileCheckbox">
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
 <table>
 <tr>
 <td class="subBoxTextHdr">
@@ -490,22 +510,34 @@ Override Imported Profile:
 </td>
 </tr>
 </table>
-</div>
-<div id="editorDiv">
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
-<authority:show>
-<textarea id="rawProfile" name="rawProfile"/>
-<c:out value="${command.rawProfile}"/>
-</textarea>
 </authority:show>
 </authority:showControl>
 </div>
+<div id="editorDiv">
+<textarea id="rawProfile" name="rawProfile"/>
+<c:out value="${command.rawProfile}"/>
+</textarea>
+</div>
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
 <script>
       codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
                                               {mode: "text/xml",
                                               lineNumbers: true,
                                               lineWrapping: true});
 </script>
+</authority:show>
+<authority:dont>
+<script>
+      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+                                              {mode: "text/xml",
+                                              lineNumbers: true,
+                                              lineWrapping: true,
+                                              readOnly: true});
+</script>
+<input type="hidden" id="overrideRawProfile" name="overrideRawProfile" value="false"/>
+</authority:dont>
+</authority:showControl>
 
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
 <div id="h1Credentials">
