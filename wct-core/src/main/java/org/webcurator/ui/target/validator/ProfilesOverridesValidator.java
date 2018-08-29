@@ -15,20 +15,27 @@
  */
 package org.webcurator.ui.target.validator;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
+import org.webcurator.core.harvester.agent.HarvestAgent;
 import org.webcurator.domain.model.core.AbstractTarget;
 import org.webcurator.domain.model.core.Target;
 import org.webcurator.ui.common.validation.AbstractBaseValidator;
 import org.webcurator.ui.common.validation.ValidatorUtil;
+import org.webcurator.ui.profiles.command.ImportedHeritrix3ProfileCommand;
 import org.webcurator.ui.target.command.ProfileCommand;
 import org.webcurator.ui.target.command.TargetAnnotationCommand;
+import org.webcurator.ui.util.HarvestAgentUtil;
 
 /**
  * Validate the profile ovverides tab.
  * @author nwaight
  */
-public class ProfilesOverridesValidator extends AbstractBaseValidator {
+public class ProfilesOverridesValidator extends AbstractBaseValidator implements ApplicationContextAware {
+
+	ApplicationContext applicationContext;
 
 	public boolean supports(Class clazz) {
 		return ProfileCommand.class.equals(clazz);
@@ -73,9 +80,23 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator {
 		}
 
 		if (command.isOverrideRawProfile()) {
-			// TODO validate profile
+			HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
+			String rawProfile = command.getRawProfile();
+			if (!harvestAgent.isValidProfile(rawProfile)) {
+				Object[] vals = new Object[]{"unnamed"};
+				errors.reject("profile.invalid", vals, "The profile is invalid.");
+			}
 		}
 		
 		ValidatorUtil.validateStringMaxLength(errors, command.getProfileNote(), AbstractTarget.MAX_PROFILE_NOTE_LENGTH, "string.maxlength", getObjectArrayForLabelAndInt(ProfileCommand.PARAM_PROFILE_NOTE, AbstractTarget.MAX_PROFILE_NOTE_LENGTH), "Evaluation Note is too long");
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 }
