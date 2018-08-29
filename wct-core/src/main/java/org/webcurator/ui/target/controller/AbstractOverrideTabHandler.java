@@ -98,7 +98,7 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 			command = new TargetInstanceProfileCommand();
 			TargetInstanceProfileCommand tiCommand = (TargetInstanceProfileCommand) command; 
 			TargetInstance ti = (TargetInstance) o;
-			
+
 			tiCommand.setOverrideTarget(ti.getOverrides() != null);
 			command.setFromOverrides(ti.getProfileOverrides());
 		}
@@ -108,12 +108,14 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 				command.setProfileOid(o.getProfile().getOid());
 				command.setFromOverrides(o.getProfileOverrides());
 			}
+			if (o.getProfileOverrides().isOverrideH3RawProfile()) {
+				command.setRawProfile(o.getProfileOverrides().getH3RawProfile());
+			}
+			command.setHarvesterType(o.getProfile().getHarvesterType());
+			command.setImported(o.getProfile().isImported());
 		}
 
-		if (o.getProfileOverrides().isOverrideH3RawProfile()) {
-			command.setRawProfile(o.getProfileOverrides().getH3RawProfile());
-		}
-		
+
 		// Prepare the overrides.
 		
 		

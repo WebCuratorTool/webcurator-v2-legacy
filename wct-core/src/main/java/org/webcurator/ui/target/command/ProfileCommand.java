@@ -103,6 +103,14 @@ public class ProfileCommand {
 	private String rawProfile;
 	private boolean overrideRawProfile;
 
+	private String harvesterType;
+
+	// FIXME this may not be needed!
+	private boolean imported;
+
+
+
+
 	/**
 	 * @return Returns the profileOid.
 	 */
@@ -814,5 +822,21 @@ public class ProfileCommand {
 
 	public void setOverrideRawProfile(boolean overrideRawProfile) {
 		this.overrideRawProfile = overrideRawProfile;
+	}
+
+	public String getHarvesterType() {
+		return harvesterType;
+	}
+
+	public void setHarvesterType(String harvesterType) {
+		this.harvesterType = harvesterType;
+	}
+
+	public boolean isImported() {
+		return imported;
+	}
+
+	public void setImported(boolean imported) {
+		this.imported = imported;
 	}
 }

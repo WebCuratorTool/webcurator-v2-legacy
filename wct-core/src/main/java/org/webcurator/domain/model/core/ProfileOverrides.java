@@ -255,6 +255,8 @@ public class ProfileOverrides {
 		copy.h3IncludedUrls = new LinkedList<String>();
 		copy.h3IncludedUrls.addAll(h3IncludedUrls);
 		copy.overrideH3IncludedUrls = overrideH3IncludedUrls;
+		copy.overrideH3RawProfile = overrideH3RawProfile;
+		copy.h3RawProfile = h3RawProfile;
 
 		copy.overrideCredentials = overrideCredentials;
 		for(ProfileCredentials creds : credentials) {
