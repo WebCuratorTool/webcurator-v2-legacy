@@ -7,6 +7,7 @@
 <script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="scripts/codemirror/lib/codemirror.js"></script>
 <link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css"/>
+<link rel="stylesheet" href="scripts/codemirror/theme/elegant.css"/>
 <script src="scripts/codemirror/mode/xml/xml.js"></script>
 
 <style>
@@ -570,6 +571,7 @@ No overrides.
                                               {mode: "text/xml",
                                               lineNumbers: true,
                                               lineWrapping: true,
+                                              theme: "elegant",
                                               readOnly: true});
 </script>
 </c:if>
