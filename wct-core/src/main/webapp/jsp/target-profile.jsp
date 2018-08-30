@@ -675,19 +675,28 @@ No overrides.
 
 
 <c:if test="${urlPrefix ne 'ti'}">
-<table>
-  <tr> 
-    <td class="subBoxTextHdr">Profile Note:</td>
-    <td class="annotationsLiteRow">
       <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
         <authority:show>
+<table>
+  <tr>
+    <td class="subBoxTextHdr">Profile Note:</td>
+    <td class="annotationsLiteRow">
 	      <textarea name="profileNote" rows="2" cols="100"><c:out value="${command.profileNote}"/></textarea>
-	    </authority:show>
-	    <authority:dont>
-	      <c:out value="${command.profileNote}"/>
-	    </authority:dont>
-      </authority:showControl>
     </td>
   </tr>
 </table>
+	    </authority:show>
+	    <authority:dont>
+	      <c:if test="${not empty command.profileNote}">
+<table>
+  <tr>
+    <td class="subBoxTextHdr">Profile Note:</td>
+    <td class="annotationsLiteRow">
+	      <c:out value="${command.profileNote}"/>
+    </td>
+  </tr>
+</table>
+	      </c:if>
+	    </authority:dont>
+      </authority:showControl>
 </c:if>

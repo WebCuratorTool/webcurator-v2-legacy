@@ -105,7 +105,6 @@ public class ProfileCommand {
 
 	private String harvesterType;
 
-	// FIXME this may not be needed!
 	private boolean imported;
 
 
