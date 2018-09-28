@@ -101,6 +101,12 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 
 			tiCommand.setOverrideTarget(ti.getOverrides() != null);
 			command.setFromOverrides(ti.getProfileOverrides());
+			if (ti.getProfileOverrides().isOverrideH3RawProfile()) {
+				command.setRawProfile(ti.getProfileOverrides().getH3RawProfile());
+			}
+			command.setOverrideRawProfile(ti.getProfileOverrides().isOverrideH3RawProfile());
+			command.setHarvesterType(ti.getProfile().getHarvesterType());
+			command.setImported(ti.getProfile().isImported());
 		}
 		else {
 			command = new ProfileCommand();
