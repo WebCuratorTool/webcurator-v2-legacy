@@ -17,7 +17,7 @@
 </style>
 
 
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode && urlPrefix ne 'ti'}">
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode}">
         <authority:show>
 <script language="javascript">
 <!--
@@ -119,19 +119,44 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
     });
 
+<c:choose>
+    <c:when test="${urlPrefix ne 'ti'}">
     $('#overrideRawProfile').change(function() {
       var harvesterType = document.getElementById('harvesterType');
       var harvesterTypeValueSelected = harvesterType.options[harvesterType.selectedIndex].value;
       toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
     });
+    </c:when>
+    <c:otherwise>
+    $('#overrideRawProfile').change(function() {
+      var harvesterType = document.getElementById('harvesterType');
+      toggleProvideOverrides(profilesList, harvesterType.value);
+    });
+    </c:otherwise>
+</c:choose>
 
   });
 
+<c:choose>
+    <c:when test="${urlPrefix ne 'ti'}">
     function getSelectedProfile(profilesList) {
-        var oid = document.getElementById('profileOid');
-        var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(oid.options[oid.selectedIndex].value);
+        var profileOid = document.getElementById('profileOid');
+        var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(profileOid.value);
         return profilesList[prfIdx];
     }
+    </c:when>
+    <c:otherwise>
+    function getSelectedProfile(profilesList) {
+    return {
+        name: "${profileName}",
+        oid: "${command.profileOid}",
+        harvesterType: "${command.harvesterType}",
+        <c:if test="${command.harvesterType eq 'HERITRIX3' && command.imported eq 'true'}">rawProfile: "<spring:escapeBody javaScriptEscape="true">${command.rawProfile}</spring:escapeBody>",</c:if>
+        imported: "${command.imported}"
+      };
+    }
+    </c:otherwise>
+</c:choose>
 
 </script>
         </authority:show>
@@ -163,6 +188,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 		    </authority:show>
 		    <authority:dont>
 		      <c:out value="${harvesterTypeName}"/>
+		      <input type="hidden" name="harvesterType" id="harvesterType" value="${harvesterTypeName}"/>
 		    </authority:dont>
 		</authority:showControl>
     </td>
@@ -525,7 +551,7 @@ Override Imported Profile:
 </table>
 </authority:show>
 <authority:dont>
-<c:if test="${command.harvesterType == 'HERITRIX3'}">
+<c:if test="${command.harvesterType == 'HERITRIX3' && command.imported}">
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
 <td class="subBoxTextHdr">

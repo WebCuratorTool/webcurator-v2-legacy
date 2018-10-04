@@ -100,6 +100,7 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 			TargetInstance ti = (TargetInstance) o;
 
 			tiCommand.setOverrideTarget(ti.getOverrides() != null);
+			command.setProfileOid(ti.getProfile().getOid());
 			command.setFromOverrides(ti.getProfileOverrides());
 			if (ti.getProfileOverrides().isOverrideH3RawProfile()) {
 				command.setRawProfile(ti.getProfileOverrides().getH3RawProfile());
