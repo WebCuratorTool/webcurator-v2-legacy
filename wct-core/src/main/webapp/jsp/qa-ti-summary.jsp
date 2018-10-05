@@ -16,6 +16,17 @@
 
 <script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
 
+<script src="scripts/codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css"/>
+<link rel="stylesheet" href="scripts/codemirror/theme/elegant.css"/>
+<script src="scripts/codemirror/mode/xml/xml.js"></script>
+
+<style>
+	.CodeMirror {
+		height: 40em;
+	}
+</style>
+
 <script type="text/javascript"> 
 <!-- JQuery Section: ANNOTATIONS HISTORY (VIA AJAX) JAVASCRIPT -->
 
@@ -215,14 +226,51 @@ function onChangeScheduleDates(textbox) {
 	enableButton('discardchanges');
 }
 
+function toggleProfileOverrides(profilesList, onPageLoad=false) {
+
+	var selectedProfile = getSelectedProfile(profilesList);
+
+	if (selectedProfile.imported == "true") {
+		$('#h1OrH3NonImportedProfile').hide();
+		$('#h3ImportedProfile').show();
+		codeMirrorInstance.setValue(selectedProfile.rawProfile);
+	} else { <!-- HERITRIX1 or HERITRIX3 but not imported -->
+		$('#h1OrH3NonImportedProfile').show();
+		$('#h3ImportedProfile').hide();
+	}
+}
+
 //the JQuery body onload function
 $(document).ready(function() {
 	<c:if test="${instance.state ne 'Harvested'}">disableButton('runqa');</c:if>
 	<c:if test="${scheduleHasChanged eq 'false'}">disableButton('applyschedule');</c:if>
 	<c:if test="${scheduleHasChanged eq 'false'}">disableButton('discardchanges');</c:if>
 	disableButton('denoterefcrawl');
+
+	var profilesList = [];
+	<c:forEach items="${profiles}" var="prf">
+	var jsProfile = {
+		name: "${prf.name}",
+		oid: "${prf.oid}",
+		// We don't check the harvester type. We show the XML editor if the profile is imported, no matter the type
+		<c:if test="${prf.imported eq 'true'}">rawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
+		imported: "${prf.imported}"
+	};
+	profilesList.push(jsProfile);
+	</c:forEach>
+	toggleProfileOverrides(profilesList, true);
+
+	$('#profileOid').change(function() {
+		toggleProfileOverrides(profilesList);
+	});
 });
 
+// This needs to be after profilesList is declared
+function getSelectedProfile(profilesList) {
+	var oid = document.getElementById('profileOid');
+	var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(oid.options[oid.selectedIndex].value);
+	return profilesList[prfIdx];
+}
 
 </script>
 
@@ -515,7 +563,7 @@ $(document).ready(function() {
 
 						<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode}">
 			        	<authority:show>
-					      <select name="profileOid">
+					      <select name="profileOid" id="profileOid">
 					        <c:forEach items="${profiles}" var="profile">
 					          <option value="<c:out value="${profile.oid}"/>" ${profile.oid == profileCommand.profileOid ? 'SELECTED' : '' }><c:out value="${profile.name}"/></option>
 					        </c:forEach>
@@ -523,15 +571,18 @@ $(document).ready(function() {
 					    </authority:show>
 					    <authority:dont>
 					      <c:out value="${profileName}"/>
-					      <input type="hidden" name="profileOid" value="<c:out value="${profileCommand.profileOid}"/>" />
+					      <input type="hidden" id="profileOid" name="profileOid" value="<c:out value="${profileCommand.profileOid}"/>" />
 					    </authority:dont>
 						</authority:showControl>
 	
 					</td>
 				</tr>
 				<tr><td colspan="4"><table class="panel_dotted_row"><tr><td></td></tr></table></td></tr>
+			</table>
 				<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 				<authority:show>
+				<div id="h1OrH3NonImportedProfile">
+					<table class="panel" border="0" width="100%" cellspacing="0px">
 				<tr>
 					<td nowrap="nowrap" title="Robot honoring policy">
 						<input type="checkbox" name="overrideRobots" ${profileCommand.overrideRobots ? 'checked' : ''}/>Robot policy: 
@@ -590,6 +641,31 @@ $(document).ready(function() {
 						</table>
 					</td>
 				</tr>
+				</table>
+				</div> <!-- h1OrH3NonImportedProfile -->
+				<div id="h3ImportedProfile">
+					<table class="panel" border="0" width="100%" cellspacing="0px">
+					<tr>
+						<td colspan="9">
+							<div id="editorDiv">
+								<textarea id="rawProfile" name="rawProfile" form="profileoverrides"/>
+								</textarea>
+							</div>
+							<script>
+								codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+									{
+										mode: "text/xml",
+										lineNumbers: true,
+										lineWrapping: true,
+										theme: "elegant",
+										readOnly: false
+									});
+							</script>
+						</td>
+					</tr>
+					</table>
+				</div> <!-- h3ImportedProfile -->
+				<table class="panel" border="0" width="100%" cellspacing="0px">
 				<tr>
 					<td colspan="9">
 						<input type="hidden" name="<%=TargetInstanceSummaryCommand.PARAM_OID%>" value="${instance.oid}" />
