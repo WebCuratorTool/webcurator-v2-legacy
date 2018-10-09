@@ -749,6 +749,9 @@ public class ProfileCommand {
 		setForceAcceptFilters(command.getForceAcceptFilters());
 		setOverrideForceAcceptFilters(command.isOverrideForceAcceptFilters());
 
+		setRawProfile(command.getH3RawProfile());
+		setOverrideRawProfile(command.isOverrideH3RawProfile());
+
 	}
 
 	/**
