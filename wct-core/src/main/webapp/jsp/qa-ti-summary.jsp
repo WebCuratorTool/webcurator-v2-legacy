@@ -646,13 +646,19 @@ function getSelectedProfile(profilesList) {
 				<div id="h3ImportedProfile">
 					<table class="panel" border="0" width="100%" cellspacing="0px">
 					<tr>
+						<td colspan="4">
+							<input type="hidden" name="overrideH3RawProfile" value="true"}/>Override imported profile:
+							<input type="checkbox" name="visibleOverrideH3RawProfile" disabled="disabled" checked="checked"}/>
+						</td>
+					</tr>
+					<tr>
 						<td colspan="9">
 							<div id="editorDiv">
-								<textarea id="rawProfile" name="rawProfile" form="profileoverrides"/>
+								<textarea id="h3RawProfile" name="h3RawProfile" form="profileoverrides"/>
 								</textarea>
 							</div>
 							<script>
-								codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+								codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
 									{
 										mode: "text/xml",
 										lineNumbers: true,

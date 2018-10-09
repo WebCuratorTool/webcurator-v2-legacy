@@ -15,6 +15,8 @@
  */
 package org.webcurator.ui.target.validator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.Errors;
@@ -34,6 +36,7 @@ import org.webcurator.ui.util.HarvestAgentUtil;
  * @author nwaight
  */
 public class ProfilesOverridesValidator extends AbstractBaseValidator implements ApplicationContextAware {
+	private Log log = LogFactory.getLog(ProfilesOverridesValidator.class);
 
 	ApplicationContext applicationContext;
 
@@ -83,8 +86,11 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator implements
 			HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
 			String h3RawProfile = command.getH3RawProfile();
 			if (!harvestAgent.isValidProfile(h3RawProfile)) {
+				log.info("isOverrideRawProfile h3RawProfile validation failed.");
 				Object[] vals = new Object[]{"unnamed"};
 				errors.reject("profile.invalid", vals, "The profile is invalid.");
+			} else {
+				log.info("isOverrideRawProfile h3RawProfile validation succeeded.");
 			}
 		}
 		
