@@ -475,6 +475,7 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 	private String getHarvestProfileString(TargetInstance aTargetInstance) {
 
 		Profile profile = aTargetInstance.getTarget().getProfile();
+		ProfileOverrides overrides = aTargetInstance.getProfileOverrides();
 
 		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX1.name())) {
 			String profileString = profile.getProfile();
@@ -484,9 +485,9 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 
 			HeritrixProfile heritrixProfile = HeritrixProfile.fromString(profileString);
 
-			if (aTargetInstance.getProfileOverrides().hasOverrides()) {
+			if (overrides.hasOverrides()) {
 				log.info("Applying Profile Overrides for " + aTargetInstance.getOid());
-				aTargetInstance.getProfileOverrides().apply(heritrixProfile);
+				overrides.apply(heritrixProfile);
 			}
 
 			heritrixProfile.setToeThreads(targetManager.getSeeds(aTargetInstance).size() * 2);
@@ -494,11 +495,15 @@ public class HarvestCoordinatorImpl implements HarvestCoordinator {
 		}
 		if (profile.getHarvesterType().equals(HarvesterType.HERITRIX3.name())) {
 			String profileXml = profile.getProfile();
-			if (aTargetInstance.getProfileOverrides().hasH3Overrides()) {
-				Heritrix3Profile h3Profile = new Heritrix3Profile(profileXml);
-				log.info("Applying H3 Profile Overrides for " + aTargetInstance.getOid());
-				aTargetInstance.getProfileOverrides().apply(h3Profile);
-				return h3Profile.toProfileXml();
+			if (overrides.hasH3Overrides()) {
+				if (overrides.isOverrideH3RawProfile()) {
+					return overrides.getH3RawProfile();
+				} else {
+					Heritrix3Profile h3Profile = new Heritrix3Profile(profileXml);
+					log.info("Applying H3 Profile Overrides for " + aTargetInstance.getOid());
+					overrides.apply(h3Profile);
+					return h3Profile.toProfileXml();
+				}
 			} else {
 				return profileXml;
 			}

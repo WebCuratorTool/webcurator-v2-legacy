@@ -175,6 +175,9 @@ public class ProfileOverrides {
 	/** True to override the included urls; otherwise false */
 	private boolean overrideH3IncludedUrls = false;
 
+	private String h3RawProfile;
+	private boolean overrideH3RawProfile = false;
+
 	/**
      * Gets the database OID of the object.
      * @return Returns the oid.
@@ -252,6 +255,8 @@ public class ProfileOverrides {
 		copy.h3IncludedUrls = new LinkedList<String>();
 		copy.h3IncludedUrls.addAll(h3IncludedUrls);
 		copy.overrideH3IncludedUrls = overrideH3IncludedUrls;
+		copy.overrideH3RawProfile = overrideH3RawProfile;
+		copy.h3RawProfile = h3RawProfile;
 
 		copy.overrideCredentials = overrideCredentials;
 		for(ProfileCredentials creds : credentials) {
@@ -482,7 +487,8 @@ public class ProfileOverrides {
 				isOverrideH3IgnoreRobots() ||
 				isOverrideH3IgnoreCookies() ||
 				isOverrideH3BlockedUrls() ||
-				isOverrideH3IncludedUrls()) {
+				isOverrideH3IncludedUrls() ||
+				isOverrideH3RawProfile()) {
 			return true;
 		}
 
@@ -1139,5 +1145,29 @@ public class ProfileOverrides {
 	 */
 	public void setOverrideH3IncludedUrls(boolean overrideH3IncludedUrls) {
 		this.overrideH3IncludedUrls = overrideH3IncludedUrls;
+	}
+
+	/**
+	 *
+	 * @hibernate.property column="PO_H3_RAW_PROFILE" type="text"
+	 */
+	public String getH3RawProfile() {
+		return h3RawProfile;
+	}
+
+	public void setH3RawProfile(String h3RawProfile) {
+		this.h3RawProfile = h3RawProfile;
+	}
+
+	/**
+	 *
+	 * @hibernate.property column="PO_H3_OR_RAW_PROFILE"
+	 */
+	public boolean isOverrideH3RawProfile() {
+		return overrideH3RawProfile;
+	}
+
+	public void setOverrideH3RawProfile(boolean overrideH3RawProfile) {
+		this.overrideH3RawProfile = overrideH3RawProfile;
 	}
 }

@@ -98,9 +98,16 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 			command = new TargetInstanceProfileCommand();
 			TargetInstanceProfileCommand tiCommand = (TargetInstanceProfileCommand) command; 
 			TargetInstance ti = (TargetInstance) o;
-			
+
 			tiCommand.setOverrideTarget(ti.getOverrides() != null);
+			command.setProfileOid(ti.getProfile().getOid());
 			command.setFromOverrides(ti.getProfileOverrides());
+			if (ti.getProfileOverrides().isOverrideH3RawProfile()) {
+				command.setRawProfile(ti.getProfileOverrides().getH3RawProfile());
+			}
+			command.setOverrideRawProfile(ti.getProfileOverrides().isOverrideH3RawProfile());
+			command.setHarvesterType(ti.getProfile().getHarvesterType());
+			command.setImported(ti.getProfile().isImported());
 		}
 		else {
 			command = new ProfileCommand();
@@ -108,8 +115,15 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 				command.setProfileOid(o.getProfile().getOid());
 				command.setFromOverrides(o.getProfileOverrides());
 			}
+			if (o.getProfileOverrides().isOverrideH3RawProfile()) {
+				command.setRawProfile(o.getProfileOverrides().getH3RawProfile());
+			}
+			command.setOverrideRawProfile(o.getProfileOverrides().isOverrideH3RawProfile());
+			command.setHarvesterType(o.getProfile().getHarvesterType());
+			command.setImported(o.getProfile().isImported());
 		}
-		
+
+
 		// Prepare the overrides.
 		
 		
@@ -135,6 +149,10 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 		tmav.addObject(Constants.GBL_CMD_DATA, command);
 		List<ProfileDTO> profiles = new ArrayList<ProfileDTO>();
 		if(o.getProfile()!=null) {
+		    /*
+		     * TODO introduce (add) a getAvailableProfiles that actually gets Profiles not DTOs
+			 * so we can use those in the JSP.
+			 */
 			profiles = profileManager.getAvailableProfiles(o.getProfile().getOid());
 			tmav.addObject("profileName", o.getProfile().getName());
 			tmav.addObject("harvesterTypeName", o.getProfile().getHarvesterType());

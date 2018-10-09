@@ -100,6 +100,16 @@ public class ProfileCommand {
 	private String h3IncludedUrls;
 	private boolean overrideH3IncludedUrls;
 
+	private String rawProfile;
+	private boolean overrideRawProfile;
+
+	private String harvesterType;
+
+	private boolean imported;
+
+
+
+
 	/**
 	 * @return Returns the profileOid.
 	 */
@@ -545,31 +555,31 @@ public class ProfileCommand {
 	public void setFromOverrides(ProfileOverrides overrides) {
 		setRobots(overrides.getRobotsHonouringPolicy());
 		setOverrideRobots(overrides.isOverrideRobotsHonouringPolicy());
-		
+
 		setMaxHours(overrides.getMaxTimeSec() != null ? overrides.getMaxTimeSec() / 3600 : 0);
 		setOverrideMaxHours(overrides.isOverrideMaxTimeSec());
-		
+
 		setMaxBytesDownload(overrides.getMaxBytesDownload() != null ? overrides.getMaxBytesDownload() / 1024 : 0);
 		setOverrideMaxBytesDownload(overrides.isOverrideMaxBytesDownload());
-	
+
 		setMaxDocuments(overrides.getMaxHarvestDocuments());
 		setOverrideMaxDocuments(overrides.isOverrideMaxHarvestDocuments());
-				
+
 		setMaxPathDepth(overrides.getMaxPathDepth());
 		setOverrideMaxPathDepth(overrides.isOverrideMaxPathDepth());
 
 		setMaxHops(overrides.getMaxLinkHops());
 		setOverrideMaxHops(overrides.isOverrideMaxLinkHops());
-	
+
 		setExcludeFilters(listToString(overrides.getExcludeUriFilters()));
 		setOverrideExcludeFilters(overrides.isOverrideExcludeUriFilters());
-		
+
 		setForceAcceptFilters(listToString(overrides.getIncludeUriFilters()));
 		setOverrideForceAcceptFilters(overrides.isOverrideIncludeUriFilters());
-		
+
 		setExcludedMimeTypes(overrides.getExcludedMimeTypes());
 		setOverrideExcludedMimeTypes(overrides.isOverrideExcludedMimeTypes());
-		
+
 		setOverrideCredentials(overrides.isOverrideCredentials());
 
 		// H3 profile overrides
@@ -606,12 +616,15 @@ public class ProfileCommand {
 
 		setH3IncludedUrls(listToString(overrides.getH3IncludedUrls()));
 		setOverrideH3IncludedUrls(overrides.isOverrideH3IncludedUrls());
+
+		setOverrideRawProfile(overrides.isOverrideH3RawProfile());
+		setRawProfile(overrides.getH3RawProfile());
 	}
-	
+
 	public void updateOverrides(ProfileOverrides overrides) {
 		overrides.setRobotsHonouringPolicy(robots);
 		overrides.setOverrideRobotsHonouringPolicy(overrideRobots);
-		
+
 		if (maxHours != null) {
 			overrides.setMaxTimeSec(maxHours * 3600);
 		}
@@ -639,7 +652,7 @@ public class ProfileCommand {
 
 		overrides.setExcludedMimeTypes(excludedMimeTypes);
 		overrides.setOverrideExcludedMimeTypes(overrideExcludedMimeTypes);
-		
+
 		overrides.setOverrideCredentials(overrideCredentials);
 
 		// H3 profile overrides
@@ -676,11 +689,14 @@ public class ProfileCommand {
 
 		overrides.setH3IncludedUrls(stringToList(h3IncludedUrls));
 		overrides.setOverrideH3IncludedUrls(overrideH3IncludedUrls);
+
+		overrides.setOverrideH3RawProfile(overrideRawProfile);
+		overrides.setH3RawProfile(rawProfile);
 	}
-	
-	public List<String> stringToList(String str) {		
+
+	public List<String> stringToList(String str) {
 		LinkedList<String> results = new LinkedList<String>();
-		
+
 		if (str != null && !str.trim().equals("")) {
 			StringTokenizer tokenizer = new StringTokenizer(str, "\n\r");
 			while(tokenizer.hasMoreTokens()) {
@@ -690,10 +706,10 @@ public class ProfileCommand {
 				}
 			}
 		}
-		
+
 		return results;
 	}
-	
+
 	public String listToString(List<String> list) {
 		StringBuffer result = new StringBuffer();
 		Iterator<String> it = list.iterator();
@@ -705,34 +721,37 @@ public class ProfileCommand {
 		}
 		return result.toString();
 	}
-	
+
 	public void setFromSummaryCommand(TargetInstanceSummaryCommand command) {
 		setProfileOid(command.getProfileOid());
-		
+
 		setRobots(command.getRobots());
 		setOverrideRobots(command.isOverrideRobots());
-		
+
 		setMaxHours(command.getMaxHours());
 		setOverrideMaxHours(command.isOverrideMaxHours());
-		
+
 		setMaxBytesDownload(command.getMaxBytesDownload() != null ? command.getMaxBytesDownload() : 0);
 		setOverrideMaxBytesDownload(command.isOverrideMaxBytesDownload());
-	
+
 		setMaxDocuments(command.getMaxDocuments());
 		setOverrideMaxDocuments(command.isOverrideMaxDocuments());
-				
+
 		setMaxPathDepth(command.getMaxPathDepth());
 		setOverrideMaxPathDepth(command.isOverrideMaxPathDepth());
 
 		setMaxHops(command.getMaxHops());
 		setOverrideMaxHops(command.isOverrideMaxHops());
-	
+
 		setExcludeFilters(command.getExcludeFilters());
 		setOverrideExcludeFilters(command.isOverrideExcludeFilters());
-		
+
 		setForceAcceptFilters(command.getForceAcceptFilters());
 		setOverrideForceAcceptFilters(command.isOverrideForceAcceptFilters());
-		
+
+		setRawProfile(command.getH3RawProfile());
+		setOverrideRawProfile(command.isOverrideH3RawProfile());
+
 	}
 
 	/**
@@ -789,5 +808,37 @@ public class ProfileCommand {
 	 */
 	public void setProfileNote(String profileNote) {
 		this.profileNote = profileNote;
+	}
+
+	public String getRawProfile() {
+		return rawProfile;
+	}
+
+	public void setRawProfile(String rawProfile) {
+		this.rawProfile = rawProfile;
+	}
+
+	public boolean isOverrideRawProfile() {
+		return overrideRawProfile;
+	}
+
+	public void setOverrideRawProfile(boolean overrideRawProfile) {
+		this.overrideRawProfile = overrideRawProfile;
+	}
+
+	public String getHarvesterType() {
+		return harvesterType;
+	}
+
+	public void setHarvesterType(String harvesterType) {
+		this.harvesterType = harvesterType;
+	}
+
+	public boolean isImported() {
+		return imported;
+	}
+
+	public void setImported(boolean imported) {
+		this.imported = imported;
 	}
 }
