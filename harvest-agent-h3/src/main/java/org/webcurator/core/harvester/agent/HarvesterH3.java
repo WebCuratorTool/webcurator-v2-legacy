@@ -552,9 +552,8 @@ public class HarvesterH3 implements Harvester {
         heritrix.waitForEngineReady(10, 1000);
         EngineResult er = heritrix.createNewJob(aJobName);
         jobStatus = heritrix.job(aJobName).job;
-        if (log.isInfoEnabled()) {
-            log.info("Launched harvester " + name);
-        }
+        log.info("Launched harvester=" + name + ", jobStatus shortName=" + jobStatus.shortName + ", statusDescription="
+                + jobStatus.statusDescription);
 
         // Update cxml file and build
         if (jobStatus.statusDescription.equals("Unbuilt")) {
@@ -566,7 +565,7 @@ public class HarvesterH3 implements Harvester {
             File srcSeedsFile = new File(srcDir + File.separator + "seeds.txt");
             Heritrix3Wrapper.copyFileAs(srcSeedsFile, new File(destDir), "seeds.txt");
             // Build H3 job
-            log.info("Building H3 job " + aJobName + ".....");
+            log.info("Building H3 job=" + aJobName + ".....");
             jobStatus = heritrix.buildJobConfiguration(aJobName).job;
             // Set h3Job now, in case of any errors we can still deregister
             h3job = jobStatus;

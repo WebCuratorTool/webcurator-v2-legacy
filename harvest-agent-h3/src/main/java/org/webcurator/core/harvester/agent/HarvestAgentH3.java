@@ -33,6 +33,8 @@ import org.webcurator.domain.model.core.harvester.agent.HarvestAgentStatusDTO;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -42,6 +44,9 @@ import java.util.*;
  * @author nwaight
  */
 public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider {
+    private static final String VALIDATING_JOB_NAME_PREFIX = "validateJob-";
+    private static final String VALIDATING_JOB_DATE_FORMAT = "yyyy-MM-dd--HH-mm-ss.SSS";
+
     /**
      * The name of the profile file.
      */
@@ -219,28 +224,30 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
      * @param force Delete everything, even if an error has occurred
      */
     private void tidy(String aJob, boolean force) {
-        if (log.isDebugEnabled()) {
-            log.debug("About to perform tidy for " + aJob);
-        }
+        log.info("About to perform tidy for job=" + aJob);
         File harvestDir = null;
         Harvester harvester = getHarvester(aJob);
         if (harvester != null) {
             // If build failed then we want to leave harvest dir there for troubleshooting
-            if (!force && !harvester.getStatus().getStatus().equals("Could not launch job - Fatal InitializationException")) {
+            if (force || (!force &&
+                    !"Could not launch job - Fatal InitializationException".equals(harvester.getStatus().getStatus()))) {
                 // Remove base dir of job
                 if (harvester.getHarvestDir() != null) {
                     harvestDir = harvester.getHarvestDir();
                 }
             }
-
+            log.info("Deregistering harvester=" + harvester.getName());
             harvester.deregister();
         }
 
+        log.info("Removing harvester=" + aJob);
         removeHarvester(aJob);
 
         if (harvestDir != null) {
             boolean deleted = FileUtils.deleteDir(harvestDir);
-            if (!deleted) {
+            if (deleted) {
+                log.info("Deleted harvest directory=" + harvestDir.getAbsolutePath());
+            } else {
                 log.error("Unable to delete harvest directory " + harvestDir.getAbsolutePath());
             }
         }
@@ -463,7 +470,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
             harvester = (Harvester) it.next();
 
             // Exclude the H3 profile validation job
-            if(!harvester.getName().equals("validateJob")){
+            if (!harvester.getName().startsWith(VALIDATING_JOB_NAME_PREFIX)) {
                 hs.put(harvester.getName(), harvester.getStatus());
 
                 s = harvester.getStatus();
@@ -902,17 +909,20 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
      */
     public boolean isValidProfile(String profile) {
 
-        String jobName = "validateJob";
+        String jobName = generatedValidateJobName();
+
         boolean isValid;
 
         // create and build job
         super.initiateHarvest(jobName, null, null);
         HarvesterH3 harvester = (HarvesterH3) getHarvester(jobName);
+        log.info("Validating profile, jobName=" + jobName);
         try {
             File profileFile = createProfile(jobName, profile);
             createSeedsFile(profileFile, "");
             harvester.build(profileFile, jobName);
             isValid = harvester.hasValidProfile();
+            log.info("Validating profile, jobName=" + jobName + ", isValid=" + isValid);
         } catch (Exception e) {
             isValid = false;
             log.warn("Exception while validating profile: " + e.getMessage());
@@ -941,5 +951,13 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         } else {
             return new HarvestAgentScriptResult();
         }
+    }
+
+    private String generatedValidateJobName() {
+        StringBuilder jobNameBuilder = new StringBuilder(VALIDATING_JOB_NAME_PREFIX);
+        DateFormat dateFormat = new SimpleDateFormat(VALIDATING_JOB_DATE_FORMAT);
+        dateFormat.format(new Date());
+        jobNameBuilder.append(dateFormat.format(new Date()));
+        return jobNameBuilder.toString();
     }
 }
