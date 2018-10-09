@@ -47,7 +47,7 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler {
 		// Use the command object to update the profile.
 		ImportedHeritrix3ProfileCommand command = (ImportedHeritrix3ProfileCommand) comm;
 		Heritrix3Profile heritrix3Profile = (Heritrix3Profile) req.getSession().getAttribute("heritrixProfile");
-		heritrix3Profile.setProfileXml(command.getRawProfile());
+		heritrix3Profile.setProfileXml(command.getH3RawProfile());
 	}
 
 
@@ -63,7 +63,7 @@ public class ImportedHeritrix3ProfileHandler extends TabHandler {
 		Heritrix3Profile heritrix3Profile = (Heritrix3Profile)req.getSession().getAttribute("heritrixProfile");
 		Profile profile = (Profile) req.getSession().getAttribute("profile");
 		ImportedHeritrix3ProfileCommand command = new ImportedHeritrix3ProfileCommand();
-		command.setRawProfile(heritrix3Profile.getProfileXml());
+		command.setH3RawProfile(heritrix3Profile.getProfileXml());
 		command.setProfileName(profile.getName());
 
 		TabbedModelAndView tmav = tc.new TabbedModelAndView();

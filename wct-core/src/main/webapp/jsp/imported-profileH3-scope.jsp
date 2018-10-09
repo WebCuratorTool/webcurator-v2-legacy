@@ -15,13 +15,13 @@
 
 <table cellpadding="3" cellspacing="0" border="0">
 <input type="hidden" name="profileName" value="${command.profileName}"/>
-<textarea id="rawProfile" name="rawProfile">
-<c:out value="${command.rawProfile}"/>
+<textarea id="h3RawProfile" name="h3RawProfile">
+<c:out value="${command.h3RawProfile}"/>
 </textarea>
 
 
 <script>
-var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
                                         {mode: "text/xml",
                                         lineNumbers: true,
                                         lineWrapping: true});

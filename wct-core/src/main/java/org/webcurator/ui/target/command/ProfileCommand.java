@@ -100,8 +100,8 @@ public class ProfileCommand {
 	private String h3IncludedUrls;
 	private boolean overrideH3IncludedUrls;
 
-	private String rawProfile;
-	private boolean overrideRawProfile;
+	private String h3RawProfile;
+	private boolean overrideH3RawProfile;
 
 	private String harvesterType;
 
@@ -617,8 +617,8 @@ public class ProfileCommand {
 		setH3IncludedUrls(listToString(overrides.getH3IncludedUrls()));
 		setOverrideH3IncludedUrls(overrides.isOverrideH3IncludedUrls());
 
-		setOverrideRawProfile(overrides.isOverrideH3RawProfile());
-		setRawProfile(overrides.getH3RawProfile());
+		setOverrideH3RawProfile(overrides.isOverrideH3RawProfile());
+		setH3RawProfile(overrides.getH3RawProfile());
 	}
 
 	public void updateOverrides(ProfileOverrides overrides) {
@@ -690,8 +690,8 @@ public class ProfileCommand {
 		overrides.setH3IncludedUrls(stringToList(h3IncludedUrls));
 		overrides.setOverrideH3IncludedUrls(overrideH3IncludedUrls);
 
-		overrides.setOverrideH3RawProfile(overrideRawProfile);
-		overrides.setH3RawProfile(rawProfile);
+		overrides.setOverrideH3RawProfile(overrideH3RawProfile);
+		overrides.setH3RawProfile(h3RawProfile);
 	}
 
 	public List<String> stringToList(String str) {
@@ -807,20 +807,20 @@ public class ProfileCommand {
 		this.profileNote = profileNote;
 	}
 
-	public String getRawProfile() {
-		return rawProfile;
+	public String getH3RawProfile() {
+		return h3RawProfile;
 	}
 
-	public void setRawProfile(String rawProfile) {
-		this.rawProfile = rawProfile;
+	public void setH3RawProfile(String h3RawProfile) {
+		this.h3RawProfile = h3RawProfile;
 	}
 
-	public boolean isOverrideRawProfile() {
-		return overrideRawProfile;
+	public boolean isOverrideH3RawProfile() {
+		return overrideH3RawProfile;
 	}
 
-	public void setOverrideRawProfile(boolean overrideRawProfile) {
-		this.overrideRawProfile = overrideRawProfile;
+	public void setOverrideH3RawProfile(boolean overrideH3RawProfile) {
+		this.overrideH3RawProfile = overrideH3RawProfile;
 	}
 
 	public String getHarvesterType() {

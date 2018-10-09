@@ -43,8 +43,8 @@ public class ImportedHeritrix3ProfileValidator extends AbstractBaseValidator imp
 
 
 		HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
-		String rawProfile = command.getRawProfile();
-		if (!harvestAgent.isValidProfile(rawProfile)) {
+		String h3RawProfile = command.getH3RawProfile();
+		if (!harvestAgent.isValidProfile(h3RawProfile)) {
 			Object[] vals = new Object[]{command.getProfileName()};
 			errors.reject("profile.invalid", vals, "The profile is invalid.");
 		}

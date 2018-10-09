@@ -103,9 +103,9 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 			command.setProfileOid(ti.getProfile().getOid());
 			command.setFromOverrides(ti.getProfileOverrides());
 			if (ti.getProfileOverrides().isOverrideH3RawProfile()) {
-				command.setRawProfile(ti.getProfileOverrides().getH3RawProfile());
+				command.setH3RawProfile(ti.getProfileOverrides().getH3RawProfile());
 			}
-			command.setOverrideRawProfile(ti.getProfileOverrides().isOverrideH3RawProfile());
+			command.setOverrideH3RawProfile(ti.getProfileOverrides().isOverrideH3RawProfile());
 			command.setHarvesterType(ti.getProfile().getHarvesterType());
 			command.setImported(ti.getProfile().isImported());
 		}
@@ -116,9 +116,9 @@ public abstract class AbstractOverrideTabHandler extends TabHandler {
 				command.setFromOverrides(o.getProfileOverrides());
 			}
 			if (o.getProfileOverrides().isOverrideH3RawProfile()) {
-				command.setRawProfile(o.getProfileOverrides().getH3RawProfile());
+				command.setH3RawProfile(o.getProfileOverrides().getH3RawProfile());
 			}
-			command.setOverrideRawProfile(o.getProfileOverrides().isOverrideH3RawProfile());
+			command.setOverrideH3RawProfile(o.getProfileOverrides().isOverrideH3RawProfile());
 			command.setHarvesterType(o.getProfile().getHarvesterType());
 			command.setImported(o.getProfile().isImported());
 		}

@@ -65,16 +65,16 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       $('#h1Credentials').show();
       $('#h3ProfileOverrides').hide();
       $('#editorDiv').hide();
-      $('#overrideRawProfileCheckbox').hide();
+      $('#overrideH3RawProfileCheckbox').hide();
     } else if (selectedProfile.imported == "true") {
       $('#h1ProfileOverrides').hide();
       $('#h3ProfileOverrides').hide();
       $('#h1Credentials').hide();
-      $('#overrideRawProfileCheckbox').show();
-      if ($('#overrideRawProfile').is(":checked")) {
+      $('#overrideH3RawProfileCheckbox').show();
+      if ($('#overrideH3RawProfile').is(":checked")) {
         $('#editorDiv').show();
         if (!onPageLoad) {
-          codeMirrorInstance.setValue(selectedProfile.rawProfile);
+          codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
         }
       } else {
         $('#editorDiv').hide();
@@ -83,7 +83,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
       $('#h1Credentials').hide();
-      $('#overrideRawProfileCheckbox').hide();
+      $('#overrideH3RawProfileCheckbox').hide();
       $('#editorDiv').hide();
     }
   }
@@ -96,7 +96,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
         name: "${prf.name}",
         oid: "${prf.oid}",
         harvesterType: "${prf.harvesterType}",
-        <c:if test="${prf.harvesterType eq 'HERITRIX3' && prf.imported eq 'true'}">rawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
+        <c:if test="${prf.harvesterType eq 'HERITRIX3' && prf.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
         imported: "${prf.imported}"
       };
       profilesList.push(jsProfile);
@@ -121,14 +121,14 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 
 <c:choose>
     <c:when test="${urlPrefix ne 'ti'}">
-    $('#overrideRawProfile').change(function() {
+    $('#overrideH3RawProfile').change(function() {
       var harvesterType = document.getElementById('harvesterType');
       var harvesterTypeValueSelected = harvesterType.options[harvesterType.selectedIndex].value;
       toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
     });
     </c:when>
     <c:otherwise>
-    $('#overrideRawProfile').change(function() {
+    $('#overrideH3RawProfile').change(function() {
       var harvesterType = document.getElementById('harvesterType');
       toggleProvideOverrides(profilesList, harvesterType.value);
     });
@@ -151,7 +151,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
         name: "${profileName}",
         oid: "${command.profileOid}",
         harvesterType: "${command.harvesterType}",
-        <c:if test="${command.harvesterType eq 'HERITRIX3' && command.imported eq 'true'}">rawProfile: "<spring:escapeBody javaScriptEscape="true">${command.rawProfile}</spring:escapeBody>",</c:if>
+        <c:if test="${command.harvesterType eq 'HERITRIX3' && command.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${command.h3RawProfile}</spring:escapeBody>",</c:if>
         imported: "${command.imported}"
       };
     }
@@ -536,7 +536,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 </authority:showControl>
 
 
-<div id="overrideRawProfileCheckbox">
+<div id="overrideH3RawProfileCheckbox">
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
 <table>
@@ -545,7 +545,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 Override Imported Profile:
 </td>
 <td>
-<input type="checkbox" id="overrideRawProfile" name="overrideRawProfile" ${command.overrideRawProfile ? 'checked' : ''}/>
+<input type="checkbox" id="overrideH3RawProfile" name="overrideH3RawProfile" ${command.overrideH3RawProfile ? 'checked' : ''}/>
 </td>
 </tr>
 </table>
@@ -556,7 +556,7 @@ Override Imported Profile:
 <tr>
 <td class="subBoxTextHdr">
   <c:choose>
-    <c:when test="${command.overrideRawProfile}">
+    <c:when test="${command.overrideH3RawProfile}">
 The base profile is being overridden by this profile:
     </c:when>
     <c:otherwise>
@@ -574,26 +574,26 @@ No overrides.
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
 <div id="editorDiv">
-<textarea id="rawProfile" name="rawProfile"/>
-<c:out value="${command.rawProfile}"/>
+<textarea id="h3RawProfile" name="h3RawProfile"/>
+<c:out value="${command.h3RawProfile}"/>
 </textarea>
 </div>
 <script>
-      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
                                               {mode: "text/xml",
                                               lineNumbers: true,
                                               lineWrapping: true});
 </script>
 </authority:show>
 <authority:dont>
-<c:if test="${command.harvesterType == 'HERITRIX3' && command.overrideRawProfile}">
+<c:if test="${command.harvesterType == 'HERITRIX3' && command.overrideH3RawProfile}">
 <div id="editorDiv">
-<textarea id="rawProfile" name="rawProfile"/>
-<c:out value="${command.rawProfile}"/>
+<textarea id="h3RawProfile" name="h3RawProfile"/>
+<c:out value="${command.h3RawProfile}"/>
 </textarea>
 </div>
 <script>
-      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("rawProfile"),
+      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
                                               {mode: "text/xml",
                                               lineNumbers: true,
                                               lineWrapping: true,
