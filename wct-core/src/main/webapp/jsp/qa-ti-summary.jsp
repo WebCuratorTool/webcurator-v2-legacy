@@ -663,7 +663,6 @@ function getSelectedProfile(profilesList) {
 										mode: "text/xml",
 										lineNumbers: true,
 										lineWrapping: true,
-										theme: "elegant",
 										readOnly: false
 									});
 							</script>
