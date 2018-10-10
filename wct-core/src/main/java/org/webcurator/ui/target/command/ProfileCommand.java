@@ -722,36 +722,42 @@ public class ProfileCommand {
 		return result.toString();
 	}
 
-	public void setFromSummaryCommand(TargetInstanceSummaryCommand command) {
+	public void setFromSummaryCommand(TargetInstanceSummaryCommand command, boolean isImportedH3RawProfileOverride) {
 		setProfileOid(command.getProfileOid());
 
-		setRobots(command.getRobots());
-		setOverrideRobots(command.isOverrideRobots());
+		if (isImportedH3RawProfileOverride) {
+			setH3RawProfile(command.getH3RawProfile());
+			setOverrideH3RawProfile(command.isOverrideH3RawProfile());
+		} else {
+			// We explicitly null this out
+			setH3RawProfile(null);
+			// We explicitly set this to false
+			setOverrideH3RawProfile(false);
 
-		setMaxHours(command.getMaxHours());
-		setOverrideMaxHours(command.isOverrideMaxHours());
+			setRobots(command.getRobots());
+			setOverrideRobots(command.isOverrideRobots());
 
-		setMaxBytesDownload(command.getMaxBytesDownload() != null ? command.getMaxBytesDownload() : 0);
-		setOverrideMaxBytesDownload(command.isOverrideMaxBytesDownload());
+			setMaxHours(command.getMaxHours());
+			setOverrideMaxHours(command.isOverrideMaxHours());
 
-		setMaxDocuments(command.getMaxDocuments());
-		setOverrideMaxDocuments(command.isOverrideMaxDocuments());
+			setMaxBytesDownload(command.getMaxBytesDownload() != null ? command.getMaxBytesDownload() : 0);
+			setOverrideMaxBytesDownload(command.isOverrideMaxBytesDownload());
 
-		setMaxPathDepth(command.getMaxPathDepth());
-		setOverrideMaxPathDepth(command.isOverrideMaxPathDepth());
+			setMaxDocuments(command.getMaxDocuments());
+			setOverrideMaxDocuments(command.isOverrideMaxDocuments());
 
-		setMaxHops(command.getMaxHops());
-		setOverrideMaxHops(command.isOverrideMaxHops());
+			setMaxPathDepth(command.getMaxPathDepth());
+			setOverrideMaxPathDepth(command.isOverrideMaxPathDepth());
 
-		setExcludeFilters(command.getExcludeFilters());
-		setOverrideExcludeFilters(command.isOverrideExcludeFilters());
+			setMaxHops(command.getMaxHops());
+			setOverrideMaxHops(command.isOverrideMaxHops());
 
-		setForceAcceptFilters(command.getForceAcceptFilters());
-		setOverrideForceAcceptFilters(command.isOverrideForceAcceptFilters());
+			setExcludeFilters(command.getExcludeFilters());
+			setOverrideExcludeFilters(command.isOverrideExcludeFilters());
 
-		setRawProfile(command.getH3RawProfile());
-		setOverrideRawProfile(command.isOverrideH3RawProfile());
-
+			setForceAcceptFilters(command.getForceAcceptFilters());
+			setOverrideForceAcceptFilters(command.isOverrideForceAcceptFilters());
+		}
 	}
 
 	/**

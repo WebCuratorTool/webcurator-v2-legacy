@@ -22,7 +22,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.webcurator.core.harvester.agent.HarvestAgent;
+import org.webcurator.core.profiles.ProfileManager;
 import org.webcurator.domain.model.core.AbstractTarget;
+import org.webcurator.domain.model.core.Profile;
 import org.webcurator.domain.model.core.Target;
 import org.webcurator.ui.common.validation.AbstractBaseValidator;
 import org.webcurator.ui.common.validation.ValidatorUtil;
@@ -45,55 +47,65 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator implements
 	}
 
 	public void validate(Object comm, Errors errors) {
-		ProfileCommand command = (ProfileCommand) comm;		
-		if (command.isOverrideExcludedMimeTypes()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "excludedMimeTypes", "required", getObjectArrayForLabel("excludedMimeTypes"), "excludedMimeTypes is a required field");			
-		}
+		ProfileCommand command = (ProfileCommand) comm;
 
-		if (command.isOverrideExcludeFilters()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "excludeFilters", "required", getObjectArrayForLabel("excludeFilters"), "excludeFilters is a required field");
-		}
-		
-		if (command.isOverrideForceAcceptFilters()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "forceAcceptFilters", "required", getObjectArrayForLabel("forceAcceptFilters"), "forceAcceptFilters is a required field");
-		}
-		
-		if (command.isOverrideMaxBytesDownload()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxBytesDownload", "required", getObjectArrayForLabel("maxBytesDownload"), "maxBytesDownload is a required field");
-		}
-		
-		if (command.isOverrideMaxDocuments()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxDocuments", "required", getObjectArrayForLabel("maxDocuments"), "maxDocuments is a required field");
-		}
-
-		if (command.isOverrideMaxHops()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxHops", "required", getObjectArrayForLabel("maxHops"), "maxHops is a required field");
-		}
-
-		if (command.isOverrideMaxHours()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxHours", "required", getObjectArrayForLabel("maxHours"), "maxHours is a required field");
-		}
-		
-		if (command.isOverrideMaxPathDepth()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxPathDepth", "required", getObjectArrayForLabel("maxPathDepth"), "maxPathDepth is a required field");
-		}
-
-		if (command.isOverrideRobots()) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "robots", "required", getObjectArrayForLabel("robots"), "robots is a required field");
-		}
-
-		if (command.isOverrideH3RawProfile()) {
-			HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
+		// If we are overriding an imported H3RawProfile, then we only validate it and nothing else
+		// We validate the profile whether or not it's being overridden
+		if (command.isImported()) {
 			String h3RawProfile = command.getH3RawProfile();
+			String validationType = (command.isOverrideH3RawProfile() ?
+					"overridden imported profile" :
+					"existing imported profile");
+
+			HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
 			if (!harvestAgent.isValidProfile(h3RawProfile)) {
-				log.info("isOverrideRawProfile h3RawProfile validation failed.");
-				Object[] vals = new Object[]{"unnamed"};
+				log.info("isImported, validating " + validationType + ": validation failed.");
+				Object[] vals = new Object[]{"'unnamed " + validationType + "'"};
 				errors.reject("profile.invalid", vals, "The profile is invalid.");
 			} else {
-				log.info("isOverrideRawProfile h3RawProfile validation succeeded.");
+				log.info("isImported, validating " + validationType + ": validation succeeded.");
+			}
+		} else {
+			log.info("Validating non-imported profile.");
+
+			if (command.isOverrideExcludedMimeTypes()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "excludedMimeTypes", "required", getObjectArrayForLabel("excludedMimeTypes"), "excludedMimeTypes is a required field");
+			}
+
+			if (command.isOverrideExcludeFilters()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "excludeFilters", "required", getObjectArrayForLabel("excludeFilters"), "excludeFilters is a required field");
+			}
+
+			if (command.isOverrideForceAcceptFilters()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "forceAcceptFilters", "required", getObjectArrayForLabel("forceAcceptFilters"), "forceAcceptFilters is a required field");
+			}
+
+			if (command.isOverrideMaxBytesDownload()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxBytesDownload", "required", getObjectArrayForLabel("maxBytesDownload"), "maxBytesDownload is a required field");
+			}
+
+			if (command.isOverrideMaxDocuments()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxDocuments", "required", getObjectArrayForLabel("maxDocuments"), "maxDocuments is a required field");
+			}
+
+			if (command.isOverrideMaxHops()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxHops", "required", getObjectArrayForLabel("maxHops"), "maxHops is a required field");
+			}
+
+			if (command.isOverrideMaxHours()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxHours", "required", getObjectArrayForLabel("maxHours"), "maxHours is a required field");
+			}
+
+			if (command.isOverrideMaxPathDepth()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "maxPathDepth", "required", getObjectArrayForLabel("maxPathDepth"), "maxPathDepth is a required field");
+			}
+
+			if (command.isOverrideRobots()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "robots", "required", getObjectArrayForLabel("robots"), "robots is a required field");
 			}
 		}
-		
+
+		// All profiles have profile notes
 		ValidatorUtil.validateStringMaxLength(errors, command.getProfileNote(), AbstractTarget.MAX_PROFILE_NOTE_LENGTH, "string.maxlength", getObjectArrayForLabelAndInt(ProfileCommand.PARAM_PROFILE_NOTE, AbstractTarget.MAX_PROFILE_NOTE_LENGTH), "Evaluation Note is too long");
 	}
 

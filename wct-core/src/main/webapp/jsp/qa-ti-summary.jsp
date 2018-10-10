@@ -233,7 +233,7 @@ function toggleProfileOverrides(profilesList, onPageLoad=false) {
 	if (selectedProfile.imported == "true") {
 		$('#h1OrH3NonImportedProfile').hide();
 		$('#h3ImportedProfile').show();
-		codeMirrorInstance.setValue(selectedProfile.rawProfile);
+		codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
 	} else { <!-- HERITRIX1 or HERITRIX3 but not imported -->
 		$('#h1OrH3NonImportedProfile').show();
 		$('#h3ImportedProfile').hide();
@@ -253,7 +253,7 @@ $(document).ready(function() {
 		name: "${prf.name}",
 		oid: "${prf.oid}",
 		// We don't check the harvester type. We show the XML editor if the profile is imported, no matter the type
-		<c:if test="${prf.imported eq 'true'}">rawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
+		<c:if test="${prf.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
 		imported: "${prf.imported}"
 	};
 	profilesList.push(jsProfile);

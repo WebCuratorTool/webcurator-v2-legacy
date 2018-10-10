@@ -60,6 +60,8 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 
     var selectedProfile = getSelectedProfile(profilesList);
 
+    $('#currentImportedValue').prop('checked', (selectedProfile.imported == "true"));
+
     if (harvesterTypeValueSelected == 'HERITRIX1') {
       $('#h1ProfileOverrides').show();
       $('#h1Credentials').show();
@@ -71,7 +73,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       $('#h3ProfileOverrides').hide();
       $('#h1Credentials').hide();
       $('#overrideH3RawProfileCheckbox').show();
-      if ($('#overrideH3RawProfile').is(":checked")) {
+       if ($('#overrideH3RawProfile').is(":checked")) {
         $('#editorDiv').show();
         if (!onPageLoad) {
           codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
@@ -135,6 +137,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
     </c:otherwise>
 </c:choose>
 
+    $('#currentImportedValue').hide();
   });
 
 <c:choose>
@@ -546,6 +549,7 @@ Override Imported Profile:
 </td>
 <td>
 <input type="checkbox" id="overrideH3RawProfile" name="overrideH3RawProfile" ${command.overrideH3RawProfile ? 'checked' : ''}/>
+    <input type="checkbox" id="currentImportedValue" name="imported" checked="${command.imported ? 'checked' : ''}"/>
 </td>
 </tr>
 </table>
