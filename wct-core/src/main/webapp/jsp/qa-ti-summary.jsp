@@ -30,6 +30,8 @@
 <script type="text/javascript"> 
 <!-- JQuery Section: ANNOTATIONS HISTORY (VIA AJAX) JAVASCRIPT -->
 
+var currentProfileIndex = -1;
+
 //json array of images representing the enabled action buttons
 var enabled_buttons = {
 		"archive":			'images/multi-archive-enabled.gif',
@@ -227,13 +229,26 @@ function onChangeScheduleDates(textbox) {
 }
 
 function toggleProfileOverrides(profilesList, onPageLoad=false) {
-
+    if (!onPageLoad && currentProfileIndex >= 0) {
+        // Save any h3RawProfile editor changes
+        profilesList[currentProfileIndex].h3RawProfile = codeMirrorInstance.getValue();
+    }
 	var selectedProfile = getSelectedProfile(profilesList);
 
+    if (!onPageLoad) {
+        if ((typeof selectedProfile.h3RawProfile !== 'undefined') && selectedProfile.h3RawProfile != null) {
+            codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
+        } else {
+            codeMirrorInstance.setValue("");
+        }
+        // if we don't have this timeout, the editor will not display its contents until after it's clicked into
+        setTimeout(function() {
+            codeMirrorInstance.refresh();
+        }, 1);
+    }
 	if (selectedProfile.imported == "true") {
 		$('#h1OrH3NonImportedProfile').hide();
 		$('#h3ImportedProfile').show();
-		codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
 	} else { <!-- HERITRIX1 or HERITRIX3 but not imported -->
 		$('#h1OrH3NonImportedProfile').show();
 		$('#h3ImportedProfile').hide();
@@ -265,11 +280,10 @@ $(document).ready(function() {
 	});
 });
 
-// This needs to be after profilesList is declared
 function getSelectedProfile(profilesList) {
 	var oid = document.getElementById('profileOid');
-	var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(oid.options[oid.selectedIndex].value);
-	return profilesList[prfIdx];
+    currentProfileIndex = profilesList.map(function(elem) { return elem.oid; }).indexOf(oid.options[oid.selectedIndex].value);
+	return profilesList[currentProfileIndex];
 }
 
 </script>
@@ -654,8 +668,9 @@ function getSelectedProfile(profilesList) {
 					<tr>
 						<td colspan="9">
 							<div id="editorDiv">
-								<textarea id="h3RawProfile" name="h3RawProfile" form="profileoverrides"/>
-								</textarea>
+<textarea id="h3RawProfile" name="h3RawProfile" form="profileoverrides"/>
+<c:out value="${profileCommand.h3RawProfile}"/>
+</textarea>
 							</div>
 							<script>
 								codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
