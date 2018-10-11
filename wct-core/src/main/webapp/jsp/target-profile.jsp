@@ -37,6 +37,8 @@
 
 <script type="text/javascript">
 
+  var currentProfileIndex = -1;
+
   function changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid) {
       // Change the base profile list to those profiles that match the selected harvester type.
       var matchingProfiles = [];
@@ -57,9 +59,23 @@
 
 
 function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPageLoad=false) {
-
+    if (!onPageLoad && currentProfileIndex >= 0) {
+        // Save any h3RawProfile editor changes
+        profilesList[currentProfileIndex].h3RawProfile = codeMirrorInstance.getValue();
+    }
     var selectedProfile = getSelectedProfile(profilesList);
 
+    if (!onPageLoad) {
+        if ((typeof selectedProfile.h3RawProfile !== 'undefined') && selectedProfile.h3RawProfile != null) {
+            codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
+        } else {
+            codeMirrorInstance.setValue("");
+        }
+        // if we don't have this timeout, the editor will not display its contents until after it's clicked into
+        setTimeout(function() {
+            codeMirrorInstance.refresh();
+        }, 1);
+    }
     $('#currentImportedValue').prop('checked', (selectedProfile.imported == "true"));
 
     if (harvesterTypeValueSelected == 'HERITRIX1') {
@@ -73,11 +89,8 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       $('#h3ProfileOverrides').hide();
       $('#h1Credentials').hide();
       $('#overrideH3RawProfileCheckbox').show();
-       if ($('#overrideH3RawProfile').is(":checked")) {
+      if ($('#overrideH3RawProfile').is(":checked")) {
         $('#editorDiv').show();
-        if (!onPageLoad) {
-          codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
-        }
       } else {
         $('#editorDiv').hide();
       }
@@ -144,12 +157,13 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
     <c:when test="${urlPrefix ne 'ti'}">
     function getSelectedProfile(profilesList) {
         var profileOid = document.getElementById('profileOid');
-        var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(profileOid.value);
-        return profilesList[prfIdx];
+        currentProfileIndex = profilesList.map(function(elem) { return elem.oid; }).indexOf(profileOid.value);
+        return profilesList[currentProfileIndex];
     }
     </c:when>
     <c:otherwise>
     function getSelectedProfile(profilesList) {
+        // the currentProfileIndex will not change from -1, but in the 'ti' state, only one profile can be edited
     return {
         name: "${profileName}",
         oid: "${command.profileOid}",
