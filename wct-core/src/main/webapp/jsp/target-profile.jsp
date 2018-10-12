@@ -5,7 +5,20 @@
 <%@taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <script src="scripts/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script src="scripts/codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="scripts/codemirror/lib/codemirror.css"/>
+<link rel="stylesheet" href="scripts/codemirror/theme/elegant.css"/>
+<script src="scripts/codemirror/mode/xml/xml.js"></script>
 
+<style>
+.CodeMirror {
+  height: 40em;
+}
+</style>
+
+
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode}">
+        <authority:show>
 <script language="javascript">
 <!--
   function removeCredential(credIndex) {
@@ -25,8 +38,6 @@
 <script type="text/javascript">
 
   function changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid) {
-//      alert(JSON.stringify(profilesList));
-//      alert("harvesterTypeValueSelected: " + harvesterTypeValueSelected);
       // Change the base profile list to those profiles that match the selected harvester type.
       var matchingProfiles = [];
       $.each(profilesList, function(index, value) {
@@ -34,11 +45,9 @@
           matchingProfiles.push(value);
         }
       });
-//      alert(JSON.stringify(matchingProfiles));
       $("#profileOid").html('');
       $(matchingProfiles).each(function(i) {
         if (matchingProfiles[i].oid == commandProfileOid) {
-          //alert(matchingProfiles[i].oid + " = " + commandProfileOid);
           $("#profileOid").append("<option value=" + matchingProfiles[i].oid + " SELECTED>" + matchingProfiles[i].name + "</option>");
         } else {
           $("#profileOid").append("<option value=" + matchingProfiles[i].oid + ">" + matchingProfiles[i].name + "</option>");
@@ -46,17 +55,39 @@
       });
   }
 
-  function toggleProvideOverrides(harvesterTypeValueSelected) {
+
+function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPageLoad=false) {
+
+    var selectedProfile = getSelectedProfile(profilesList);
+
     if (harvesterTypeValueSelected == 'HERITRIX1') {
       $('#h1ProfileOverrides').show();
       $('#h1Credentials').show();
       $('#h3ProfileOverrides').hide();
+      $('#editorDiv').hide();
+      $('#overrideH3RawProfileCheckbox').hide();
+    } else if (selectedProfile.imported == "true") {
+      $('#h1ProfileOverrides').hide();
+      $('#h3ProfileOverrides').hide();
+      $('#h1Credentials').hide();
+      $('#overrideH3RawProfileCheckbox').show();
+      if ($('#overrideH3RawProfile').is(":checked")) {
+        $('#editorDiv').show();
+        if (!onPageLoad) {
+          codeMirrorInstance.setValue(selectedProfile.h3RawProfile);
+        }
+      } else {
+        $('#editorDiv').hide();
+      }
     } else {
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
       $('#h1Credentials').hide();
+      $('#overrideH3RawProfileCheckbox').hide();
+      $('#editorDiv').hide();
     }
   }
+
 
   $(document).ready(function() {
     var profilesList = [];
@@ -64,7 +95,9 @@
       var jsProfile = {
         name: "${prf.name}",
         oid: "${prf.oid}",
-        harvesterType: "${prf.harvesterType}"
+        harvesterType: "${prf.harvesterType}",
+        <c:if test="${prf.harvesterType eq 'HERITRIX3' && prf.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
+        imported: "${prf.imported}"
       };
       profilesList.push(jsProfile);
     </c:forEach>
@@ -72,19 +105,67 @@
     var commandProfileOid = "<c:out value='${command.profileOid}' />";
     $("#harvesterType option[value='" + selectedHarvesterTypeName + "']").prop('selected', true);
     changeBaseProfileList(profilesList, selectedHarvesterTypeName, commandProfileOid);
-    toggleProvideOverrides(selectedHarvesterTypeName);
+    toggleProvideOverrides(profilesList, selectedHarvesterTypeName, true);
 
     $('#harvesterType').change(function() {
       var harvesterTypeValueSelected = this.value;
       changeBaseProfileList(profilesList, harvesterTypeValueSelected, commandProfileOid);
-      toggleProvideOverrides(harvesterTypeValueSelected);
+      toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
     });
 
+    $('#profileOid').change(function() {
+      var harvesterType = document.getElementById('harvesterType');
+      var harvesterTypeValueSelected = harvesterType.options[harvesterType.selectedIndex].value;
+      toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
+    });
+
+<c:choose>
+    <c:when test="${urlPrefix ne 'ti'}">
+    $('#overrideH3RawProfile').change(function() {
+      var harvesterType = document.getElementById('harvesterType');
+      var harvesterTypeValueSelected = harvesterType.options[harvesterType.selectedIndex].value;
+      toggleProvideOverrides(profilesList, harvesterTypeValueSelected);
+    });
+    </c:when>
+    <c:otherwise>
+    $('#overrideH3RawProfile').change(function() {
+      var harvesterType = document.getElementById('harvesterType');
+      toggleProvideOverrides(profilesList, harvesterType.value);
+    });
+    </c:otherwise>
+</c:choose>
+
   });
+
+<c:choose>
+    <c:when test="${urlPrefix ne 'ti'}">
+    function getSelectedProfile(profilesList) {
+        var profileOid = document.getElementById('profileOid');
+        var prfIdx = profilesList.map(function(elem) { return elem.oid; }).indexOf(profileOid.value);
+        return profilesList[prfIdx];
+    }
+    </c:when>
+    <c:otherwise>
+    function getSelectedProfile(profilesList) {
+    return {
+        name: "${profileName}",
+        oid: "${command.profileOid}",
+        harvesterType: "${command.harvesterType}",
+        <c:if test="${command.harvesterType eq 'HERITRIX3' && command.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${command.h3RawProfile}</spring:escapeBody>",</c:if>
+        imported: "${command.imported}"
+      };
+    }
+    </c:otherwise>
+</c:choose>
+
 </script>
+        </authority:show>
+</authority:showControl>
+
+
 
 <% Object ownable = request.getAttribute("ownable");
-   if(ownable instanceof AbstractTarget && 
+   if(ownable instanceof AbstractTarget &&
       ((AbstractTarget)ownable).getObjectType() == AbstractTarget.TYPE_GROUP &&
       ((TargetGroup)ownable).getSipType() == TargetGroup.MANY_SIP) { %>
 <p style="color: red;"><b><spring:message code="ui.label.target.profile.warning"/>:</b> <spring:message code="ui.label.target.profile.warningManySip"/></p>
@@ -107,13 +188,14 @@
 		    </authority:show>
 		    <authority:dont>
 		      <c:out value="${harvesterTypeName}"/>
+		      <input type="hidden" name="harvesterType" id="harvesterType" value="${harvesterTypeName}"/>
 		    </authority:dont>
 		</authority:showControl>
     </td>
   </tr>
   <tr>
     <td class="subBoxTextHdr">Base Profile:</td>
-    <td class="subBoxText">    
+    <td class="subBoxText">
 		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode && urlPrefix ne 'ti'}">
         	<authority:show>
 		      <select name="profileOid" id="profileOid">
@@ -124,15 +206,15 @@
 		    </authority:show>
 		    <authority:dont>
 		      <c:out value="${profileName}"/>
-		      <input type="hidden" name="profileOid" value="<c:out value="${command.profileOid}"/>" />
+		      <input type="hidden" id="profileOid" name="profileOid" value="<c:out value="${command.profileOid}"/>" />
 		    </authority:dont>
 		</authority:showControl>
     </td>
-  </tr> 
+  </tr>
   <c:if test="${urlPrefix eq 'ti'}">
   <tr>
     <td class="subBoxTextHdr">Override Target Overrides:</td>
-    <td class="subBoxText">    
+    <td class="subBoxText">
 		<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${editMode}">
         	<authority:show>
 		      <input type="checkbox" name="overrideTarget" ${command.overrideTarget ? 'checked' : ''} onclick="toggleOverride();">
@@ -143,14 +225,16 @@
 		    </authority:dont>
 		</authority:showControl>
     </td>
-  </tr>   
-  </c:if> 
+  </tr>
+  </c:if>
 </table>
 <img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
 <span class="subBoxTitle">Profile Overrides</span>
 
 <c:set var="profileEditMode" value="${editMode && (urlPrefix ne 'ti' || command.overrideTarget)}"/>
 
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
 <div id="h1ProfileOverrides">
 	<table width="100%" cellpadding="3" cellspacing="0" border="0">
 		<tr>
@@ -159,8 +243,6 @@
 			<td class="annotationsHeaderRow">Enable Override</td>
 		</tr>
 
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
-<authority:show>
     <tr>
       <td class="annotationsLiteRow">Robot Honouring Policy</td>
       <td class="annotationsLiteRow">
@@ -219,8 +301,20 @@
       <td class="annotationsLiteRow"><input type="text" size="60" name="excludedMimeTypes" value="<c:out value="${command.excludedMimeTypes}"/>"/></td>
       <td class="annotationsLiteRow"><input type="checkbox" name="overrideExcludedMimeTypes" ${command.overrideExcludedMimeTypes ? 'checked' : ''}/></td>
     </tr>
+</table>
+</div>
 </authority:show>
 <authority:dont>
+
+<c:if test="${command.harvesterType == 'HERITRIX1'}">
+<div id="h1ProfileOverrides">
+	<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<td class="annotationsHeaderRow">Profile Element</td>
+			<td class="annotationsHeaderRow">Override Value</td>
+			<td class="annotationsHeaderRow">Enable Override</td>
+		</tr>
+
 
     <tr>
       <td class="annotationsLiteRow">Robot Honouring Policy</td>
@@ -272,13 +366,16 @@
       <td class="annotationsLiteRow"><c:out value="${command.excludedMimeTypes}"/></td>
       <td class="annotationsLiteRow">${command.overrideExcludedMimeTypes ? 'Yes' : 'No'}</td>
     </tr>
+</table>
+</div>
+</c:if>
 
 </authority:dont>
 </authority:showControl>
 
-</table>
-</div>
 
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
 <div id="h3ProfileOverrides">
 	<table width="100%" cellpadding="3" cellspacing="0" border="0">
 		<tr>
@@ -287,8 +384,6 @@
 			<td class="annotationsHeaderRow">Enable Override</td>
 		</tr>
 
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
-<authority:show>
 
     <tr>
       <td class="annotationsLiteRow">Document Limit</td>
@@ -368,9 +463,20 @@
       <td class="annotationsLiteRow" valign="top"><textarea name="h3IncludedUrls" cols="80" rows="5"><c:out value="${command.h3IncludedUrls}"/></textarea></td>
       <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideH3IncludedUrls" ${command.overrideH3IncludedUrls ? 'checked' : ''}/></td>
     </tr>
+</table>
+</div>
 
 </authority:show>
 <authority:dont>
+<c:if test="${command.harvesterType == 'HERITRIX3' && !command.imported}">
+<div id="h3ProfileOverrides">
+	<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<td class="annotationsHeaderRow">Profile Element</td>
+			<td class="annotationsHeaderRow">Override Value</td>
+			<td class="annotationsHeaderRow">Enable Override</td>
+		</tr>
+
 
     <tr>
       <td class="annotationsLiteRow">Document Limit</td>
@@ -423,42 +529,99 @@
       <td class="annotationsLiteRow">${command.overrideH3IncludedUrls ? 'Yes' : 'No'}</td>
     </tr>
 
-</authority:dont>
-</authority:showControl>
-
 </table>
 </div>
-
-<img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
-<div id="h1Credentials">
-<span class="subBoxTitle">Credentials Override</span>
-
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
-<authority:show>
-<p><input type="checkbox" name="overrideCredentials" id="overrideCredentials" ${command.overrideCredentials ? 'checked' : ''} /><label for="overrideCredentials">Click to override the security credentials</label></p>
-</authority:show>
-<authority:dont>
-  <c:choose>
-    <c:when test="${command.overrideCredentials}"><p>Credentials are overridden</p></c:when>
-    <c:otherwise><p>Credentials are not overridden</p></c:otherwise>
-  </c:choose>
+</c:if>
 </authority:dont>
 </authority:showControl>
 
+
+<div id="overrideH3RawProfileCheckbox">
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
+<table>
+<tr>
+<td class="subBoxTextHdr">
+Override Imported Profile:
+</td>
+<td>
+<input type="checkbox" id="overrideH3RawProfile" name="overrideH3RawProfile" ${command.overrideH3RawProfile ? 'checked' : ''}/>
+</td>
+</tr>
+</table>
+</authority:show>
+<authority:dont>
+<c:if test="${command.harvesterType == 'HERITRIX3' && command.imported}">
+<table width="100%" cellpadding="3" cellspacing="0" border="0">
+<tr>
+<td class="subBoxTextHdr">
+  <c:choose>
+    <c:when test="${command.overrideH3RawProfile}">
+The base profile is being overridden by this profile:
+    </c:when>
+    <c:otherwise>
+No overrides.
+    </c:otherwise>
+  </c:choose>
+</td>
+</tr>
+</table>
+</c:if>
+</authority:dont>
+</authority:showControl>
+</div>
+
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
+<div id="editorDiv">
+<textarea id="h3RawProfile" name="h3RawProfile"/>
+<c:out value="${command.h3RawProfile}"/>
+</textarea>
+</div>
+<script>
+      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
+                                              {mode: "text/xml",
+                                              lineNumbers: true,
+                                              lineWrapping: true});
+</script>
+</authority:show>
+<authority:dont>
+<c:if test="${command.harvesterType == 'HERITRIX3' && command.overrideH3RawProfile}">
+<div id="editorDiv">
+<textarea id="h3RawProfile" name="h3RawProfile"/>
+<c:out value="${command.h3RawProfile}"/>
+</textarea>
+</div>
+<script>
+      codeMirrorInstance = CodeMirror.fromTextArea(document.getElementById("h3RawProfile"),
+                                              {mode: "text/xml",
+                                              lineNumbers: true,
+                                              lineWrapping: true,
+                                              theme: "elegant",
+                                              readOnly: true});
+</script>
+</c:if>
+</authority:dont>
+</authority:showControl>
+
+<img src="images/x.gif" alt="" width="1" height="20" border="0" /><br />
+
+
+<div id="h1Credentials">
+<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
+<authority:show>
+<span class="subBoxTitle">Credentials Override</span>
+<p><input type="checkbox" name="overrideCredentials" id="overrideCredentials" ${command.overrideCredentials ? 'checked' : ''} /><label for="overrideCredentials">Click to override the security credentials</label></p>
+
 <p>
   <ul>
     <li><a href="curator/target/${urlPrefix}-basic-credentials.html?actionCmd=new">Add Basic Credentials</a></li>
     <li><a href="curator/target/${urlPrefix}-form-credentials.html?actionCmd=new">Add Form Credentials</a></li>
   </ul>
 </p>
-</authority:show>
-</authority:showControl>
 
-  
-  <input type="hidden" id="credentialToRemove" name="credentialToRemove">
-  
+  <input type="hidden" id="credentialToRemove" name="credentialToRemove"/>
+
   <c:choose>
     <c:when test="${empty credentials}">
       <p>No credentials provided in the overrides</p>
@@ -469,56 +632,97 @@
     <th>Domain</th>
     <th>Type</th>
     <th>Username</th>
-    
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
-<authority:show>    
-    <th>&nbsp;</th>
-</authority:show>
-</authority:showControl>
 
-  </tr>    
+    <th>&nbsp;</th>
+
+  </tr>
   <c:forEach items="${credentials}" var="credential" varStatus="i">
   <tr>
     <td><c:out value="${credential.credentialsDomain}"/></td>
     <td><c:out value="${credential.typeName}"/></td>
     <td><c:out value="${credential.username}"/></td>
-<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
-<authority:show>    
     <td>
       <c:choose>
         <c:when test="${credential.typeName == 'Basic'}">
           <a href="curator/target/${urlPrefix}-basic-credentials.html?actionCmd=edit&listIndex=${i.count-1}"><img src="images/action-icon-edit.gif" height="18" width="18" border="0" /></a>
         </c:when>
         <c:otherwise>
-          <a href="curator/target/${urlPrefix}-form-credentials.html?actionCmd=edit&listIndex=${i.count-1}"><img src="images/action-icon-edit.gif" height="18" width="18" border="0" /></a>        
+          <a href="curator/target/${urlPrefix}-form-credentials.html?actionCmd=edit&listIndex=${i.count-1}"><img src="images/action-icon-edit.gif" height="18" width="18" border="0" /></a>
         </c:otherwise>
       </c:choose>
-		<img src="images/action-sep-line.gif" border="0" />      
+		<img src="images/action-sep-line.gif" border="0" />
 		<input type="image" name="delete" title="Delete" alt="Delete" src="images/action-icon-delete.gif" height="19" width="18" onclick="removeCredential(${i.count-1});"/>
      </td>
-</authority:show>
-</authority:showControl> 
   </tr>
   </c:forEach>
 </table>
 </c:otherwise>
 </c:choose>
+</authority:show>
+
+<authority:dont>
+<c:if test="${command.harvesterType == 'HERITRIX1'}">
+<div id="h1Credentials">
+<span class="subBoxTitle">Credentials Override</span>
+  <c:choose>
+    <c:when test="${command.overrideCredentials}"><p>Credentials are overridden</p></c:when>
+    <c:otherwise><p>Credentials are not overridden</p></c:otherwise>
+  </c:choose>
+
+  <input type="hidden" id="credentialToRemove" name="credentialToRemove">
+
+  <c:choose>
+    <c:when test="${empty credentials}">
+      <p>No credentials provided in the overrides</p>
+    </c:when>
+    <c:otherwise>
+<table>
+  <tr>
+    <th>Domain</th>
+    <th>Type</th>
+    <th>Username</th>
+
+  </tr>
+  <c:forEach items="${credentials}" var="credential" varStatus="i">
+  <tr>
+    <td><c:out value="${credential.credentialsDomain}"/></td>
+    <td><c:out value="${credential.typeName}"/></td>
+    <td><c:out value="${credential.username}"/></td>
+  </tr>
+  </c:forEach>
+</table>
+</c:otherwise>
+</c:choose>
+</c:if>
+</authority:dont>
+
+</authority:showControl>
 </div>
 
+
 <c:if test="${urlPrefix ne 'ti'}">
-<table>
-  <tr> 
-    <td class="annotationsLiteRow">Profile Note</td>
-    <td class="annotationsLiteRow">
       <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
         <authority:show>
+<table>
+  <tr>
+    <td class="subBoxTextHdr">Profile Note:</td>
+    <td class="annotationsLiteRow">
 	      <textarea name="profileNote" rows="2" cols="100"><c:out value="${command.profileNote}"/></textarea>
-	    </authority:show>
-	    <authority:dont>
-	      <c:out value="${command.profileNote}"/>
-	    </authority:dont>
-      </authority:showControl>
     </td>
   </tr>
 </table>
+	    </authority:show>
+	    <authority:dont>
+	      <c:if test="${not empty command.profileNote}">
+<table>
+  <tr>
+    <td class="subBoxTextHdr">Profile Note:</td>
+    <td class="annotationsLiteRow">
+	      <c:out value="${command.profileNote}"/>
+    </td>
+  </tr>
+</table>
+	      </c:if>
+	    </authority:dont>
+      </authority:showControl>
 </c:if>

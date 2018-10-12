@@ -26,11 +26,11 @@ public class ImportedHeritrix3ProfileCommand {
     String profileName;
 
 
-	public String getRawProfile() {
+	public String getH3RawProfile() {
 		return profile;
 	}
 
-	public void setRawProfile(String profile) {
+	public void setH3RawProfile(String profile) {
 		this.profile = profile;
 	}
 
