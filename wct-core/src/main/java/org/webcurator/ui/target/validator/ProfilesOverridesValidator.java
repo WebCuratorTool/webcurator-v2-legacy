@@ -53,17 +53,17 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator implements
 		// We validate the profile whether or not it's being overridden
 		if (command.isImported()) {
 			String h3RawProfile = command.getH3RawProfile();
-			String validationType = (command.isOverrideH3RawProfile() ?
-					"overridden imported profile" :
-					"existing imported profile");
-
-			HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
-			if (!harvestAgent.isValidProfile(h3RawProfile)) {
-				log.info("isImported, validating " + validationType + ": validation failed.");
-				Object[] vals = new Object[]{"'unnamed " + validationType + "'"};
-				errors.reject("profile.invalid", vals, "The profile is invalid.");
+			if (command.isOverrideH3RawProfile()) {
+				HarvestAgent harvestAgent = HarvestAgentUtil.getHarvestAgent(getApplicationContext());
+				if (!harvestAgent.isValidProfile(h3RawProfile)) {
+					log.info("isImported, validating overridden imported profile: validation failed.");
+					Object[] vals = new Object[]{"'unnamed overridden imported profile'"};
+					errors.reject("profile.invalid", vals, "The profile is invalid.");
+				} else {
+					log.info("isImported, validating overridden imported profile: validation succeeded.");
+				}
 			} else {
-				log.info("isImported, validating " + validationType + ": validation succeeded.");
+				log.info("Skipping imported profile validation as there is no profile override.");
 			}
 		} else {
 			log.info("Validating non-imported profile.");
