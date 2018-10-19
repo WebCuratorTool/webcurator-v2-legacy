@@ -26,14 +26,14 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../wct-core/db/setup</directory>
+			<directory>../wct-core/db/latest/setup</directory>
 			<outputDirectory>sql</outputDirectory>
 			<includes>
 				<include>*</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../wct-core/db/sql</directory>
+			<directory>../wct-core/db/latest/sql</directory>
 			<outputDirectory>sql</outputDirectory>
 			<includes>
 				<include>*</include>
@@ -48,7 +48,7 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../wct-core/db/upgrade</directory>
+			<directory>../wct-core/db/latest/upgrade</directory>
 			<outputDirectory>upgrade</outputDirectory>
 			<includes>
 				<include>upgrade*.sql</include>
@@ -62,10 +62,17 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../wct-harvest-agent/target/</directory>
+			<directory>../harvest-agent-h1/target/</directory>
 			<outputDirectory>war</outputDirectory>
 			<includes>
-				<include>wct-harvest-agent.war</include>
+				<include>harvest-agent-h1.war</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>../harvest-agent-h3/target/</directory>
+			<outputDirectory>war</outputDirectory>
+			<includes>
+				<include>harvest-agent-h3.war</include>
 			</includes>
 		</fileSet>
 		<fileSet>
