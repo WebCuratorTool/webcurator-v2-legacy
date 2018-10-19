@@ -16,6 +16,8 @@
 package org.webcurator.ui.profiles.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.validation.BindException;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -53,6 +55,7 @@ import java.util.List;
  * @author bbeaumont
  */
 public class ProfileListController extends AbstractCommandController {
+    private Log log = LogFactory.getLog(ProfileListController.class);
 
     public static final String SESSION_KEY_SHOW_INACTIVE = "profile-list-show-inactive";
     public static final String SESSION_AGENCY_FILTER = "agency-filter";
@@ -125,6 +128,7 @@ public class ProfileListController extends AbstractCommandController {
                 HarvestAgent agent = getHarvestAgent();
                 if (!agent.isValidProfile(profile.getProfile())) {
                     Object[] vals = new Object[]{profile.getProfile()};
+                    log.info("Validation failed for H3 profile");
                     errors.reject("profile.invalid", vals, "The submitted profile is invalid.");
                     ModelAndView mav = getView(command);
                     mav.addObject(Constants.GBL_ERRORS, errors);

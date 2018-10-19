@@ -230,7 +230,10 @@ public class TargetInstanceSummaryCommand {
 	
 	private String forceAcceptFilters;
 	private boolean overrideForceAcceptFilters;
-	
+
+    private String h3RawProfile;
+    private boolean overrideH3RawProfile = false;
+
 	/** the schedule identifier for the schedule being adjusted **/
 	private List<Long> scheduleOid;
 	/** Type Identifier for quick schedules. */
@@ -849,6 +852,22 @@ public class TargetInstanceSummaryCommand {
 	public void setOverrideForceAcceptFilters(boolean overrideForceAcceptFilters) {
 		this.overrideForceAcceptFilters = overrideForceAcceptFilters;
 	}
+
+    public String getH3RawProfile() {
+        return h3RawProfile;
+    }
+
+    public void setH3RawProfile(String h3RawProfile) {
+        this.h3RawProfile = h3RawProfile;
+    }
+
+    public boolean isOverrideH3RawProfile() {
+        return overrideH3RawProfile;
+    }
+
+    public void setOverrideH3RawProfile(boolean overrideH3RawProfile) {
+        this.overrideH3RawProfile = overrideH3RawProfile;
+    }
 
 	/**
 	 * @return Returns the overrideMaxBytesDownload.
