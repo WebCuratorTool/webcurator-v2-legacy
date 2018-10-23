@@ -18,19 +18,24 @@ Contents of this document
 Following this introduction, the Web Curator Tool System Administrator
 Guide includes the following sections:
 
--  **Getting Started** (page 4) - covers prerequisites, supported
+-  **Getting Started** - covers prerequisites, supported
    platforms, other platforms, and optional prerequisites for using the
-   Web Curator Tool
+   Web Curator Tool.
 
--  **Setting up the WCT database** (page 5) - procedures for setup using
-   Oracle 11g , MySQL 5.0.95 and PostgreSQL 8.4.9
+-  **Setting up the WCT database** - procedures for setup using
+   Oracle, MySQL and PostgreSQL.
 
--  **Setting up the WCT Application Servers** (page 9) - procedures for
+-  **Setting up the WCT Application Servers** - procedures for
    deploying WCT to Tomcat, includes configuration options and
-   troubleshooting
+   troubleshooting.
+
+-  **Setting up Heritrix 3** - procedures for building and running
+   the Heritrix 3 web crawler to intergrate with WCT, includes
+   configuration options and troubleshooting.
 
 -  **Appendix A: Creating a truststore and importing a certificate**
-   (page 30).
+
+-  **Appendix B: The OMS archive adapter**
 
 
 Getting Started
@@ -45,10 +50,14 @@ Prerequisites
 The following are required to successfully install and run the Web
 Curator Tool:
 
--  Java 1.5 JDK or above
+-  Java 1.8 JDK or above (64bit recommended)
 
--  Apache Tomcat 5.5.X or above (the application has been tested on
-   Tomcat 5.5.15)
+   *During development of the latest version it was noted that large harvests
+   would sometimes fail to transfer from the Harvest Agent to Store on
+   completion. This was resolved by running Apache Tomcat with 64 bit Java.*
+
+-  Apache Tomcat 8.x.x or above (the application has been tested on
+   Tomcat 8.5.32)
 
 -  A database server (select one of the databases below)
 
@@ -70,7 +79,7 @@ Supported platforms
 The following platforms have been used during the development of the Web
 Curator Tool:
 
--  Sun Solaris 9
+-  Sun Solaris 10
 
 -  Red Hat Linux EL3.
 
@@ -90,6 +99,8 @@ The following prerequisites are optional:
 -  LDAP compliant directory (for external authentication)
 
 -  Apache Maven 3+ (required to build from source).
+
+- Git (can be used to clone the project source from Github)
 
 Setting up the WCT database
 =====================================
@@ -1288,6 +1299,262 @@ the Apache Tomcat server.
 
     <parameter name="attachments.Directory" value="/tmp/attach"/>
 
+
+Setting up Heritrix 3
+=============================
+
+WCT is now compatible with Heritrix v3.x.
+This integration uses the new h3-harvest-agent.
+
+Integration with WCT
+-----------------------
+
+|image3|
+
+Heritrix 3 integrates with WCT through the new H3-Harvest-Agent. As an interface between WCT-Core and
+Heritrix 3, the Harvest Agent has three primary functions:
+
+- actioning crawl commands from the WCT UI (start, stop, pause, abort).
+- retrieving job status updates from Heritrix 3, to send onto WCT-Core.
+- copying completed harvest files from Heritrix 3 job directory to WCT-Store.
+
+*Previously Heritrix (v1.14) was bundled within the Harvest Agent, as a .jar dependency. Heritrix 3
+is now a standalone application external from WCT.*
+
+The H3 Harvest Agent requires a corresponding Heritrix 3 instance to be running. If Heritrix 3 is not
+runnning then new Target Instances will fail to start crawling.
+
+Limitation - no pruning/importing with h3 harvest agent
+
+Prerequisites
+--------------
+
+- **Java** - A minimum of Java 7 is required. However due to an https issue with
+  H3, it is recommended to and run it using Java 8.
+
+  *For simplicity, it is recommended to run Heritrix 3 using the same Java version
+  as WCT, which is now 64bit Java 8.*
+
+Download
+---------
+
+The Heritrix 3 Github wiki contains a section detailing the current master builds
+available https://github.com/internetarchive/heritrix3/wiki#master-builds
+
+For the latest official stable builds visit:
+https://builds.archive.org/job/Heritrix-3/lastStableBuild/org.archive.heritrix%24heritrix/
+
+**Note** *- the official releases available in the Github repository are not up
+to date, with the latest being 3.2.0*
+
+Other versions
+~~~~~~~~~~~~~~~
+
+Other stable 3rd-party versions are available
+
+Heritrix 3.3.0-LBS-2016-02
+
+
+Building from source
+~~~~~~~~~~~~~~~~~~~~~
+
+Optionally, Heritrix 3 can be built from source. Use the Github repository:
+https://github.com/internetarchive/heritrix3/
+
+*Maven is required to build the project*
+
+Configuration
+------------------------
+
+Location
+~~~~~~~~~
+It is recommened to run Heritrix 3 as close to it's corresponding H3 Harvest
+Agent as possible, i.e. the same server or container.
+Running Heritrix 3 and the h3-harvest-agent on seperate servers has not been tested
+and not recommended with this version of WCT.
+
+Memory
+~~~~~~~~~
+
+If Heritrix 3 and it's corresponding Harvest Agent are running on the same server
+as WCT Core and Store, then Heritrix 3 may need greater memory allocation.
+
+Or depending on how many concurrent harvests you want to allow the h3-harvest-agent
+to run, increasing the memory allocation for Heritrix 3 might be required.
+
+Edit the following file ``heritrix-3.3.0/bin/heritrix``
+
+::
+
+    #JAVA_HOME var set
+    JAVA_HOME=/opt/u01/local/jdk1.8.0_181
+    JAVA_OPTS=" -Xms256m -Xmx1024m"
+
+
+
+Jobs directory
+~~~~~~~~~~~~~~~
+Heritrix 3's job directory needs to be readable (and writable?) by the user
+running tomcat
+
+The h3-harvest-agent writes the crawler profile (?) and seeds.txt into the H3 job
+directory. Once a harvest is finished the h3-harvest-agent will copy harvest files
+from the H3 job dir to WCT Store.
+Also on job completion, termination, the Harvest Agent will attempt to clean up
+the H3 job by removing the job dir.
+
+H3 harvests are stored in (otherwise H3 complains about all the old Harvest Agent harvest folders that it doesn't know about)
+/mnt/wct-harvester/appserv17/heritrix3/
+
+Scripts directory
+~~~~~~~~~~~~~~~~~~
+
+A directory for pre-written h3 scripts.
+
+
+Default profile
+~~~~~~~~~~~~~~~
+
+There are only a select group of Heritrix 3 profile settings available through the WCT
+UI to configure. If configuration of additional settings is required, then the default
+Heritrix 3 profile used by WCT can be edited. **This is only recommened for advanced users.**
+
+Care must be taken when editing the default profile xml. The WCT Heritrix 3 profile editor
+relies on a select group of xml elements being present and correctly formatted. The following
+list of xml elements must remain untouched in the xml. Other properties can be edited.
+
+- Where properties are shown, WCT edits those values
+- Where just the bean is shown, with no properties, WCT edits the entire bean element.
+
+::
+
+    <bean id="metadata" class="org.archive.modules.CrawlMetadata" autowire="byName">
+        <!-- <property name="robotsPolicyName" value="obey"/> -->
+        <!-- <property name="userAgentTemplate" value="Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)"/> -->
+    </bean>
+
+    ...
+
+    <bean class="org.archive.modules.deciderules.TooManyHopsDecideRule">
+        <!-- <property name="maxHops" value="20" /> -->
+    </bean>
+
+    ...
+
+    <bean class="org.archive.modules.deciderules.TransclusionDecideRule">
+        <!-- <property name="maxTransHops" value="2" /> -->
+    </bean>
+
+    ...
+
+    <bean class="org.archive.modules.deciderules.TooManyPathSegmentsDecideRule">
+        <!-- <property name="maxPathDepth" value="20" /> -->
+    </bean>
+
+    ...
+
+    <bean class="org.archive.modules.deciderules.MatchesListRegexDecideRule">
+    </bean>
+
+    ...
+
+    <bean id="fetchHttp" class="org.archive.modules.fetcher.FetchHTTP">
+        <!-- <property name="defaultEncoding" value="ISO-8859-1" /> -->
+        <!-- <property name="ignoreCookies" value="false" /> -->
+    </bean>
+
+    ...
+
+    <bean id="warcWriter" class="org.archive.modules.writer.WARCWriterProcessor">
+        <!-- <property name="compress" value="true" /> -->
+        <!-- <property name="prefix" value="IAH" /> -->
+        <!-- <property name="maxFileSizeBytes" value="1000000000" /> -->
+    </bean>
+
+    ...
+
+    <bean id="crawlLimiter" class="org.archive.crawler.framework.CrawlLimitEnforcer">
+        <!-- <property name="maxBytesDownload" value="0" /> -->
+        <!-- <property name="maxDocumentsDownload" value="0" /> -->
+        <!-- <property name="maxTimeSeconds" value="0" /> -->
+    </bean>
+
+    ...
+
+    <bean id="disposition" class="org.archive.crawler.postprocessor.DispositionProcessor">
+        <!-- <property name="delayFactor" value="5.0" /> -->
+        <!-- <property name="minDelayMs" value="3000" /> -->
+        <!-- <property name="respectCrawlDelayUpToSeconds" value="300" /> -->
+        <!-- <property name="maxDelayMs" value="30000" /> -->
+        <!-- <property name="maxPerHostBandwidthUsageKbSec" value="0" /> -->
+    </bean>
+
+
+
+Running Heritrix 3
+------------------------
+
+Decide which user to run as
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Credentials
+~~~~~~~~~~~~
+By default the h3-harvest-agent is configured to connect to H3 using
+
+- username: admin
+- password: admin
+
+
+Command
+~~~~~~~~
+
+Linux, Windows
+
+``./heritrix-3.3.0/bin/heritrix -a admin:admin -j /mnt/wct-harvester/dev/heritrix3``
+
+Stopping Heritrix 3
+~~~~~~~~~~~~~~~~~~~~
+kill the process (any running harvests will also be killed)
+
+
+Operation of Heritrix 3
+------------------------
+
+Job creation
+~~~~~~~~~~~~~
+
+Profile validation
+~~~~~~~~~~~~~~~~~~~
+
+
+Heritrix management UI
+~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Logging
+~~~~~~~~
+The H3 log is located here
+/opt/u01/app/heritrix-3.3.0/heritrix_out.log
+
+Troubleshooting
+------------------------
+
+logs
+
+using curl
+https://webarchive.jira.com/wiki/spaces/Heritrix/pages/5735014/Heritrix+3.x+API+Guide
+
+jobs fail
+- fail to build
+- fail during crawl
+
+old job dirs not being removed
+Occasionaly there are nfs hidden files that prevent these folders from deleting fully.
+
+web proxy access
+
+
 Graceful shutdown and restart
 =============================
 
@@ -1391,6 +1658,9 @@ To enable the OMS Archive, set the **archive** property in the
    maintained by the IIPC. See https://github.com/iipc/openwayback
 
 .. |image6| image:: ../_static/system-administrator-guide/image2.png
+   :width: 5.77361in
+   :height: 1.94306in
+.. |image3| image:: ../_static/system-administrator-guide/image3.png
    :width: 5.77361in
    :height: 1.94306in
 
