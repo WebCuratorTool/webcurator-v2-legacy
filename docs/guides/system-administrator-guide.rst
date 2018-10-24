@@ -116,35 +116,26 @@ setting up the WCT database and schema.*
 
 1. Setup two schemas: one called DB_WCT that owns the tables and one
    called USR_WCT that the application uses to query the tables. The
-   USR_WCT schema should have limited rights. You can use a script
-   similar to the following:
+   USR_WCT schema should have limited rights. You can use the
+   following SQL script to do this::
 
-::
+    db/latest/setup/wct-create-oracle.sql
 
-    create user db_wct identified by password default tablespace wct_data quota unlimited on wct_data;
-
-    create user usr_wct identified by password default tablespace wct_data quota unlimited on wct_data;
-
-    grant create session to usr_wct;
-
-    grant connect,resource to db_wct;
 
 2. Run the following SQL scripts under the DB_WCT user or SYSTEM
-   account:
+   account::
 
-::
+    db/latest/setup/wct-schema-oracle.sql
 
-    sql/wct-schema-1_6_1-oracle.sql
+    db/latest/setup/wct-schema-grants.sql
 
-    sql/wct-schema-grants-1_6_1.sql
+    db/latest/setup/wct-indexes-oracle.sql
 
-    sql/wct-indexes-1_6_1-oracle.sql
+    db/latest/setup/wct-bootstrap-oracle.sql
 
-    sql/wct-oracle-bootstrap.sql
+    db/latest/setup/wct-qa-data-oracle.sql
 
-    sql/wct-qa-data-1_6-oracle.sql
-
-*The wct-qa-data-1_6-oracle.sql script will generate QA indicator
+*The wct-qa-data-oracle.sql script will generate QA indicator
 template data for the new QA module for each agency, and should be run*
 **once all agencies have been added to WCT**. *Note that if the script is
 re-run, it will clear out any existing template data.*
@@ -174,38 +165,29 @@ Setup using PostgreSQL 8.4.9
 *This guide assumes you have installed and configured PostgreSQL 8.4.9
 prior to setting up the WCT database and schema.*
 
-1. Setup two schema::
+1. Setup two schema, using the following script::
 
-    CREATE DATABASE "Dwct" WITH ENCODING='UTF8';
-
-    \\c Dwct
-
-    CREATE SCHEMA db_wct;
-
-    CREATE ROLE usr_wct LOGIN PASSWORD 'password' NOINHERIT VALID UNTIL 'infinity';
-
-    grant usage on schema db_wct to usr_wct;
-
+    db/latest/setup/wct-create-postgres.sql
 
 
 2. Then run the following SQL scripts under the DB_WCT user::
 
-    sql/wct-schema-1_6_1-postgresql.sql
+    db/latest/setup/wct-schema-postgresql.sql
     
-    sql/wct-schema-grants-1_6_1.sql
+    db/latest/setup/wct-schema-grants-postgresql.sql
     
-    sql/wct-indexes-1_6_1-postgresql.sql
+    db/latest/setup/wct-indexes-postgresql.sql
     
-    sql/wct-postgres-bootstrap.sql
+    db/latest/setup/wct-bootstrap-postgresql.sql
     
-    sql/wct-qa-data-1_6-postgres.sql
+    db/latest/setup/wct-qa-data-postgres.sql
 
-*The wct-qa-data-1_6-postgres.sql script will generate QA indicator
+*The wct-qa-data-postgres.sql script will generate QA indicator
 template data for the new QA module for each agency, and should be run*
 **once all agencies have been added to WCT**. *Note that if the script is
 re-run, it will clear out any existing template data.*
 
-3. The Postgres JDBC driver is included in the CVS repository under
+3. The Postgres JDBC driver is included in the Github repository under
    /etc/ directory.
 
    - The Postgres driver is called postgresql-8.1-404.jdbc3.jar
@@ -230,29 +212,25 @@ Setup using MySQL 5.0.95
 This guide assumes you have installed and configured MySQL 5.0.95 prior
 to setting up the WCT database and schema.
 
-1. Create the database::
+1. Create the database, using the following script::
 
-    CREATE DATABASE DB_WCT;
+    db/latest/setup/wct-create-postgres.sql
 
-    \\u DB_WCT
-
-    create user usr_wct@localhost identified by 'password';
-
-    grant all on DB_WCT.\* to usr_wct@localhost;
 
 2. Then run the following SQL scripts under the root user::
 
-    sql/wct-schema-1_6_1-mysql.sql
+    db/latest/setup/wct-schema-mysql.sql
 
-    sql/wct-schema-grants-1_6_1-mysql.sql
+    db/latest/setup/wct-schema-grants-mysql.sql
 
-    sql/wct-indexes-1_6_1-mysql.sql
+    db/latest/setup/wct-indexes-mysql.sql
 
-    sql/wct-mysql-bootstrap.sql
+    db/latest/setup/wct-bootstrap-mysql.sql
 
-    sql/wct-qa-data-1_6-mysql.sql
+    db/latest/setup/wct-qa-data-mysql.sql
+    
 
-*The wct-qa-data-1_6-mysql.sql script will generate QA indicator template
+*The wct-qa-data-mysql.sql script will generate QA indicator template
 data for the new QA module for each agency, and should be run* **once all
 agencies have been added to WCT**. *Note that if the script is re-run, it
 will clear out any existing template data.*
