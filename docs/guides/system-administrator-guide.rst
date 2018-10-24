@@ -1303,15 +1303,12 @@ the Apache Tomcat server.
 Setting up Heritrix 3
 =============================
 
-WCT is now compatible with Heritrix v3.x.
-This integration uses the new h3-harvest-agent.
-
 Integration with WCT
 -----------------------
 
 |image3|
 
-Heritrix 3 integrates with WCT through the new H3-Harvest-Agent. As an interface between WCT-Core and
+Heritrix 3 (H3) integrates with WCT through the new H3-Harvest-Agent. As an interface between WCT-Core and
 Heritrix 3, the Harvest Agent has three primary functions:
 
 - actioning crawl commands from the WCT UI (start, stop, pause, abort).
@@ -1323,8 +1320,6 @@ is now a standalone application external from WCT.*
 
 The H3 Harvest Agent requires a corresponding Heritrix 3 instance to be running. If Heritrix 3 is not
 runnning then new Target Instances will fail to start crawling.
-
-Limitation - no pruning/importing with h3 harvest agent
 
 Prerequisites
 --------------
@@ -1350,9 +1345,9 @@ to date, with the latest being 3.2.0*
 Other versions
 ~~~~~~~~~~~~~~~
 
-Other stable 3rd-party versions are available
-
-Heritrix 3.3.0-LBS-2016-02
+**Heritrix 3.3.0-LBS-2016-02** - From the National Library of Iceland, a stable version
+based on the Heritrix 3.3.0 master from May 2016.
+https://github.com/internetarchive/heritrix3/wiki#heritrix-330-lbs-2016-02-may-2016
 
 
 Building from source
@@ -1369,9 +1364,8 @@ Configuration
 Location
 ~~~~~~~~~
 It is recommened to run Heritrix 3 as close to it's corresponding H3 Harvest
-Agent as possible, i.e. the same server or container.
-Running Heritrix 3 and the h3-harvest-agent on seperate servers has not been tested
-and not recommended with this version of WCT.
+Agent as possible, i.e. the same server. Running Heritrix 3 and the H3 Harvest
+Agent on separate servers has not been tested.
 
 Memory
 ~~~~~~~~~
@@ -1379,37 +1373,52 @@ Memory
 If Heritrix 3 and it's corresponding Harvest Agent are running on the same server
 as WCT Core and Store, then Heritrix 3 may need greater memory allocation.
 
-Or depending on how many concurrent harvests you want to allow the h3-harvest-agent
+Or depending on how many concurrent harvests you want to allow the H3 Harvest Agent
 to run, increasing the memory allocation for Heritrix 3 might be required.
 
-Edit the following file ``heritrix-3.3.0/bin/heritrix``
+Place the following lines near the top of ``heritrix-3.3.0/bin/heritrix``
 
 ::
 
-    #JAVA_HOME var set
-    JAVA_HOME=/opt/u01/local/jdk1.8.0_181
+    #Java Configuration
     JAVA_OPTS=" -Xms256m -Xmx1024m"
 
-
+Is there a better way of setting this??
 
 Jobs directory
 ~~~~~~~~~~~~~~~
-Heritrix 3's job directory needs to be readable (and writable?) by the user
-running tomcat
+Heritrix 3 creates a folder in it's job directory for each new job. After the registering
+of a new job in Heritrix 3 by the H3 Harvest Agent, the Agent completes the initial setup
+by copying the crawl profile (``crawler-beans.cxml``) and seeds (``seeds.txt``) into the
+new job folder.
 
-The h3-harvest-agent writes the crawler profile (?) and seeds.txt into the H3 job
-directory. Once a harvest is finished the h3-harvest-agent will copy harvest files
-from the H3 job dir to WCT Store.
-Also on job completion, termination, the Harvest Agent will attempt to clean up
-the H3 job by removing the job dir.
+The Apache Tomcat running the H3 Harvest Agent **must have read and write access** to the
+top level jobs directory (and any child job folders) for Heritrix 3.
 
-H3 harvests are stored in (otherwise H3 complains about all the old Harvest Agent harvest folders that it doesn't know about)
-/mnt/wct-harvester/appserv17/heritrix3/
+On completion or termination of a Heritrix 3 job, the H3 Harvest Agent will attempt to
+clean up by removing the job folder.
+
+*It is best to keep the Heritrix 3 jobs directory separate from the H3 Harvest Agent*
+**harvestAgent.baseHarvestDirectory**. *If the same directory is used, Heritrix 3 constantly
+complain about all the old Harvest Agent harvest folders that it doesn't know about.*
+CHECK THIS IS STILL THE CASE!!!!
 
 Scripts directory
 ~~~~~~~~~~~~~~~~~~
 
-A directory for pre-written h3 scripts.
+The H3 scripts directory is used for storing pre-defined Heritrix 3
+scripts (js, groovy, beanshell) that WCT makes available for use
+through the scripting console window. These scripts can be run against
+harvests running on Heritrix 3.
+
+- The directory needs to be readable by the user running Tomcat.
+- The directory path needs to be set in **wct-core.properties.**
+
+For more information, please see:
+
+- https://github.com/internetarchive/heritrix3/wiki/Heritrix3-Useful-Scripts
+
+- https://heritrix.readthedocs.io/en/latest/api.html#execute-script-in-job
 
 
 Default profile
@@ -1419,7 +1428,7 @@ There are only a select group of Heritrix 3 profile settings available through t
 UI to configure. If configuration of additional settings is required, then the default
 Heritrix 3 profile used by WCT can be edited. **This is only recommened for advanced users.**
 
-Care must be taken when editing the default profile xml. The WCT Heritrix 3 profile editor
+Care must be taken if editing the default profile xml. The WCT Heritrix 3 profile editor
 relies on a select group of xml elements being present and correctly formatted. The following
 list of xml elements must remain untouched in the xml. Other properties can be edited.
 
@@ -1494,51 +1503,65 @@ list of xml elements must remain untouched in the xml. Other properties can be e
 Running Heritrix 3
 ------------------------
 
-Decide which user to run as
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
 Credentials
 ~~~~~~~~~~~~
-By default the h3-harvest-agent is configured to connect to H3 using
+By default the H3 Harvest Agent is configured to connect to H3 using:
 
 - username: admin
 - password: admin
 
 
-Command
-~~~~~~~~
+Starting Heritrix 3
+~~~~~~~~~~~~~~~~~~~~
 
-Linux, Windows
+- **Linux/Unix**
+  ``./heritrix-3.3.0/bin/heritrix -a admin:admin -j /mnt/wct-harvester/dev/heritrix3``
 
-``./heritrix-3.3.0/bin/heritrix -a admin:admin -j /mnt/wct-harvester/dev/heritrix3``
+- **Windows**
+  ``./heritrix-3.3.0/bin/heritrix.cmd -a admin:admin -j /mnt/wct-harvester/dev/heritrix3``
 
 Stopping Heritrix 3
 ~~~~~~~~~~~~~~~~~~~~
-kill the process (any running harvests will also be killed)
+
+Heritrix 3 can be stopped using two methods:
+
+- **Via the UI**. This will notify you of any jobs still running.
+
+- **Kill the Java process**. Your responsibility to check for and stop any
+  running jobs.
 
 
 Operation of Heritrix 3
 ------------------------
 
-Job creation
-~~~~~~~~~~~~~
+Jobs
+~~~~~~
 
-Profile validation
-~~~~~~~~~~~~~~~~~~~
+Two types of jobs are created in Heritrix 3 by the H3 Harvest Agent:
+
+- **Crawl Jobs** - standard crawl jobs for WCT Target Instances. Created for the
+  duration of running crawls.
+
+- **Profile Validation Jobs** - a single re-used job to validate Heritrix 3 profiles
+  created/edited in WCT-Core.
 
 
 Heritrix management UI
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+Accessible via https://localhost:8443/engine
+
 
 Logging
 ~~~~~~~~
-The H3 log is located here
-/opt/u01/app/heritrix-3.3.0/heritrix_out.log
+
+The Heritrix 3 output log can be located in the ``heritrix-3.3.0/heritrix_out.log`` file.
+
 
 Troubleshooting
 ------------------------
+
+TODO
 
 logs
 
