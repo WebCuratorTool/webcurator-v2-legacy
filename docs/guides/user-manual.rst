@@ -893,7 +893,7 @@ Target.
 Seed URLS
 ~~~~~~~~~
 
-The Seed URLs are a set of one or more URLs that that form the starting
+The Seed URLs are a set of one or more URLs that form the starting
 point(s) for the harvest, and are used to define the scope of the
 harvest. For example, the Seed URL for the University of Canterbury
 website is http://www.canterbury.ac.nz/ and (by implication) the website
@@ -1132,9 +1132,14 @@ Select a profile and any overrides
 12. Click the **Profile** tab.
 
 *The Profile tab includes a list of harvest profiles, and a series of
-options to override them. Generally, the default settings are fine. See
-the Target Instance Quality Review section for further information about
-overriding profiles.*
+options to override them. Generally, the default settings are fine. There
+are two types harvest profiles to choose from:*
+
+   - Heritrix 1
+   - Heritrix 3
+
+*See the Target Instance Quality Review section for further information
+about overriding profiles.*
 
 Enter a schedule for the target
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1532,6 +1537,9 @@ harvest result
 |image35| - **Abort** a running Target Instance and delete its harvest
 result
 
+|image_h3console| - **H3 Script Console** for executing scripts against
+Heritrix 3 Target Instances
+
 |image36| - **Target Annotation**: displays any annotations defined for
 this target instance's target.
 
@@ -1621,7 +1629,9 @@ the Web Curator Tool makes final checks that the permission records for
 this harvest are valid. If the harvest is appropriately authorised, then
 the Web Curator Tool will normally allocate it to one of the Harvest
 Agents, which invokes the Heritrix web crawler to harvest the site (as
-directed by the profile tab in the Target). The Target Instance State
+directed by the profile tab in the Target). For example, if a Target
+Instance is assigned to a Heritrix 3 profile, then it will be allocated
+to a Heritrix 3 Harvest Agent. The Target Instance State
 will be updated to **running**.
 
 Some users may have the option of using the |image43| - '**Harvest** a
@@ -1952,7 +1962,7 @@ instead.
 Quality review with the harvest history tool
 --------------------------------------------
 
-The **Harvest History Tool** is can be used to quickly compare the
+The **Harvest History Tool** can be used to quickly compare the
 harvest result of the current harvest to the result of previous harvests
 of the same Target.
 
