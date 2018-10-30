@@ -9,6 +9,20 @@
 <%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="authority" uri="http://www.webcurator.org/authority"  %>
+
+
+<script language="JavaScript">
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+            }
+        }
+</script>
+
+
+
 <%!
 	private HasPrivilegeTag privTag = new HasPrivilegeTag();
 		
@@ -218,6 +232,18 @@
 			</table>
 
 			<table cellpadding="3" cellspacing="0" border="0">
+                <tr>
+                    <td class="subBoxTitle">
+                       Select All
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="select-all" id="select-all" onClick="toggle(this);"/>
+                    </td>
+                </tr>
+
+
 				<%
 					StringBuffer Loginsb = new StringBuffer();
 					Loginsb.append(insertPrivilege(Privilege.LOGIN, getMessage(msgSrc, "ui.label.roles.privilege.login"), Privilege.SCOPE_NONE,radioOffset++,none,selectedPrivs,selectedScope,viewOnlyMode));
