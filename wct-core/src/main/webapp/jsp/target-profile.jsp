@@ -98,6 +98,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       $('#h3ProfileOverrides').show();
       $('#h1ProfileOverrides').hide();
       $('#h1Credentials').hide();
+      $('#overrideH3RawProfile').attr('checked', false);
       $('#overrideH3RawProfileCheckbox').hide();
       $('#editorDiv').hide();
     }
@@ -454,12 +455,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
 
     <tr>
       <td class="annotationsLiteRow">Ignore Robots</td>
-      <td class="annotationsLiteRow">
-        <select name="h3IgnoreRobots">
-          <option value="ignore" ${command.h3IgnoreRobots eq 'ignore' ? 'selected' : ''}>ignore</option>
-          <option value="obey" ${command.h3IgnoreRobots eq 'obey' ? 'selected' : ''}>obey</option>
-        </select>
-      </td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="h3IgnoreRobots" ${command.h3IgnoreRobots ? 'checked' : ''}/></td>
       <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3IgnoreRobots" ${command.overrideH3IgnoreRobots ? 'checked' : ''}/></td>
     </tr>
 

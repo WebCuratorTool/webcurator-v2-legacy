@@ -428,7 +428,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         long modifiedMaxPathDepth = 150;
         long modifiedMaxHops = 50;
         long modifiedMaxTransitiveHops = 5;
-        String modifiedIgnoreRobots = "ignore";
+        boolean modifiedIgnoreRobots = true;
         boolean modifiedIgnoreCookies = true;
         List<String> modifiedBlockUrls = new LinkedList<String>();
         modifiedBlockUrls.add("*aaa*");

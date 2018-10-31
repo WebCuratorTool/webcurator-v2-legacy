@@ -156,7 +156,7 @@ public class ProfileOverrides {
 	private boolean overrideH3MaxTransitiveHops = false;
 
 	/** The H3 ignore robots */
-	private String h3IgnoreRobots = "obey"; // false
+	private boolean h3IgnoreRobots = false;
 	/** True to override the H3 ignore robots; otherwise false */
 	private boolean overrideH3IgnoreRobots = false;
 
@@ -297,11 +297,7 @@ public class ProfileOverrides {
 			profileOptions.setMaxTransitiveHops(h3MaxTransitiveHops);
 		}
 		if (overrideH3IgnoreRobots) {
-			if (h3IgnoreRobots.equals("ignore")) {
-				profileOptions.setIgnoreRobotsTxt(true);
-			} else if (h3IgnoreRobots.equals("obey")) {
-				profileOptions.setIgnoreRobotsTxt(false);
-			}
+			profileOptions.setIgnoreRobotsTxt(h3IgnoreRobots);
 		}
 		if (overrideH3IgnoreCookies) {
 			profileOptions.setIgnoreCookies(h3IgnoreCookies);
@@ -1022,17 +1018,15 @@ public class ProfileOverrides {
 	/**
 	 * @return Returns the h3IgnoreRobots.
 	 * @hibernate.property column="PO_H3_IGNORE_ROBOTS"
-	 * "ignore" = true
-	 * "obey" = false
 	 */
-	public String getH3IgnoreRobots() {
+	public boolean isH3IgnoreRobots() {
 		return h3IgnoreRobots;
 	}
 
 	/**
 	 * @param h3IgnoreRobots The h3IgnoreRobots to set.
 	 */
-	public void setH3IgnoreRobots(String h3IgnoreRobots) {
+	public void setH3IgnoreRobots(boolean h3IgnoreRobots) {
 		this.h3IgnoreRobots = h3IgnoreRobots;
 	}
 
