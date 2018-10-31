@@ -232,16 +232,17 @@
 			</table>
 
 			<table cellpadding="3" cellspacing="0" border="0">
-                <tr>
-                    <td class="subBoxTitle">
-                       Select All
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="select-all" id="select-all" onClick="toggle(this);"/>
-                    </td>
-                </tr>
+
+				<c:if test="${!command.viewOnlyMode}">
+                    <tr>
+                        <td class="subBoxTitle">Select All</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="select-all" id="select-all" onClick="toggle(this);"/>
+                        </td>
+                    </tr>
+                </c:if>
 
 
 				<%
