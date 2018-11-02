@@ -26,32 +26,17 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../wct-core/db/latest/setup</directory>
-			<outputDirectory>sql</outputDirectory>
+			<directory>../wct-core/db/latest</directory>
+			<outputDirectory>db</outputDirectory>
 			<includes>
-				<include>*</include>
+				<include>*/*</include>
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>../wct-core/db/latest/sql</directory>
-			<outputDirectory>sql</outputDirectory>
+			<directory>../wct-core/db</directory>
+			<outputDirectory>db</outputDirectory>
 			<includes>
-				<include>*</include>
-			</includes>
-		</fileSet>
-		<!-- Overwrite the schema sql from DB with the generated SQL -->
-		<fileSet>
-			<directory>../wct-core/target</directory>
-			<outputDirectory>sql</outputDirectory>
-			<includes>
-				<include>wct*.sql</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>../wct-core/db/latest/upgrade</directory>
-			<outputDirectory>upgrade</outputDirectory>
-			<includes>
-				<include>upgrade*.sql</include>
+				<include>*.sh</include>
 			</includes>
 		</fileSet>
 		<fileSet>
