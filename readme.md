@@ -1,15 +1,15 @@
 [![Build Status](https://travis-ci.org/DIA-NZ/webcurator.svg?branch=master)](https://travis-ci.org/DIA-NZ/webcurator)
 
-# WCT 1.7.0 Beta
+# WCT 2.0.0 Beta
 
-This is the WCT 1.7.0 Beta version.
+This is the WCT 2.0.0 Beta version.
 
 ### Before installing
 Please ensure the user that WCT uses to login to your database has the correct permissions to create temporary tables.
 Failure to grant this will result in problems during the purge process.
 
 
-### WCT changes for v1.7.0 Beta
+### WCT changes for v2.0.0 Beta
 
 ---
 Heritrix 3
