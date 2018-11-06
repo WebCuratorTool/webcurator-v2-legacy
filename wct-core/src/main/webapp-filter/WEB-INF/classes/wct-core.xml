@@ -373,7 +373,7 @@
 	<bean id="environment" class="org.webcurator.core.common.EnvironmentImpl">	
 		<property name="daysToSchedule" value="${harvestAgentFactory.daysToSchedule}"/>
 		<property name="schedulesPerBatch" value="${createNewTargetInstancesTrigger.schedulesPerBatch}"/>
-		<property name="applicationVersion" value="${wct.application.version}"/>
+		<property name="applicationVersion" value="${project.version}"/>
 		<property name="heritrixVersion" value="Heritrix ${heritrix.version}"/>
 	</bean>
 	
