@@ -247,10 +247,16 @@ function toggleProfileOverrides(profilesList, onPageLoad=false) {
         }, 1);
     }
 	if (selectedProfile.imported == "true") {
-		$('#h1OrH3NonImportedProfile').hide();
+		$('#h1Profile').hide();
+		$('#h3Profile').hide();
 		$('#h3ImportedProfile').show();
-	} else { <!-- HERITRIX1 or HERITRIX3 but not imported -->
-		$('#h1OrH3NonImportedProfile').show();
+	} else if (selectedProfile.harvesterType == 'HERITRIX1') {
+		$('#h1Profile').show();
+		$('#h3Profile').hide();
+		$('#h3ImportedProfile').hide();
+	} else {
+		$('#h1Profile').hide();
+		$('#h3Profile').show();
 		$('#h3ImportedProfile').hide();
 	}
 }
@@ -266,6 +272,7 @@ $(document).ready(function() {
 	<c:forEach items="${profiles}" var="prf">
 	var jsProfile = {
 		name: "${prf.name}",
+        harvesterType: "${prf.harvesterType}",
 		oid: "${prf.oid}",
 		// We don't check the harvester type. We show the XML editor if the profile is imported, no matter the type
 		<c:if test="${prf.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
@@ -595,7 +602,7 @@ function getSelectedProfile(profilesList) {
 			</table>
 				<authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 				<authority:show>
-				<div id="h1OrH3NonImportedProfile">
+				<div id="h1Profile">
 					<table class="panel" border="0" width="100%" cellspacing="0px">
 				<tr>
 					<td nowrap="nowrap" title="Robot honoring policy">
@@ -656,7 +663,93 @@ function getSelectedProfile(profilesList) {
 					</td>
 				</tr>
 				</table>
-				</div> <!-- h1OrH3NonImportedProfile -->
+				</div> <!-- end h1Profile -->
+				<div id="h3Profile">
+					<table class="panel" border="0" width="100%" cellspacing="0px">
+					<tr>
+					<td>
+						<input type="checkbox" name="overrideH3IgnoreRobots" ${profileCommand.overrideH3IgnoreRobots ? 'checked' : ''}/>Ignore Robots:
+                        <input type="checkbox" name="h3IgnoreRobots" ${profileCommand.h3IgnoreRobots ? 'checked' : ''}/>
+						<input type="checkbox" name="overrideH3IgnoreCookies" ${profileCommand.overrideH3IgnoreCookies ? 'checked' : ''}/>Ignore Cookies:
+                        <input type="checkbox" name="h3IgnoreCookies" ${profileCommand.h3IgnoreCookies ? 'checked' : ''}/>
+                    </td>
+                    </tr>
+				<tr><td colspan="4"><table class="panel_dotted_row"><tr><td></td></tr></table></td></tr>
+				<tr>
+					<td nowrap="nowrap">
+        				<input type="checkbox" name="overrideH3DataLimit" ${profileCommand.overrideH3DataLimit ? 'checked' : ''}/>
+        				Max Data:<input type="number" size="20" name="h3DataLimit" step="0.001" min="0.000" value="<c:out value="${profileCommand.h3DataLimit}"/>"/>
+        				Data Unit:
+                        <select name="h3DataLimitUnit" id="h3DataLimitUnit">
+                          <c:forEach items="${profileDataUnits}" var="unit">
+	                        <option id="${unit}" ${profileCommand.h3DataLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+	                      </c:forEach>
+	                    </select>
+ 						<input type="checkbox" name="overrideH3DocumentLimit" ${profileCommand.overrideH3DocumentLimit ? 'checked' : ''}/>
+						Max Docs:<input type="number" size="10" min="0" name="h3DocumentLimit" value="<c:out value="${profileCommand.h3DocumentLimit}"/>"/>
+        			</td>
+				</tr>
+				<tr><td colspan="4"><table class="panel_dotted_row"><tr><td></td></tr></table></td></tr>
+				<tr>
+					<td colspan="4">
+       				<input type="checkbox" name="overrideH3MaxPathDepth" ${profileCommand.overrideH3MaxPathDepth ? 'checked' : ''}/>
+        				Max Path Depth:<input type="number" min="0" size="3" name="h3MaxPathDepth" value="<c:out value="${profileCommand.h3MaxPathDepth}"/>"/>
+      				    <input type="checkbox" name="overrideH3MaxHops" ${profileCommand.overrideH3MaxHops ? 'checked' : ''}/>
+        				Max Hops:<input type="number" size="3" name="h3MaxHops" value="<c:out value="${profileCommand.h3MaxHops}"/>"/><br/>
+      				    <input type="checkbox" name="overrideH3MaxTransitiveHops" ${profileCommand.overrideH3MaxTransitiveHops ? 'checked' : ''}/>
+        				Max Transitive Hops:<input type="number" min="0" size="3" name="h3MaxTransitiveHops" value="<c:out value="${profileCommand.h3MaxTransitiveHops}"/>"/>
+                    </td>
+				</tr>
+				<tr><td colspan="4"><table class="panel_dotted_row"><tr><td></td></tr></table></td></tr>
+				<tr>
+				    <td colspan="4">
+       					<input type="checkbox" name="overrideH3TimeLimit" ${profileCommand.overrideH3TimeLimit ? 'checked' : ''}/>
+       					Max Time:<input type="number" size="20" step="0.001" min="0.000" name="h3TimeLimit" value="<c:out value="${profileCommand.h3TimeLimit}"/>"/>
+       					Time Unit:
+       					<select name="h3TimeLimitUnit" id="h3TimeLimitUnit">
+                          <c:forEach items="${profileTimeUnits}" var="unit">
+                            <option id="${unit}" ${profileCommand.h3TimeLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
+                          </c:forEach>
+                        </select>
+                    </td>
+				</tr>
+				<tr><td colspan="4"><table class="panel_dotted_row"><tr><td></td></tr></table></td></tr>
+								<tr>
+					<td colspan="9">
+						<table class="panel" border="0" width="100%">
+						<tr>
+							<td style="vertical-align: middle;">
+								<input type="checkbox" name="overrideH3BlockedUrls" ${profileCommand.overrideH3BlockedUrls ? 'checked' : ''}/>
+								Blocked URLs:
+							</td>
+						</tr>
+						<tr>
+							<td style="vertical-align: middle;">
+								<textarea name="h3BlockedUrls" cols="85" rows="2"><c:out value="${profileCommand.h3BlockedUrls}"/></textarea>
+							</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="9">
+						<table class="panel" border="0" width="100%">
+						<tr>
+							<td colspan="3" style="vertical-align: top;">
+								<input type="checkbox" name="overrideH3IncludedUrls" ${profileCommand.overrideH3IncludedUrls ? 'checked' : ''}/>
+							    Included URLs:
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3" style="vertical-align: top;">
+								<textarea name="h3IncludedUrls" cols="85" rows="2"><c:out value="${profileCommand.h3IncludedUrls}"/></textarea>
+							</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				</table>
+				</div> <!-- end h3Profile -->
 				<div id="h3ImportedProfile">
 					<table class="panel" border="0" width="100%" cellspacing="0px">
 					<tr>

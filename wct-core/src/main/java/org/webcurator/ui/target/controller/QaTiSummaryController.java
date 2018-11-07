@@ -48,7 +48,9 @@ import org.webcurator.core.agency.AgencyUserManager;
 import org.webcurator.core.common.Environment;
 import org.webcurator.core.exceptions.WCTRuntimeException;
 import org.webcurator.core.harvester.coordinator.HarvestCoordinator;
+import org.webcurator.core.profiles.ProfileDataUnit;
 import org.webcurator.core.profiles.ProfileManager;
+import org.webcurator.core.profiles.ProfileTimeUnit;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.store.DigitalAssetStore;
 import org.webcurator.core.targets.TargetManager;
@@ -377,8 +379,10 @@ public class QaTiSummaryController extends AbstractFormController {
 		mav.addObject("ownable", ti.getTarget());
 		mav.addObject("privlege", Privilege.MODIFY_TARGET + ";" + Privilege.CREATE_TARGET);		
 		mav.addObject("editMode", Boolean.toString(true));
-        mav.addObject("profiles", profileManager.getAvailableProfiles(ti.getTarget().getProfile().getOid()));	
-        
+        mav.addObject("profiles", profileManager.getAvailableProfiles(ti.getTarget().getProfile().getOid()));
+		mav.addObject("profileDataUnits", ProfileDataUnit.getProfileDataUnitNames());
+		mav.addObject("profileTimeUnits", ProfileTimeUnit.getProfileDataTimeNames());
+
 		Profile newProfile = profileManager.load(ti.getTarget().getProfile().getOid());
 		
 		// The user can set the profile if they have a high enough level

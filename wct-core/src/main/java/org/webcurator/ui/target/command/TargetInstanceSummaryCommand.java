@@ -234,6 +234,41 @@ public class TargetInstanceSummaryCommand {
     private String h3RawProfile;
     private boolean overrideH3RawProfile = false;
 
+    private Long h3DocumentLimit;
+	private boolean overrideH3DocumentLimit;
+
+	private Double h3DataLimit;
+	private boolean overrideH3DataLimit;
+
+	private String h3DataLimitUnit;
+
+	private Double h3TimeLimit;
+	private boolean overrideH3TimeLimit;
+
+	private String h3TimeLimitUnit;
+
+	private Long h3MaxPathDepth;
+	private boolean overrideH3MaxPathDepth;
+
+	private Long h3MaxHops;
+	private boolean overrideH3MaxHops;
+
+	private Long h3MaxTransitiveHops;
+	private boolean overrideH3MaxTransitiveHops;
+
+	private boolean h3IgnoreRobots;
+	private boolean overrideH3IgnoreRobots;
+
+	private boolean h3IgnoreCookies;
+	private boolean overrideH3IgnoreCookies;
+
+	private String h3BlockedUrls;
+	private boolean overrideH3BlockedUrls;
+
+	private String h3IncludedUrls;
+	private boolean overrideH3IncludedUrls;
+
+
 	/** the schedule identifier for the schedule being adjusted **/
 	private List<Long> scheduleOid;
 	/** Type Identifier for quick schedules. */
@@ -1071,4 +1106,179 @@ public class TargetInstanceSummaryCommand {
 		this.referenceCrawlOid = referenceCrawlOid;
 	}
 
+    public Long getH3DocumentLimit() {
+        return h3DocumentLimit;
+    }
+
+    public void setH3DocumentLimit(Long h3DocumentLimit) {
+        this.h3DocumentLimit = h3DocumentLimit;
+    }
+
+    public boolean isOverrideH3DocumentLimit() {
+        return overrideH3DocumentLimit;
+    }
+
+    public void setOverrideH3DocumentLimit(boolean overrideH3DocumentLimit) {
+        this.overrideH3DocumentLimit = overrideH3DocumentLimit;
+    }
+
+    public Double getH3DataLimit() {
+        return h3DataLimit;
+    }
+
+    public void setH3DataLimit(Double h3DataLimit) {
+        this.h3DataLimit = h3DataLimit;
+    }
+
+    public boolean isOverrideH3DataLimit() {
+        return overrideH3DataLimit;
+    }
+
+    public void setOverrideH3DataLimit(boolean overrideH3DataLimit) {
+        this.overrideH3DataLimit = overrideH3DataLimit;
+    }
+
+    public String getH3DataLimitUnit() {
+        return h3DataLimitUnit;
+    }
+
+    public void setH3DataLimitUnit(String h3DataLimitUnit) {
+        this.h3DataLimitUnit = h3DataLimitUnit;
+    }
+
+    public Double getH3TimeLimit() {
+        return h3TimeLimit;
+    }
+
+    public void setH3TimeLimit(Double h3TimeLimit) {
+        this.h3TimeLimit = h3TimeLimit;
+    }
+
+    public boolean isOverrideH3TimeLimit() {
+        return overrideH3TimeLimit;
+    }
+
+    public void setOverrideH3TimeLimit(boolean overrideH3TimeLimit) {
+        this.overrideH3TimeLimit = overrideH3TimeLimit;
+    }
+
+    public String getH3TimeLimitUnit() {
+        return h3TimeLimitUnit;
+    }
+
+    public void setH3TimeLimitUnit(String h3TimeLimitUnit) {
+        this.h3TimeLimitUnit = h3TimeLimitUnit;
+    }
+
+    public Long getH3MaxPathDepth() {
+        return h3MaxPathDepth;
+    }
+
+    public void setH3MaxPathDepth(Long h3MaxPathDepth) {
+        this.h3MaxPathDepth = h3MaxPathDepth;
+    }
+
+    public boolean isOverrideH3MaxPathDepth() {
+        return overrideH3MaxPathDepth;
+    }
+
+    public void setOverrideH3MaxPathDepth(boolean overrideH3MaxPathDepth) {
+        this.overrideH3MaxPathDepth = overrideH3MaxPathDepth;
+    }
+
+    public Long getH3MaxHops() {
+        return h3MaxHops;
+    }
+
+    public void setH3MaxHops(Long h3MaxHops) {
+        this.h3MaxHops = h3MaxHops;
+    }
+
+    public boolean isOverrideH3MaxHops() {
+        return overrideH3MaxHops;
+    }
+
+    public void setOverrideH3MaxHops(boolean overrideH3MaxHops) {
+        this.overrideH3MaxHops = overrideH3MaxHops;
+    }
+
+    public Long getH3MaxTransitiveHops() {
+        return h3MaxTransitiveHops;
+    }
+
+    public void setH3MaxTransitiveHops(Long h3MaxTransitiveHops) {
+        this.h3MaxTransitiveHops = h3MaxTransitiveHops;
+    }
+
+    public boolean isOverrideH3MaxTransitiveHops() {
+        return overrideH3MaxTransitiveHops;
+    }
+
+    public void setOverrideH3MaxTransitiveHops(boolean overrideH3MaxTransitiveHops) {
+        this.overrideH3MaxTransitiveHops = overrideH3MaxTransitiveHops;
+    }
+
+    public boolean isH3IgnoreRobots() {
+        return h3IgnoreRobots;
+    }
+
+    public void setH3IgnoreRobots(boolean h3IgnoreRobots) {
+        this.h3IgnoreRobots = h3IgnoreRobots;
+    }
+
+    public boolean isOverrideH3IgnoreRobots() {
+        return overrideH3IgnoreRobots;
+    }
+
+    public void setOverrideH3IgnoreRobots(boolean overrideH3IgnoreRobots) {
+        this.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
+    }
+
+    public boolean isH3IgnoreCookies() {
+        return h3IgnoreCookies;
+    }
+
+    public void setH3IgnoreCookies(boolean h3IgnoreCookies) {
+        this.h3IgnoreCookies = h3IgnoreCookies;
+    }
+
+    public boolean isOverrideH3IgnoreCookies() {
+        return overrideH3IgnoreCookies;
+    }
+
+    public void setOverrideH3IgnoreCookies(boolean overrideH3IgnoreCookies) {
+        this.overrideH3IgnoreCookies = overrideH3IgnoreCookies;
+    }
+
+    public String getH3BlockedUrls() {
+        return h3BlockedUrls;
+    }
+
+    public void setH3BlockedUrls(String h3BlockedUrls) {
+        this.h3BlockedUrls = h3BlockedUrls;
+    }
+
+    public boolean isOverrideH3BlockedUrls() {
+        return overrideH3BlockedUrls;
+    }
+
+    public void setOverrideH3BlockedUrls(boolean overrideH3BlockedUrls) {
+        this.overrideH3BlockedUrls = overrideH3BlockedUrls;
+    }
+
+    public String getH3IncludedUrls() {
+        return h3IncludedUrls;
+    }
+
+    public void setH3IncludedUrls(String h3IncludedUrls) {
+        this.h3IncludedUrls = h3IncludedUrls;
+    }
+
+    public boolean isOverrideH3IncludedUrls() {
+        return overrideH3IncludedUrls;
+    }
+
+    public void setOverrideH3IncludedUrls(boolean overrideH3IncludedUrls) {
+        this.overrideH3IncludedUrls = overrideH3IncludedUrls;
+    }
 }

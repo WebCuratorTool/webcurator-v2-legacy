@@ -757,6 +757,38 @@ public class ProfileCommand {
 
 			setForceAcceptFilters(command.getForceAcceptFilters());
 			setOverrideForceAcceptFilters(command.isOverrideForceAcceptFilters());
+
+			setH3DocumentLimit(command.getH3DocumentLimit());
+			setOverrideH3DocumentLimit(command.isOverrideH3DocumentLimit());
+
+			setH3DataLimitUnit(command.getH3DataLimitUnit());
+			setH3DataLimit(command.getH3DataLimit());
+			setOverrideH3DataLimit(command.isOverrideH3DataLimit());
+
+			setH3TimeLimit(command.getH3TimeLimit());
+			setOverrideH3TimeLimit(command.isOverrideH3TimeLimit());
+
+			setH3MaxPathDepth(command.getH3MaxPathDepth());
+			setOverrideMaxPathDepth(command.isOverrideMaxPathDepth());
+
+			setH3MaxHops(command.getH3MaxHops());
+			setOverrideH3MaxHops(command.isOverrideH3MaxHops());
+
+			setH3MaxTransitiveHops(command.getH3MaxTransitiveHops());
+			setOverrideH3MaxTransitiveHops(command.isOverrideH3MaxTransitiveHops());
+
+			setH3IgnoreRobots(command.isH3IgnoreRobots());
+			setOverrideH3IgnoreRobots(command.isOverrideH3IgnoreRobots());
+
+			setH3IgnoreCookies(command.isH3IgnoreCookies());
+			setOverrideH3IgnoreCookies(command.isOverrideH3IgnoreCookies());
+
+			setH3BlockedUrls(command.getH3BlockedUrls());
+			setOverrideH3BlockedUrls(command.isOverrideH3BlockedUrls());
+
+			setH3IncludedUrls(command.getH3IncludedUrls());
+			setOverrideH3IncludedUrls(command.isOverrideH3IncludedUrls());
+
 		}
 	}
 
