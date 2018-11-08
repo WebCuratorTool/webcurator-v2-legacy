@@ -1133,7 +1133,7 @@ Select a profile and any overrides
 
 *The Profile tab includes a list of harvest profiles, and a series of
 options to override them. Generally, the default settings are fine. There
-are two types harvest profiles to choose from:*
+are two types of harvest profiles to choose from:*
 
    - Heritrix 1
    - Heritrix 3
@@ -2292,7 +2292,7 @@ Here are some common problems, and their solutions:
 Diagnosing when too little material is harvested
 ------------------------------------------------
 
-Sometimes a fails to complete, or does not harvest as much material as
+Sometimes a harvest fails to complete, or does not harvest as much material as
 you expected. This section describes some common causes of this problem.
 
 When no material is downloaded (the "61 bytes" result)
@@ -2369,7 +2369,7 @@ value in the Harvest Status tab of the Target Instance:
 
 It is possible that the harvester has become caught in a "spider trap"
 or some other unintended loop. The best way to investigate this problem
-is to o to the Target Instance Logs tab, and to view the crawl.log file.
+is to go to the Target Instance Logs tab, and to view the crawl.log file.
 By default, this shows you the last 50 lines of the log file, and this
 is where the problem is most likely to be.
 
@@ -2393,7 +2393,8 @@ there are tens of thousands of them).
 
 You can filter these URLs out of future harvests by going to the
 associated Target and opening the Profile tab and adding the following
-two lines to the "Exclude Filters" box:
+two lines to the "Exclude Filters" box for Heritrix 1 or "Block URLs" box
+for Heritrix 3:
 
 - .*g2_subView=core.UserLogin.\*
 
@@ -2402,6 +2403,8 @@ two lines to the "Exclude Filters" box:
 The first line will ensure that all URLs that match include the
 substring 'g2_subView=core.UserLogin' will be excluded from future
 harvests, and the second line will do the same for the "Recover Password" URLs.
+
+|image95|
 
 Third-party quality review tools
 --------------------------------
@@ -2473,12 +2476,16 @@ one sort of content to some web agents (such as web browsers like
 Firefox, Internet Explorer, and Safari), and other content to different
 web browsers (such as Heritrix, Googlebot, etc).
 
-To test whether this is happening to you, configure the user agent
-switch to you the user agent used in the Web Curator Tool (by default,
-this is
-``Mozilla/5.0 (compatible; heritrix/1.14.1
-+http://dia-nz.github.io/webcurator/)``
-for version 1.6+) and then attempt to browse the relevant site.
+To test whether this is happening to you, switch the user agent
+Firefox is using to the one used in the Web Curator Tool, and
+then attempt to browse the relevant site.
+
+- Default Heritrix 1 string
+  ``Mozilla/5.0 (compatible; heritrix/1.14.1 +http://dia-nz.github.io/webcurator/)``
+
+- Default Heritrix 3 string
+  ``Mozilla/5.0 (compatible; heritrix/3.3.0 +http://dia-nz.github.io/webcurator/``
+
 
 .. _groups-1:
 
@@ -3782,3 +3789,4 @@ Figure 28: Detailed workflow
    :height: 0.44792in
 .. |image93| image:: ../_static/user-manual/image81.png
 .. |image94| image:: ../_static/user-manual/image82.png
+.. |image95| image:: ../_static/user-manual/image83.png
