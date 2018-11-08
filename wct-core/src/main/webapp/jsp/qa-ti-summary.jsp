@@ -246,15 +246,15 @@ function toggleProfileOverrides(profilesList, onPageLoad=false) {
             codeMirrorInstance.refresh();
         }, 1);
     }
-	if (selectedProfile.imported == "true") {
-		$('#h1Profile').hide();
-		$('#h3Profile').hide();
-		$('#h3ImportedProfile').show();
-	} else if (selectedProfile.harvesterType == 'HERITRIX1') {
+	if (selectedProfile.harvesterType == 'HERITRIX1') {
 		$('#h1Profile').show();
 		$('#h3Profile').hide();
 		$('#h3ImportedProfile').hide();
-	} else {
+	} else if (selectedProfile.imported == "true") { // Imported HERITRIX3
+		$('#h1Profile').hide();
+		$('#h3Profile').hide();
+		$('#h3ImportedProfile').show();
+	} else { // Non-imported HERITRIX3
 		$('#h1Profile').hide();
 		$('#h3Profile').show();
 		$('#h3ImportedProfile').hide();
@@ -274,7 +274,6 @@ $(document).ready(function() {
 		name: "${prf.name}",
         harvesterType: "${prf.harvesterType}",
 		oid: "${prf.oid}",
-		// We don't check the harvester type. We show the XML editor if the profile is imported, no matter the type
 		<c:if test="${prf.imported eq 'true'}">h3RawProfile: "<spring:escapeBody javaScriptEscape="true">${prf.profile}</spring:escapeBody>",</c:if>
 		imported: "${prf.imported}"
 	};
@@ -684,7 +683,7 @@ function getSelectedProfile(profilesList) {
                           <c:forEach items="${profileDataUnits}" var="unit">
 	                        <option id="${unit}" ${profileCommand.h3DataLimitUnit eq unit ? 'SELECTED' : ''}>${unit}</option>
 	                      </c:forEach>
-	                    </select>
+	                    </select><br/>
  						<input type="checkbox" name="overrideH3DocumentLimit" ${profileCommand.overrideH3DocumentLimit ? 'checked' : ''}/>
 						Max Docs:<input type="number" size="10" min="0" name="h3DocumentLimit" value="<c:out value="${profileCommand.h3DocumentLimit}"/>"/>
         			</td>

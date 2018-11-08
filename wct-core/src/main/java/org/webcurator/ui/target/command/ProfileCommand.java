@@ -765,6 +765,7 @@ public class ProfileCommand {
 			setH3DataLimit(command.getH3DataLimit());
 			setOverrideH3DataLimit(command.isOverrideH3DataLimit());
 
+			setH3TimeLimitUnit(command.getH3TimeLimitUnit());
 			setH3TimeLimit(command.getH3TimeLimit());
 			setOverrideH3TimeLimit(command.isOverrideH3TimeLimit());
 
