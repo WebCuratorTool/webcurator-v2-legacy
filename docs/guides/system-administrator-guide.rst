@@ -83,13 +83,17 @@ Curator Tool:
 
 -  Red Hat Linux EL3.
 
+-  Ubuntu GNU/Linux 16.04 LTS
+
+-  Windows 7 Ultimate
+
 Other platforms
 ---------------
 
 The following platforms were used during the Development of the Web
 Curator tool but are not explicitly supported:
 
--  Windows 2000, Windows XP Pro, Windows Server 2003, Windows 7 Ultimate
+-  Windows 2000, Windows XP Pro, Windows Server 2003
 
 Optional prerequisites
 ----------------------
@@ -150,7 +154,7 @@ re-run, it will clear out any existing template data.*
 *Notes: A password strategy should be defined for the system, and the
 db_wct & usr_wct passwords should be changed in the scripts and
 application property files to conform to this strategy. To encourage
-this, the passwords in the supplied database creation script are not set
+this, the passwords in the supplied database creation script are set
 to 'password'.*
 
 *The bootstrap user script creates a User with a name of ‘bootstrap' and
@@ -197,7 +201,7 @@ re-run, it will clear out any existing template data.*
 *Notes: A password strategy should be defined for the system, and the
 usr_wct password should be changed in the scripts and application
 property files to conform to this strategy. To encourage this, the
-password in the supplied database creation script is not set to
+password in the supplied database creation script is set to
 'password'.*
 
 *The bootstrap user script creates a User with a name of 'bootstrap' and
@@ -243,7 +247,7 @@ will clear out any existing template data.*
 *Notes: A password strategy should be defined for the system, and the
 usr_wct password should be changed in the scripts and application
 property files to conform to this strategy. To encourage this, the
-password in the supplied database creation script is not set to
+password in the supplied database creation script is set to
 'password'.*
 
 *The bootstrap user script creates a User with a name of ‘bootstrap' and
