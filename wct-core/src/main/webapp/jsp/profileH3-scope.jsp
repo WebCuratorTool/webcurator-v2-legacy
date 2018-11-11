@@ -147,7 +147,7 @@
   </tr>
 
   <tr>
-    <td class="subBoxTextHdr">Ignore Robots:</td>
+    <td class="subBoxTextHdr">Ignore Robots.txt:</td>
     <td class="subBoxText"><input type="checkbox" name="ignoreRobotsTxt" ${command.ignoreRobotsTxt ? 'CHECKED':''}></td>
   </tr>
 

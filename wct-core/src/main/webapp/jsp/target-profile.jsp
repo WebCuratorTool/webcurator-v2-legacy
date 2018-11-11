@@ -454,7 +454,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
     </tr>
 
     <tr>
-      <td class="annotationsLiteRow">Ignore Robots</td>
+      <td class="annotationsLiteRow">Ignore Robots.txt</td>
       <td class="annotationsLiteRow"><input type="checkbox" name="h3IgnoreRobots" ${command.h3IgnoreRobots ? 'checked' : ''}/></td>
       <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3IgnoreRobots" ${command.overrideH3IgnoreRobots ? 'checked' : ''}/></td>
     </tr>
@@ -522,7 +522,7 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       <td class="annotationsLiteRow">${command.overrideH3MaxTransitiveHops ? 'Yes' : 'No'}</td>
     </tr>
     <tr>
-      <td class="annotationsLiteRow">Ignore Robots</td>
+      <td class="annotationsLiteRow">Ignore Robots.txt</td>
       <td class="annotationsLiteRow"><c:out value="${command.h3IgnoreRobots}"/></td>
       <td class="annotationsLiteRow">${command.overrideH3IgnoreRobots ? 'Yes' : 'No'}</td>
     </tr>
