@@ -88,7 +88,7 @@ public class ProfileCommand {
 	private Long h3MaxTransitiveHops;
 	private boolean overrideH3MaxTransitiveHops;
 
-	private String h3IgnoreRobots;
+	private boolean h3IgnoreRobots;
 	private boolean overrideH3IgnoreRobots;
 
 	private boolean h3IgnoreCookies;
@@ -488,11 +488,11 @@ public class ProfileCommand {
 		this.overrideH3MaxTransitiveHops = overrideH3MaxTransitiveHops;
 	}
 
-	public String getH3IgnoreRobots() {
+	public boolean isH3IgnoreRobots() {
 		return h3IgnoreRobots;
 	}
 
-	public void setH3IgnoreRobots(String h3IgnoreRobots) {
+	public void setH3IgnoreRobots(boolean h3IgnoreRobots) {
 		this.h3IgnoreRobots = h3IgnoreRobots;
 	}
 
@@ -605,7 +605,7 @@ public class ProfileCommand {
 		setH3MaxTransitiveHops(overrides.getH3MaxTransitiveHops());
 		setOverrideH3MaxTransitiveHops(overrides.isOverrideH3MaxTransitiveHops());
 
-		setH3IgnoreRobots(overrides.getH3IgnoreRobots());
+		setH3IgnoreRobots(overrides.isH3IgnoreRobots());
 		setOverrideH3IgnoreRobots(overrides.isOverrideH3IgnoreRobots());
 
 		setH3IgnoreCookies(overrides.isH3IgnoreCookies());
