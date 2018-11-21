@@ -9,6 +9,7 @@ Web Curator Tool Documentation
    
    guides/system-administrator-guide
    guides/user-manual
+   guides/developer-guide
 
 
 
