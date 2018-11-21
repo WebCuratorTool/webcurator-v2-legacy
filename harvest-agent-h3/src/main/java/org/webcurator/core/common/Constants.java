@@ -28,7 +28,9 @@ public final class Constants {
     public static final String BEAN_NOTIFIER = "harvestCoordinatorNotifier";
     /** the name of the harvest complete config bean. */
     public static final String BEAN_HARVEST_COMPLETE_CONFIG = "harvestCompleteConfig";
-    
+    /** the name of the heritrix3 wrapper configuration bean. */
+    public static final String HERITRIX3_WRAPPER_CONFIGURATION = "heritrix3WrapperConfiguration";
+
     /** the name of the Logs directory. */
     public static final String DIR_LOGS = "logs";
     /** the name of the reports directory. */
