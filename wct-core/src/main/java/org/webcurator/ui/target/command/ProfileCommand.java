@@ -770,7 +770,7 @@ public class ProfileCommand {
 			setOverrideH3TimeLimit(command.isOverrideH3TimeLimit());
 
 			setH3MaxPathDepth(command.getH3MaxPathDepth());
-			setOverrideMaxPathDepth(command.isOverrideMaxPathDepth());
+			setOverrideH3MaxPathDepth(command.isOverrideH3MaxPathDepth());
 
 			setH3MaxHops(command.getH3MaxHops());
 			setOverrideH3MaxHops(command.isOverrideH3MaxHops());
