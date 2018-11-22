@@ -43,6 +43,20 @@
 			<ref bean="harvestCoordinatorNotifier"></ref>
 		</property>
 	</bean>
+	<bean id="heritrix3WrapperConfiguration" class="org.webcurator.core.harvester.agent.Heritrix3WrapperConfiguration" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
+		<!-- H3 instance host name or ip address for the H3 agent -->
+		<property name="host" value="${h3Wrapper.host}"/>
+		<!-- the port the H3 instance is listening on for http connections -->
+		<property name="port" value="${h3Wrapper.port}"/>
+		<!-- the full path and filename for the keystore file -->
+		<property name="keyStoreFile" value="${h3Wrapper.keyStoreFile}"/>
+		<!-- the password for the keystore file -->
+		<property name="keyStorePassword" value="${h3Wrapper.keyStorePassword}"/>
+		<!-- the userName for the H3 instance -->
+		<property name="userName" value="${h3Wrapper.userName}"/>
+		<!-- the password for the H3 instance -->
+		<property name="password" value="${h3Wrapper.password}"/>
+	</bean>
 	<bean id="harvestCoordinatorNotifier" class="org.webcurator.core.harvester.coordinator.HarvestCoordinatorNotifier" abstract="false" singleton="true" lazy-init="default" autowire="default" dependency-check="default">
 		<!-- the name of the core harvest agent listener web service -->
 		<property name="service" value="${harvestCoordinatorNotifier.service}"/>

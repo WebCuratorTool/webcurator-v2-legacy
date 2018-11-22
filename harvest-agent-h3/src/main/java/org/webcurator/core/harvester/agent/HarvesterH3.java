@@ -23,8 +23,11 @@ import org.netarchivesuite.heritrix3wrapper.jaxb.ConfigFile;
 import org.netarchivesuite.heritrix3wrapper.jaxb.Engine;
 import org.netarchivesuite.heritrix3wrapper.jaxb.Job;
 import org.netarchivesuite.heritrix3wrapper.jaxb.JobShort;
+import org.springframework.context.ApplicationContext;
+import org.webcurator.core.common.Constants;
 import org.webcurator.core.harvester.agent.exception.HarvesterException;
 import org.webcurator.core.harvester.util.AlertLogger;
+import org.webcurator.core.util.ApplicationContextFactory;
 import org.webcurator.domain.model.core.harvester.agent.HarvesterStatusDTO;
 
 import org.netarchivesuite.heritrix3wrapper.*;
@@ -44,6 +47,10 @@ public class HarvesterH3 implements Harvester {
      * The name of the profile file.
      */
     private static final String PROFILE_NAME = "order.xml";
+    /**
+     * The logger for this class.
+     */
+    private static Log log = LogFactory.getLog(HarvesterH3.class);
     /**
      * The name of this harvester.
      */
@@ -79,10 +86,6 @@ public class HarvesterH3 implements Harvester {
      */
     private Boolean compressed = null;
     /**
-     * The logger for this class.
-     */
-    private Log log = null;
-    /**
      * flag to indicate that the stop is an abort .
      */
     private boolean aborted = false;
@@ -107,7 +110,6 @@ public class HarvesterH3 implements Harvester {
      */
     public HarvesterH3(String aHarvesterName) throws HarvesterException {
         super();
-        log = LogFactory.getLog(HarvesterH3.class);
         name = aHarvesterName;
 
         try {
@@ -118,7 +120,6 @@ public class HarvesterH3 implements Harvester {
             }
             throw new HarvesterException("Failed to create an instance of H3 " + e.getMessage(), e);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("Created new harvester " + aHarvesterName);
         }
@@ -139,7 +140,6 @@ public class HarvesterH3 implements Harvester {
             }
             throw new HarvesterException("Failed to create an instance of H3 " + e.getMessage(), e);
         }
-        log = LogFactory.getLog(HarvesterH3.class);
         if (log.isDebugEnabled()) {
             log.debug("Created new harvester " + name);
         }
@@ -147,13 +147,18 @@ public class HarvesterH3 implements Harvester {
     }
 
     private static Heritrix3Wrapper getH3WrapperInstance() {
-        String hostname = "localhost";
-        int port = 8443;
-        File keystoreFile = null;
-        String keyStorePassword = "";
-        String userName = "admin";
-        String password = "admin";
+        ApplicationContext context = ApplicationContextFactory.getWebApplicationContext();
+        Heritrix3WrapperConfiguration heritrix3WrapperConfiguration = (Heritrix3WrapperConfiguration)
+                context.getBean(Constants.HERITRIX3_WRAPPER_CONFIGURATION);
 
+        String hostname = heritrix3WrapperConfiguration.getHost();
+        int port = heritrix3WrapperConfiguration.getPort();
+        File keystoreFile = heritrix3WrapperConfiguration.getKeyStoreFile();
+        String keyStorePassword = heritrix3WrapperConfiguration.getKeyStorePassword();
+        String userName = heritrix3WrapperConfiguration.getUserName();
+        String password = heritrix3WrapperConfiguration.getPassword();
+        log.info("Getting Heritrix3Wrapper using hostname=" + hostname + ", port=" + port + ", keyStoreFile=" +
+                keystoreFile + ", userName=" + userName);
         return Heritrix3Wrapper.getInstance(hostname, port, keystoreFile, keyStorePassword, userName, password);
     }
 
@@ -551,7 +556,18 @@ public class HarvesterH3 implements Harvester {
         Job jobStatus = null;
         heritrix.waitForEngineReady(10, 1000);
         EngineResult er = heritrix.createNewJob(aJobName);
-        jobStatus = heritrix.job(aJobName).job;
+        JobResult jobResult = heritrix.job(aJobName);
+        if (jobResult == null) {
+            String errorMessage = "Unable to get the jobResult=null for jobName=" + aJobName + ", is your configuration correct?";
+            log.error(errorMessage);
+            throw new HarvesterException(errorMessage);
+        }
+        jobStatus = jobResult.job;
+        if (jobStatus == null) {
+            String errorMessage = "Unable to get the jobStatus=null for jobName=" + aJobName + ", is your configuration correct?";
+            log.error(errorMessage);
+            throw new HarvesterException(errorMessage);
+        }
         log.info("Launched harvester=" + name + ", jobStatus shortName=" + jobStatus.shortName + ", statusDescription="
                 + jobStatus.statusDescription);
 
@@ -815,7 +831,6 @@ public class HarvesterH3 implements Harvester {
         // validate the engine
         List<String> validEngines = Arrays.asList("beanshell", "groovy", "nashorn");
         if (engine == null || !validEngines.contains(engine)) {
-            log = LogFactory.getLog(HarvesterH3.class);
             if (log.isErrorEnabled()) {
                 String message = "The script engine specified is not valid. It must be one of " + validEngines;
                 log.error(message);
