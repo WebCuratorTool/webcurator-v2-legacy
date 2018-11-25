@@ -565,11 +565,8 @@ a {
 					<table width="100%">
 						<tr>
 							<td>
-								<textarea name="provenanceNote" 
-									rows="<%=Constants.ANNOTATION_ROWS%>" 
-									cols="<%=Constants.ANNOTATION_COLS%>">
-									<c:out value="${command.provenanceNote}" />
-								</textarea>
+								<textarea name="provenanceNote" rows="<%=Constants.ANNOTATION_ROWS%>"
+									cols="<%=Constants.ANNOTATION_COLS%>"><c:out value="${command.provenanceNote}"/></textarea>
 							</td>
 						</tr>
 						<tr class="tableRowLite">

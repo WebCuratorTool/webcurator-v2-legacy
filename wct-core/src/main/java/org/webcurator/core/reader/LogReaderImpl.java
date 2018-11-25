@@ -68,19 +68,19 @@ public class LogReaderImpl implements LogReader {
 
 		File logFile = logProvider.getLogFile(aJob, aFileName);
 		if (logFile != null) {
-			theTail = org.archive.crawler.util.LogReader.tail(logFile.toString(), noOfLines);
+			theTail = Utils.tail(logFile.toString(), noOfLines);
 		}
 		
 		return theTail;
 	}
 
-	/** @see LogReader#get(String, String, int). */
+	/** @see LogReader#get(String, String, int, int). */
 	public String[] get(String aJob, String aFileName, int startLine, int noOfLines) {
 		String[] theLines = {""};
 
 		File logFile = logProvider.getLogFile(aJob, aFileName);
 		if (logFile != null) {
-			theLines = org.archive.crawler.util.LogReader.get(logFile.toString(), startLine, noOfLines);
+			theLines = Utils.get(logFile.toString(), startLine, noOfLines);
 		}
 		
 		return theLines;
@@ -174,7 +174,7 @@ public class LogReaderImpl implements LogReader {
 		
 		File logFile = logProvider.getLogFile(aJob, aFileName);
 		if (logFile != null) {
-			lines = org.archive.crawler.util.LogReader.getByRegExpr(logFile.toString(), regExpr, addLines, prependLineNumbers, skipFirstMatches, numberOfMatches);
+			lines = Utils.getByRegExpr(logFile.toString(), regExpr, addLines, prependLineNumbers, skipFirstMatches, numberOfMatches);
 		}
 		
 		return lines;
@@ -188,7 +188,7 @@ public class LogReaderImpl implements LogReader {
 		{
 			File logFile = logProvider.getLogFile(aJob, aFileName);
 			if (logFile != null) {
-				line = org.archive.crawler.util.LogReader.findFirstLineBeginning(new FileReader(logFile), match);
+				line = Utils.findFirstLineBeginning(new FileReader(logFile), match);
 			}
 		}
 		catch(IOException e)
@@ -208,7 +208,7 @@ public class LogReaderImpl implements LogReader {
 		{
 			File logFile = logProvider.getLogFile(aJob, aFileName);
 			if (logFile != null) {
-				line = org.archive.crawler.util.LogReader.findFirstLineContaining(new FileReader(logFile), match);
+				line = Utils.findFirstLineContaining(new FileReader(logFile), match);
 			}
 		}
 		catch(IOException e)
@@ -257,7 +257,7 @@ public class LogReaderImpl implements LogReader {
      * log/file that has a matching or later timestamp.
      *
      * @param reader The reader of the log/file
-     * @param prefix The prefix string to match
+     * @param timestamp The timestamp from which to start reading
      * @return The line number (counting from 1, not zero) of the first line
      *         that matches the given regular expression. -1 is returned if no
      *         line matches the regular expression. -1 also is returned if 
@@ -308,4 +308,7 @@ public class LogReaderImpl implements LogReader {
         }
         return -1;
     }
+
+
+
 }
