@@ -2263,7 +2263,7 @@ In these cases, the general procedure is to
    Heritrix status code can be used to diagnose the problem.
 
    -  See
-      http://crawler.archive.org/articles/user_manual/glossary.html#statuscodes
+      https://github.com/internetarchive/heritrix3/wiki/Status-Codes
       for a list of Heritrix status codes.
 
    -  A 500 (or other 5XX) status code indicates an internal server
@@ -2449,16 +2449,15 @@ Web Curator Tool.
 
 Useful sections include:
 
--  **Interpreting crawl.log**: See Section 8.2.1 on this page:
-   http://crawler.archive.org/articles/user_manual/analysis.html#logs
+-  | **Interpreting crawl.log**:
+   | https://github.com/internetarchive/heritrix3/wiki/Logs#crawllog
 
 -  | **Status code definitions:** This explains the status codes that
    | appear in the crawl log:
-   | http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+   | https://github.com/internetarchive/heritrix3/wiki/Status-Codes
 
--  **Interpreting progress-statistics.log**: See Section 8.2.3 on this
-   page:
-   http://crawler.archive.org/articles/user_manual/analysis.html#logs
+-  | **Interpreting progress-statistics.log**:
+   | https://github.com/internetarchive/heritrix3/wiki/Logs#progress-statisticslog
 
 -  **Interpreting Reports: See Section 8.3:**
    http://crawler.archive.org/articles/user_manual/analysis.html#logs
@@ -3323,40 +3322,156 @@ How to create a profile
 
 From the **Profile** page
 
-1. Click **create new**
+1. Select the harvester type (Heritrix 3, Heritrix 1)
 
-2. The **Create/Edit profile** page displays
+2. Click **create new**
+
+3. The **Create/Edit profile** page displays
+
+
+The **Create/Edit profile** page includes several tabs for adding or
+editing information about profiles.
+
+**Heritrix 3**:
+
+   |image96|
+
+   Figure 46. Profile page
+
+   - **General** - general information about the profile, such as a name,
+     description, agency, whether it's an active or inactive profile and what
+     level the profile should be set.
+
+   - **Scope** - settings that decide the general crawl parameters. This
+     is a simplified set of availble Heritrix 3 settings.
+
+    +-----------------------+-----------------------------------+
+    | **Parameter**         | **Description**                   |
+    +-----------------------+-----------------------------------+
+    | Contact URL           | A contact URL for the person or   |
+    |                       | entity running the crawl.         |
+    +-----------------------+-----------------------------------+
+    | User Agent Prefix     | The first piece of text that      |
+    |                       | comprises the final User Agent    |
+    |                       | string that Heritrix 3 will use.  |
+    |                       | Be sure to replace the            |
+    |                       | *@VERSION@* text with the         |
+    |                       | Heritrix version you are using.   |
+    +-----------------------+-----------------------------------+
+    | Document Limit        | The maximum number of documents to|
+    |                       | harvest during the crawl. Once the|
+    |                       | document count has exceeded this  |
+    |                       | limit, Heritrix will stop the     |
+    |                       | crawl. A value of zero means no   |
+    |                       | upper limit.                      |
+    +-----------------------+-----------------------------------+
+    | Data Limit            | The maximum file size to write to |
+    |                       | disk. Once the size of all files  |
+    |                       | on disk has exceeded this limit,  |
+    |                       | Heritrix will stop the crawl. A   |
+    |                       | value of zero means no upper      |
+    |                       | limit.                            |
+    +-----------------------+-----------------------------------+
+    | Time Limit            | The maximum duration for the crawl|
+    |                       | to run. Once the duration has     |
+    |                       | exceeded this limit, Heritrix will|
+    |                       | stop the crawl. A value of zero   |
+    |                       | means no upper limit.             |
+    +-----------------------+-----------------------------------+
+    | Max Path Depth        | Reject any URI whose total number |
+    |                       | of path-segments is over the      |
+    |                       | configured threshold.  A          |
+    |                       | path-segment is a string in the   |
+    |                       | URI separated by a "/" character, |
+    |                       | not including the first "//".     |
+    +-----------------------+-----------------------------------+
+    | Max Hops              | The maximum number of allowed hops|
+    |                       | the crawler should go when        |
+    |                       | crawling linked pages.            |
+    +-----------------------+-----------------------------------+
+    | Max Transitive Hops   | The maximum number of non-navlink |
+    |                       | hops followed in the path from    |
+    |                       | the original seed.                |
+    +-----------------------+-----------------------------------+
+    | Ignore Robots.txt     | Do not obey a seed's robots.txt.  |
+    +-----------------------+-----------------------------------+
+    | Ignore Cookies        | Disable cookie handling.          |
+    +-----------------------+-----------------------------------+
+    | Default Encoding      | The character encoding to use for |
+    |                       | files that do not have one        |
+    |                       | specified in the HTTP response    |
+    |                       | headers. The default is UTF-8     |
+    +-----------------------+-----------------------------------+
+    | Block URLs            | Block all URIs matching the       |
+    |                       | regular expression from being     |
+    |                       | processed.                        |
+    +-----------------------+-----------------------------------+
+    | Include URLs          | Allow all URIs matching the       |
+    |                       | regular expression to be          |
+    |                       | processed.                        |
+    +-----------------------+-----------------------------------+
+    | Max File Size         | The maximum size in bytes for each|
+    |                       | WARC file. Once the WARC file     |
+    |                       | reaches this size, no URIs will be|
+    |                       | written to it and another WARC    |
+    |                       | file will be created to handle the|
+    |                       | remaining URIs.                   |
+    +-----------------------+-----------------------------------+
+    | Compress              | Compress the WARC file content    |
+    |                       | using gzip compression. Note that |
+    |                       | compression applies to each       |
+    |                       | content item stored in the WARC.  |
+    +-----------------------+-----------------------------------+
+    | Prefix                | The prefix of the WARC filename.  |
+    +-----------------------+-----------------------------------+
+    | Politeness            | The politeness settings are a set |
+    |                       | of parameters that control how    |
+    |                       | fast Heritrix tries to crawl a    |
+    |                       | website. There are three preset   |
+    |                       | options (Polite, Medium and       |
+    |                       | Aggressive). To edit the          |
+    |                       | individual values, choose         |
+    |                       | 'Custom'.                         |
+    +-----------------------+-----------------------------------+
+
+
+   For more information about configuring profiles see:
+   https://github.com/internetarchive/heritrix3/wiki/Processing%20Chains
+   https://github.com/internetarchive/heritrix3/wiki/Processor%20Settings
+   https://github.com/internetarchive/heritrix3/wiki/Configuring%20Jobs%20and%20Profiles
+   https://github.com/internetarchive/heritrix3/wiki/Basic%20Crawl%20Job%20Settings
+
+
+**Heritrix 1**:
 
    |image87|
 
    Figure 46. Profile page
 
-The **Create/Edit profile** page includes several tabs for adding or
-editing information about profiles:
+   - **General** - general information about the profile, such as a name,
+     description, agency, whether it's an active or inactive profile and what
+     level the profile should be set.
 
-- **General** - general information about the profile, such as a name,
-  description, agency, whether it's an active or inactive profile and what
-  level the profile should be set.
+   - **Base** - Information about the crawl order, user-agent string, and
+     robots honouring policy.
 
-- **Base** - Information about the crawl order, user-agent string, and
-  robots honouring policy.
+   - **Scope** - settings that decide for each discovered URI if it's within
+     the scope of the current crawl. Several scopes are provided with
+     Heritrix such as DecidingScope, PathScope and HostScope
 
-- **Scope** - settings that decide for each discovered URI if it's within
-  the scope of the current crawl. Several scopes are provided with
-  Heritrix such as DecidingScope, PathScope and HostScope
+   - **Frontier** - this maintains the internal state of the crawl. It
+     effects the order in which the URIs are crawled
 
-- **Frontier** - this maintains the internal state of the crawl. It
-  effects the order in which the URIs are crawled
+   The remaining tabs **Pre-fetchers**, **Fetchers**, **Extractors**,
+   **Writers**, and **Post-Processors** are a series of processors that a
+   URI passes through when it is crawled.
 
-The remaining tabs **Pre-fetchers**, **Fetchers**, **Extractors**,
-**Writers**, and **Post-Processors** are a series of processors that a
-URI passes through when it is crawled.
+   For more information about creating profiles see:
+   http://crawler.archive.org/articles/user_manual/creating.html
 
-For more information about creating profiles see:
-http://crawler.archive.org/articles/user_manual/creating.html
+   For more information about configuring profiles see:
+   http://crawler.archive.org/articles/user_manual/config.html
 
-For more information about configuring profiles see:
-http://crawler.archive.org/articles/user_manual/config.html
 
 Permission Request Templates
 =======================================
@@ -3408,7 +3523,7 @@ record is created for the serial. The seed URL is likely to change with
 each new issue. Because of this it is standard practice to use 'harvest
 now' rather than create ongoing schedules.
 
-The HTML serials standard profile is a pathscope profile.
+The HTML serials standard profile using Heritrix 1 is a pathscope profile.
 
 The new QA Indicators are designed for websites so it's best to use the
 log files and tree view to quality review the harvested serial issue.
@@ -3449,7 +3564,7 @@ is:
 
 4. *The Web Curator Tool will create* **Target Instances** *according
    to your schedule, run the harvests for you, and notify you that the
-   Target Instance is in the* **Harvested**\ *state and ready for
+   Target Instance is in the* **Harvested** *state and ready for
    review.*
 
 5. **Quality Review** the Target Instance, then **endorse** the results.
@@ -3790,3 +3905,4 @@ Figure 28: Detailed workflow
 .. |image93| image:: ../_static/user-manual/image81.png
 .. |image94| image:: ../_static/user-manual/image82.png
 .. |image95| image:: ../_static/user-manual/image83.png
+.. |image96| image:: ../_static/user-manual/image96.png
