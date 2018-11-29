@@ -24,7 +24,8 @@
   }
 
   function setUserAgentResult(userAgent, contactURL) {
-    $("#userAgentResult").val(userAgent + " " + contactURL + ")");
+    //$("#userAgentResult").val(userAgent + " " + contactURL + ")");
+    $("#userAgentResult").val(userAgent + contactURL + ")");
   }
 
   $(document).ready(function() {
