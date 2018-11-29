@@ -260,7 +260,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     }
 
     private void assertDefaultProfileOptions(Heritrix3ProfileOptions profileOptions) {
-        assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
+        assertEquals("ENTER_AN_URL_WITH_YOUR_CONTACT_INFO_HERE_FOR_WEBMASTERS_AFFECTED_BY_YOUR_CRAWL", profileOptions.getContactURL());
         assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
@@ -272,13 +272,11 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertFalse(profileOptions.isIgnoreCookies());
         assertEquals("UTF-8", profileOptions.getDefaultEncoding());
         List<String> blockUrls = profileOptions.getBlockURLsAsList();
-        assertEquals(43, blockUrls.size());
-        assertTrue(blockUrls.contains(".*/text/javascript.*"));
-        assertTrue(blockUrls.contains(".*youtube-nocookie.*"));
+        assertEquals(1, blockUrls.size());
+        assertTrue(blockUrls.contains(".*rss.*"));
         List<String> includeUrls = profileOptions.getIncludeURLsAsList();
-        assertEquals(2, includeUrls.size());
-        assertTrue(includeUrls.contains(".*dia.*"));
-        assertTrue(includeUrls.contains(".*natlib.*"));
+        assertEquals(1, includeUrls.size());
+        assertTrue(includeUrls.contains(".*rss.*"));
         assertEquals(new BigInteger("1000000000"), profileOptions.getMaxFileSizeAsBytes());
         assertFalse(profileOptions.isCompress());
         assertEquals("IAH", profileOptions.getPrefix());
@@ -294,7 +292,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
     @Test
     public final void testXmlHeritrix3Profile() {
         Heritrix3ProfileOptions profileOptions = testInstance.getHeritrix3ProfileOptions();
-        assertEquals("http://www.natlib.govt.nz/", profileOptions.getContactURL());
+        assertEquals("http://www.national-library-archive.com/", profileOptions.getContactURL());
         assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", profileOptions.getUserAgentTemplate());
         assertEquals(0L, profileOptions.getDocumentLimit());
         assertEquals(new BigInteger("0"), profileOptions.getDataLimitAsBytes());
@@ -475,7 +473,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         Heritrix3Profile overriddenProfile = new Heritrix3Profile(overriddenXml);
         // Assertions
         Heritrix3ProfileOptions overriddenProfileOptions = overriddenProfile.getHeritrix3ProfileOptions();
-        assertEquals("http://www.natlib.govt.nz/", overriddenProfileOptions.getContactURL());
+        assertEquals("ENTER_AN_URL_WITH_YOUR_CONTACT_INFO_HERE_FOR_WEBMASTERS_AFFECTED_BY_YOUR_CRAWL", overriddenProfileOptions.getContactURL());
         assertEquals("Mozilla/5.0 (compatible; heritrix/@VERSION@ +@OPERATOR_CONTACT_URL@)", overriddenProfileOptions.getUserAgentTemplate());
         assertEquals(25L, overriddenProfileOptions.getDocumentLimit());
         assertEquals(new BigInteger("102400"), overriddenProfileOptions.getDataLimitAsBytes());
