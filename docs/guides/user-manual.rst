@@ -238,8 +238,8 @@ Home Page
 The **Web Curator Tool Home Page** is pictured below.
 
 
-.. figure:: ../_static/media/image5.png
-    :target: ../_static/media/image5.png
+.. figure:: ../_static/user-manual/image5.png
+    :target: ../_static/user-manual/image5.png
 
     Figure 1. Home Page
 
@@ -478,8 +478,8 @@ Harvest authorisation search page
 The harvest authorisation search page lets you find and manage harvest
 authorisations.
 
-.. figure:: ../_static/media/image6.png
-    :target: ../_static/media/image6.png
+.. figure:: ../_static/user-manual/image6.png
+    :target: ../_static/user-manual/image6.png
 
     Figure 2. Harvest Authorisations
 
@@ -3635,7 +3635,7 @@ Figure 28: Detailed workflow
 .. |image4| image:: ../_static/user-manual/image4.png
    :width: 5.76042in
    :height: 0.44792in
-.. |image5| image:: ../../_static/user-manual/image4.png
+.. |image5| image:: ../_static/user-manual/image4.png
    :width: 5.76042in
    :height: 0.44792in
 .. |image6| image:: ../_static/user-manual/image5.png

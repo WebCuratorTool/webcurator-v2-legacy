@@ -61,11 +61,11 @@ Curator Tool:
 
 -  A database server (select one of the databases below)
 
-   -  Oracle 11g
+   -  Oracle 11g or newer
 
-   -  PostgreSQL 8.4.9.
+   -  PostgreSQL 8.4.9 or newer
 
-   -  MySQL 5.0.95
+   -  MySQL 5.0.95 or newer
 
 Other versions of the required products may be compatible with the Web
 Curator Tool but they have not been tested. Due to the products use of
@@ -109,11 +109,11 @@ The following prerequisites are optional:
 Setting up the WCT database
 =====================================
 
-Currently the WCT has been tested with Oracle 11g, MySQL 5.0.95 and
-PostgreSQL 8.4.9.
+Currently the WCT has been tested with Oracle 11g, MySQL 5.0.95, MariaDB 10.0.36 and
+PostgreSQL 8.4.9 and 9.6.11.
 
-Setup using Oracle 11g
-----------------------
+Setup using Oracle
+------------------
 
 *This guide assumes you have installed and configured Oracle 11g prior to
 setting up the WCT database and schema.*
@@ -163,10 +163,10 @@ once it is up and running. You can use the bootstrap account to create
 other users and agencies. Once you have setup valid users, it is best to
 disable the bootstrap user for security reasons.*
 
-Setup using PostgreSQL 8.4.9
+Setup using PostgreSQL
 ----------------------------
 
-*This guide assumes you have installed and configured PostgreSQL 8.4.9
+*This guide assumes you have installed and configured PostgreSQL
 prior to setting up the WCT database and schema.*
 
 1. Setup two schema, using the following script::
@@ -210,15 +210,15 @@ once it is up and running. You can use the bootstrap account to create
 other users and agencies. Once you have setup valid users, it is best to
 disable the bootstrap user for security reasons.*
 
-Setup using MySQL 5.0.95
-------------------------
+Setup using MySQL
+-----------------
 
-This guide assumes you have installed and configured MySQL 5.0.95 prior
+This guide assumes you have installed and configured MySQL prior
 to setting up the WCT database and schema.
 
 1. Create the database, using the following script::
 
-    db/latest/setup/wct-create-postgres.sql
+    db/latest/setup/wct-create-mysql.sql
 
 
 2. Then run the following SQL scripts under the root user::
@@ -1513,7 +1513,12 @@ Place the following lines near the top of ``heritrix-3.3.0/bin/heritrix``
     #Java Configuration
     JAVA_OPTS=" -Xms256m -Xmx1024m"
 
-Is there a better way of setting this??
+Or set the JAVA_OPTS environment variable on the command line prior to running the Heritrix startup script:
+
+::
+
+    export JAVA_OPTS=" -Xms256m -Xmx1024m"
+
 
 Jobs directory
 ~~~~~~~~~~~~~~~
