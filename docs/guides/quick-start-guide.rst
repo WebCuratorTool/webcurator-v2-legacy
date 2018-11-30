@@ -59,12 +59,12 @@ This starts up Heritrix with the password "admin" for the user admin, which is t
 Creating the database
 ---------------------
 
-Download the latest stable binary WCT release from https://github.com/DIA-NZ/webcurator/releases. Extract the archive and go into the resulting directory (in our case /usr/local/wct). Then, to create the WCT database and its objects, run the script set-up-mysql.sh (found in the db subdirectory):
+Download the latest stable binary WCT release from https://github.com/DIA-NZ/webcurator/releases. Extract the archive and go into the resulting directory (in our case /tmp/wct). Then, to create the WCT database and its objects, run the script set-up-mysql.sh (found in the db subdirectory):
 
 ::
 
-	user@host:/usr/local/wct$ cd db
-	user@host:/usr/local/wct/db$ ./set-up-mysql.sh
+	user@host:/tmp/wct$ cd db
+	user@host:/tmp/wct/db$ ./set-up-mysql.sh
 
 You'll need to set the variable $MYSQL_PWD in this script to the correct value for your MySQL installation.
 
@@ -76,8 +76,8 @@ To deploy the WCT components into Tomcat, copy the war files from the WCT direct
 
 ::
 
-	user@host:/usr/local/wct$ cd war
-	user@host:/usr/local/wct/war$ cp * /usr/local/apache-tomcat-9.0.12/webapps
+	user@host:/tmp/wct$ cd war
+	user@host:/tmp/wct/war$ cp * /usr/local/apache-tomcat-9.0.12/webapps
 
 Then shutdown Tomcat so you can edit the config files in the newly created directories.
 
