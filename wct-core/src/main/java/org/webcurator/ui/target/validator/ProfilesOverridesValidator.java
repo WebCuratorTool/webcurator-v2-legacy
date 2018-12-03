@@ -65,8 +65,11 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator implements
 			} else {
 				log.info("Skipping imported profile validation as there is no profile override.");
 			}
-		} else {
-			log.info("Validating non-imported profile.");
+		}
+		// Only validate Heritrix 1 fields if a Heritrix 1 profile is selected.
+		// (prevents hidden H1 fields failing validation when using an H3 profile)
+		else if (command.getHarvesterType().equals("HERITRIX1")){
+			log.info("Validating non-imported Heritrix 1.x profile.");
 
 			if (command.isOverrideExcludedMimeTypes()) {
 				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "excludedMimeTypes", "required", getObjectArrayForLabel("excludedMimeTypes"), "excludedMimeTypes is a required field");
@@ -103,6 +106,17 @@ public class ProfilesOverridesValidator extends AbstractBaseValidator implements
 			if (command.isOverrideRobots()) {
 				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "robots", "required", getObjectArrayForLabel("robots"), "robots is a required field");
 			}
+		}
+		else if (command.getHarvesterType().equals("HERITRIX3")) {
+			log.info("Validating non-imported Heritrix 3.x profile.");
+
+			if (command.isOverrideH3DataLimit()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "h3DataLimit", "required", getObjectArrayForLabel("h3DataLimit"), "h3DataLimit is a required field");
+			}
+			if (command.isOverrideH3TimeLimit()) {
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "h3TimeLimit", "required", getObjectArrayForLabel("h3TimeLimit"), "h3TimeLimit is a required field");
+			}
+
 		}
 
 		// All profiles have profile notes
