@@ -1537,7 +1537,7 @@ harvest result
 |image35| - **Abort** a running Target Instance and delete its harvest
 result
 
-|image_h3console| - **H3 Script Console** for executing scripts against
+|image97| - **H3 Script Console** for executing scripts against
 Heritrix 3 Target Instances
 
 |image36| - **Target Annotation**: displays any annotations defined for
@@ -3906,3 +3906,6 @@ Figure 28: Detailed workflow
 .. |image94| image:: ../_static/user-manual/image82.png
 .. |image95| image:: ../_static/user-manual/image83.png
 .. |image96| image:: ../_static/user-manual/image96.png
+.. |image97| image:: ../_static/user-manual/image97.png
+   :width: 0.21875in
+   :height: 0.20833in
