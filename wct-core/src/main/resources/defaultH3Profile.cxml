@@ -34,7 +34,7 @@
  <bean id="simpleOverrides" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
   <property name="properties">
    <value>
-metadata.operatorContactUrl=ENTER_AN_URL_WITH_YOUR_CONTACT_INFO_HERE_FOR_WEBMASTERS_AFFECTED_BY_YOUR_CRAWL
+metadata.operatorContactUrl=ENTER_AN_HTTP(S)://_URL_WITH_CONTACT_INFO_FOR_WEBMASTERS_AFFECTED_BY_YOUR_CRAWL
 metadata.jobName=basic
 metadata.description=Basic crawl starting with useful defaults
    </value>
@@ -133,7 +133,10 @@ metadata.description=Basic crawl starting with useful defaults
      <!-- <property name="listLogicalOr" value="true" /> -->
           <property name="regexList">
            <list>
-               <value>.*rss.*</value>
+               <value>.*\.rss.*</value>
+               <value>.*google\.com\/jsapi.*</value>
+               <value>.*maps\.google.*</value>
+               <value>.*youtube\.com\/embed\/.*</value>
            </list>
           </property>
     </bean>
@@ -142,7 +145,7 @@ metadata.description=Basic crawl starting with useful defaults
      <!-- <property name="listLogicalOr" value="true" /> -->
           <property name="regexList">
            <list>
-            <value>.*rss.*</value>
+            <value>.*\.rss.*</value>
            </list>
           </property>
     </bean>
