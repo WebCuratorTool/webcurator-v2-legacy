@@ -187,15 +187,31 @@ public class HarvesterH3 implements Harvester {
         }
 
         if (h3job != null) {
+
+            // Populate the Heritrix build version for this job
+            String heritrixBuild = null;
+            if(status.getHeritrixVersion() == null || status.getHeritrixVersion().isEmpty()){
+                EngineResult engineResult = heritrix.rescanJobDirectory();
+                // Don't proceed if rescanJobDirectory call fails
+                if(engineResult != null){
+                    heritrixBuild = engineResult.engine.heritrixVersion;
+                    // Remove SNAPSHOT date if exists in build name
+                    if(heritrixBuild.contains("-")){
+                        heritrixBuild = heritrixBuild.substring(0, heritrixBuild.indexOf("-"));
+                    }
+                }
+            }
+
             // Get update of job from H3 engine
-            EngineResult engineResult = heritrix.rescanJobDirectory();
             h3job = heritrix.job(h3job.shortName).job;
             if (h3job != null) {
 
                 status.setJobName(h3job.shortName);
                 status.setStatus(h3job.crawlControllerState);
-                String heritrixBuild = engineResult.engine.heritrixVersion;
-                status.setHeritrixVersion("Heritrix " + heritrixBuild.substring(0, heritrixBuild.indexOf("-")));
+
+                if(heritrixBuild != null){
+                    status.setHeritrixVersion("Heritrix " + heritrixBuild);
+                }
 
                 if (h3job.crawlControllerState != null) {
 
@@ -228,7 +244,8 @@ public class HarvesterH3 implements Harvester {
                 }
             } else {
                 //TODO - If job no longer exits in H3 engine, then maybe remove from this HarvestH3 object
-                System.out.println("HarvesterH3 - job no longer exsts in H3 engine");
+                System.out.println("HarvesterH3 - job no longer exists in H3 engine");
+                status.setHarvesterState("H3 Job Not Found");
 //            status = null;
             }
         }
@@ -840,61 +857,5 @@ public class HarvesterH3 implements Harvester {
         return heritrix.ExecuteShellScriptInJob(jobName, engine, shellScript);
     }
 
-    public static void main(String[] args) {
-        try {
-
-            Harvester H3 = new HarvesterH3();
-
-            // START
-            H3.start(new File("/crawler-beans.cxml"), "TI55555");
-            System.out.println("Started crawl");
-            HarvesterStatusDTO statusDTO = null;
-
-            // Get Harvest log dir
-            File logDir = H3.getHarvestLogDir();
-            System.out.println("Log Dir check 1) " + logDir.getAbsolutePath());
-            System.out.println("Retrieved harvest log dir");
-            // PAUSE
-            while (true) {
-                statusDTO = H3.getStatus();
-                Thread.sleep(2000);
-                if (statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
-                    H3.pause();
-                    System.out.println("Pausing crawl");
-                    break;
-                }
-            }
-
-            // UNPAUSE
-            while (true) {
-                statusDTO = H3.getStatus();
-                Thread.sleep(2000);
-                if (statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.PAUSED.toString())) {
-                    System.out.println("Paused crawl");
-                    H3.resume();
-                    System.out.println("Resuming crawl");
-                    break;
-                }
-            }
-
-            // Get Harvest log dir
-            logDir = H3.getHarvestLogDir();
-            System.out.println("Log Dir check 2) " + logDir.getAbsolutePath());
-            List<File> assetsDir = H3.getHarvestDigitalAssetsDirs();
-            System.out.println("Asset Dir check) " + assetsDir.get(0).getAbsolutePath());
-
-            // STOP
-            while (true) {
-                statusDTO = H3.getStatus();
-                Thread.sleep(2000);
-                if (statusDTO.getStatus().equals(Heritrix3Wrapper.CrawlControllerState.RUNNING.toString())) {
-                    H3.stop();
-                    break;
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
