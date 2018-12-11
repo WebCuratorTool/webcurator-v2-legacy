@@ -34,7 +34,7 @@
  <bean id="simpleOverrides" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
   <property name="properties">
    <value>
-metadata.operatorContactUrl=http://www.natlib.govt.nz/
+metadata.operatorContactUrl=ENTER_AN_HTTP(S)://_URL_WITH_CONTACT_INFO_FOR_WEBMASTERS_AFFECTED_BY_YOUR_CRAWL
 metadata.jobName=basic
 metadata.description=Basic crawl starting with useful defaults
    </value>
@@ -133,49 +133,10 @@ metadata.description=Basic crawl starting with useful defaults
      <!-- <property name="listLogicalOr" value="true" /> -->
           <property name="regexList">
            <list>
-               <value>.*rss.*</value>
-               <value>.*Rss.*</value>
-               <value>.*RSS.*</value>
-               <value>.*feed.*</value>
-               <value>.*Feed.*</value>
-               <value>.*/atom.*</value>
-               <value>.*oembed.*</value>
-               <value>.*/text/javascript.*</value>
-               <value>.*captcha.*</value>
-               <value>.*login.*</value>
-               <value>.*Login.*</value>
-               <value>.*/?share.*</value>
-               <value>.*sharethis.*</value>
-               <value>.*addthis.*</value>
-               <value>.*mailto.*</value>
-               <value>.*apple.com.*</value>
-               <value>.*adobe.com.*</value>
-               <value>.*youtube.com.*</value>
-               <value>.*vimeo.*</value>
-               <value>.*facebook.com.*</value>
-               <value>.*facebook.net.*</value>
-               <value>.*twitter.com.*</value>
-               <value>.*google.co.*</value>
-               <value>.*linkedin.com.*</value>
-               <value>.*pinterest.com.*</value>
-               <value>.*instagram.com.*</value>
-               <value>.*youtube-nocookie.*</value>
-               <value>.*kickstarter.com.*</value>
-               <value>.*/ws_greens/javascripts/.*</value>
-               <value>.*jquery.com.*</value>
-               <value>.*/sites/all/modules/.*</value>
-               <value>.*/gtm.*</value>
-               <value>.*/facebook/connect.*</value>
-               <value>.*/main-efe7136106236b22a3021cc3fe689595.js.*</value>
-               <value>.*api.digitalnz.org.*</value>
-               <value>.*digitalnz.org/records.*</value>
-               <value>.*/misc/sites/all/.*</value>
-               <value>.*/modules/system/sites/.*</value>
-               <value>.*/sites/all/themes/.*</value>
-               <value>.*/system.base.css.*</value>
-               <value>.*wordfence_logHuman.*</value>
-               <value>.*flickr.com.*</value>
-               <value>.*yahoo.com.*</value>
+               <value>.*\.rss.*</value>
+               <value>.*google\.com\/jsapi.*</value>
+               <value>.*maps\.google.*</value>
+               <value>.*youtube\.com\/embed\/.*</value>
            </list>
           </property>
     </bean>
@@ -184,8 +145,7 @@ metadata.description=Basic crawl starting with useful defaults
      <!-- <property name="listLogicalOr" value="true" /> -->
           <property name="regexList">
            <list>
-               <value>.*dia.*</value>
-               <value>.*natlib.*</value>
+            <value>.*\.rss.*</value>
            </list>
           </property>
     </bean>

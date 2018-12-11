@@ -932,7 +932,7 @@ function clickEndorse(hrOid) {
 				</c:if>
 				<c:if test="${instance.state eq 'Running' && instance.profile.isHeritrix3Profile()}">
 					<img src="images/action-sep-line.gif" alt="" width="7" height="19" border="0" />
-		    	    <a href="javascript:viewH3ScriptConsole(${instance.oid});" title="View"><img src="images/note.gif" title="H3 Script Console" alt="click here to Open H3 Script Console" width="21" height="20" border="0"></a>
+		    	    <a href="javascript:viewH3ScriptConsole(${instance.oid});" title="View"><img src="images/h3-script-console.png" title="H3 Script Console" alt="click here to Open H3 Script Console" width="21" height="20" border="0"></a>
 				</c:if>
 				</authority:show>
 				<authority:dont>&nbsp;</authority:dont>

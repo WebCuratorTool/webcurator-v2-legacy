@@ -24,7 +24,7 @@
   }
 
   function setUserAgentResult(userAgent, contactURL) {
-    $("#userAgentResult").val(userAgent + " " + contactURL + ")");
+    $("#userAgentResult").val(userAgent + contactURL + ")");
   }
 
   $(document).ready(function() {
@@ -99,7 +99,7 @@
 
   <tr>
     <td class="subBoxTextHdr">User Agent used by Heritrix 3:</td>
-    <td class="subBoxText"><input size="80" type="text" name="userAgentResult" id="userAgentResult" readonly value=""></td>
+    <td class="subBoxText"><input size="80" style="background-color: #fffcf9;" type="text" name="userAgentResult" id="userAgentResult" readonly value=""></td>
   </tr>
 
   <tr>
