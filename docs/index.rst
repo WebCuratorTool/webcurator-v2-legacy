@@ -12,6 +12,7 @@ Web Curator Tool Documentation
     guides/user-manual
     guides/developer-guide
     guides/data-dictionary
+    guides/upgrade-guide
     guides/release-notes
 
 
