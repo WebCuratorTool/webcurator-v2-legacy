@@ -304,7 +304,7 @@ done with the following steps:
 
     For a Harvest Agent, the Harvest Agent would need to include the
     `-Dcom.sun.management.jmxremote.port=9004` as part of the Java command
-    line.
+    line or by including it in the Java environment variable `JAVA_OPTS`.
 
     **IMPORTANT:** *Make sure your JMX port is unique. Different components of
     WCT will be running JMX so they will need to be configured to use
@@ -1521,6 +1521,21 @@ Optionally, Heritrix 3 can be built from source. Use the Github repository:
 https://github.com/internetarchive/heritrix3/
 
 *Maven is required to build the project*
+
+The build of the Heritrix3 crawler is done from the directory that contains the
+cloned Heritrix3 github repository.
+
+It's recommended to skip the tests when building the Heritrix3 crawler as they
+can take a considerable amount of time to run (many minutes to hours).
+::
+
+    mvn clean install -DskipTests=true
+
+The build produces a `heritrix-<heritrix-version>-SNAPSHOT-dist.zip` in
+`./dist/target`.
+
+Unzip this zip in the parent folder of `$HERITRIX_HOME`.
+
 
 Configuration
 ------------------------
