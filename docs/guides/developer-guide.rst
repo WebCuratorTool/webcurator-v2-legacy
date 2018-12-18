@@ -1,3 +1,4 @@
+.. _developer-guide:
 ===============
 Developer Guide
 ===============
@@ -6,7 +7,7 @@ Additional TODO
 ===============
 
 -   Incorporate useful information from the *Getting Started* section of the
-    wiki: https://github.com/DIA-NZ/webcurator/wiki/Getting-Started .
+    wiki: https://github.com/DIA-NZ/webcurator/wiki/Getting-Started.
 
 -   Review existing documents found in the `wct-core/docs` section to extract
     anything useful.
@@ -16,7 +17,7 @@ Introduction
 ============
 
 This guide, designed for a Web Curator Tool developer and contributor, covers
-how to develop and contribute to the Web Curatotor Tool. The source for both
+how to develop and contribute to the Web Curator Tool. The source for both
 code and documentation can be found at: http://dia-nz.github.io/webcurator/
 
 For information on how to install and setup the Web Curator Tool, see the Web
@@ -30,13 +31,15 @@ Contents of this document
 Following this introduction, the Web Curator Tool Developer Guide includes the
 following sections:
 
--   **Contributing** - covers how to contribute to the project.
+-   **Contributing** - Covers how to contribute to the project.
 
--   **Building** - covers building the Web Curator Tool from source.
+-   **Building** - Covers building the Web Curator Tool from source.
 
--   **Developer guidelines** - covers coding practice and development workflow.
+-   **Configuration** - Some configuration information.
 
--   **Future milestones** - covers plans for future development.
+-   **Developer guidelines** - Covers coding practice and development workflow.
+
+-   **Future milestones** - Covers plans for future development.
 
 
 Contributing
@@ -51,11 +54,51 @@ Source code for the Web Curator Tool is stored in github at:
 http://dia-nz.github.io/webcurator/
 Contributors to the codebase will require a github account.
 
-Issue tracking and pull requests
---------------------------------
+Issue tracking
+--------------
 
-Issues are tracked via Github's issue tracking. Pull requests are managed with
-Github's pull request process.
+Issues are tracked via Github's issue tracking. The current set of issues can
+be viewed on the project's *Issues* tab. The issue state (*To do*, *In progress*
+and *Done*) are also tracked through the *WCT Development* project (go to the
+*Projects* tab and select *WCT Development* project.
+
+When creating issues please include as much information as possible. The more
+information that you include, the easier it is for the issue resolver to solve
+the problem. Useful information includes the following:
+
+Background information
+~~~~~~~~~~~~~~~~~~~~~~
+
+-   The version of the Web Curator Tool you are using
+
+-   The database type and version (for example, MySql 8.0.12)
+
+-   The servlet container type and version (for example, Tomcat 9.0.13)
+
+-   The operating system type and version (for example, RHEL 7.6)
+
+-   The Java type and version (for example OpenJDK 8u192)
+
+-   The version of Heritrix 3 (if applicable)
+
+-   The web browser and version (for example Chrome 69.0.3497.100 (64-bit))
+
+Specific issue information
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-   Mention precisely what went wrong, including the steps you took to get to
+    point where things didn't work as expected. Describing the steps you took
+    can help us reproduce the issue.
+
+-   Describe what you expected to have happen.
+
+-   Include any relevant log messages.
+
+Pull requests
+-------------
+
+Pull requests are managed with Github's pull request process. For pull requests,
+see the *Pull requests* tab in the Github project.
 
 License
 -------
@@ -67,8 +110,8 @@ Major Contributors
 ------------------
 
 Major contributors to the Web Curator Tool are NLNZ (The National Library of New
-Zealand) (https://natlib.govt.nz/ ) and KB (Koninklijke Bibliotheek or The
-National Library of the Netherlands) (https://www.kb.nl ). These two
+Zealand) (https://natlib.govt.nz/) and KB (Koninklijke Bibliotheek or The
+National Library of the Netherlands) (https://www.kb.nl). These two
 institutions currently drive most development. All contributors are welcome.
 Making your interest in the Web Curator Tool known can help to ensure that the
 Tool meets your institution's needs.
@@ -77,8 +120,23 @@ Development discussion
 ----------------------
 
 Slack channels are used to discuss current Web Curator Tool development. The
-slack channels can be found at https://webcurator.slack.com .
+slack channels can be found at https://webcurator.slack.com. The
+`#development` and `#general` channels are two places to discuss issues.
 
+Getting help
+------------
+
+If the documentation isn't sufficiently clear, please use the slack channel
+`#general` at https://webcurator.slack.com to request assistance. You can also
+create github issues for specific problems with the tool or its documentation.
+
+We want to know who you are
+---------------------------
+
+Part of what makes a community-driven open-source project successful is the
+relationships between the participants. We want to know who you are. Take the
+time to announce yourself on the `#community` channel at
+https://webcurator.slack.com.
 
 Building
 ========
@@ -86,18 +144,22 @@ Building
 Requirements
 ------------
 
+Build requirements
+~~~~~~~~~~~~~~~~~~
 Building the Web Curator Tool from source requires the following:
 
 -   Java 8 (1.8) JDK or above (64bit recommended). Current development assumes
     using the Oracle JDK, but long-term it may be better to switch to OpenJDK.
 
--   Maven 3+ or later
+-   Maven 3+ or later.
 
--   Git (required to clone the project source from Github)
+-   Git (required to clone the project source from Github).
 
 As the artifact targets are Java-based, it should be possible to build the
 artifacts on either Linux, Solaris or Windows targets.
 
+Development platforms
+~~~~~~~~~~~~~~~~~~~~~
 The following platforms have been used during the development of the Web
 Curator Tool:
 
@@ -109,20 +171,237 @@ Curator Tool:
 
 -  Windows 7 Ultimate, Windows 2000, Windows XP Pro, Windows Server 2003
 
+Web Application Server platforms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The Web Curator Tool currently requires that its `.war` components run in a
+Web Application Server.
+
+Development has used Tomcat (currently version 8.x) Web Application Server for
+development. Testing has also taken place using jetty.
+
+Database platforms
+~~~~~~~~~~~~~~~~~~
+The Web Curator Tool requires a backend database for persistent storage.
+
+Development and testing has taken place using MySQL, Postgres and Oracle. See
+the `system-admin-guide`_ for more details. Testing has also used the *H2*
+database.
+
 Build commands
 --------------
 
+Installing maven dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+While maven generally will pull in dependencies as required from Maven Central,
+some of the dependencies that different Web Curator Tool components require do
+not exist in Maven Central. These dependencies have been checked into the
+codebase and must be installed in the local maven repository so they are
+available to maven when it builds the different components.
+
+Install the maven dependencies by running from the root project folder:
+    For Windows operating system::
+
+        install_maven_dependendencies.bat
+
+    For \*nix-based operating systems::
+
+        install_maven_dependencies.sh
+
+
 Building with unit tests
 ~~~~~~~~~~~~~~~~~~~~~~~~
+This can be run from the root project folder, or from a specific subproject
+folder, such as `wct-core`, `harvest-agent-h1`, `harvest-agent-h3` or
+`wct-core`.
 ::
 
-    mvn clean install
+    mvn clean install -P<database-type>
+
+The `-P<database-type>` parameter is one of `mysql`, `oracle`, `postgres`, as
+applicable. The `-Ph2` option, if used, is only intended for use with Jetty,
+and cannot be used to create the .war file with the current version of Hibernate.
+
+The digital asset store (`wct-store`) and harvest agents (`h1-harvest-agent` and
+`h3-harvest-agent`) do not need a database, so there is no need to specify
+anything database-related when building or running those specific components.
+
+The artifacts produced by the build (in general these will be `.jar` and `.war`
+files) will be found in the `target` subfolders of each subproject. The `.war`
+files are generally copied to the Tomcat `webapps` folder for deployment.
 
 Building and skipping unit tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-::
+This can be run from the root project folder, or from a specific subproject
+folder, such as `wct-core`, `harvest-agent-h1`, `harvest-agent-h3` or
+`wct-core`.::
 
-    mvn clean install -DskipTests=true
+    mvn clean install -P<database-type> -DskipTests=true
+
+Running with jetty
+~~~~~~~~~~~~~~~~~~
+Jetty is an inbuilt lightweight web application server than eliminates the need
+to run an Web Curator Tool component under Tomcat. It is not production capable
+but is useful for development. `wct-core`, `harvest-agent-h1`, `harvest-agent-h3`
+and `wct-store` can all be run using Jetty.
+
+*Note that for `wct-harvest-agent` and `wct-store`, you will see a warning that a
+profile couldn't be activated. This is not important.*
+
+To run the component under jetty use the following command::
+
+    mvn jetty:run <command-line-parameters> -P<database-type>
+
+Note that the command line parameters will vary based on the different
+components. If the command line parameter is not specified, a default is used.
+
+For these examples, `core-host` is `localhost`, `core-port` is `8080`,
+`h1-agent-port` is `8081`, `h3-agent-port` is `8086` and `das-port` is `8082`
+but any valid port can be used.
+
+`wct-core` under Jetty and H2 **first time**
+    `wct-core` can run with a H2 database (as specified with the `Ph2` parameter,
+    which removes the need to run against MySQL, Postgres or Oracle. The first
+    time this is run, the `-Dhbm2ddl.auto=create` creates a new instance of this
+    database.
+    ::
+
+        mvn jetty:run -Ph2 -Dhbm2ddl.auto=create \
+            -Dcore.host="<core-host>" -Dcore.port="<core-port>" -Ddas.port="<das-port>" \
+            -Darc.store.dir="<arc-store-directory>" \
+            -DarchiveType=fileArchive \
+            -Dfile.archive.repository="<file-archive-repository>" \
+            -Dfile.archive.files="<file-archive-files>" \
+            -Dlog4j.log.dir="<log4j-log-dir>" \
+            -Dattach.dir="<attachments-directory>"
+
+    In this scenario the bootstrap user will be created. Note that the tables
+    are cleared using this command.
+
+`wct-core` under Jetty and H2 **subsequent times** (when the h2 database already exists)
+    ::
+
+        mvn jetty:run -Ph2 \
+            -Dcore.host="<core-host>" -Dcore.port="<core-port>" -Ddas.port="<das-port>" \
+            -Darc.store.dir="<arc-store-directory>" \
+            -DarchiveType=fileArchive \
+            -Dfile.archive.repository="<file-archive-repository>" \
+            -Dfile.archive.files="<file-archive-files>" \
+            -Dlog4j.log.dir="<log4j-log-dir>" \
+            -Dattach.dir="<attachments-directory>"
+
+`wct-core` under Jetty and oracle
+    If using the Oracle database profile, the Oracle driver is required to run
+    Jetty. This driver is not availabe via Maven repositories for licensing
+    reasons - it needs to be downloaded and manually installed.
+
+    In general the steps are:
+
+    1.  Obtain the appropriate driver for your installation (see Oracle documentation).
+
+    2.  Install it into your maven repository. This is generally done by using
+        a command like::
+
+            mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=<version> -Dpackaging=jar -Dfile=<jar-location>
+
+    3.  Change the relevant `pom.xml` to reflect the Oracle jar version in use.
+
+    4.  Add a dependency in the pom.xml for the jetty plugin (refer to the mysql
+        profile as a reference).
+
+    More detailed instructions can be found via internet search engines.
+
+    Note also that if you are installing a new database, you will need to create
+    a tablespace called `WCT_DATA` in order for database creation scripts to
+    function as expected.  Since this is a database specific configuration, it
+    cannot be defaulted easily.
+    ::
+
+        mvn jetty:run \
+            -Dcore.host="<core-host>" -Dcore.port="<core-port>" -Ddas.port="<das-port>" \
+            -Darc.store.dir="<arc-store-directory>" \
+            -DarchiveType=fileArchive \
+            -Dfile.archive.repository="<file-archive-repository>" \
+            -Dfile.archive.files="<file-archive-files>" \
+            -Dlog4j.log.dir="<log4j-log-dir>" \
+            -Dattach.dir="<attachments-directory>"
+
+`harvest-agent-h1` under Jetty
+    ::
+
+        mvn jetty:run \
+            -Dcore.host="<core-host>" -Dcore.port="<core-port" \
+            -Dagent.port="<h1-agent-port>" \
+            -Ddas.host="<das-host>" -Ddas.port="<das-port>" \
+            -Dharvest.tmp.dir="<harvest-temp-directory>" \
+            -Dlog4j.log.dir="<log4j-directory>" \
+            -Dattach.dir="<attachments-directory>"
+
+`harvest-agent-h3` under Jetty
+    `harvest-agent-h3` requires a separate instance of Heritrix3 to run. See the
+    `system-admin-guide`_ for details on how to setup and run Heritrix3.
+
+    There may be conflicts with the JMX port of other components. You can change
+    the port used by editing the `build/jetty/jetty-jmx.xml` and changing the
+    port from `localhost:9004` to another unused port.
+
+    ::
+
+        mvn jetty:run \
+            -Dcore.host="<core-host>" -Dcore.port="<core-port" \
+            -Dagent.port="<h3-agent-port>" \
+            -Ddas.host="<das-host>" -Ddas.port="<das-port>" \
+            -Dharvest.tmp.dir="<harvest-temp-directory>" \
+            -Dlog4j.log.dir="<log4j-directory>" \
+            -Dattach.dir="<attachments-directory>"
+
+`wct-store` under Jetty
+    ::
+
+        mvn jetty:run \
+            -Dcore.host="<core-host>" -Dcore.port="<core-port>" -Ddas.port="<das-port>" \
+            -Darc.store.dir="<arc-store-directory>" \
+            -DarchiveType=fileArchive \
+            -Dfile.archive.repository="<file-archive-repository>" \
+            -Dfile.archive.files="<file-archive-files>" \
+            -Dlog4j.log.dir="<log4j-log-directory>" \
+            -Dattach.dir="<attachments-directory>"
+
+XDoclet
+~~~~~~~
+XDoclet is still used to generate `hibernate.cfg.xml` and the `.hbm.xml` files.
+This is configured via the `xdoclet-maven-plugin` and the antrun plugin.
+
+Future development that includes a Hibernate upgrade will remove the dependency
+on XDoclet.
+
+Configuration
+=============
+
+Configuration details
+---------------------
+
+The `system-admin-guide`_ contains detailed information about configuring the
+Web Curator Tool.
+
+The configuration files are generally found in the `build` subfolder of each
+subproject.
+
+You may need to change various configuration settings in one of these files to
+make them work for your specific environment. The MySQL configuration should
+require minimal/no changes if using the default installations. The H2
+configuration should require no changes to start.
+
+Maven filtering
+---------------
+
+Maven has a feature called *filtering* where it tries to replace placeholders
+like `${core.port}` with a property value that has been configured. This is an
+optional feature which is off by default, however WCT makes use of it for some
+of the build resources. Any `<resource>` with a `<filtering>` value of `true`
+is filtered, and the properties are supplied in two places: the `<properties>`
+tag, and via the `properties-maven-plugin`. These properties are also used to
+resolve these placeholders inside the `pom.xml` itself, e.g.
+`${databaseType}`.
 
 
 Developer Guidelines
@@ -138,6 +417,9 @@ Coding practice
 -   New functionality changes have a reasonable set of unit tests included.
     This can be enforced through minimal code coverage tests as part of the
     build process.
+
+-   Code contains robust instrumentation, which means extensive and detailed
+    logging about the state of operations at significant processing points.
 
 Code style
 ----------
@@ -160,6 +442,38 @@ coding style include:
 -   Oracle's coding conventions - https://www.oracle.com/technetwork/java/codeconventions-150003.pdf
     Note that this guide is significantly out of date and is only included here
     for historical purposes.
+
+Definition of Done
+------------------
+
+Code is considered done and can be merged into the master branch when the
+following conditions have been met:
+
+-   The requirements driving the change have been satisfied by the change.
+
+-   The code builds without errors.
+
+-   All unit tests pass.
+
+-   Unit test code coverage remains the same or is increasing.
+
+-   Functional tests have all passed.
+
+-   Non functional requirements met.
+
+-   Significant user journeys all work.
+
+-   Code and other changes have been peer reviewed and approved.
+
+-   New code has instrumentation (logging points) that conveys accurate and
+    helpful information about the state of the application.
+
+-   The documentation has been updated to reflect changes in functionality. This
+    includes the *Release Notes* `release-notes.rst`, especially for new
+    features. If there are any database changes, update the *Data Dictionary*
+    `data-dictionary.rst`.
+
+-   The Product Owner accepts the changes.
 
 Semantic versioning
 -------------------
