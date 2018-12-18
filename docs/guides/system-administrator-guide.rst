@@ -26,6 +26,8 @@ Guide includes the following sections:
 -  **Setting up the WCT database** - procedures for setup using
    Oracle, MySQL and PostgreSQL.
 
+-  **JMX setup** - procedures for setting up JMX for different WCT components.
+
 -  **Setting up the WCT Application Servers** - procedures for
    deploying WCT to Tomcat, includes configuration options and
    troubleshooting.
@@ -108,7 +110,7 @@ The following prerequisites are optional:
 - Git (can be used to clone the project source from Github)
 
 Setting up the WCT database
-=====================================
+===========================
 
 Currently the WCT has been tested with Oracle 11g, MySQL 5.0.95, MariaDB 10.0.36 and
 PostgreSQL 8.4.9 and 9.6.11.
@@ -257,8 +259,60 @@ once it is up and running. You can use the bootstrap account to create
 other users and agencies. Once you have setup valid users, it is best to
 disable the bootstrap user for security reasons.*
 
+
+JMX setup
+=========
+
+WCT core and every Harvest Agent require JMX Remote access. This means that
+JMX Remote control and access files will need to be setup for the JVM. This is
+done with the following steps:
+
+#.  Create a `jmxremote.password` file by copying the file
+    `jmxremote.password.template` to the jmx remote password file that your
+    installation will use. This template file will be in your JDK's
+    `jre\lib\management` directory.
+
+    *You can use the property
+    `-Dcom.sun.management.jmxremote.password.file=<property-file>` to point to a
+    different location.*
+
+    The monitor role and control role have passwords associated with them. These
+    are setting withing hte jmx remote password file::
+
+        monitorRole  apassword
+        controlRole  apassword
+
+#.  It is important that this file is protected. If using Windows, refer to the
+    following link to protect the file using the O/S:
+    http://java.sun.com/j2se/1.5.0/docs/guide/management/security-windows.html
+
+    If using \*nix platform, protect the file using::
+
+        chmod 600 jmxremote.password.
+
+#.  Enable the JMX Remote port used in the JVM's startup. Any high port can be
+    used as long as it is unique on the machine that is running the component.
+    The example here uses port `9004`, but if multiple components are running
+    on the same machine, then each component will need a different and unique
+    port number.
+
+    For Tomcat, this is done by adding the following to your
+    `$TOMCAT_HOME/bin/catalina.sh script`::
+
+        JAVA_OPTS=-Dcom.sun.management.jmxremote.port=9004
+
+
+    For a Harvest Agent, the Harvest Agent would need to include the
+    `-Dcom.sun.management.jmxremote.port=9004` as part of the Java command
+    line.
+
+    **IMPORTANT:** *Make sure your JMX port is unique. Different components of
+    WCT will be running JMX so they will need to be configured to use
+    different ports.*
+
+
 Setting up the WCT Application Servers
-================================================
+======================================
 
 Deploying WCT to Tomcat
 -----------------------
@@ -270,42 +324,21 @@ Tool:
 -  the web curator harvest agent (wct-harvest-agent.war)
 -  the web curator digital asset store (wct-store.war).
 
-| Each of these three components must be deployed for the Web Curator
-  Tool to be fully functional and more than one harvest agent can be
-  deployed if necessary. Each Harvest Agent is capable of carrying out
-  harvest actions. The more harvest agents deployed the more harvesting
-  that can be done at any one point in time. The harvest agents and
-  digital asset store can reside on any machine within the network, as
-| they use SOAP over HTTP to communicate with each other.
+Each of these three components must be deployed for the Web Curator
+Tool to be fully functional and more than one harvest agent can be
+deployed if necessary. Each Harvest Agent is capable of carrying out
+harvest actions. The more harvest agents deployed the more harvesting
+that can be done at any one point in time. The harvest agents and
+digital asset store can reside on any machine within the network, as
+they use SOAP over HTTP to communicate with each other.
 
 To deploy WCT to Tomcat:
 
--  Make sure you have installed and configured both Java 1.8 JDK and Apache-Tomcat 8.x.x successfully.
--  Set up the JMX Remote control and access files for the WCT core and
-   every Harvest Agent.
+-  Make sure you have installed and configured both Java 1.8 JDK and
+   Apache-Tomcat 8.x.x successfully.
 
-   -  Create a jmxremote.password file by copying the file
-      jmxremote.password.template this file will be in your JDK's
-      jre\lib\management directory.
-
-      *You can use the property -Dcom.sun.management.jmxremote.password.file
-      to point to a different location.*
-
-   -  It is important that this file is protected. If using Windows, refer
-      to the following link to protect the file using the O/S:
-      http://java.sun.com/j2se/1.5.0/docs/guide/management/security-windows.html
-
-   -  If using \*nix platform, protect the file using::
-
-        chmod 600 jmxremote.password.
-
-   -  Also enable the JMX Remote port (any high port can be used) by adding
-      the following to your $TOMCAT_HOME/bin/catalina.sh script::
-
-        JAVA_OPTS=-Dcom.sun.management.jmxremote.port=9004
-
-
-      **IMPORTANT:** *Make sure this change is applied to the Core and any Harvest Agent deployed onto a different machine.*
+-  Set up the JMX Remote control and access files for the WCT core as described
+   in the section `JMX setup`_.
 
 -  Deploy the WAR files into Tomcat. The simplest deployment is to
    deploy all three WAR files into the same Tomcat container.
@@ -950,7 +983,7 @@ Web Curator Core - wct-core.properties
     # name of the directory where the h3 scripts are stored
     h3.scriptsDirectory=/tmp/h3scripts
 
-See `Scripts directory`_ under Setting up Heritrix 3.
+See `Scripts directory`_ under `Setting up Heritrix 3`_.
 
 
 ::
@@ -1665,6 +1698,11 @@ The following properties in the ``fetchHTTP`` bean can configured for web proxy 
         <!-- <property name="httpProxyPassword" value="" /> -->
     </bean>
 
+
+JMX setup for Heritrix 3
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ensure that the `JMX setup`_ has been completed for Heritrix 3.
 
 Running Heritrix 3
 ------------------------
