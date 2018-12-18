@@ -548,7 +548,7 @@ Configure a Heritrix 3 - Harvest Agent
     # the max number of harvest to be run concurrently on this agent
     harvestAgent.maxHarvests=2
     # the name of the agent. must be unique
-    harvestAgent.name=My local H1 Agent
+    harvestAgent.name=My local H3 Agent
     # the note to send with the harvest result.
     harvestAgent.provenanceNote=Original Harvest
     # the number of alerts that occur before a notification is sent
@@ -1540,7 +1540,7 @@ as WCT Core and Store, then Heritrix 3 may need greater memory allocation.
 Or depending on how many concurrent harvests you want to allow the H3 Harvest Agent
 to run, increasing the memory allocation for Heritrix 3 might be required.
 
-Place the following lines near the top of ``heritrix-3.3.0/bin/heritrix``
+Place the following lines near the top of `heritrix-3.3.0/bin/heritrix`
 
 ::
 
@@ -1761,40 +1761,73 @@ Logging
 
 The Heritrix 3 output log can be located in the ``heritrix-3.3.0/heritrix_out.log`` file.
 
+Additional notes
+~~~~~~~~~~~~~~~~
+TODO Does this still apply?
+
+This Harvest Agent implementation handles the creation and cleanup up of jobs
+within the Heritrix 3.x instance. You should only see job directories within
+Heritrix while a harvest is running or waiting to be completed. Once the harvest
+is complete and WCT has transferred the assets, logs and reports to the Store
+then the Heritrix job is torn down and directory deleted. The only occasions
+where a Heritrix job directory will not be cleaned up is if a job fails to
+build/start or an error has occurred during the harvest. This allows you to
+investigate the Heritrix job log to determine the cause.
 
 Troubleshooting
 ------------------------
 
 TODO
+~~~~
+-   Gathering information from logs.
+-   When things don't work - what to check.
+-   Heritrix 3 won't crawl.
+-   This information might be better presented in a table.
 
-logs
+Interacting with Heritrix 3 directly
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Heritrix 3 can be operated directly (outside of WCT). Either use the UI or REST
+API to manually start a crawl. TODO Does this work?
 
-When things don't work - what to check
-
-Heritrix 3 won't crawl
-Heritrix 3 can be operated directly (outside of WCT). Either use the UI or REST API
-to manually start a crawl. Does this work?
-
-using curl to send actions to H3
+Curl can be used to send actions to H3. See
 https://webarchive.jira.com/wiki/spaces/Heritrix/pages/5735014/Heritrix+3.x+API+Guide
-
+for details on how this is done.
 
 Jobs won't build
-Check the Heritrix log, heritrix_log.out
+~~~~~~~~~~~~~~~~
+- Check the Heritrix log, `heritrix_log.out`.
 
-Is the seed.txt and crawler-beans.cxml being created in the harvest agent base dir, is it being transferred to the
-H3 job dir location
-Check file perms
+-   Is the `seed.txt` and `crawler-beans.cxml` being created in the harvest
+    agent base directory, is it being transferred to the H3 job dir location?
 
+-   Check file permissions.
 
-jobs fail
-- fail to build
-- fail during crawl
+Jobs fail
+~~~~~~~~~
+-   Fail to build
+-   Fail during crawl
 
-old job dirs not being removed
-Occasionaly there are nfs hidden files that prevent these folders from deleting fully.
+TODO How to solve.
 
-web proxy access
+Old job dirs not being removed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Occasionaly there are nfs hidden files that prevent these folders from deleting
+fully. Make sure all hidden files are removed.
+
+Web proxy access
+~~~~~~~~~~~~~~~~
+TODO Describe how to deal with web proxy access.
+
+OpenSSL errors with Solaris and Java 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If running on Solaris with Java 7 and you get openssl errors when the Harvest
+Agent tries to connect the Heritrix 3.x, try running Heritrix 3.x with Java 8.
+
+Copying issues with larger harvests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If running Apache Tomcat with 32bit Java 7, you may experience issues with
+larger harvests copying between the Harvest Agent and the Store on completion of
+a crawl. This was resolved by running Apache Tomcat with 64bit Java 7.
 
 
 Graceful shutdown and restart
