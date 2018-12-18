@@ -9,9 +9,6 @@ Additional TODO
 -   Incorporate useful information from the *Getting Started* section of the
     wiki: https://github.com/DIA-NZ/webcurator/wiki/Getting-Started.
 
--   Review existing documents found in the `wct-core/docs` section to extract
-    anything useful.
-
 
 Introduction
 ============
@@ -32,6 +29,8 @@ Following this introduction, the Web Curator Tool Developer Guide includes the
 following sections:
 
 -   **Contributing** - Covers how to contribute to the project.
+
+-   **Basic architecture**  - Covers the basic Web Curator Tool architecture.
 
 -   **Building** - Covers building the Web Curator Tool from source.
 
@@ -106,6 +105,14 @@ License
 All contributions to the Web Curator Tool must be under the Apache 2.0 License,
 which can be found at: https://www.apache.org/licenses/LICENSE-2.0
 
+Copyright
+---------
+
+In general copyright is assumed to belong to either the person who committed a
+change or the institution employing that person.
+
+*Please do not put copyright notices in files.*
+
 Major Contributors
 ------------------
 
@@ -137,6 +144,36 @@ Part of what makes a community-driven open-source project successful is the
 relationships between the participants. We want to know who you are. Take the
 time to announce yourself on the `#community` channel at
 https://webcurator.slack.com.
+
+
+Basic architecture
+==================
+
+The following diagram illustrates the basic architecture and its components.
+
+|diagramWebCuratorToolArchitecturalConnections|
+
+Some important notes
+--------------------
+
+-   The Harvest Agents and the Store talk to the Web Curator Tool WebApp, but
+    the WebApp does not talk to the Harvest Agents or Store. This means that
+    Harvest Agents can come and go.
+
+-   The Harvest Agents and Store signal to the WebApp that they exist by sending
+    heartbeat messages.
+
+-   The Heritrix H1 agent/crawler contains its Heritrix1 crawler.
+
+-   The Heritrix H3 crawlers are not aware of their agents. Instead the
+    Heritrix H3 agent tracks the Heritrix3 crawler. Each Heritrix H3 agent runs
+    as a web application (war). Each Heritrix3 crawler (jar) runs in own JVM.
+
+-   The WebCurator Store runs as a web application (war).
+
+-   The Web Curator Tool WebApp is the only component that communicates with the
+    SQL database.
+
 
 Building
 ========
@@ -951,3 +988,7 @@ Additional uplift notes
 ..  |diagramMasterAndFeatureBranches| image:: ../_static/developer-guide/diagram-master-and-feature-branches.png
     :width: 382.50px
     :height: 382.50px
+
+..  |diagramWebCuratorToolArchitecturalConnections| image:: ../_static/developer-guide/diagram-web-curator-tool-architectural-connections.svg
+    :width: 100%
+    :height: 100%
