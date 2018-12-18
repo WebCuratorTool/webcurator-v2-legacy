@@ -36,6 +36,9 @@ following sections:
 
 -   **Shut Down the WCT** - Describes shutting down WCT prior to upgrading.
 
+-   **Upgrading the WCT database schema** - Describes how to upgrade the
+    database schema.
+
 -   **Upgrading the application** - How to upgrade the application.
 
 -   **Configuration** - New configuration parameters.
@@ -87,7 +90,107 @@ To begin the upgrade of the WCT to version 1.6.2
 
 2.  Shut down the Tomcat instance(s) running the Harvest Agents, WCT Core, and
     Digital Asset Store. 
- 
+
+
+Upgrading WCT Database Schema
+=============================
+
+Version 1.6.2 of the Web Curator Tool is supported under MySQL `5.0.95`,
+Oracle `11g` and PostgreSQL `8.4.9`. Database schema upgrade scripts have been
+provided for all three databases.
+
+Upgrade scripts
+---------------
+
+Upgrade scripts are provided for each of the database flavours (MySQL, Oracle
+and PostgresSQL). These scripts can be found in `wct-core/db/latest/upgrade`
+and `wct-core/db/legacy/upgrade`.
+
+Upgrade script names are of the format::
+
+    upgrade-<database-type>-<source-version>-to-<target-version>.sql
+
+where `<database-type>` is one of `mysql`, `oracle` or `postgres`.
+
+The `<source-version>` is the current or source version (the version migrating
+*from*).
+
+The `<target-version>` is the target version (the version migrating *to*).
+
+**No script means no database change** *If there is no script for a particular
+version it means that there were no database changes.*
+
+Upgrades are cumulative
+-----------------------
+
+Upgrade scripts only cover a single upgrade step from one version to another.
+This means that upgrading across several versions requires that all the scripts
+between the source and target version must be executed in sequence.
+
+For example, to upgrade a MySQL database from version 1.4.0 to 1.7.0, the
+following scripts would need to be executed in this order:
+
+#.  `upgrade-mysql-1_4-to-1_4_1.sql`
+#.  `upgrade-mysql-1_5-to-1_5_1.sql`
+#.  `upgrade-mysql-1_5_1-to-1_5_2.sql`
+#.  `upgrade-mysql-1_5_2-to-1_6.sql`
+#.  `upgrade-mysql-1_6-to-1_6_1.sql`
+#.  `upgrade-mysql-1_6_3-to-1_7.sql`
+
+Upgrading on Oracle 11g
+-----------------------
+
+This guide assumes that the source version's schema is already configured on
+your Oracle `11g` database under the schema `DB_WCT`.
+
+1.  Log on to the database using the `DB_WCT` user.
+
+2.  Run the following SQL to upgrade the database::
+
+        db\upgrade\upgrade-oracle-<source-version>-to-<target-version>.sql
+
+        SQL> conn db_wct@<sid-name>
+
+        SQL> @upgrade-oracle-<source-version>-to-<target-version>.sql
+
+        SQL> exit;
+
+Upgrading on PostgreSQL 8
+-------------------------
+
+This guide assumes that the source version's schema is already configured on
+your PostgreSQL 8.1 database under the schema `DB_WCT`.
+
+1.  Log on to the database using the `DB_WCT` user.
+
+2.  Run the following SQL to upgrade the database::
+
+        db\upgrade\upgrade-postgresql-<source-version>-to-<target-version>.sql
+
+        postgres=# \c Dwct
+
+        postgres=# \i upgrade-postgresql-<source-version>-to-<target-version>.sql
+
+        postgres=# \q
+
+Upgrading on MySQL 5
+--------------------
+
+This guide assumes that the previous version's schema is already configured on
+your MySQL 5.0.95 database under the schema `DB_WCT`.
+
+1.  Log on to the database using the `DB_WCT` user.
+
+2.  Run the following SQL to upgrade the database::
+
+        db\upgrade\upgrade-mysql-<source-version>-to-<target-version>.sql
+
+        mysql> use db_wct
+
+        mysql> source upgrade-mysql-<source-version>-to-<target-version>.sql
+
+        mysql> quit
+
 
 Upgrading the application
 =========================
