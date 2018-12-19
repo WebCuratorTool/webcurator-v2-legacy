@@ -35,6 +35,14 @@ following sections:
 
 -   **1.6.0** - Release 1.6.0.
 
+-   **1.5.2** - Release 1.5.2.
+
+-   **1.5.1** - Release 1.5.1
+
+-   **1.5** - Release 1.5.
+
+-   **Previous versions** - Versions prior to release 1.5.
+
 
 Changes since 2.0.0
 ===================
@@ -88,6 +96,7 @@ Configurable Rosetta access rights
 
     OMS Codes (Rosetta)
     ::
+
         dpsArchive.dnx_open_access=xxxx
         dpsArchive.dnx_published_restricted=xxxx
         dpsArchive.dnx_unpublished_restricted_location=xxxx
@@ -166,7 +175,7 @@ Code repository moved to Github
 =====
 
 UI new features and improvements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 Date pickers for date fields
     All date fields in WCT now have associated date pickers to aid in selection.
@@ -247,14 +256,12 @@ Indicator flag color picker improvement
     The indicator flag color picker now updates when colors are selected, rather
     than having to click the color wheel icon in the bottom right.
 
-Completed harvests can be *harvested now* where user has authority, state is
-reset to *Approved*
+Completed harvests can be *harvested now* where user has authority, state is reset to *Approved*
     Where a user has authority to reinstate and approve a target, they do not
     need to manually change the state to *approved* when adding a new schedule
     or using *harvest now*.
 
-Completed harvests can have schedules added where user has authority, state is
-reset to *Approved*
+Completed harvests can have schedules added where user has authority, state is reset to *Approved*
     Where a user has authority to reinstate and approve a target, they do not
     need to manually change the state to *approved* when adding a new schedule
     or using *harvest now*.
@@ -268,10 +275,9 @@ Rejection reason is shown against rejected harvest results
     harvest result.  This has been added to the harvest result listing screen.
 
 Bug fixes
-~~~~~~~~~
+---------
 
-Non-english character support for all WCT screens (providing database is
-configured correctly)
+Non-english character support for all WCT screens (providing database is configured correctly)
     When the database is configured to support UTF-8 characters, the user
     interface now supports non-english characters on all screens, including
     permissions emails.
@@ -333,14 +339,12 @@ Max width of target, QA indicator screens has been limited to prevent scroll bar
     target listing screen was necessary, similarly for the QA indicator listing.
     The table contents are now wrapped and sized appropriately.
 
-The eSerial *next* function (used by NLNZ) has been included on the QA Target
-Instance Summary page
+The eSerial *next* function (used by NLNZ) has been included on the QA Target Instance Summary page
     Previously, the archive button would not show the *custom deposit form* for
     Rosetta.  A *next* button now allows this function as per the Harvest Result
     screen.
 
-Deletion of harvest resources fixed (requires that WCT database can create
-temporary tables)
+Deletion of harvest resources fixed (requires that WCT database can create temporary tables)
     A potential problem with the deletion of harvest resources was fixed - a
     null pointer exception was possible, which meant that only one harvest was
     deleted per execution of the purge process. Additionally, the WCT database
@@ -348,7 +352,7 @@ temporary tables)
     `GRANT CREATE TEMPORARY TABLE to usr_wct`)
 
 Development related
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 Jetty/H2 database standalone development environment
     It is no longer necessary to install tomcat, a database etc to get a basic
@@ -376,7 +380,7 @@ a large number of updates summarised in the list below. Further details can be
 found in the release notes in the download and on the website.
 
 Updates
-~~~~~~~
+-------
 
 FT001
     Added config parameter to enable new QA module
@@ -427,8 +431,8 @@ FT016
 FT017
     New Report: Repeating patterns in URIs
 
-SouceForge bug fixes
-~~~~~~~~~~~~~~~~~~~~
+SourceForge bug fixes
+---------------------
 
 In addition, the following SourceForge bug fixes have been applied:
 
@@ -442,7 +446,7 @@ In addition, the following SourceForge bug fixes have been applied:
     HibernateOptimisticLockingFailureException
 
 Community and internal testing bug fixes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------------
 
 The following bugs have also been fixed as a result of user community and
 internal testing:
@@ -452,3 +456,125 @@ internal testing:
 -   Removed target instance from session after exiting edit mode
 -   Malformed initial <select> HTML tag within the <wct:list> tag caused options
     to disappear
+
+
+1.5.2
+=====
+
+Release 1.5.2 is primarily a maintenance update of the Web Curator Tool. It contains a number of bugfixes and
+enhancements. These are summarised in the list below:
+
+*Further details for each item can be found in the SourceForge Enhancement Tracker where relevant.*
+
+-   SourceForge Ref: 3162584 - Fix bug where Targets with open schedules were erroneously going to completed status
+-   SourceForge Ref: 3162582 - Fix problem with Illegal group reference error on review
+-   SourceForge Ref: 3169679 - Add Rejection Reason functionality
+-   SourceForge Ref: 3162580 - Fix bug where errors thrown when Re-start indexing used
+-   SourceForge Ref: 3072266 - Implemented batch re-assignment of Target profiles to fix issues such as 'bad effect on
+    Approved targets when profile is Disabled'.
+-   SourceForge Ref: 2941648 - Add facility to reject harvests stuck in 'restart indexing'
+-   SourceForge Ref: 2952587 - Approved targets should stay approved after profile edits - enhanced logic regarding
+    Target state changes when editing profiles
+-   SourceForge Ref: 2940542 - Seed URL too long for database column - column width increased
+-   SourceForge Ref: 3162604 - By default checkProcessor bean will be disabled in harvest agent
+-   SourceForge Ref: 3162649 - Property file update - to fix typographical error in das.properties file
+-   SourceForge Ref: 3162600 - Date locale - bandwith settings bug
+-   SourceForge Ref: 3025576 - Fix bug introduced by Endorse/unendorse actions in WCT version 1.5
+-   SourceForge Ref: 3162610 - fix absolute paths coded into certain jsp and css files
+-   SourceForge Ref: 2943743 - Fix bug causing error after approving a target in some circumstances
+-   SourceForge Ref: 3006785 - Log IP address of harvested files to the crawl.log
+-   SourceForge Ref: 3162609 - Disk check bean not checking correct partition
+-   SourceForge Ref: 3162581 - Fix bug where URIListRegExpFilter not working in some profiles
+-   SourceForge Ref: 2983692 - Correct the permission checking logic where users are allowed to create permission
+    request templates
+-   SourceForge Ref: 3162597 - Add 'view target instances' link to Target Action Column
+-   SourceForge Ref: 2983693 - Add new field to Harvest Auths permissions tab to allow saving of permission responses
+-   SourceForge Ref: 3016176 - Crawler Activity Report modifications - add filters
+-   SourceForge Ref: 2970877 - Link to associated target instance records from Harvest History table and navigate back
+    again
+-   SourceForge Ref: 3097070 - Fix profile issues regarding redundant fields in DecideRules when setting scope
+-   SourceForge Ref: <none, BL specific enhancement> - Switch Automated QA on/off on a per target basis
+-   SourceForge Ref: <none, BL specific enhancement> - Allow the importing of missing content into a harvest via the
+    wctaqa report
+-   SourceForge Ref: <none, BL specific enhancement> - SOAP API call enhancements which allow automation of certain
+    setup tasks from external applications
+
+
+1.5.1
+=====
+
+Release 1.5.1 is primarily a maintenance update of the Web Curator Tool. It contains a number of bugfixes, enhancements
+and performance improvements. These are summarised in the lists below:
+
+*Further details for each item can be found in the SourceForge Tracker.*
+
+Enhancements
+------------
+
+-   SourceForge 2935731: Ability to add missing files to a harvest before submitting to archive
+-   SourceForge 1828045: Ability to set harvest alerts, triggered from Target record via alertable annotations
+-   SourceForge 2892942: Ability to export and import profiles to xml files
+-   SourceForge 2892356: Ability to sort the views of targets, target instances and harvest authorisations by name and
+    date
+-   SourceForge 2934308: Ability to view hidden targets, target instances and groups (where display flag is false)
+-   SourceForge 2892361: Highlight the primary seed URL on target records
+-   SourceForge 2892965: Set Targets to Completed status when appropriate
+-   SourceForge 2932069: Ability to create Group sub-categories
+-   SourceForge 1828045: Display alert icon against scheduled TIs when associated Target has alertable annotations
+-   SourceForge 2932065: Add a 'Submit to Archive' icon to action column of endorsed Target Instances
+-   SourceForge 2931964: Facility to add Annotations on Access tab of Targets/Groups and the Display tab of TIs
+-   SourceForge 2892358: Capture WCT and Heritrix version numbers used when harvesting, display on Target Instance
+-   SourceForge 2892367: Distinguish between first time harvests and repeat harvests for a given Target
+-   SourceForge 2617632: Implement Tree Tool display enhancements
+-   SourceForge 2511377: Add ability to display crawl path (hop path) in tree tool view
+-   SourceForge 2892363: Display the date that permissions letter/email was sent on Harvest Authorisations view
+-   SourceForge 1774427: Selection Note and Evaluation Note fields on Target record annotations tab were too short
+
+
+
+Bugfixes
+--------
+
+-   Fixed issue 2932075: Allow pre v1.5 harvests to be reviewed using wayback
+-   Fixed issue 2892945: Harvest profile description field length bug
+-   Fixed issue 2156378: Two default active profiles causes crash on new target screen
+-   Fixed issue 2931967: Submitting Target instance to archive now returns user to instances list screen
+-   Fixed issue ???????: WCT timeout was occuring when reviewing large harvests (raised directly via BL no Sourceforge
+    ref)
+-   Fixed issue 3004090: Slow performance when accessing WCT targets/instances with group schedules
+-   Fixed issue 2931964: Annotations on Access tab of Targets and the Display tab of TIs
+-   Fixed issue 2928219: System Activity Report slow or unresponsive
+-   Fixed issue 1557611: Name duplication conflict between Target and Group names
+
+
+1.5
+===
+
+Release 1.5 is the fourth major update of the Web Curator Tool. This release is mainly concerned with the optional
+integration of Wayback as an additional quality review tool, and the simplification of system configuration using
+properties files; but also contains a small number of additional enhancements and bugfixes summarised in the list below.
+Further details for each item can be found in the SourceForge Tracker.
+
+Enhancements
+------------
+
+-   Quality Review Update to use wayback (2807159)
+-   Properties file for spring config (2807161)
+-   Autopopulate dublin core title field from target title (2815658)
+-   Target section multiple action on seeds (2811357)
+-   Add *Harvested* link to list of quick links (SourceForge# 2811364)
+-   Ability to submit to a Rosetta based archive
+
+Bugfixes
+--------
+
+-   Fixed issue 2815654: Reindexing fails
+-   Fixed issue 2807164: MYSQL install file update
+-   Fixed issue 2810210: Sub-group deletion exception
+-   Fixed issue 2775423: Browse tool throwing exceptions with bad URI's
+
+
+Previous versions
+=================
+
+This docuemnt does not include the *Release notes* for versions before 1.5.

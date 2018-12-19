@@ -928,6 +928,11 @@ Uplift components
 |                   | and compatible with micro-    |                          |
 |                   | service approach.             |                          |
 +-------------------+-------------------------------+--------------------------+
+| jQuery 3.3.1      | Use the latest version of     | Keep using jQuery 1.7.2  |
+|                   | jQuery, with its security     | which dates from 2012.   |
+|                   | fixes, speed improvements and |                          |
+|                   | modern browser support.       |                          |
++-------------------+-------------------------------+--------------------------+
 | Quartz 2.3.0      | Latest version.               | Spring scheduler, which  |
 |                   |                               | is a bit simpler.        |
 +-------------------+-------------------------------+--------------------------+
