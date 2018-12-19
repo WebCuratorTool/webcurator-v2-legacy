@@ -228,7 +228,10 @@ function onChangeScheduleDates(textbox) {
 	enableButton('discardchanges');
 }
 
-function toggleProfileOverrides(profilesList, onPageLoad=false) {
+function toggleProfileOverrides(profilesList, onPageLoad) {
+    if (onPageLoad == undefined) {
+        onPageLoad = false
+    }
     if (!onPageLoad && currentProfileIndex >= 0) {
         // Save any h3RawProfile editor changes
         profilesList[currentProfileIndex].h3RawProfile = codeMirrorInstance.getValue();
