@@ -1,4 +1,3 @@
-.. _system-admin-guide:
 ==========================
 System Administrator Guide
 ==========================

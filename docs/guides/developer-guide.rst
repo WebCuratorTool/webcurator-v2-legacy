@@ -1,4 +1,3 @@
-.. _developer-guide:
 ===============
 Developer Guide
 ===============
@@ -221,8 +220,8 @@ Database platforms
 The Web Curator Tool requires a backend database for persistent storage.
 
 Development and testing has taken place using MySQL, Postgres and Oracle. See
-the `system-admin-guide`_ for more details. Testing has also used the *H2*
-database.
+the :doc:`System Administrator Guide <system-administrator-guide>` for more
+details. Testing has also used the *H2* database.
 
 Build commands
 --------------
@@ -375,7 +374,8 @@ but any valid port can be used.
 
 `harvest-agent-h3` under Jetty
     `harvest-agent-h3` requires a separate instance of Heritrix3 to run. See the
-    `system-admin-guide`_ for details on how to setup and run Heritrix3.
+    :doc:`System Administrator Guide <system-administrator-guide>` for details
+    on how to setup and run Heritrix3.
 
     There may be conflicts with the JMX port of other components. You can change
     the port used by editing the `build/jetty/jetty-jmx.xml` and changing the
@@ -417,8 +417,8 @@ Configuration
 Configuration details
 ---------------------
 
-The `system-admin-guide`_ contains detailed information about configuring the
-Web Curator Tool.
+The :doc:`System Administrator Guide <system-administrator-guide>` contains
+detailed information about configuring the Web Curator Tool.
 
 The configuration files are generally found in the `build` subfolder of each
 subproject.
