@@ -698,8 +698,8 @@ necessary.
 TODO Shouldn't all merges to Master be done via Github pull request? In fact,
 the Github master branch should be locked down so that merges are done ONLY by
 pull request.
-
 ::
+
     git checkout master
     git merge --no-ff branch
 
@@ -984,14 +984,12 @@ Additional uplift notes
     might work better.
 
 
-..  |diagramFeaturesGoingIntoMasterBranch| image:: ../_static/developer-guide/diagram-features-going-into-master-branch.png
-    :width: 242.13px
-    :height: 296.50px
+.. |diagramFeaturesGoingIntoMasterBranch| image:: ../_static/developer-guide/diagram-features-going-into-master-branch.png
+   :width: 242.13px
+   :height: 296.50px
 
-..  |diagramMasterAndFeatureBranches| image:: ../_static/developer-guide/diagram-master-and-feature-branches.png
-    :width: 382.50px
-    :height: 382.50px
+.. |diagramMasterAndFeatureBranches| image:: ../_static/developer-guide/diagram-master-and-feature-branches.png
+   :width: 382.50px
+   :height: 382.50px
 
-..  |diagramWebCuratorToolArchitecturalConnections| image:: ../_static/developer-guide/diagram-web-curator-tool-architectural-connections.svg
-    :width: 100%
-    :height: 100%
+.. |diagramWebCuratorToolArchitecturalConnections| image:: ../_static/developer-guide/diagram-web-curator-tool-architectural-connections.svg

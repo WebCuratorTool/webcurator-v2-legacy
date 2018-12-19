@@ -1581,10 +1581,9 @@ top level jobs directory (and any child job folders) for Heritrix 3.
 On completion or termination of a Heritrix 3 job, the H3 Harvest Agent will attempt to
 clean up by removing the job folder.
 
-*It is best to keep the Heritrix 3 jobs directory separate from the H3 Harvest Agent*
-**harvestAgent.baseHarvestDirectory**. *If the same directory is used, Heritrix 3 constantly
-complain about all the old Harvest Agent harvest folders that it doesn't know about.*
-CHECK THIS IS STILL THE CASE!!!!
+*The Heritrix 3 jobs directory must remain separate from the H3 Harvest Agent*
+**harvestAgent.baseHarvestDirectory**. *If the same directory is used, an empty profile
+will be given to Heritrix 3, causing a job to fail.*
 
 Scripts directory
 ~~~~~~~~~~~~~~~~~~
