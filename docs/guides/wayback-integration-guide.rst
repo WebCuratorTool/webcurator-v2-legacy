@@ -2,11 +2,6 @@
 Wayback Integration Guide
 =========================
 
-Additional TODO
-===============
-
--   Placeholder for needed changes to this document.
-
 
 Introduction
 ============
@@ -38,26 +33,26 @@ Following this introduction, the Wayback Integration Guide includes the followin
 Wayback vs OpenWayback
 ======================
 
-Two options exist currently for Wayback: `Wayback<http://archive-access.sourceforge.net/projects/wayback/>`_ from the
-Internet Archive or `OpenWayback<http://netpreserve.org/openwayback>`_ from IIPC. Web Curator Tool was originally
+Two options exist currently for Wayback: `Wayback <http://archive-access.sourceforge.net/projects/wayback/>`_ from the
+Internet Archive or `OpenWayback <http://netpreserve.org/openwayback>`_ from IIPC. Web Curator Tool was originally
 developed and tested with Wayback. However OpenWayback is more actively developed at the moment.
 
-Here is an `explanation<https://github.com/iipc/openwayback/wiki/General-overview>`_ of the history and differences
+Here is an `explanation <https://github.com/iipc/openwayback/wiki/General-overview>`_ of the history and differences
 between the two.
 
 Downloading
 -----------
 
-Download Wayback `here<http://archive-access.sourceforge.net/projects/wayback/downloads.html>`_.
+Download Wayback `here <http://archive-access.sourceforge.net/projects/wayback/downloads.html>`_.
 
-Download OpenWayback `here<https://github.com/iipc/openwayback/releases>`_.
+Download OpenWayback `here <https://github.com/iipc/openwayback/releases>`_.
 
 
 Installation
 ============
 
-The OpenWayback Wiki contains a useful `install guide<https://github.com/iipc/openwayback/wiki/How-to-install>`_ and
-`configuration guide<https://github.com/iipc/openwayback/wiki/How-to-configure>`_. These are also relevant for Wayback.
+The OpenWayback Wiki contains a useful `install guide <https://github.com/iipc/openwayback/wiki/How-to-install>`_ and
+`configuration guide <https://github.com/iipc/openwayback/wiki/How-to-configure>`_. These are also relevant for Wayback.
 
 Once you have the tool running in Tomcat and can see the homepage in your browser then you are ready to configure the
 interaction with WCT.
@@ -74,8 +69,8 @@ Configuration
 
 The easiest configuration to get WCT and Wayback working together is to leave Wayback with its default setting of
 indexing using BDB (instead of CDX). As Wayback indexes by watching a folder for new files, we need to configure WCT to
-copy new harvests to a common location between the two. Note you don't have to move where WCT is storing your harvests,
-this is an extra location common to WCT and Wayback.
+copy new harvests to a common location between the two. *Note you don't have to move where WCT is storing your harvests,
+this is an extra location common to WCT and Wayback.*
 
 In this example our common location will be `/wct/wayback/`.
 
@@ -194,26 +189,22 @@ The following guides can provide additional information:
 -   :doc:`FAQ <faq>`
 
 
-..  |Wayback_home| image:: ../_static/wayback-integration-guide/Wayback_home.jpg
-    :width: 672.0px
-    :height: 232.0px
+.. |Wayback_home| image:: ../_static/wayback-integration-guide/Wayback_home.jpg
+   :width: 672.0px
+   :height: 232.0px
+   :alt: The Wayback Machine banner
 
-    The Wayback Machine banner
+.. |OpenWayback_home| image:: ../_static/wayback-integration-guide/OpenWayback_home.jpg
+   :width: 677.0px
+   :height: 179.0px
+   :alt: The OpenWayback banner
 
-..  |OpenWayback_home| image:: ../_static/wayback-integration-guide/OpenWayback_home.jpg
-    :width: 677.0px
-    :height: 179.0px
+.. |screenshot_TargetSummary_HarvestResults| image:: ../_static/wayback-integration-guide/screenshot_TargetSummary_HarvestResults.jpg
+   :width: 646.0px
+   :height: 244.0px
+   :alt: Target Summary Harvest Results
 
-    The Wayback Machine banner
-
-..  |screenshot_TargetSummary_HarvestResults| image:: ../_static/wayback-integration-guide/screenshot_TargetSummary_HarvestResults.jpg
-    :width: 646.0px
-    :height: 244.0px
-
-    Target Summary Harvest Results
-
-..  |screenshot_TI_ReviewTools| image:: ../_static/wayback-integration-guide/screenshot_TI_ReviewTools.jpg
-    :width: 608.0px
-    :height: 262.0px
-
-    Target Instance - Review Tools
+.. |screenshot_TI_ReviewTools| image:: ../_static/wayback-integration-guide/screenshot_TI_ReviewTools.jpg
+   :width: 608.0px
+   :height: 262.0px
+   :alt: Target Instance - Review Tools
