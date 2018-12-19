@@ -79,7 +79,10 @@
   }
 
 
-function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPageLoad=false) {
+function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPageLoad) {
+    if (onPageLoad == undefined) {
+        onPageLoad = false;
+    }
     if (!onPageLoad && currentProfileIndex >= 0) {
         // Save any h3RawProfile editor changes
         profilesList[currentProfileIndex].h3RawProfile = codeMirrorInstance.getValue();
@@ -609,7 +612,7 @@ No overrides.
 <authority:showControl ownedObject="${ownable}" privileges="${privlege}" editMode="${profileEditMode}">
 <authority:show>
 <div id="editorDiv">
-<textarea id="h3RawProfile" name="h3RawProfile"/>
+<textarea id="h3RawProfile" name="h3RawProfile">
 <c:out value="${command.h3RawProfile}"/>
 </textarea>
 </div>
@@ -623,7 +626,7 @@ No overrides.
 <authority:dont>
 <c:if test="${command.harvesterType == 'HERITRIX3' && command.overrideH3RawProfile}">
 <div id="editorDiv">
-<textarea id="h3RawProfile" name="h3RawProfile"/>
+<textarea id="h3RawProfile" name="h3RawProfile">
 <c:out value="${command.h3RawProfile}"/>
 </textarea>
 </div>
