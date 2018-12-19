@@ -28,7 +28,7 @@ Guide and the Web Curator Tool online help.
 Contents of this document
 -------------------------
 
-Following this introduction, the Web Curator Tool Developer Guide includes the
+Following this introduction, the Web Curator Tool Upgrade Guide includes the
 following sections:
 
 -   **Upgrade requirements** - Covers requirements for upgrading.

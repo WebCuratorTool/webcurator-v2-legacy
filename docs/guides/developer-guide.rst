@@ -2,12 +2,6 @@
 Developer Guide
 ===============
 
-Additional TODO
-===============
-
--   Incorporate useful information from the *Getting Started* section of the
-    wiki: https://github.com/DIA-NZ/webcurator/wiki/Getting-Started.
-
 
 Introduction
 ============
@@ -505,10 +499,14 @@ following conditions have been met:
 -   New code has instrumentation (logging points) that conveys accurate and
     helpful information about the state of the application.
 
--   The documentation has been updated to reflect changes in functionality. This
-    includes the *Release Notes* `release-notes.rst`, especially for new
-    features. If there are any database changes, update the *Data Dictionary*
-    `data-dictionary.rst`.
+-   The documentation has been updated to reflect changes in functionality. Some documents that could be updated
+    include:
+    -   The *Release Notes* `release-notes.rst`, especially for new features.
+    -   If there are any database changes, update the *Data Dictionary* `data-dictionary.rst`.
+    -   If there are changes related to installing and running the WCT, update the *System Administrator Guide* `system-administrator-guide.rst`.
+    -   If there are any changes that would require steps to upgrade from a previous version, update the *Upgrade Guide* `upgrade-guide.rst`.
+    -   If there is any helpful advice regarding troubleshooting, update the *Troubleshooting Guide* `troubleshooting-guide.rst`.
+    -   If there is helpful information that can be include in the FAQ, update the *FAQ* `faq.rst`.
 
 -   The Product Owner accepts the changes.
 
