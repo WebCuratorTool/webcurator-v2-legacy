@@ -1,11 +1,11 @@
 ==========================
-Overview and History Guide
+Overview and History
 ==========================
 
 Additional TODO
 ===============
 
--   Placeholder for needed changes to this document.
+-   Add details of work from 2017 onwards  between NLNZ and KB-NL.
 
 
 Introduction
@@ -118,7 +118,7 @@ look back on the printed words left to us by previous generations.
 The software was developed as a collaborative project between the National Library of New Zealand and the British
 Library, conducted under the auspices of the International Internet Preservation Consortium. The Web Curator Tool has
 been built with support and contributions from professionals at the National Library of New Zealand, the British
-Library, Sytec Resources Ltd., `Oakleigh Consulting<http://www.oakleigh.co.uk>`_, the National Library of Australia,
+Library, Sytec Resources Ltd., `Oakleigh Consulting <http://www.oakleigh.co.uk>`_, the National Library of Australia,
 the Library of Congress, and many others.
 
 Project objectives
@@ -155,7 +155,7 @@ See :doc:`Release Notes <release-notes>` for release notes on specific versions.
 15 March 2016 - 1.6.2 GA
 ------------------------
 
-This version includes bugfixes developed by the National Library of New Zealandbetween June 2015 and March 2016. This
+This version includes bugfixes developed by the National Library of New Zealand between June 2015 and March 2016. This
 release fixes bugs relating to indexing, pruning and importing, duplicate schedules and more. The changes will benefit
 all existing WCT users and we recommend that users upgrade to 1.6.2
 
@@ -177,7 +177,7 @@ will benefit all existing WCT users and we recommend that users upgrade to 1.6.
 -------------------------
 
 This version includes many bugfixes and new features that were commissioned by The British Library and developed during
-March and April of 2011 by software developers from `Oakleigh Consulting<http://www.oakleigh.co.uk>`_ in the UK. The new
+March and April of 2011 by software developers from `Oakleigh Consulting <http://www.oakleigh.co.uk>`_ in the UK. The new
 features will be of benefit to all existing WCT users and we recommend that all users upgrade to 1.5.2.
 
 10 December 2010 - 1.5.1 GA
@@ -194,7 +194,7 @@ upgrade to 1.5.1.
 This version is mainly concerned with the optional integration of Wayback as an additional quality review tool, and the
 simplification of system configuration using properties files; but also contains a small number of additional
 enhancements and bugfixes. This release was commissioned by The British Library and developed during July and August of
-2009 by software developers from `Oakleigh Consulting<http://www.oakleigh.co.uk>`_ in the UK. The new features will be
+2009 by software developers from `Oakleigh Consulting <http://www.oakleigh.co.uk>`_ in the UK. The new features will be
 of benefit to all existing WCT users and we recommend that WCT 1.1, 1.2.7, 1.3 and 1.4.x users upgrade to 1.5.
 
 27 May 2009 - 1.4.1 GA
@@ -203,7 +203,7 @@ of benefit to all existing WCT users and we recommend that WCT 1.1, 1.2.7, 1.3 a
 Version 1.4.1 of the Web Curator Tool is now available on Sourceforge. This version includes many bugfixes and an
 upgrade to Heritrix 1.14.1. There are also some new features and performance improvements that were commissioned by The
 British Library and developed over two iterations during September-October of 2008 and February-March of 2009 by
-software developers from `Oakleigh Consulting<http://www.oakleigh.co.uk>`_ in the UK. The new features will be of
+software developers from `Oakleigh Consulting <http://www.oakleigh.co.uk>`_ in the UK. The new features will be of
 benefit to all existing WCT users and we recommend that WCT 1.1, 1.2.7, 1.3 and 1.4 users upgrade to 1.4.1.
 
 29 July 2008 - 1.4 GA
@@ -211,7 +211,7 @@ benefit to all existing WCT users and we recommend that WCT 1.1, 1.2.7, 1.3 and 
 
 This version includes an upgrade to Heritrix 1.14 and Wayback 1.2 as well as many new features and some performance
 improvements that were commisioned by The British Library and developed during an accelerated effort in April and June
-of 2008 by software developers from `Oakleigh Consulting<http://www.oakleigh.co.uk>`_ in the UK. The new features will
+of 2008 by software developers from `Oakleigh Consulting <http://www.oakleigh.co.uk>`_ in the UK. The new features will
 be of benefit to all existing WCT users and we recommend that WCT 1.1, 1.2.7 and 1.3 users upgrade to 1.4.0.
 
 Older releases
@@ -230,40 +230,34 @@ Older releases
 -   25 July 2006 - 0.4 Beta
 
 
-..  |screenshot_home| image:: ../_static/overview-history-guide/screenshot_home.jpg
-    :width: 630.0px
-    :height: 480.0px
+.. |screenshot_home| image:: ../_static/overview-history/screenshot_home.jpg
+   :width: 630.0px
+   :height: 480.0px
+   :alt: The Web Curator Tool home page
 
-    The Web Curator Tool home page
+.. |screenshot_harvest_authorisations| image:: ../_static/overview-history/screenshot_harvest_authorisations.jpg
+   :width: 640.0px
+   :height: 480.0px
+   :alt: The Web Curator Tool Harvest Authorisations page
 
-..  |screenshot_harvest_authorisations| image:: ../_static/overview-history-guide/screenshot_harvest_authorisations.jpg
-    :width: 640.0px
-    :height: 480.0px
+.. |screenshot_harvester_configuration| image:: ../_static/overview-history/screenshot_harvester_configuration.jpg
+   :width: 640.0px
+   :height: 480.0px
+   :alt: The Web Curator Tool Harvester Configuration page
 
-    The Web Curator Tool Harvest Authorisations page
+.. |screenshot_targets| image:: ../_static/overview-history/screenshot_targets.jpg
+   :width: 640.0px
+   :height: 480.0px
+   :alt: The Web Curator Tool Targets page
 
-..  |screenshot_harvester_configuration| image:: ../_static/overview-history-guide/screenshot_harvester_configuration.jpg
-    :width: 640.0px
-    :height: 480.0px
+.. |screenshot_target_instances| image:: ../_static/overview-history/screenshot_target_instances.jpg
+   :width: 640.0px
+   :height: 480.0px
+   :alt: The Web Curator Tool Target Instances page
 
-    The Web Curator Tool Harvester Configuration page
-
-..  |screenshot_targets| image:: ../_static/overview-history-guide/screenshot_targets.jpg
-    :width: 640.0px
-    :height: 480.0px
-
-    The Web Curator Tool Targets page
-
-..  |screenshot_target_instances| image:: ../_static/overview-history-guide/screenshot_target_instances.jpg
-    :width: 640.0px
-    :height: 480.0px
-
-    The Web Curator Tool Target Instances page
-
-..  |screenshot_target_summary| image:: ../_static/overview-history-guide/screenshot_target_summary.jpg
-    :width: 630.0px
-    :height: 480.0px
-
-    The Web Curator Tool Target Summary page
+.. |screenshot_target_summary| image:: ../_static/overview-history/screenshot_target_summary.jpg
+   :width: 630.0px
+   :height: 480.0px
+   :alt: The Web Curator Tool Target Summary page
 
 

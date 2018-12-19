@@ -7,7 +7,7 @@ Web Curator Tool Documentation
     :maxdepth: 2
     :caption: Contents:
 
-    guides/overview-history-guide
+    guides/overview-history
     guides/quick-start-guide
     guides/system-administrator-guide
     guides/wayback-integration-guide

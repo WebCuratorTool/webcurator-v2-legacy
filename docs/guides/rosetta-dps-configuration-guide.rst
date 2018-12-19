@@ -2,11 +2,6 @@
 Rosetta DPS Configuration Guide
 ===============================
 
-Additional TODO
-===============
-
--   Placeholder for needed changes to this document.
-
 
 Introduction
 ============
@@ -162,8 +157,7 @@ The following guides can provide additional information:
 -   :doc:`FAQ <faq>`
 
 
-..  |screenshot_TargetType| image:: ../_static/rosetta-dps-configuration-guide/screenshot_TargetType.jpg
-    :width: 785.0px
-    :height: 298.0px
-
-    User interface types
+.. |screenshot_TargetType| image:: ../_static/rosetta-dps-configuration-guide/screenshot_TargetType.jpg
+   :width: 785.0px
+   :height: 298.0px
+   :alt: User interface types
