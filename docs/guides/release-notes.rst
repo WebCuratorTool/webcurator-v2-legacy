@@ -2,17 +2,12 @@
 Release Notes
 =============
 
-Additional TODO
-===============
-
--   Incorporate Release 2.0.0 release notes.
-
 
 Introduction
 ============
 
 This guide, designed for a Web Curator Tool developer and system administrator,
-covers the release notes from version 1.6.0. Versions are in reverse
+covers the release notes from version 1.5. Versions are in reverse
 chronological order, with the most recent version first. While the *Web
 Curator Tool System Administrator Guide*, *Web Curator Tool Developer Guide*,
 *Web Curator Tool Quick Start Guide* and *Web Curator Tool User Manual* are
@@ -54,7 +49,91 @@ add notes here for changes and fixes as they are released into the master branch
 2.0.0
 =====
 
-TODO Release notes for 2.0.0.
+Released December 2018, this version builds on release 1.7.0, which was a proof-of-concept integrating
+Heritrix 3 with WCT. Version 2.0.0 completes that integration.
+
+What's new
+-----------
+
+Heritrix 3 profile management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-   The configuration options available for Heritrix 3 are different from the
+    old Heritrix 1 profiles, but management of them stays the same.
+
+-   Heritrix 3 profile options are contained within a single simplified 'scope' tab. This
+    relies on a correctly formatted set of fields within the background profile xml. Due
+    to this, imported Heritrix 3 profiles cannot be edited through the same screen, and are
+    only editable via an in-screen xml editor.
+
+-   Validation of Heritrix 3 profiles is achieved using an available H3 Harvest Agent. The
+    profile is used to build a special one-off job within the agent, which in essence validates
+    the integrity of the Heritrix 3 profile. The job is then destroyed and any unsuccessful
+    outcome is fed back to the WCT user interface.
+
+Targets
+~~~~~~~~
+
+-   Heritrix 3 Targets can now be scheduled, and will be assigned to an available H3 Harvest
+    Agent when due to run.
+
+-   *Running* Heritrix 3 Target Instances have an H3 script console available to use. This
+    console can be used to run scripts against the Target Instance job in Heritrix 3,
+    similar to the scripting console available in H3's own UI.
+
+Heritrix 1
+~~~~~~~~~~~
+
+-   Heritrix 1 integration has been preserved for now, allowing for Targets to transition
+    to using Heritrix 3. A period of experimentation is expected when replacing the old
+    Heritrix 1 profiles.
+
+Database installation
+~~~~~~~~~~~~~~~~~~~~~~
+
+-   The sql scripts for setting up the WCT database have been consolidated and brought up to date.
+    The folder structure has been refactored and legacy scripts separated to reduce confusion. Any
+    script changes have been reflected in the documentation.
+
+-   An additional parent script has been added to simplify the setup process, enabling the setup to be
+    completed through running a single script.
+
+Documentation
+~~~~~~~~~~~~~~
+
+-   The documentation has been migrated from PDF to the reStructedText format, and now hosted on the
+    readthedocs.io platform. This increases the accessibility of the documentation and makes it simpler
+    to maintain and update.
+
+-   All documentation has been brought up-to-date to reflect v2.0.0 changes.
+
+
+Developer
+----------
+
+-   The old Harvest Agent module has been separated into a Heritrix 1 and Heritrix 3 version. This has
+    been done with a view to using the core Harvest Agent component to interface with other crawlers
+    in the future.
+
+-   Usage of the old heritrix-1.14 dependency, *aheritrix-1.14.1.jar*, has been upgraded where possible
+    to use the webarchive-commons library.
+
+
+Things to be aware of
+----------------------
+
+-   The Bandwidth restriction functionality is not currently applicable to the new Heritrix 3 crawling.
+    The Bandwidth feature has been underused in recent years and was not compatible out-of-the-box with
+    Heritrix 3. A decision on whether to develop the feature to be compatible or remove it entirely will
+    be made in the future.
+
+-   The existing prune and import functionality within the QA tool is not currently compatible with
+    Target Instances harvested using Heritrix 3. These components of QA functionality are no longer
+    fit-for-purpose in version 2.0.0, and will be re-developed as part of the WCT development road-map.
+
+-   The Groups feature is not currently compatible with Heritrix 3 profiles. This is intended to be resolved
+    in the near future with a minor release.
+
 
 
 1.6.2
