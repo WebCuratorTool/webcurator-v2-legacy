@@ -297,6 +297,7 @@ public class DPSArchive extends BaseArchive {
     public DepData getProducer(String producerAgentUserId, String producerId) {
         try {
             ProducerWebServices _pws = getProducerWebServices();
+            log.info("Producer web service established");
             String producerAgentId = _pws.getInternalUserIdByExternalId(producerAgentUserId);
             log.debug("Producer agent id for the user id " + producerAgentUserId + ": " + producerAgentId);
             if (producerAgentId == null) return null;
@@ -443,10 +444,15 @@ public class DPSArchive extends BaseArchive {
             log.error("Failed to build WSDL URL from " + wsdlUrlStr + " - Web service lookup of " + serviceEndpointInterfaceName + " will fail", e);
             e.printStackTrace();
         }
+        log.info("getProducerWebServices -  wsdlUrl created: " + wsdlUrl.toString());
         QName serviceName = new QName("http://dps.exlibris.com/", serviceEndpointInterfaceName);
         Service service = Service.create(wsdlUrl, serviceName);
+        log.info("getProducerWebServices -  created service: " + service.toString());
         QName portName = new QName("http://dps.exlibris.com/", (new StringBuilder()).append(serviceEndpointInterfaceName).append("Port").toString());
-        return service.getPort(portName, ProducerWebServices.class);
+        log.info("getProducerWebServices -  portName: " + portName.toString());
+        ProducerWebServices retVal = service.getPort(portName, ProducerWebServices.class);
+        log.info("getProducerWebServices -  getPort completed: " + retVal.toString());
+        return retVal;
     }
 
     private DepData[] sortByDescription(DepositData depositData) {
@@ -852,6 +858,50 @@ public class DPSArchive extends BaseArchive {
             if (o == null || o.description == null) return true;
             return false;
         }
+
+    }
+
+
+    public static void main(String[] args) {
+
+        String producerWsdlUrl = "http://slbdps.natlib.govt.nz" + "/dpsws/deposit/ProducerWebServices?wsdl";
+        String producerAgentUserId = "coenegrt";
+        String producerId = "6355932079";
+
+        String serviceEndpointInterfaceName = ProducerWebServices.class.getSimpleName();
+        URL wsdlUrl = null;
+        String wsdlUrlStr = producerWsdlUrl;
+        try {
+            wsdlUrl = new URL(wsdlUrlStr);
+        } catch(Exception e) {
+            log.error("Failed to build WSDL URL from " + wsdlUrlStr + " - Web service lookup of " + serviceEndpointInterfaceName + " will fail", e);
+            e.printStackTrace();
+        }
+        log.info("getProducerWebServices -  wsdlUrl created: " + wsdlUrl.toString());
+        QName serviceName = new QName("http://dps.exlibris.com/", serviceEndpointInterfaceName);
+        Service service = Service.create(wsdlUrl, serviceName);
+        log.info("getProducerWebServices -  created service: " + service.toString());
+        QName portName = new QName("http://dps.exlibris.com/", (new StringBuilder()).append(serviceEndpointInterfaceName).append("Port").toString());
+        log.info("getProducerWebServices -  portName: " + portName.toString());
+        ProducerWebServices _pws = service.getPort(portName, ProducerWebServices.class);
+        log.info("getProducerWebServices -  getPort completed: " + _pws.toString());
+
+
+        String producerAgentId = _pws.getInternalUserIdByExternalId(producerAgentUserId);
+        log.info("Producer agent id for the user id " + producerAgentUserId + ": " + producerAgentId);
+        if (producerAgentId == null) log.info("producerAgentId = null");
+        String xmlReply = _pws.getProducersOfProducerAgent(producerAgentId);
+//        DepData[] depData = xmlReplyToDepData(xmlReply);
+//        DepData retDepData = null;
+//        for(DepData data : depData){
+//            if(data.id.equals(producerId)){
+//                retDepData = data;
+//                break;
+//            }
+//        }
+
+
+
 
     }
 }
