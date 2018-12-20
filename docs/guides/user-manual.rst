@@ -3625,7 +3625,6 @@ Figure 28: Detailed workflow
 .. |image0| image:: ../_static/user-manual/image2.jpeg
    :width: 7.46875in
    :height: 1.72917in
-.. |image1| image:: ../_static/user-manual/image3.wmf
 .. |image2| image:: ../_static/user-manual/image4.png
    :width: 5.76042in
    :height: 0.44792in
@@ -3665,7 +3664,7 @@ Figure 28: Detailed workflow
 .. |image14| image:: ../_static/user-manual/image12.png
    :width: 5.77083in
    :height: 2.03125in
-.. |image15| image:: ../_static/user-manual/image13.emf
+.. |image15| image:: ../_static/user-manual/image13.png
    :width: 5.77083in
    :height: 1.84375in
 .. |image16| image:: ../_static/user-manual/image14.png
