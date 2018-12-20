@@ -1,4 +1,3 @@
-.. _system-admin-guide:
 ==========================
 System Administrator Guide
 ==========================
@@ -25,6 +24,8 @@ Guide includes the following sections:
 
 -  **Setting up the WCT database** - procedures for setup using
    Oracle, MySQL and PostgreSQL.
+
+-  **JMX setup** - procedures for setting up JMX for different WCT components.
 
 -  **Setting up the WCT Application Servers** - procedures for
    deploying WCT to Tomcat, includes configuration options and
@@ -108,7 +109,7 @@ The following prerequisites are optional:
 - Git (can be used to clone the project source from Github)
 
 Setting up the WCT database
-=====================================
+===========================
 
 Currently the WCT has been tested with Oracle 11g, MySQL 5.0.95, MariaDB 10.0.36 and
 PostgreSQL 8.4.9 and 9.6.11.
@@ -257,8 +258,60 @@ once it is up and running. You can use the bootstrap account to create
 other users and agencies. Once you have setup valid users, it is best to
 disable the bootstrap user for security reasons.*
 
+
+JMX setup
+=========
+
+WCT core and every Harvest Agent require JMX Remote access. This means that
+JMX Remote control and access files will need to be setup for the JVM. This is
+done with the following steps:
+
+#.  Create a `jmxremote.password` file by copying the file
+    `jmxremote.password.template` to the jmx remote password file that your
+    installation will use. This template file will be in your JDK's
+    `jre\lib\management` directory.
+
+    *You can use the property
+    `-Dcom.sun.management.jmxremote.password.file=<property-file>` to point to a
+    different location.*
+
+    The monitor role and control role have passwords associated with them. These
+    are setting withing hte jmx remote password file::
+
+        monitorRole  apassword
+        controlRole  apassword
+
+#.  It is important that this file is protected. If using Windows, refer to the
+    following link to protect the file using the O/S:
+    http://java.sun.com/j2se/1.5.0/docs/guide/management/security-windows.html
+
+    If using \*nix platform, protect the file using::
+
+        chmod 600 jmxremote.password.
+
+#.  Enable the JMX Remote port used in the JVM's startup. Any high port can be
+    used as long as it is unique on the machine that is running the component.
+    The example here uses port `9004`, but if multiple components are running
+    on the same machine, then each component will need a different and unique
+    port number.
+
+    For Tomcat, this is done by adding the following to your
+    `$TOMCAT_HOME/bin/catalina.sh script`::
+
+        JAVA_OPTS=-Dcom.sun.management.jmxremote.port=9004
+
+
+    For a Harvest Agent, the Harvest Agent would need to include the
+    `-Dcom.sun.management.jmxremote.port=9004` as part of the Java command
+    line or by including it in the Java environment variable `JAVA_OPTS`.
+
+    **IMPORTANT:** *Make sure your JMX port is unique. Different components of
+    WCT will be running JMX so they will need to be configured to use
+    different ports.*
+
+
 Setting up the WCT Application Servers
-================================================
+======================================
 
 Deploying WCT to Tomcat
 -----------------------
@@ -270,42 +323,21 @@ Tool:
 -  the web curator harvest agent (wct-harvest-agent.war)
 -  the web curator digital asset store (wct-store.war).
 
-| Each of these three components must be deployed for the Web Curator
-  Tool to be fully functional and more than one harvest agent can be
-  deployed if necessary. Each Harvest Agent is capable of carrying out
-  harvest actions. The more harvest agents deployed the more harvesting
-  that can be done at any one point in time. The harvest agents and
-  digital asset store can reside on any machine within the network, as
-| they use SOAP over HTTP to communicate with each other.
+Each of these three components must be deployed for the Web Curator
+Tool to be fully functional and more than one harvest agent can be
+deployed if necessary. Each Harvest Agent is capable of carrying out
+harvest actions. The more harvest agents deployed the more harvesting
+that can be done at any one point in time. The harvest agents and
+digital asset store can reside on any machine within the network, as
+they use SOAP over HTTP to communicate with each other.
 
 To deploy WCT to Tomcat:
 
--  Make sure you have installed and configured both Java 1.8 JDK and Apache-Tomcat 8.x.x successfully.
--  Set up the JMX Remote control and access files for the WCT core and
-   every Harvest Agent.
+-  Make sure you have installed and configured both Java 1.8 JDK and
+   Apache-Tomcat 8.x.x successfully.
 
-   -  Create a jmxremote.password file by copying the file
-      jmxremote.password.template this file will be in your JDK's
-      jre\lib\management directory.
-
-      *You can use the property -Dcom.sun.management.jmxremote.password.file
-      to point to a different location.*
-
-   -  It is important that this file is protected. If using Windows, refer
-      to the following link to protect the file using the O/S:
-      http://java.sun.com/j2se/1.5.0/docs/guide/management/security-windows.html
-
-   -  If using \*nix platform, protect the file using::
-
-        chmod 600 jmxremote.password.
-
-   -  Also enable the JMX Remote port (any high port can be used) by adding
-      the following to your $TOMCAT_HOME/bin/catalina.sh script::
-
-        JAVA_OPTS=-Dcom.sun.management.jmxremote.port=9004
-
-
-      **IMPORTANT:** *Make sure this change is applied to the Core and any Harvest Agent deployed onto a different machine.*
+-  Set up the JMX Remote control and access files for the WCT core as described
+   in the section `JMX setup`_.
 
 -  Deploy the WAR files into Tomcat. The simplest deployment is to
    deploy all three WAR files into the same Tomcat container.
@@ -515,7 +547,7 @@ Configure a Heritrix 3 - Harvest Agent
     # the max number of harvest to be run concurrently on this agent
     harvestAgent.maxHarvests=2
     # the name of the agent. must be unique
-    harvestAgent.name=My local H1 Agent
+    harvestAgent.name=My local H3 Agent
     # the note to send with the harvest result.
     harvestAgent.provenanceNote=Original Harvest
     # the number of alerts that occur before a notification is sent
@@ -950,7 +982,7 @@ Web Curator Core - wct-core.properties
     # name of the directory where the h3 scripts are stored
     h3.scriptsDirectory=/tmp/h3scripts
 
-See `Scripts directory`_ under Setting up Heritrix 3.
+See `Scripts directory`_ under `Setting up Heritrix 3`_.
 
 
 ::
@@ -1489,6 +1521,21 @@ https://github.com/internetarchive/heritrix3/
 
 *Maven is required to build the project*
 
+The build of the Heritrix3 crawler is done from the directory that contains the
+cloned Heritrix3 github repository.
+
+It's recommended to skip the tests when building the Heritrix3 crawler as they
+can take a considerable amount of time to run (many minutes to hours).
+::
+
+    mvn clean install -DskipTests=true
+
+The build produces a `heritrix-<heritrix-version>-SNAPSHOT-dist.zip` in
+`./dist/target`.
+
+Unzip this zip in the parent folder of `$HERITRIX_HOME`.
+
+
 Configuration
 ------------------------
 
@@ -1507,7 +1554,7 @@ as WCT Core and Store, then Heritrix 3 may need greater memory allocation.
 Or depending on how many concurrent harvests you want to allow the H3 Harvest Agent
 to run, increasing the memory allocation for Heritrix 3 might be required.
 
-Place the following lines near the top of ``heritrix-3.3.0/bin/heritrix``
+Place the following lines near the top of `heritrix-3.3.0/bin/heritrix`
 
 ::
 
@@ -1534,10 +1581,9 @@ top level jobs directory (and any child job folders) for Heritrix 3.
 On completion or termination of a Heritrix 3 job, the H3 Harvest Agent will attempt to
 clean up by removing the job folder.
 
-*It is best to keep the Heritrix 3 jobs directory separate from the H3 Harvest Agent*
-**harvestAgent.baseHarvestDirectory**. *If the same directory is used, Heritrix 3 constantly
-complain about all the old Harvest Agent harvest folders that it doesn't know about.*
-CHECK THIS IS STILL THE CASE!!!!
+*The Heritrix 3 jobs directory must remain separate from the H3 Harvest Agent*
+**harvestAgent.baseHarvestDirectory**. *If the same directory is used, an empty profile
+will be given to Heritrix 3, causing a job to fail.*
 
 Scripts directory
 ~~~~~~~~~~~~~~~~~~
@@ -1666,6 +1712,11 @@ The following properties in the ``fetchHTTP`` bean can configured for web proxy 
     </bean>
 
 
+JMX setup for Heritrix 3
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ensure that the `JMX setup`_ has been completed for Heritrix 3.
+
 Running Heritrix 3
 ------------------------
 
@@ -1723,40 +1774,73 @@ Logging
 
 The Heritrix 3 output log can be located in the ``heritrix-3.3.0/heritrix_out.log`` file.
 
+Additional notes
+~~~~~~~~~~~~~~~~
+TODO Does this still apply?
+
+This Harvest Agent implementation handles the creation and cleanup up of jobs
+within the Heritrix 3.x instance. You should only see job directories within
+Heritrix while a harvest is running or waiting to be completed. Once the harvest
+is complete and WCT has transferred the assets, logs and reports to the Store
+then the Heritrix job is torn down and directory deleted. The only occasions
+where a Heritrix job directory will not be cleaned up is if a job fails to
+build/start or an error has occurred during the harvest. This allows you to
+investigate the Heritrix job log to determine the cause.
 
 Troubleshooting
 ------------------------
 
 TODO
+~~~~
+-   Gathering information from logs.
+-   When things don't work - what to check.
+-   Heritrix 3 won't crawl.
+-   This information might be better presented in a table.
 
-logs
+Interacting with Heritrix 3 directly
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Heritrix 3 can be operated directly (outside of WCT). Either use the UI or REST
+API to manually start a crawl. TODO Does this work?
 
-When things don't work - what to check
-
-Heritrix 3 won't crawl
-Heritrix 3 can be operated directly (outside of WCT). Either use the UI or REST API
-to manually start a crawl. Does this work?
-
-using curl to send actions to H3
+Curl can be used to send actions to H3. See
 https://webarchive.jira.com/wiki/spaces/Heritrix/pages/5735014/Heritrix+3.x+API+Guide
-
+for details on how this is done.
 
 Jobs won't build
-Check the Heritrix log, heritrix_log.out
+~~~~~~~~~~~~~~~~
+- Check the Heritrix log, `heritrix_log.out`.
 
-Is the seed.txt and crawler-beans.cxml being created in the harvest agent base dir, is it being transferred to the
-H3 job dir location
-Check file perms
+-   Is the `seed.txt` and `crawler-beans.cxml` being created in the harvest
+    agent base directory, is it being transferred to the H3 job dir location?
 
+-   Check file permissions.
 
-jobs fail
-- fail to build
-- fail during crawl
+Jobs fail
+~~~~~~~~~
+-   Fail to build
+-   Fail during crawl
 
-old job dirs not being removed
-Occasionaly there are nfs hidden files that prevent these folders from deleting fully.
+TODO How to solve.
 
-web proxy access
+Old job dirs not being removed
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Occasionaly there are nfs hidden files that prevent these folders from deleting
+fully. Make sure all hidden files are removed.
+
+Web proxy access
+~~~~~~~~~~~~~~~~
+TODO Describe how to deal with web proxy access.
+
+OpenSSL errors with Solaris and Java 7
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If running on Solaris with Java 7 and you get openssl errors when the Harvest
+Agent tries to connect the Heritrix 3.x, try running Heritrix 3.x with Java 8.
+
+Copying issues with larger harvests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If running Apache Tomcat with 32bit Java 7, you may experience issues with
+larger harvests copying between the Harvest Agent and the Store on completion of
+a crawl. This was resolved by running Apache Tomcat with 64bit Java 7.
 
 
 Graceful shutdown and restart
