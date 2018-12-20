@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'wct'
-copyright = '2018, Ben O\'Brien'
+copyright = '2006-2019, Web Curator Tool project contributors'
 author = 'Ben O\'Brien'
 
 # The short X.Y version
