@@ -2,9 +2,9 @@
 
 export PGPASSWORD=password
 
-cat setup/postgres-create-wct.sql | psql -U postgres
-cat sql/wct-schema-postgresql.sql | psql -U postgres --dbname=Dwct
-cat sql/wct-schema-grants.sql | psql -U postgres --dbname=Dwct
-cat sql/wct-indexes-postgresql.sql | psql -U postgres --dbname=Dwct
-cat sql/wct-postgres-bootstrap.sql | psql -U postgres --dbname=Dwct
-cat sql/wct-qa-data-postgres.sql | psql -U postgres --dbname=Dwct
+cat latest/setup/wct-create-postgres.sql | psql -U postgres
+cat latest/sql/wct-schema-postgres.sql | psql -U postgres --dbname=Dwct
+cat latest/sql/wct-schema-grants-postgres.sql | psql -U postgres --dbname=Dwct
+cat latest/sql/wct-indexes-postgres.sql | psql -U postgres --dbname=Dwct
+cat latest/sql/wct-bootstrap-postgres.sql | psql -U postgres --dbname=Dwct
+cat latest/sql/wct-qa-data-postgres.sql | psql -U postgres --dbname=Dwct
