@@ -43,7 +43,9 @@
 		
 		<property name="hibernateProperties">
       		<props>
+                <!--
         		<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+        		-->
         		<prop key="hibernate.show_sql">false</prop>
         		<prop key="hibernate.default_schema">${hibernate.default_schema}</prop>
         		<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
