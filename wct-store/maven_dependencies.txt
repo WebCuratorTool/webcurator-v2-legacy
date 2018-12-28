@@ -1,5 +1,5 @@
 rem To make this project work with maven, you need to run the following from the command line:
 
 mvn install:install-file -DgroupId=WCTSubmitToRosetta -DartifactId=WCTSubmitToRosetta -Dversion=1.0 -Dpackaging=jar -Dfile=etc\lib\wct-submit-to-rosetta.jar
-mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=2.0.0 -Dpackaging=jar -Dfile=etc\lib\dps-sdk-2.0.0.jar
+mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=5.5.0 -Dpackaging=jar -DpomFile=etc\lib\dps-sdk-5.5.0-pom.xml -Dfile=etc\lib\dps-sdk-5.5.0.jar
 mvn install:install-file -DgroupId=org.apache.jakarta  -DartifactId=jakarta-commons-lang -Dversion=2.1 -Dpackaging=jar -Dfile=etc\lib\jakarta-commons-lang-2.1.jar

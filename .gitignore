@@ -20,6 +20,7 @@ local.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+logs/
 wct-core/logs/
 harvest-agent-h1/logs/
 harvest-agent-h3/logs/
@@ -57,4 +58,3 @@ wct-submit-to-rosetta/DpsDepositError.log
 
 # IntelliJ
 /out/
-

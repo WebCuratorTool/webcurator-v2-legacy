@@ -45,6 +45,21 @@ Changes since 2.0.0
 This is a placeholder for changes since the official *2.0.0* release. Please
 add notes here for changes and fixes as they are released into the master branch.
 
+-   The SOAP implementation has changed. As part of that change, the ex-libris Rosetta SDK dependency has moved from
+    `2.2.0` to `5.5.0`. This means that the `dps-sdk-5.5.0.jar` must be installed in a local Maven repository for the
+    maven build to work. Install this jar by running the following command from the root of the project::
+
+        (for Windows):
+        call mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=5.5.0 \
+            -Dpackaging=jar  -DpomFile=wct-store\etc\lib\dps-sdk-5.5.0-pom.xml \
+            -Dfile=wct-store\etc\lib\dps-sdk-5.5.0.jar
+
+        (for *nix):
+        mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=5.5.0 \
+            -Dpackaging=jar -DpomFile=wct-store/etc/lib/dps-sdk-5.5.0-pom.xml \
+            -Dfile=wct-store/etc/lib/dps-sdk-5.5.0.jar
+
+
 
 2.0.0
 =====
