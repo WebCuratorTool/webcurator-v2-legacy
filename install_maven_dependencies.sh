@@ -9,7 +9,6 @@ mvn install:install-file -DgroupId=smalltext-0.1.4 -DartifactId=smalltext-0.1.4 
 mvn install:install-file -DgroupId=org.archive.wayback -DartifactId=wayback-core -Dversion=1.2.0 -Dpackaging=jar -Dfile=wct-core/etc/lib/wayback-core-1.2.0.jar
 mvn install:install-file -DgroupId=it.unimi.dsi -DartifactId=mg4j -Dversion=2.0.1 -Dpackaging=jar -Dfile=wct-core/etc/lib/mg4j-2.0.1.jar
 
-mvn install:install-file -DgroupId=javax.xml -DartifactId=saaj-api -Dversion=1.2 -Dpackaging=jar -Dfile=wct-core/etc/lib/saaj.jar
 mvn install:install-file -DgroupId=net.sf -DartifactId=jargs -Dversion=1.0 -Dpackaging=jar -Dfile=wct-core/etc/lib/jargs.jar
 
 mvn install:install-file -DgroupId=net.sf -DartifactId=jargs -Dversion=1.0 -Dpackaging=jar -Dfile=wct-core/etc/lib/jargs.jar
