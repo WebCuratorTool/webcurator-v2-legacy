@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.drools.compiler.DroolsParserException;
+import org.drools.compiler.compiler.DroolsParserException;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.store.tools.QualityReviewFacade;
 import org.webcurator.domain.model.core.IndicatorCriteria;

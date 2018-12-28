@@ -57,7 +57,14 @@
 		<dependency>
 			<groupId>com.exlibris</groupId>
 			<artifactId>dps-sdk</artifactId>
-			<version>2.0.0</version>
+			<version>5.5.0</version>
+		</dependency>
+
+		<!-- Although dom4j is a dependency of dps-sdk, we include it here because we use those classes explicitly. -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
 		</dependency>
 
 		<dependency>
@@ -69,61 +76,19 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.1</version>
+			<version>2.3.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-			<version>2.1</version>
+			<version>2.3.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>jbossall-client</groupId>
-			<artifactId>jbossall-client</artifactId>
-			<version>4.2.2.ga</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jboss-jaxws-jbossws</groupId>
-			<artifactId>jboss-jaxws-jbossws</artifactId>
-			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jbossws-client-jbossws</groupId>
-			<artifactId>jbossws-client-jbossws</artifactId>
-			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jbossws-common-jbossws</groupId>
-			<artifactId>jbossws-common-jbossws</artifactId>
-			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jbossws-spi</groupId>
-			<artifactId>jbossws-spi</artifactId>
-			<version>4.2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jboss-xml-binding</groupId>
-			<artifactId>jboss-xml-binding</artifactId>
-			<version>1.0.0.SP1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jboss-saaj</groupId>
-			<artifactId>jboss-saaj</artifactId>
-			<version>4.2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jboss</groupId>
-			<artifactId>jboss-cache</artifactId>
-			<version>1.4.1.GA</version>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 
 		<dependency>
@@ -153,7 +118,7 @@
 		<dependency>
 			<groupId>jaxen</groupId>
 			<artifactId>jaxen</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.6</version>
 		</dependency>
 
 		<dependency>

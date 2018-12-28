@@ -530,21 +530,23 @@
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-compiler</artifactId>
-			<version>5.3.0.Final</version>
+			<version>7.15.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-core</artifactId>
-			<version>5.3.0.Final</version>
+			<version>7.15.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-decisiontables</artifactId>
-			<version>5.3.0.Final</version>
+			<version>7.15.0.Final</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- I'm not sure where this dependency is appearing from. And it's a pom only.
+			 TODO Determine if this is a valid dependecy, if not, remove it.
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>droolsjbpm-knowledge</artifactId>
@@ -552,10 +554,11 @@
 			<type>pom</type>
 			<scope>compile</scope>
 		</dependency>
+		-->
 		<dependency>
-			<groupId>ehcache</groupId>
+			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<version>1.1</version>
+			<version>3.6.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -687,7 +690,7 @@
 		<dependency>
 			<groupId>org.mvel</groupId>
 			<artifactId>mvel2</artifactId>
-			<version>2.1.0.drools4</version>
+			<version>2.4.3.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -697,9 +700,9 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.jdt.core</groupId>
+			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>org.eclipse.jdt.core</artifactId>
-			<version>3.7.3</version>
+			<version>3.16.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

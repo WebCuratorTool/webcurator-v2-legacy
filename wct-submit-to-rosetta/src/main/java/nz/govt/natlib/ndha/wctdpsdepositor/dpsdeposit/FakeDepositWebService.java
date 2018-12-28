@@ -27,6 +27,9 @@ import com.exlibris.digitool.deposit.service.xmlbeans.DepositResultDocument;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import java.util.Date;
 
 
@@ -37,6 +40,8 @@ public class FakeDepositWebService implements DepositWebServices {
     private int depositActivityId;
 
 
+    @WebMethod
+    @WebResult( name = "DepositResult")
     public String submitDepositActivity(String pdsHandle, String materialFlowId, String fileName, String producerId, String depositSetId) {
         log.info("submit deposit activity received - pdsHandle: " + pdsHandle + ", materialFlowId: " + materialFlowId + ", fileName: " + fileName + ", producerId: " + producerId + ", depositSetId: " + depositSetId);
 
@@ -66,5 +71,44 @@ public class FakeDepositWebService implements DepositWebServices {
 		result.setCreationDate(current.toString());
 		return depositReply.toString();
     }
-    
+
+    @WebMethod
+    public String getHeartBit() {
+        // Not sure what this method is supposed to do, so we just return an empty string.
+        return "";
+    }
+
+    @WebMethod
+    @WebResult(name = "SubmitDateResult")
+    public String getDepositActivityBySubmitDate(@WebParam String var1, String var2, String var3, String var4, String var5, String var6, String var7, String var8) {
+        // Note: This method does nothing, as it's not used by the FakeDepositWebService. But it must exist to be compliant
+        // with the interface.
+        return null;
+    }
+
+    @WebMethod
+    @WebResult(name = "UpdateDateResult")
+    public String getDepositActivityByUpdateDate(@WebParam String var1, String var2, String var3, String var4, String var5, String var6, String var7, String var8) {
+        // Note: This method does nothing, as it's not used by the FakeDepositWebService. But it must exist to be compliant
+        // with the interface.
+        return null;
+    }
+
+    @WebMethod
+    @WebResult(name = "SubmitDateResultByMF")
+    public String getDepositActivityBySubmitDateByMaterialFlow(@WebParam String var1, String var2, String var3, String var4, String var5, String var6, String var7, String var8, String var9) {
+        // Note: This method does nothing, as it's not used by the FakeDepositWebService. But it must exist to be compliant
+        // with the interface.
+        return null;
+    }
+
+    @WebMethod
+    @WebResult(name = "UpdateDateResultByMF")
+    public String getDepositActivityByUpdateDateByMaterialFlow(@WebParam String var1, String var2, String var3, String var4, String var5, String var6, String var7, String var8, String var9) {
+        // Note: This method does nothing, as it's not used by the FakeDepositWebService. But it must exist to be compliant
+        // with the interface.
+        return null;
+    }
+
+
 }
