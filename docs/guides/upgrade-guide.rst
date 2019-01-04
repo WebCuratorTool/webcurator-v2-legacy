@@ -52,7 +52,7 @@ Prerequisites
 The following are required to successfully upgrade the Web Curator Tool to
 version 2.0:  
 
--   Installed and running version of the Web Curator Tool – version `1.6.2` (or
+-   Installed and running version of the Web Curator Tool – version 1.6.2 (or
     older) running against Oracle `11g` or newer, PostgreSQL `8.4.9` or newer, or
     MySQL `5.0.95` or newer. 
 
@@ -70,7 +70,7 @@ Oracle have been tested.*
 Shut Down the WCT
 =================
 
-There are three major components to the deployment of the Web Curator Tool:
+The major components to the deployment of the Web Curator Tool are:
 
 -   The web curator core (`wct.war`).
 
@@ -81,7 +81,10 @@ There are three major components to the deployment of the Web Curator Tool:
 
 -   The web curator digital asset store (`wct-store.war`).
 
-This document assumes that `1.6.2` (or an earlier version) is currently deployed
+Note that the `wct-agent.war` module has been replaced by two new modules
+`harvest-agent-h[13].war`.
+
+This document assumes that 1.6.2 (or an earlier version) is currently deployed
 to your Tomcat instance.
 
 To begin the upgrade of the WCT to version 2.0:
@@ -144,6 +147,7 @@ From db/latest/upgrade:
 
 #.  `upgrade-mysql-1_6_1-to-2_0.sql`
 
+
 Upgrading on Oracle
 -------------------
 
@@ -199,6 +203,8 @@ your MySQL database under the schema `DB_WCT`.
         mysql> quit
 
 
+*TODO - Check user name: is "DB_WCT user" correct?*
+
 Upgrading the application
 =========================
 
@@ -240,9 +246,8 @@ Deploying WCT to Tomcat
 
         $JAVA_HOME/bin/jar xvf ../wct-store.war
 
- 
-7.  Copy any settings/properties/configuration files you backed-up
-    in step 3 back into your Apache Tomcat webapps directory.
+7.  When migrating from 1.6.2: copy any settings/properties/configuration
+    files you backed-up in step 3 back into your Apache Tomcat webapps directory.
 
 
 Configuration
@@ -260,12 +265,17 @@ Administrator Guide to ensure their values are appropriate for your deployment.
 Important notes
 ---------------
  
-New configuration parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+New configuration parameters in 2.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*TODO - This is incomplete: more variables have been added to wct-das.properties
+since 1.6.2 and IIRC there was an XML file somewhere in the SOAP config that has
+been changed*
+
+**TOMCAT/webapps/wct-store/WEB-INF/classes/wct-das.properties**
 
 There is now the option of setting the Rosetta access codes for when archiving
-harvests to the Rosetta DPS. This is set in
-`TOMCAT/webapps/wct-store/WEB-INF/classes/wct-das.properties`.
+harvests to the Rosetta DPS.
 ::
 
     dpsArchive.dnx_open_access=XXX
@@ -277,6 +287,45 @@ These will only be used if the archive type is set to ‘dpsArchive’.
 ::
 
     arcDigitalAssetStoreService.archive=dpsArchive
+
+**TOMCAT/webapps/harvest-agent-h3/WEB-INF/classes/wct-agent.properties**   
+
+The harvest agent now needs to have a (unique) name and the path of its logReaderService must
+be specified. (This variable is also needed in the wct-agent.properties file for
+Heritrix 1 agents.)
+::
+
+    harvestAgent.service=My Agent
+    harvestAgent.logReaderService=/harvest-agent-h3/services/urn:LogReader
+
+There are now settings that tell the agent how to connect to its Heritrix 3 instance.
+::
+
+    h3Wrapper.host=localhost
+    h3Wrapper.port=8443
+    h3Wrapper.keyStoreFile=
+    h3Wrapper.keyStorePassword=
+    h3Wrapper.userName=admin
+    h3Wrapper.password=admin
+
+**TOMCAT/webapps/harvest-agent-h3/WEB-INF/classes/wct-agent.properties**
+
+There's a new variable that tells the core where to find its Heritrix 3 scripts
+(used by the H3 script console).
+::
+
+    h3.scriptsDirectory=/usr/local/wct/h3scripts
+
+
+Updating older configurations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To update the configuration files when migrating from versions older than 1.6.2,
+it is recommended to start from the new configuration files and merge any
+differences with your existing configuration back in as needed. In most cases
+new variables have been added. Only rarely have variables been dropped or
+renamed.
+
 
 
 Post-upgrade notes
