@@ -2,28 +2,24 @@
 Upgrade Guide
 =============
 
-Additional TODO
-===============
-
--   Cover upgrading from version 1.6.2 to 2.0.0.
 
 Introduction
 ============
 
 This guide, designed for a System Administrator, covers upgrade of the Web
-Curator Tool from version 1.6.1 to version 1.6.2. If you are on an earlier
-version then please consult previous versions of this document such as
-`Web Curator Tool Upgrade Guide (WCT 1.6.1).doc` (or `.pdf`) to upgrade your
-system to 1.6.1 first.
+Curator Tool from version 1.6.2 to version 2.0. If you are on an earlier version
+you can still follow these instructions, but you will need to manually merge
+your old configuration files with the new files, or configure your installation
+from scratch.
+
+For information on how to install and setup the Web Curator Tool from scratch,
+see the Web Curator Tool System Administrator Guide. For information about
+developing and contributing to the Web Curator Tool, see the Developer Guide.
+For information on using the Web Curator Tool, see the Web Curator Tool Quick
+User Guide and the Web Curator Tool online help.
 
 The source for both code and documentation for the Web Curator Tool can be found
 at http://dia-nz.github.io/webcurator/.
-
-For information on how to install and setup the Web Curator Tool, see the Web
-Curator Tool System Administrator Guide. For information about developing
-and contributing to the Web Curator Tool, see the Developer Guide. For
-information on using the Web Curator Tool, see the Web Curator Tool Quick User
-Guide and the Web Curator Tool online help.
 
 Contents of this document
 -------------------------
@@ -47,26 +43,27 @@ following sections:
 Upgrade requirements
 ====================
 
-The following section explains the requirements for upgrading to version 1.6.2
+The following section explains the requirements for upgrading to version 2.0
 of the Web Curator Tool.
 
 Prerequisites
 -------------
 
 The following are required to successfully upgrade the Web Curator Tool to
-version 1.6.2:  
+version 2.0:  
 
--   Installed and running version of the Web Curator Tool – version `1.6.1`
-    running against Oracle `11g`, PostgreSQL `8.4.9` or MySQL `5.0.95`. 
+-   Installed and running version of the Web Curator Tool – version `1.6.2` (or
+    older) running against Oracle `11g` or newer, PostgreSQL `8.4.9` or newer, or
+    MySQL `5.0.95` or newer. 
 
--   Access to the Tomcat servers for the Core, Digital Asset Store, and Harvest
+-   Access to the Tomcat server(s) for the Core, Digital Asset Store, and Harvest
     Agent components. 
 
 *Other versions of the required products may be compatible with the Web Curator
 Tool but they have not been tested. Due to the products use of Hibernate for
 database persistence other database platforms should work, if the product is
-rebuilt with the correct database dialect. However only MySQL `5.0.95`,
-PostgreSQL `8.4.9` and Oracle `11g` have been tested.*
+rebuilt with the correct database dialect. However only MySQL, PostgreSQL and
+Oracle have been tested.*
 
  
 
@@ -77,13 +74,17 @@ There are three major components to the deployment of the Web Curator Tool:
 
 -   The web curator core (`wct.war`).
 
--   The web curator harvest agent (`wct-harvest-agent.war`).
+-   The web curator harvest agent for Heritrix 1 (`harvest-agent-h1.war`,
+    optional, only needed if Heritrix 1 support is desired).
+
+-   The web curator harvest agent for Heritrix 3 (`harvest-agent-h3.war`).
 
 -   The web curator digital asset store (`wct-store.war`).
 
-This document assumes that v1.6.1 is currently deployed to your Tomcat instance.
+This document assumes that `1.6.2` (or an earlier version) is currently deployed
+to your Tomcat instance.
 
-To begin the upgrade of the WCT to version 1.6.2
+To begin the upgrade of the WCT to version 2.0:
 
 1.  Make sure that all target instances have completed.  
 
@@ -94,16 +95,18 @@ To begin the upgrade of the WCT to version 1.6.2
 Upgrading WCT Database Schema
 =============================
 
-Version 1.6.2 of the Web Curator Tool is supported under MySQL `5.0.95`,
-Oracle `11g` and PostgreSQL `8.4.9`. Database schema upgrade scripts have been
-provided for all three databases.
+Version 2.0 of the Web Curator Tool is supported under MySQL `5.0.95` and up,
+Oracle `11g` and up, and PostgreSQL `8.4.9` and up. Database schema upgrade
+scripts have been provided for all three databases.
 
 Upgrade scripts
 ---------------
 
-Upgrade scripts are provided for each of the database flavours (MySQL, Oracle
-and PostgresSQL). These scripts can be found in `wct-core/db/latest/upgrade`
-and `wct-core/db/legacy/upgrade`.
+To upgrade from an older version to 2.0, you first need to upgrade to version
+1.6.2 (which is actually version 1.6.1 of the database schema, since there were
+no changes to the schema between 1.6.1 and 1.6.2). The scripts for upgrading to
+1.6.2 can be found in `wct-core/db/legacy/upgrade`. The scripts that get you
+from 1.6.2 to 2.0 are located in `wct-core/db/latest/upgrade`.
 
 Upgrade script names are of the format::
 
@@ -111,42 +114,47 @@ Upgrade script names are of the format::
 
 where `<database-type>` is one of `mysql`, `oracle` or `postgres`.
 
-The `<source-version>` is the current or source version (the version migrating
+The `<source-version>` is the current or source version (the version you're migrating
 *from*).
 
-The `<target-version>` is the target version (the version migrating *to*).
+The `<target-version>` is the target version (the version you're migrating *to*).
 
-**No script means no database change** *If there is no script for a particular
+**No script means no database change.** *If there is no script for a particular
 version it means that there were no database changes.*
 
-Upgrades are cumulative
------------------------
+Upgrades are incremental
+------------------------
 
 Upgrade scripts only cover a single upgrade step from one version to another.
 This means that upgrading across several versions requires that all the scripts
 between the source and target version must be executed in sequence.
 
-For example, to upgrade a MySQL database from version 1.4.0 to 1.7.0, the
+For example, to upgrade a MySQL database from version 1.4.0 to 2.0, the
 following scripts would need to be executed in this order:
+
+From db/legacy/upgrade:
 
 #.  `upgrade-mysql-1_4-to-1_4_1.sql`
 #.  `upgrade-mysql-1_5-to-1_5_1.sql`
 #.  `upgrade-mysql-1_5_1-to-1_5_2.sql`
 #.  `upgrade-mysql-1_5_2-to-1_6.sql`
 #.  `upgrade-mysql-1_6-to-1_6_1.sql`
-#.  `upgrade-mysql-1_6_3-to-1_7.sql`
 
-Upgrading on Oracle 11g
------------------------
+From db/latest/upgrade:
+
+#.  `upgrade-mysql-1_6_1-to-2_0.sql`
+
+Upgrading on Oracle
+-------------------
 
 This guide assumes that the source version's schema is already configured on
-your Oracle `11g` database under the schema `DB_WCT`.
+your Oracle database under the schema `DB_WCT`.
 
 1.  Log on to the database using the `DB_WCT` user.
 
 2.  Run the following SQL to upgrade the database::
 
-        db\upgrade\upgrade-oracle-<source-version>-to-<target-version>.sql
+        db[/legacy]/upgrade/upgrade-oracle-<source-version>-to-<target-version>.sql
 
         SQL> conn db_wct@<sid-name>
 
@@ -154,17 +162,17 @@ your Oracle `11g` database under the schema `DB_WCT`.
 
         SQL> exit;
 
-Upgrading on PostgreSQL 8
--------------------------
+Upgrading on PostgreSQL
+-----------------------
 
 This guide assumes that the source version's schema is already configured on
-your PostgreSQL 8.1 database under the schema `DB_WCT`.
+your PostgreSQL database under the schema `DB_WCT`.
 
 1.  Log on to the database using the `DB_WCT` user.
 
 2.  Run the following SQL to upgrade the database::
 
-        db\upgrade\upgrade-postgresql-<source-version>-to-<target-version>.sql
+        db[/legacy]/upgrade/upgrade-postgresql-<source-version>-to-<target-version>.sql
 
         postgres=# \c Dwct
 
@@ -172,17 +180,17 @@ your PostgreSQL 8.1 database under the schema `DB_WCT`.
 
         postgres=# \q
 
-Upgrading on MySQL 5
---------------------
+Upgrading on MySQL
+------------------
 
 This guide assumes that the previous version's schema is already configured on
-your MySQL 5.0.95 database under the schema `DB_WCT`.
+your MySQL database under the schema `DB_WCT`.
 
 1.  Log on to the database using the `DB_WCT` user.
 
 2.  Run the following SQL to upgrade the database::
 
-        db\upgrade\upgrade-mysql-<source-version>-to-<target-version>.sql
+        db[/legacy]\upgrade\upgrade-mysql-<source-version>-to-<target-version>.sql
 
         mysql> use db_wct
 
@@ -203,7 +211,7 @@ Deploying WCT to Tomcat
 4.  Remove the applications from the Apache Tomcat webapps directory, including
     the expanded directory and WAR files.
 
-5.  Copy the version 1.6.1 WAR files into the Apache Tomcat webapps folder.
+5.  Copy the version 2.0 WAR files into the Apache Tomcat webapps folder.
 
 6.  If your Tomcat instance is not set to auto-deploy then expand the WAR files
     as follows::
@@ -243,7 +251,7 @@ Configuration
 See the WCT System Administrator Guide for information about configuring the Web
 Curator Tool.
 
-Of note, please ensure that the `TOMCAT/webapps/META-INF/context.xml` is updated
+Of note, please ensure that the `TOMCAT/webapps/wct/META-INF/context.xml` is updated
 to correctly identify your database.
 
 The Spring and Log4J XML files should also be checked as per the WCT System
@@ -281,4 +289,4 @@ Notes on the Upgrade Effects
 ----------------------------
 
 Please see the Release Notes for further information regarding the changes
-introduced in WCT 1.6.2.
+introduced in WCT 2.0.
