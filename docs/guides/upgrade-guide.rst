@@ -6,11 +6,11 @@ Upgrade Guide
 Introduction
 ============
 
-This guide, designed for a System Administrator, covers upgrade of the Web
+This guide, intended for system administrators, covers upgrade of the Web
 Curator Tool from version 1.6.2 to version 2.0. If you are on an earlier version
-you can still follow these instructions, but you will need to manually merge
-your old configuration files with the new files, or configure your installation
-from scratch.
+you can still follow these instructions to upgrade the database, but you will
+need to manually merge your old configuration files with the new files, or
+configure your installation from scratch.
 
 For information on how to install and setup the Web Curator Tool from scratch,
 see the Web Curator Tool System Administrator Guide. For information about
@@ -59,11 +59,12 @@ version 2.0:  
 -   Access to the Tomcat server(s) for the Core, Digital Asset Store, and Harvest
     Agent components. 
 
-*Other versions of the required products may be compatible with the Web Curator
-Tool but they have not been tested. Due to the products use of Hibernate for
-database persistence other database platforms should work, if the product is
-rebuilt with the correct database dialect. However only MySQL, PostgreSQL and
-Oracle have been tested.*
+*Note that the Web Curator Tool has been tested with Oracle `11g`, PostgreSQL
+`8.4.9` and `9.6.11`, MySQL `5.0.95` and MariaDB `10.0.36`, although newer
+versions of these products are expected to work as well. Due to the use of
+Hibernate for database persistence other database platforms should work, if the
+product is rebuilt with the correct database dialect, using the required JDBC
+driver. However, only MySQL, PostgreSQL and Oracle have been tested.*
 
  
 
@@ -82,7 +83,7 @@ The major components to the deployment of the Web Curator Tool are:
 -   The web curator digital asset store (`wct-store.war`).
 
 Note that the `wct-agent.war` module has been replaced by two new modules
-`harvest-agent-h[13].war`.
+`harvest-agent-h1.war` and `harvest-agent-h3.war`.
 
 This document assumes that 1.6.2 (or an earlier version) is currently deployed
 to your Tomcat instance.
@@ -130,7 +131,7 @@ Upgrades are incremental
 
 Upgrade scripts only cover a single upgrade step from one version to another.
 This means that upgrading across several versions requires that all the scripts
-between the source and target version must be executed in sequence.
+between the source and target version be executed in sequence.
 
 For example, to upgrade a MySQL database from version 1.4.0 to 2.0, the
 following scripts would need to be executed in this order:
@@ -143,9 +144,11 @@ From db/legacy/upgrade:
 #.  `upgrade-mysql-1_5_2-to-1_6.sql`
 #.  `upgrade-mysql-1_6-to-1_6_1.sql`
 
-From db/latest/upgrade:
+Then, from db/latest/upgrade:
 
 #.  `upgrade-mysql-1_6_1-to-2_0.sql`
+
+*Note that some scripts may complain about columns already existing or timestamp column definitions having the wrong precision. You can safely ignore these errors. You might also get warnings about implicit indexes being created. These are harmless as well.*
 
 
 Upgrading on Oracle
@@ -172,7 +175,7 @@ Upgrading on PostgreSQL
 This guide assumes that the source version's schema is already configured on
 your PostgreSQL database under the schema `DB_WCT`.
 
-1.  Log on to the database using the `DB_WCT` user.
+1.  Log on to the database using the `postgres` user.
 
 2.  Run the following SQL to upgrade the database::
 
@@ -190,7 +193,7 @@ Upgrading on MySQL
 This guide assumes that the previous version's schema is already configured on
 your MySQL database under the schema `DB_WCT`.
 
-1.  Log on to the database using the `DB_WCT` user.
+1.  Log on to the database using the `root` user.
 
 2.  Run the following SQL to upgrade the database::
 
@@ -202,8 +205,6 @@ your MySQL database under the schema `DB_WCT`.
 
         mysql> quit
 
-
-*TODO - Check user name: is "DB_WCT user" correct?*
 
 Upgrading the application
 =========================
@@ -246,14 +247,16 @@ Deploying WCT to Tomcat
 
         $JAVA_HOME/bin/jar xvf ../wct-store.war
 
-7.  When migrating from 1.6.2: copy any settings/properties/configuration
-    files you backed-up in step 3 back into your Apache Tomcat webapps directory.
+7.  When migrating from 1.6.2: copy any settings/properties/configuration files
+    you backed-up in step 3 back into your Apache Tomcat webapps directory. 
+    When migrating from an older version: start from the new configuration files
+    and merge any relevant values from your old configuration files back in.
 
 
 Configuration
 =============
 
-See the WCT System Administrator Guide for information about configuring the Web
+See the WCT System Administrator Guide for more information about configuring the Web
 Curator Tool.
 
 Of note, please ensure that the `TOMCAT/webapps/wct/META-INF/context.xml` is updated
@@ -269,8 +272,7 @@ New configuration parameters in 2.0
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *TODO - This is incomplete: more variables have been added to wct-das.properties
-since 1.6.2 and IIRC there was an XML file somewhere in the SOAP config that has
-been changed*
+since 1.6.2*
 
 **TOMCAT/webapps/wct-store/WEB-INF/classes/wct-das.properties**
 
@@ -308,7 +310,7 @@ There are now settings that tell the agent how to connect to its Heritrix 3 inst
     h3Wrapper.userName=admin
     h3Wrapper.password=admin
 
-**TOMCAT/webapps/harvest-agent-h3/WEB-INF/classes/wct-agent.properties**
+**TOMCAT/webapps/wct/WEB-INF/classes/wct-core.properties**
 
 There's a new variable that tells the core where to find its Heritrix 3 scripts
 (used by the H3 script console).
@@ -320,11 +322,11 @@ There's a new variable that tells the core where to find its Heritrix 3 scripts
 Updating older configurations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To update the configuration files when migrating from versions older than 1.6.2,
-it is recommended to start from the new configuration files and merge any
-differences with your existing configuration back in as needed. In most cases
-new variables have been added. Only rarely have variables been dropped or
-renamed.
+To update the configuration files when migrating from versions older than
+1.6.2, it is recommended to start from the new configuration files and merge
+any relevant differences with your existing configuration back in as needed. In
+most cases new variables have been added. Only rarely have variables been
+dropped or renamed.
 
 
 
