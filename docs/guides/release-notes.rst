@@ -47,18 +47,13 @@ add notes here for changes and fixes as they are released into the master branch
 
 -   The SOAP implementation has changed. As part of that change, the ex-libris Rosetta SDK dependency has moved from
     `2.2.0` to `5.5.0`. This means that the `dps-sdk-5.5.0.jar` must be installed in a local Maven repository for the
-    maven build to work. Install this jar by running the following command from the root of the project::
-
-        (for Windows):
-        call mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=5.5.0 \
-            -Dpackaging=jar  -DpomFile=wct-store\etc\lib\dps-sdk-5.5.0-pom.xml \
-            -Dfile=wct-store\etc\lib\dps-sdk-5.5.0.jar
-
-        (for *nix):
-        mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=5.5.0 \
-            -Dpackaging=jar -DpomFile=wct-store/etc/lib/dps-sdk-5.5.0-pom.xml \
-            -Dfile=wct-store/etc/lib/dps-sdk-5.5.0.jar
-
+    maven build to work. This jar is now sourced from the github project *rosetta-dps-sdk-projects-maven-lib*, found
+    at (https://github.com/NLNZDigitalPreservation/rosetta-dps-sdk-projects-maven-lib). The installation of this jar
+    includes a pom with its maven dependencies so the *wct-store* and *wct-submit-to-rosetta* subprojects no longer need
+    to explicitly include or track the dps-sdk dependencies in their project poms. It has a different `groupId` and
+    `artifactId` from `the dps-sdk-5.5.0.jar` downloaded from *Rosetta.dps-sdk-projects*
+    (https://github.com/ExLibrisGroup/Rosetta.dps-sdk-projects). Follow the instructions found in the *README.md* of
+    *rosetta-dps-sdk-projects-maven-lib* to install this jar into your maven repository.
 
 
 2.0.0

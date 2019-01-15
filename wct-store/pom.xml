@@ -260,8 +260,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.exlibris</groupId>
-			<artifactId>dps-sdk</artifactId>
+			<groupId>com.exlibris.dps</groupId>
+			<artifactId>dps-sdk-fat-all</artifactId>
 			<version>5.5.0</version>
 			<scope>compile</scope>
 		</dependency>

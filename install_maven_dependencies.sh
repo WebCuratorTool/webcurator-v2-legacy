@@ -18,6 +18,5 @@ mvn install:install-file -DgroupId=org.archive -DartifactId=aheritrix -Dversion=
 mvn install:install-file -DgroupId=xdoclet -DartifactId=xdoclet -Dversion=1.2.3-updated -Dpackaging=jar -Dfile=wct-core/etc/xdoclet-1.2.3-updated.jar
 mvn install:install-file -DgroupId=xdoclet -DartifactId=xjavadoc -Dversion=1.5-snapshot050611 -Dpackaging=jar -Dfile=wct-core/etc/xjavadoc-1.5-snapshot050611.jar
 
-mvn install:install-file -DgroupId=com.exlibris -DartifactId=dps-sdk -Dversion=5.5.0 -Dpackaging=jar -DpomFile=wct-store/etc/lib/dps-sdk-5.5.0-pom.xml -Dfile=wct-store/etc/lib/dps-sdk-5.5.0.jar
 mvn install:install-file -DgroupId=javassist -DartifactId=javassist -Dversion=2.6.ga -Dpackaging=jar -Dfile=wct-store/etc/lib/javassist-2.6.ga.jar
 mvn install:install-file -DgroupId=policy -DartifactId=policy -Dversion=4.2.2.GA -Dpackaging=jar -Dfile=wct-store/etc/lib/policy-4.2.2.GA.jar
