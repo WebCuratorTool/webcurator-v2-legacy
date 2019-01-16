@@ -265,32 +265,20 @@ to correctly identify your database.
 The Spring and Log4J XML files should also be checked as per the WCT System
 Administrator Guide to ensure their values are appropriate for your deployment.
 
-Important notes
----------------
  
 New configuration parameters in 2.0
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------
 
-*TODO - This is incomplete: more variables have been added to wct-das.properties
-since 1.6.2*
+**TOMCAT/webapps/wct/WEB-INF/classes/wct-core.properties**
 
-**TOMCAT/webapps/wct-store/WEB-INF/classes/wct-das.properties**
-
-There is now the option of setting the Rosetta access codes for when archiving
-harvests to the Rosetta DPS.
+There's a new variable that tells the core where to find its Heritrix 3 scripts
+(used by the H3 script console).
 ::
 
-    dpsArchive.dnx_open_access=XXX
-    dpsArchive.dnx_published_restricted=XXX
-    dpsArchive.dnx_unpublished_restricted_location=XXX
-    dpsArchive.dnx_unpublished_restricted_person=XXX
+    h3.scriptsDirectory=/usr/local/wct/h3scripts
 
-These will only be used if the archive type is set to ‘dpsArchive’.
-::
 
-    arcDigitalAssetStoreService.archive=dpsArchive
-
-**TOMCAT/webapps/harvest-agent-h3/WEB-INF/classes/wct-agent.properties**   
+**TOMCAT/webapps/harvest-agent-h3/WEB-INF/classes/wct-agent.properties**
 
 The harvest agent now needs to have a (unique) name and the path of its logReaderService must
 be specified. (This variable is also needed in the wct-agent.properties file for
@@ -310,13 +298,93 @@ There are now settings that tell the agent how to connect to its Heritrix 3 inst
     h3Wrapper.userName=admin
     h3Wrapper.password=admin
 
-**TOMCAT/webapps/wct/WEB-INF/classes/wct-core.properties**
 
-There's a new variable that tells the core where to find its Heritrix 3 scripts
-(used by the H3 script console).
+New configuration parameters in 1.6.3
+-------------------------------------
+
+**TOMCAT/webapps/wct-store/WEB-INF/classes/wct-das.properties**
+
+There is now the option of setting Rosetta access codes for when archiving
+harvests to the Rosetta DPS.
 ::
 
-    h3.scriptsDirectory=/usr/local/wct/h3scripts
+    dpsArchive.dnx_open_access=XXX
+    dpsArchive.dnx_published_restricted=XXX
+    dpsArchive.dnx_unpublished_restricted_location=XXX
+    dpsArchive.dnx_unpublished_restricted_person=XXX
+
+These will only be used if the archive type is set to ‘dpsArchive’.
+::
+
+    arcDigitalAssetStoreService.archive=dpsArchive
+
+Alma compatibility upgrades for Submit to Rosetta module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Changes required by the National Library of New Zealand to be compatible with archiving
+to a Rosetta DPS integrated with Alma (library cataloguing and workflow management system
+from Ex Libris). All changes have been implemented as backward compatible as possible. The
+exposure of these changes and their configuration are through the files wct-das.properties,
+wct-das.xml inside WCT-Store.
+
+**Setting Mets CMS section**
+
+The section used in the DNX TechMD for the CMS data is now configurable. The CMS section
+can be set to either of the following inside wct-das.properties
+::
+
+    dpsArchive.cmsSection=CMS
+    dpsArchive.cmsSystem=ilsdb
+
+    OR
+
+    dpsArchive.cmsSection=objectIdentifier
+    dpsArchive.cmsSystem=ALMA
+
+**Preset producer ID for custom deposit forms**
+
+The Producer ID can now be preset for deposits that use a custom form, particularly useful
+if only one Producer is used and saves the user having to input their Rosetta password
+each time to search for one. If no Producer ID is set in wct-das.properties then it will
+revert to the old process of loading a list of available Producers from Rosetta.
+::
+
+    dpsArchive.htmlSerials.producerIds=11111
+
+**Toggle HTML Serial agencies using non HTML Serial entity types**
+
+Used when a user is under an HTML Serial agency but wants to submit a custom type. Set to *False*
+to enable the use of custom types.
+::
+
+    dpsArchive.htmlSerials.restrictAgencyType=true
+
+**Custom Types**
+
+Custom Types for Web Harvests, follow the same method as the htmlSerials. If there are more
+than one value for each of these, separate them using comma. Make sure there is an equal
+number of values for each attribute.
+::
+
+    dpsArchive.webHarvest.customTargetDCTypes=eMonograph
+    dpsArchive.webHarvest.customerMaterialFlowIds=11111
+    dpsArchive.webHarvest.customerProducerIds=11111
+    dpsArchive.webHarvest.customIeEntityTypes=HTMLMonoIE
+    dpsArchive.webHarvest.customDCTitleSource=TargetName
+
+**Set source of Mets DC Title for custom types**
+
+For custom entity tpes, the field of which the Mets DC Title gets populated with for
+the mets.xml can now be set. The available fields are the Target Seed Url or the Target
+Name. This is switched in wct-das.properties.
+::
+
+    dpsArchive.webHarvest.customDCTitleSource=SeedUrl
+
+    OR
+
+    dpsArchive.webHarvest.customDCTitleSource=TargetName
+
 
 
 Updating older configurations
