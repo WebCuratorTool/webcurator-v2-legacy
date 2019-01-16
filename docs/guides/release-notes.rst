@@ -135,6 +135,24 @@ Things to be aware of
     in the near future with a minor release.
 
 
+1.6.3
+=====
+
+This is the *WCT 1.6.3 GA* version.
+
+Released July 2017, this version contains minor changes to the Submit-to-Rosetta module.
+
+What's new
+-----------
+
+Alma compatibility upgrades for Submit to Rosetta module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Changes required by the National Library of New Zealand to be compatible with archiving to
+a Rosetta DPS integrated with Alma (library cataloguing and workflow management system
+from Ex Libris). All changes have been implemented as backward compatible as possible.
+The exposure of these changes and their configuration are through the files wct-das.properties,
+wct-das.xml inside WCT-Store.
+
 
 1.6.2
 =====
