@@ -340,10 +340,12 @@
 											<name>hibernate.hbm2ddl.auto</name>
 											<value>${hbm2ddl.auto}</value>
 										</property>
+										<!--
 										<property>
 											<name>hibernate.dialect</name>
 											<value>org.hibernate.dialect.H2Dialect</value>
 										</property>
+										-->
 									</properties>
 								</configuration>
 							</execution>
