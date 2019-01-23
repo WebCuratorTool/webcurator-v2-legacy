@@ -312,8 +312,8 @@ public class DnxMapperImpl implements DnxMapper {
                 // Check whether element
                 if(field.getDcFieldType().equals("dc")){
                     // If the field has already been set above, then remove so it can be updated with value below
-                    if(ieDc.getValue(DublinCore.dcNamespace.getStringValue(), field.getDcFieldLabel()) != null){
-                        ieDc.removeElemet(DublinCore.dcNamespace.getStringValue(), field.getDcFieldLabel());
+                    if(ieDc.getDcValue(field.getDcFieldLabel()) != null){
+                        ieDc.removeElemet(DublinCore.dcNamespace.getXPathNameStep(), field.getDcFieldLabel());
                     }
                     addAdditionalDcElement(dc, field.getDcFieldLabel(), ieDc, field.isMandatory());
                 }
@@ -322,8 +322,6 @@ public class DnxMapperImpl implements DnxMapper {
                 }
             }
         }
-//        addAdditionalDcElement(dc, "bibliographicCitation", ieDc);
-//        addAdditionalDcElement(dc, "available", ieDc);
 
     }
 
