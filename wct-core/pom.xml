@@ -97,9 +97,6 @@
 										<include name="org/webcurator/core/permissionmapping/MappingView.java" />
 									</fileset>
 									<hibernate version="3.0" />
-									<hibernatecfg version="3.0" defaultSchema="${schema.name}" jdbcUrl="${schema.url}" userName="${schema.user}" password="${schema.password}" driver="${schema.driver}" poolSize="2" showSql="true" useOuterJoin="true" dialect="${schema.dialect}" transactionManagerFactory="org.hibernate.transaction.JDBCTransactionFactory" destdir="${project.build.directory}/classes">
-									</hibernatecfg>
-
 								</hibernatedoclet>
 
 							</tasks>
@@ -343,6 +340,12 @@
 											<name>hibernate.hbm2ddl.auto</name>
 											<value>${hbm2ddl.auto}</value>
 										</property>
+										<!--
+										<property>
+											<name>hibernate.dialect</name>
+											<value>org.hibernate.dialect.H2Dialect</value>
+										</property>
+										-->
 									</properties>
 								</configuration>
 							</execution>
