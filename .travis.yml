@@ -5,7 +5,7 @@ jdk:
 
 before_install:
   - rm -rf ./wct-core/target/rosetta-dps-sdk-projects-maven-lib
-  - git clone git@github.com:NLNZDigitalPreservation/rosetta-dps-sdk-projects-maven-lib.git ./wct-core/target/rosetta-dps-sdk-projects-maven-lib
+  - git clone https://github.com/NLNZDigitalPreservation/rosetta-dps-sdk-projects-maven-lib.git ./wct-core/target/rosetta-dps-sdk-projects-maven-lib
 install:
   - mvn install:install-file -Dfile=./wct-core/target/rosetta-dps-sdk-projects-maven-lib/dps-sdk-5.5.0.jar -DpomFile=./wct-core/target/rosetta-dps-sdk-projects-maven-lib/dps-sdk-5.5.0-pom.xml
   - ./install_maven_dependencies.sh
