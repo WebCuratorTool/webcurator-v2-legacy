@@ -25,7 +25,7 @@ ALTER TABLE DB_WCT.TARGET_INSTANCE_ORIG_SEED MODIFY TIOS_SEED VARCHAR2(1024) NUL
 -- The following query is optional and may be used to update the database of targets that are incorrectly set to complete after harvesting.
 -- This is a bug arisig in release 1.5.1 and is fixed in the next version. Run at your own peril!
 -- NB: The syntax of this query is tested on Postgres but may need adjusting for Oracle databases.
-UPDATE abstract_target at SET at_state = 5 WHERE at_state = 7 
+UPDATE DB_WCT.ABSTRACT_TARGET at SET at_state = 5 WHERE at_state = 7
 AND EXISTS(SELECT s_oid FROM schedule WHERE s_target_id = at.at_oid AND (s_end IS NULL OR s_end > now()));
 
  
