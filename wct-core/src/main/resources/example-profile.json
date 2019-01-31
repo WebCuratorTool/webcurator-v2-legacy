@@ -1,0 +1,7 @@
+{
+name: "Default Heritrix 3 Profile",
+contactUrl: "https://www.kb.nl/contact",
+description: "Default profile shipped with Web Curator Tool",
+documentLimit: 20,
+ignoreRobotsTxt: true
+}
