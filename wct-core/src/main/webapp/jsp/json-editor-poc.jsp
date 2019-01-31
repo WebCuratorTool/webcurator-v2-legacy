@@ -4,6 +4,17 @@
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.lang.StringBuilder"%>
 
+
+
+
+<%-- The code that deals with the form post: saves the submitted profile --%>
+<%
+String submittedProfile = (String)request.getParameter("profile");
+%>
+
+
+
+
 <html>
     <head>
     <title>JSON editor proof of concept</title>
@@ -16,8 +27,15 @@
 
 	<h2>Proof of concept JSON editor for crawler profiles</h2>
 
+	<p>Posted: <%= submittedProfile %></p>
+
 	<div id='editorDiv'></div>
-	<button id='submit'>Submit (console.log)</button>
+
+        <form id="editorForm" method="POST" action="/wct/jsp/json-editor-poc.jsp">
+	<input type="hidden" id="profile" name="profile"/>
+	<button id='submit'>Save profile</button>
+	</form>
+
 <script language="JavaScript">
 
 
@@ -58,17 +76,18 @@ editor.setValue(<%= profile %>);
 
 
 
-
-// Hook up the submit button to log to the console
+// Handle form submission
 document.getElementById('submit').addEventListener('click',
 
 	function() {
-		// Validate and log
+		// Validate and complain or submit
 		errors=editor.validate();
 		if (errors.length) {
 			alert("Validation error: " + errors);
 		} else {
-			console.log(editor.getValue());
+			document.getElementById('profile').value = JSON.stringify(editor.getValue());
+			alert(document.getElementById('profile').value);
+			document.getElementById('editorForm').submit();
 		}
 	}
 
