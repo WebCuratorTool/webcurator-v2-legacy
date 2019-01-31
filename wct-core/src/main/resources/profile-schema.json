@@ -1,0 +1,24 @@
+{
+          type: "object",
+          title: "Heritrix 3 Profile Schema",
+          required: ["name", "contactUrl", "ignoreRobotsTxt"],
+          properties: {
+            name: {
+              type: "string",
+            },
+            contactUrl: {
+              type: "string",
+	      format: "uri"
+            },
+            description: {
+              type: "string"
+            },
+            documentLimit: {
+              type: "integer",
+            },
+            ignoreRobotsTxt: {
+              type: "boolean",
+	      default: false
+            }
+          }
+}
