@@ -1,15 +1,24 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.io.BufferedReader"%>
+<%@page import="java.io.BufferedWriter"%>
+<%@page import="java.io.FileWriter"%>
 <%@page import="java.io.InputStreamReader"%>
 <%@page import="java.lang.StringBuilder"%>
 
 
 
 
-<%-- The code that deals with the form post: saves the submitted profile --%>
+<%-- The code that deals with the form post: blindly writes the submitted profile to disk --%>
 <%
 String submittedProfile = (String)request.getParameter("profile");
+if (submittedProfile != null) {
+	String filePath = Thread.currentThread().getContextClassLoader().getResource("example-profile.json").getPath();
+	try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath)))
+	{
+    		writer.write(submittedProfile);
+	}
+}
 %>
 
 
@@ -27,13 +36,11 @@ String submittedProfile = (String)request.getParameter("profile");
 
 	<h2>Proof of concept JSON editor for crawler profiles</h2>
 
-	<p>Posted: <%= submittedProfile %></p>
-
 	<div id='editorDiv'></div>
 
-        <form id="editorForm" method="POST" action="/wct/jsp/json-editor-poc.jsp">
+        <form id="editorForm" method="POST" action="/wct/jsp/json-editor-poc.jsp" accept-charset="utf-8">
 	<input type="hidden" id="profile" name="profile"/>
-	<button id='submit'>Save profile</button>
+	<button id='saveButton'>Save profile</button>
 	</form>
 
 <script language="JavaScript">
@@ -67,7 +74,11 @@ String profile = readFileFromClasspath("example-profile.json");
 
 // create the editor using the profile schema
 var element = document.getElementById('editorDiv');
-var editor = new JSONEditor(element, {schema: <%= profileSchema %>, disable_collapse: true, disable_edit_json: true, disable_properties: true});
+var editor = new JSONEditor(element, {schema: <%= profileSchema %>, 
+                                      disable_collapse: true, 
+				      disable_edit_json: true, 
+                                      disable_properties: true,
+                                      show_errors: "change"});
 
 
 
@@ -77,7 +88,7 @@ editor.setValue(<%= profile %>);
 
 
 // Handle form submission
-document.getElementById('submit').addEventListener('click',
+document.getElementById('saveButton').addEventListener('click',
 
 	function() {
 		// Validate and complain or submit
@@ -85,9 +96,10 @@ document.getElementById('submit').addEventListener('click',
 		if (errors.length) {
 			alert("Validation error: " + errors);
 		} else {
+			var form = document.getElementById('editorForm'); 
 			document.getElementById('profile').value = JSON.stringify(editor.getValue());
-			alert(document.getElementById('profile').value);
-			document.getElementById('editorForm').submit();
+			form.submit();
+			location.replace(form.action);
 		}
 	}
 
