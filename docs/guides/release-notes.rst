@@ -52,8 +52,13 @@ add notes here for changes and fixes as they are released into the master branch
     includes a pom with its maven dependencies so the *wct-store* and *wct-submit-to-rosetta* subprojects no longer need
     to explicitly include or track the dps-sdk dependencies in their project poms. It has a different `groupId` and
     `artifactId` from `the dps-sdk-5.5.0.jar` downloaded from *Rosetta.dps-sdk-projects*
-    (https://github.com/ExLibrisGroup/Rosetta.dps-sdk-projects). Follow the instructions found in the *README.md* of
-    *rosetta-dps-sdk-projects-maven-lib* to install this jar into your maven repository.
+    (https://github.com/ExLibrisGroup/Rosetta.dps-sdk-projects). This dependnecy is installed into the local maven
+    repository by running the script `install_maven_dependencies.[sh|bat]`.
+
+-   Because of some classpath issues, harvest-agent-h1 now uses a modified version of heritrix that has been created
+    with the github project https://github.com/WebCuratorTool/heritrix-1-14-adjust. This version of heritrix and its
+    necessary dependencies are installed into the local maven repository by running the script
+    `install_maven_dependencies.[sh|bat]`.
 
 
 2.0.0
