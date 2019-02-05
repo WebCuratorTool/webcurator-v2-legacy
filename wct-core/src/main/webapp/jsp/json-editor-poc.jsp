@@ -26,6 +26,7 @@ if (submittedProfile != null) {
 
 <html>
     <head>
+    <meta http-equiv="Pragma" content="no-cache"/>
     <title>JSON editor proof of concept</title>
 
 <script src="../scripts/jsoneditor.min.js"></script>
@@ -38,13 +39,27 @@ if (submittedProfile != null) {
 
 	<div id='editorDiv'></div>
 
-        <form id="editorForm" method="POST" action="/wct/jsp/json-editor-poc.jsp" accept-charset="utf-8">
+        <form id="editorForm" onsubmit="return submitForm();" method="POST" action="/wct/jsp/json-editor-poc.jsp" accept-charset="utf-8">
 	<input type="hidden" id="profile" name="profile"/>
-	<button id='saveButton'>Save profile</button>
+	<input type="submit" value="Save profile"/>
 	</form>
 
 <script language="JavaScript">
 
+
+// Handle form submission
+function submitForm() {
+	// Validate 
+	errors=editor.validate();
+	if (errors.length) { // and complain 
+		alert("Validation error: " + errors);
+	} else { // or submit
+		var form = document.getElementById('editorForm'); 
+		document.getElementById('profile').value = JSON.stringify(editor.getValue());
+		form.submit();
+	}
+	return false;
+}
 
 
 <%-- Read files from classpath (shouldn't normally be done in JSP)--%>
@@ -87,23 +102,6 @@ editor.setValue(<%= profile %>);
 
 
 
-// Handle form submission
-document.getElementById('saveButton').addEventListener('click',
-
-	function() {
-		// Validate and complain or submit
-		errors=editor.validate();
-		if (errors.length) {
-			alert("Validation error: " + errors);
-		} else {
-			var form = document.getElementById('editorForm'); 
-			document.getElementById('profile').value = JSON.stringify(editor.getValue());
-			form.submit();
-			location.replace(form.action);
-		}
-	}
-
-);
 
 
 </script>
