@@ -35,7 +35,21 @@ call git clone https://github.com/WebCuratorTool/heritrix-1-14-adjust.call git ^
   .\wct-core\target\heritrix-1-14-adjust
 call mvn install:install-file -Dfile=.\wct-core\target\heritrix-1-14-adjust\release_archive\heritrix-1.14.2-webcuratortool-2.0.1.jar ^
   -DpomFile=.\wct-core\target\heritrix-1-14-adjust\release_archive\heritrix-1.14.2-webcuratortool-2.0.1.pom
-
+rem Install the specific fastutil version used by heritrix-1-14-adjust
+call mvn install:install-file -DgroupId=fastutil -DartifactId=fastutil \
+      -Dversion=5.0.3-heritrix-subset-1.0 \
+      -Dpackaging=jar \
+      -Dfile=.\wct-core\target\heritrix-1-14-adjust\lib\fastutil-5.0.3-heritrix-subset-1.0.jar
+rem Install the specific mg4j version used by heritrix-1-14-adjust
+call mvn install:install-file -DgroupId=it.unimi.dsi -DartifactId=mg4j \
+      -Dversion=1.0.1 \
+      -Dpackaging=jar \
+      -Dfile=.\wct-core\target\heritrix-1-14-adjust\lib\mg4j-1.0.1.jar
+rem Install the javaswf dependency used by heritrix-1-14-adjust
+call mvn install:install-file -DgroupId=javaswf -DartifactId=javaswf \
+      -Dversion=CVS-SNAPSHOT \
+      -Dpackaging=jar \
+      -Dfile=.\wct-core\target\heritrix-1-14-adjust\lib\javaswf-CVS-SNAPSHOT-1.jar
 
 rem
 rem Install the other dependencies that exist locally
