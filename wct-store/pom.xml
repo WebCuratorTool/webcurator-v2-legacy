@@ -454,6 +454,11 @@
 					<groupId>org.archive</groupId>
 					<artifactId>aheritrix</artifactId>
 				</exclusion>
+				<!-- Also exclude the heritrix dependency that has superseded the aheritrix jar -->
+				<exclusion>
+					<groupId>org.archive</groupId>
+					<artifactId>heritrix</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>

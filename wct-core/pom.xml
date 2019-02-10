@@ -415,8 +415,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.archive</groupId>
-			<artifactId>aheritrix</artifactId>
-			<version>1.14.1</version>
+			<artifactId>heritrix</artifactId>
+			<version>1.14.2-webcuratortool-2.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -494,7 +494,11 @@
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
+			<!-- Use the version of commons-httpclient pulled in from org.archive.heritrix.
+			     When the dependency with org.archive:heritrix is broken the non-modified version of commons-httpclient
+			     can be used instead.
+			-->
+			<version>3.1.1-heritrix-1.14.2-webcuratortool-2.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

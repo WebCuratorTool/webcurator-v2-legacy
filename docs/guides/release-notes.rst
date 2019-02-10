@@ -58,7 +58,8 @@ add notes here for changes and fixes as they are released into the master branch
 -   Because of some classpath issues, harvest-agent-h1 now uses a modified version of heritrix that has been created
     with the github project https://github.com/WebCuratorTool/heritrix-1-14-adjust. This version of heritrix and its
     necessary dependencies are installed into the local maven repository by running the script
-    `install_maven_dependencies.[sh|bat]`.
+    `install_maven_dependencies.[sh|bat]`. Note that this script now requires that the program `git` works from the
+    command line.
 
 
 2.0.0
