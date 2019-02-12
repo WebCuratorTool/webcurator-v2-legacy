@@ -494,11 +494,13 @@
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
-			<!-- Use the 3.1 version of commons-httpclient.
-			     Even though the harvest-agent-h1 uses a modified 3.0.1 version, that use is not required for
-			     wct-core, since it does not harvesting.
+			<!-- Use the version of commons-httpclient pulled in from org.archive.heritrix.
+			     When the dependency with org.archive:heritrix is broken the non-modified version of commons-httpclient
+			     can be used instead. Note that this dependency is required because the class BrowseHelper.java uses
+			     UURIFactory.java, which uses UURI.java, which extends LaxURI.java, which is a custom heritrix-1.14.2-...
+			     part of commons-httpclient-3.1.1-heritrix-1.14.2-webcuratortool-2.0.1 (and not commons-httpclient-3.1).
 			-->
-			<version>3.1</version>
+			<version>3.1.1-heritrix-1.14.2-webcuratortool-2.0.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
