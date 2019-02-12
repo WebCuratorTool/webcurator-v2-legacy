@@ -293,6 +293,14 @@ but any valid port can be used.
     which removes the need to run against MySQL, Postgres or Oracle. The first
     time this is run, the `-Dhbm2ddl.auto=create` creates a new instance of this
     database.
+
+    The H2 database is stored in the user's home directory (for *nix systems this would be `~/DB_WCT.*.db`).
+    Unfortunately, it appears that the `-Dhbm2ddl.auto=create` option doesn't entirely clear a pre-existing database:
+    In testing we found that the tables `ABSTRACT_TARGET`, `PERMISSION`, `SITE`, `URL_PATTERN` and
+    `URL_PERMISSION_MAPPING` were not cleared. For this reason, before running with the `-Dhbm2ddl.auto=create` option,
+    we recommend that the user deletes the H2 database (if it already exists), by deleting the files `DB_WCT.*.db` found
+    in the user's home directory.
+
     ::
 
         mvn jetty:run -Ph2 -Dhbm2ddl.auto=create \
