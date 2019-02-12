@@ -494,11 +494,11 @@
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
-			<!-- Use the version of commons-httpclient pulled in from org.archive.heritrix.
-			     When the dependency with org.archive:heritrix is broken the non-modified version of commons-httpclient
-			     can be used instead.
+			<!-- Use the 3.1 version of commons-httpclient.
+			     Even though the harvest-agent-h1 uses a modified 3.0.1 version, that use is not required for
+			     wct-core, since it does not harvesting.
 			-->
-			<version>3.1.1-heritrix-1.14.2-webcuratortool-2.0.1</version>
+			<version>3.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -562,7 +562,7 @@
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<version>3.6.1</version>
+			<version>3.6.3</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
