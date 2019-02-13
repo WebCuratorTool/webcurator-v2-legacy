@@ -1,0 +1,6 @@
+[
+            {"Status":"RUNNING"},
+            {"Start time":"2019-02-12T21:21:11.020Z"},
+            {"Harvested": {"Number of URLs": 512, "Size (MB)": "233"}},
+	    {"Number of errors":32}
+]
