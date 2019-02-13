@@ -1,3 +1,11 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.io.BufferedReader"%>
+<%@page import="java.io.InputStreamReader"%>
+<%@page import="java.lang.StringBuilder"%>
+
+
+
 <html>
     <head>
     <title>JSON editor proof of concept</title>
@@ -12,8 +20,38 @@
 
     <div id="stats"/>
 
+
+
+
+
+<%-- Read files from classpath (shouldn't normally be done in JSP)--%>
+<%!
+private String readFileFromClasspath(String baseName) throws Exception {
+        try (
+             InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(baseName);
+             BufferedReader br = new BufferedReader(new InputStreamReader(in))
+            ) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = br.readLine())!= null){
+                        sb.append(line+"\n");
+                }
+                return sb.toString();
+        }
+}
+%>
+
+<%-- Read example status info from disk --%>
+<%
+String statusInfo = readFileFromClasspath("example-status-info.json");
+%>
+
+
+
     <script>
 
+	// Simple display function for arbitrary JSON input
 	function display(node) {
 		var html = "";
 		if (node !== null) {
@@ -38,14 +76,8 @@
 		return html;
 	}
 
-        var d = [
-            {'Status':'RUNNING'},
-            {'Start time':'2019-02-12T21:21:11.020Z'},
-            {'Harvested': {'Number of URLs': '512', 'Size (MB)': '233'}},
-	    {'Number of errors':'32'}
-        ];
-
-        document.getElementById("stats").innerHTML = "<ul>" + display(d) + "</ul>";
+        var statusJson = <%= statusInfo %> ;
+        document.getElementById("stats").innerHTML = "<ul>" + display(statusJson) + "</ul>";
 
 
     </script>
