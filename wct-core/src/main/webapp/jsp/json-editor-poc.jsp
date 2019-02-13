@@ -26,7 +26,6 @@ if (submittedProfile != null) {
 
 <html>
     <head>
-    <meta http-equiv="Pragma" content="no-cache"/>
     <title>JSON editor proof of concept</title>
 
 <script src="../scripts/jsoneditor.min.js"></script>
