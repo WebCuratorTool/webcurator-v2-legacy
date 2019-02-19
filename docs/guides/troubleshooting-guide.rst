@@ -84,13 +84,7 @@ how a website is crawled buy the Harvest Agent. Consult the
 Known issues
 ============
 
-`com.sleepycat.je.DatabaseException` for `http_cookies` database in harvest-agent-h1 logs
------------------------------------------------------------------------------------------
-
-You may encounter a `com.sleepycat.je.DatabaseException` for `http_cookies` database in the harvest-agent-h1 logs when a
-Heritrix 1 crawl has been stopped or aborted. This exception is discussed in more detail in the `README.md` for the
-github repository https://github.com/WebCuratorTool/heritrix-1-14-adjust. For the moment, this exception and stack trace
-in the log appears to be benign.
+There are no known issues at this time.
 
 
 System Administrators
