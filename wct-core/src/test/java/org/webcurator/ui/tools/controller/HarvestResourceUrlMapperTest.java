@@ -12,12 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.webcurator.domain.model.core.ArcHarvestResource;
-import org.webcurator.domain.model.core.HarvestResource;
 import org.webcurator.domain.model.core.HarvestResult;
 import org.webcurator.domain.model.core.TargetInstance;
 import org.webcurator.ui.target.validator.TargetAccessValidatorTest;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 public class HarvestResourceUrlMapperTest extends TestCase {
 	

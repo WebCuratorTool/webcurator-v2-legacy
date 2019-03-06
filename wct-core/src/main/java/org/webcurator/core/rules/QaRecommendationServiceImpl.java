@@ -8,14 +8,15 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.compiler.DroolsParserException;
-import org.drools.io.ResourceFactory;
-import org.drools.runtime.StatefulKnowledgeSession;
+import org.drools.core.impl.InternalKnowledgeBase;
+import org.drools.core.impl.KnowledgeBaseFactory;
+import org.kie.api.runtime.KieSession;
+import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.api.io.ResourceType;
+import org.drools.compiler.compiler.DroolsParserException;
+import org.kie.internal.io.ResourceFactory;
+import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.webcurator.core.harvester.coordinator.HarvestCoordinator;
 import org.webcurator.core.scheduler.TargetInstanceManager;
 import org.webcurator.core.store.tools.QualityReviewFacade;
@@ -28,8 +29,9 @@ public class QaRecommendationServiceImpl implements QaRecommendationService {
 	/**
 	 * The drools knowledge session though which all rules are executed
 	 */
-	private StatefulKnowledgeSession ksession = null;
-	
+	//private StatefulKnowledgeSession ksession = null;
+	private KieSession ksession = null;
+
 	/**
 	 * The interface for retrieving <code>HarvestResourceDTO</code>s
 	 */
@@ -113,11 +115,11 @@ public class QaRecommendationServiceImpl implements QaRecommendationService {
 	        }
 	
 	        // add the packages to a knowledgebase (deploy the knowledge packages).
-	        final KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();      
-			kbase.addKnowledgePackages( kbuilder.getKnowledgePackages() );
+	        final InternalKnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
+			kbase.addPackages( kbuilder.getKnowledgePackages() );
 			
 			// set the knowledge session
-			ksession = kbase.newStatefulKnowledgeSession();
+			ksession = kbase.newKieSession();
 			
 			// set the configured message formats and advice
 			ksession.setGlobal("globals", globals);
@@ -129,7 +131,6 @@ public class QaRecommendationServiceImpl implements QaRecommendationService {
      * Retrieves a <code>TargetInstance</code>s <code>HarvestResoureDTO</code>s and submits them to the Drools rules engine
      * @param ti	the <code>TargetInstance</code>
      * @param referenceCrawl the <code>TargetInstance</code> of the reference crawl (or null if no reference crawl exists)
-     * @param indicators a <code>Set</code> of <code>Indicator</code>s to be processed by the rules engine
      * @throws DroolsParserException
      * @throws IOException
      */

@@ -25,6 +25,8 @@ Following this introduction, the Troubleshooting Guide includes the following se
 
 -   **Problems harvesting** - Covers troubleshooting harvesting issues.
 
+-   **Known issues** - Covers known issues.
+
 -   **System Administrator** - Covers troubleshooting tips for System Administrators.
 
 
@@ -77,6 +79,12 @@ Harvester Profiles
 Harvester profiles contain the settings that control how a harvest behaves. These are based on Heritrix profiles and set
 how a website is crawled buy the Harvest Agent. Consult the
 `Heritrix manual<http://crawler.archive.org/articles/user_manual/config.html>`_ on how to configure your profiles.
+
+
+Known issues
+============
+
+There are no known issues at this time.
 
 
 System Administrators

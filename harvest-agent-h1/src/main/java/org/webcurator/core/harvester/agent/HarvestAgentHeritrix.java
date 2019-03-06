@@ -229,7 +229,16 @@ public class HarvestAgentHeritrix extends AbstractHarvestAgent implements LogPro
     /** @see org.webcurator.core.harvester.agent.HarvestAgent#completeHarvest(String, int). */
     public int completeHarvest(String aJob, int aFailureStep) {
         Harvester harvester = getHarvester(aJob);
-        
+
+        if (harvester == null) {
+            // TODO Not sure if this is the right approach -- otherwise we get a NullPointerException on the console.
+            log.warn("Unable to find harvester for job=" + aJob + ". Unable to complete harvest.");
+            log.warn("Attempting a tidy of job=" + aJob);
+            harvestCoordinatorNotifier.heartbeat(getStatus());
+            tidy(aJob);
+            return NO_FAILURES;
+        }
+
         log.info("Performing Harvest Completion for job " + aJob);
               
         harvestCoordinatorNotifier.heartbeat(getStatus());

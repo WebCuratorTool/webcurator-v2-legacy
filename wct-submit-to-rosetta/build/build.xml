@@ -100,7 +100,7 @@
 			<fileset dir="${target}" >
 				<include name="${proj.name}.jar"/>
 			</fileset>
-			<fileset dir="${dir.libs}" excludes="aheritrix-1.14.1.jar">
+			<fileset dir="${dir.libs}" excludes="aheritrix-1.14.1.jar, heritrix-1.14.2-webcuratortool-2.0.1.jar">
 				<include name="*.jar"/>
 			</fileset>
 			<fileset dir="${dir.endorsed.libs}" >
