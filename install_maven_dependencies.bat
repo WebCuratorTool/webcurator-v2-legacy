@@ -2,37 +2,32 @@ rem To make this project work with maven, execute this batch file to install dep
 
 rem
 rem Clone the rosetta-dps-sdk-projects-maven-lib project to get its jar and pom and install it into the local maven 2 repository
-rm -rf .\wct-core\target\rosetta-dps-sdk-projects-maven-lib
-mkdir -pv .\wct-core\target
-call git clone https://github.com/NLNZDigitalPreservation/rosetta-dps-sdk-projects-maven-lib.call git ^
-  .\wct-core\target\rosetta-dps-sdk-projects-maven-lib
-call mvn install:install-file -Dfile=.\wct-core\target\rosetta-dps-sdk-projects-maven-lib\dps-sdk-5.5.0.jar ^
-  -DpomFile=.\wct-core\target\rosetta-dps-sdk-projects-maven-lib\dps-sdk-5.5.0-pom.xml
+RD /S /Q .\wct-core\target\rosetta-dps-sdk-projects-maven-lib
+mkdir .\wct-core\target
+call git clone https://github.com/NLNZDigitalPreservation/rosetta-dps-sdk-projects-maven-lib.git .\wct-core\target\rosetta-dps-sdk-projects-maven-lib
+call mvn install:install-file -Dfile=.\wct-core\target\rosetta-dps-sdk-projects-maven-lib\dps-sdk-5.5.0.jar -DpomFile=.\wct-core\target\rosetta-dps-sdk-projects-maven-lib\dps-sdk-5.5.0-pom.xml
 
 rem
 rem Clone the commons-httpclient-heritrix-1-14 project to get its jar and pom and install it into the local maven 2 repository
-call rmdir /s /q .\wct-core\target\commons-httpclient-heritrix-1-14
-mkdir -pv .\wct-core\target
-call git clone https://github.com/WebCuratorTool/commons-httpclient-heritrix-1-14.call git ^
-  .\wct-core\target\commons-httpclient-heritrix-1-14
+RD /S /Q .\wct-core\target\commons-httpclient-heritrix-1-14
+mkdir .\wct-core\target
+call git clone https://github.com/WebCuratorTool/commons-httpclient-heritrix-1-14.git .\wct-core\target\commons-httpclient-heritrix-1-14
 call mvn install:install-file -Dfile=.\wct-core\target\commons-httpclient-heritrix-1-14\release_archive\commons-httpclient-3.1.1-heritrix-1.14.2-webcuratortool-2.0.1.jar ^
   -DpomFile=.\wct-core\target\commons-httpclient-heritrix-1-14\release_archive\commons-httpclient-3.1.1-heritrix-1.14.2-webcuratortool-2.0.1.pom
 
 rem
 rem Clone the commons-pool-heritrix-1-14 project to get its jar and pom and install it into the local maven 2 repository
-call rmdir /s /q .\wct-core\target\commons-pool-heritrix-1-14
-mkdir -pv .\wct-core\target
-call git clone https://github.com/WebCuratorTool/commons-pool-heritrix-1-14.call git ^
-  .\wct-core\target\commons-pool-heritrix-1-14
+RD /S /Q .\wct-core\target\commons-pool-heritrix-1-14
+mkdir .\wct-core\target
+call git clone https://github.com/WebCuratorTool/commons-pool-heritrix-1-14.git .\wct-core\target\commons-pool-heritrix-1-14
 call mvn install:install-file -Dfile=.\wct-core\target\commons-pool-heritrix-1-14\release_archive\commons-pool-1.3.1-heritrix-1.14.2-webcuratortool-2.0.1.jar ^
   -DpomFile=.\wct-core\target\commons-pool-heritrix-1-14\release_archive\commons-pool-1.3.1-heritrix-1.14.2-webcuratortool-2.0.1.pom
 
 rem
 rem Clone the heritrix-1-14-adjust project to get its jar and pom and install it into the local maven 2 repository
-call rmdir /s /q .\wct-core\target\heritrix-1-14-adjust
-mkdir -pv .\wct-core\target
-call git clone https://github.com/WebCuratorTool/heritrix-1-14-adjust.call git ^
-  .\wct-core\target\heritrix-1-14-adjust
+RD /S /Q .\wct-core\target\heritrix-1-14-adjust
+mkdir .\wct-core\target
+call git clone https://github.com/WebCuratorTool/heritrix-1-14-adjust.git .\wct-core\target\heritrix-1-14-adjust
 call mvn install:install-file -Dfile=.\wct-core\target\heritrix-1-14-adjust\release_archive\heritrix-1.14.2-webcuratortool-2.0.1.jar ^
   -DpomFile=.\wct-core\target\heritrix-1-14-adjust\release_archive\heritrix-1.14.2-webcuratortool-2.0.1.pom
 
