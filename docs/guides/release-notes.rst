@@ -20,7 +20,9 @@ Contents of this document
 Following this introduction, the Web Curator Tool Release Notes includes the
 following sections:
 
--   **Changes since 2.0.0** - Changes since the last official release *2.0.0*.
+-   **Changes since 2.0.1** - Changes since the last official release *2.0.1*.
+
+-   **2.0.1** - Release 2.0.1.
 
 -   **2.0.0** - Release 2.0.0.
 
@@ -39,11 +41,15 @@ following sections:
 -   **Previous versions** - Versions prior to release 1.5.
 
 
-Changes since 2.0.0
+Changes since 2.0.1
 ===================
 
-This is a placeholder for changes since the official *2.0.0* release. Please
+This is a placeholder for changes since the official *2.0.1* release. Please
 add notes here for changes and fixes as they are released into the master branch.
+
+
+2.0.1
+=====
 
 -   The SOAP implementation has changed. As part of that change, the ex-libris Rosetta SDK dependency has moved from
     `2.2.0` to `5.5.0`. This means that the `dps-sdk-5.5.0.jar` must be installed in a local Maven repository for the
