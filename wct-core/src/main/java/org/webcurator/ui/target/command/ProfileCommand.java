@@ -91,6 +91,9 @@ public class ProfileCommand {
 	private boolean h3IgnoreRobots;
 	private boolean overrideH3IgnoreRobots;
 
+	private boolean h3ExtractJs;
+	private boolean overrideH3ExtractJs;
+
 	private boolean h3IgnoreCookies;
 	private boolean overrideH3IgnoreCookies;
 
@@ -504,6 +507,22 @@ public class ProfileCommand {
 		this.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
 	}
 
+	public boolean isH3ExtractJs() {
+		return h3ExtractJs;
+	}
+
+	public void setH3ExtractJs(boolean h3ExtractJs) {
+		this.h3ExtractJs = h3ExtractJs;
+	}
+
+	public boolean isOverrideH3ExtractJs() {
+		return overrideH3ExtractJs;
+	}
+
+	public void setOverrideH3ExtractJs(boolean overrideH3ExtractJs) {
+		this.overrideH3ExtractJs = overrideH3ExtractJs;
+	}
+
 	public boolean isH3IgnoreCookies() {
 		return h3IgnoreCookies;
 	}
@@ -608,6 +627,9 @@ public class ProfileCommand {
 		setH3IgnoreRobots(overrides.isH3IgnoreRobots());
 		setOverrideH3IgnoreRobots(overrides.isOverrideH3IgnoreRobots());
 
+		setH3ExtractJs(overrides.isH3ExtractJs());
+		setOverrideH3ExtractJs(overrides.isOverrideH3ExtractJs());
+
 		setH3IgnoreCookies(overrides.isH3IgnoreCookies());
 		setOverrideH3IgnoreCookies(overrides.isOverrideH3IgnoreCookies());
 
@@ -680,6 +702,9 @@ public class ProfileCommand {
 
 		overrides.setH3IgnoreRobots(h3IgnoreRobots);
 		overrides.setOverrideH3IgnoreRobots(overrideH3IgnoreRobots);
+
+		overrides.setH3ExtractJs(h3ExtractJs);
+		overrides.setOverrideH3ExtractJs(overrideH3ExtractJs);
 
 		overrides.setH3IgnoreCookies(h3IgnoreCookies);
 		overrides.setOverrideH3IgnoreCookies(overrideH3IgnoreCookies);
@@ -780,6 +805,9 @@ public class ProfileCommand {
 
 			setH3IgnoreRobots(command.isH3IgnoreRobots());
 			setOverrideH3IgnoreRobots(command.isOverrideH3IgnoreRobots());
+
+			setH3ExtractJs(command.isH3ExtractJs());
+			setOverrideH3ExtractJs(command.isOverrideH3ExtractJs());
 
 			setH3IgnoreCookies(command.isH3IgnoreCookies());
 			setOverrideH3IgnoreCookies(command.isOverrideH3IgnoreCookies());

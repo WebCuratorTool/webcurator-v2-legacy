@@ -490,6 +490,12 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
     </tr>
 
     <tr>
+      <td class="annotationsLiteRow">Extract Javascript</td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="h3ExtractJs" ${command.h3ExtractJs ? 'checked' : ''}/></td>
+      <td class="annotationsLiteRow"><input type="checkbox" name="overrideH3ExtractJs" ${command.overrideH3ExtractJs ? 'checked' : ''}/></td>
+    </tr>
+
+    <tr>
       <td class="annotationsLiteRow" valign="top">Block URLs</td>
       <td class="annotationsLiteRow" valign="top"><textarea name="h3BlockedUrls" cols="80" rows="5"><c:out value="${command.h3BlockedUrls}"/></textarea></td>
       <td class="annotationsLiteRow" valign="top"><input type="checkbox" name="overrideH3BlockedUrls" ${command.overrideH3BlockedUrls ? 'checked' : ''}/></td>
@@ -554,6 +560,11 @@ function toggleProvideOverrides(profilesList, harvesterTypeValueSelected, onPage
       <td class="annotationsLiteRow">Ignore Cookies</td>
       <td class="annotationsLiteRow">${command.h3IgnoreCookies ? 'Yes' : 'No'}</td>
       <td class="annotationsLiteRow">${command.overrideH3IgnoreCookies ? 'Yes' : 'No'}</td>
+    </tr>
+    <tr>
+      <td class="annotationsLiteRow">Extract Javascript</td>
+      <td class="annotationsLiteRow"><c:out value="${command.h3ExtractJs}"/></td>
+      <td class="annotationsLiteRow">${command.overrideH3ExtractJs ? 'Yes' : 'No'}</td>
     </tr>
     <tr>
       <td class="annotationsLiteRow">Block URLs</td>

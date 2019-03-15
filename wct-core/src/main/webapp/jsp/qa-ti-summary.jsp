@@ -695,6 +695,17 @@ function getSelectedProfile(profilesList) {
 								<input type="checkbox" name="overrideH3IgnoreCookies" ${profileCommand.overrideH3IgnoreCookies ? 'checked' : ''}/>
 							</td>
 						</tr>
+						<tr>
+							<td>
+								Extract Javascript:
+							</td>
+							<td>
+								<input type="checkbox" name="h3ExtractJs" ${profileCommand.h3ExtractJs ? 'checked' : ''}/>
+							</td>
+							<td>
+								<input type="checkbox" name="overrideH3ExtractJs" ${profileCommand.overrideH3ExtractJs ? 'checked' : ''}/>
+							</td>
+						</tr>
 						<tr><td colspan="4"><table class="panel_dotted_row"><tr><td></td></tr></table></td></tr>
 						<tr>
 							<td>

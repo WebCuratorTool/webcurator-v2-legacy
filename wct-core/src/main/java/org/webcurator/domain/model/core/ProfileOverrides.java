@@ -160,6 +160,11 @@ public class ProfileOverrides {
 	/** True to override the H3 ignore robots; otherwise false */
 	private boolean overrideH3IgnoreRobots = false;
 
+	/** The H3 extract js */
+	private boolean h3ExtractJs = false;
+	/** True to override the H3 extract js; otherwise false */
+	private boolean overrideH3ExtractJs = false;
+
 	/** The H3 ignore cookies */
 	private boolean h3IgnoreCookies = false;
 	/** True to override the H3 ignore cookies; otherwise false */
@@ -245,10 +250,10 @@ public class ProfileOverrides {
 		copy.overrideH3MaxTransitiveHops = overrideH3MaxTransitiveHops;
 		copy.h3IgnoreRobots = h3IgnoreRobots;
 		copy.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
+		copy.h3ExtractJs = h3ExtractJs;
+		copy.overrideH3ExtractJs = overrideH3ExtractJs;
 		copy.h3IgnoreCookies = h3IgnoreCookies;
 		copy.overrideH3IgnoreCookies = overrideH3IgnoreCookies;
-		copy.h3DocumentLimit = h3DocumentLimit;
-		copy.h3DocumentLimit = h3DocumentLimit;
 		copy.h3BlockedUrls = new LinkedList<String>();
 		copy.h3BlockedUrls.addAll(h3BlockedUrls);
 		copy.overrideH3BlockedUrls = overrideH3BlockedUrls;
@@ -298,6 +303,9 @@ public class ProfileOverrides {
 		}
 		if (overrideH3IgnoreRobots) {
 			profileOptions.setIgnoreRobotsTxt(h3IgnoreRobots);
+		}
+		if (overrideH3ExtractJs) {
+			profileOptions.setExtractJs(h3ExtractJs);
 		}
 		if (overrideH3IgnoreCookies) {
 			profileOptions.setIgnoreCookies(h3IgnoreCookies);
@@ -481,6 +489,7 @@ public class ProfileOverrides {
 				isOverrideH3MaxHops() ||
 				isOverrideH3MaxTransitiveHops() ||
 				isOverrideH3IgnoreRobots() ||
+				isOverrideH3ExtractJs() ||
 				isOverrideH3IgnoreCookies() ||
 				isOverrideH3BlockedUrls() ||
 				isOverrideH3IncludedUrls() ||
@@ -1043,6 +1052,28 @@ public class ProfileOverrides {
 	 */
 	public void setOverrideH3IgnoreRobots(boolean overrideH3IgnoreRobots) {
 		this.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
+	}
+
+	/**
+	 * @hibernate.property column="PO_H3_EXTRACT_JS"
+	 */
+	public boolean isH3ExtractJs() {
+		return h3ExtractJs;
+	}
+
+	public void setH3ExtractJs(boolean h3ExtractJs) {
+		this.h3ExtractJs = h3ExtractJs;
+	}
+
+	/**
+	 * @hibernate.property column="PO_H3_OR_EXTRACT_JS"
+	 */
+	public boolean isOverrideH3ExtractJs() {
+		return overrideH3ExtractJs;
+	}
+
+	public void setOverrideH3ExtractJs(boolean overrideH3ExtractJs) {
+		this.overrideH3ExtractJs = overrideH3ExtractJs;
 	}
 
 	/**

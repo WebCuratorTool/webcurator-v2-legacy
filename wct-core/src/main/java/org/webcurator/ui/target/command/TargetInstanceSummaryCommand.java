@@ -259,6 +259,9 @@ public class TargetInstanceSummaryCommand {
 	private boolean h3IgnoreRobots;
 	private boolean overrideH3IgnoreRobots;
 
+	private boolean h3ExtractJs;
+	private boolean overrideH3ExtractJs;
+
 	private boolean h3IgnoreCookies;
 	private boolean overrideH3IgnoreCookies;
 
@@ -1232,6 +1235,22 @@ public class TargetInstanceSummaryCommand {
 
     public void setOverrideH3IgnoreRobots(boolean overrideH3IgnoreRobots) {
         this.overrideH3IgnoreRobots = overrideH3IgnoreRobots;
+    }
+
+    public boolean isH3ExtractJs() {
+        return h3ExtractJs;
+    }
+
+    public void setH3ExtractJs(boolean h3ExtractJs) {
+        this.h3ExtractJs = h3ExtractJs;
+    }
+
+    public boolean isOverrideH3ExtractJs() {
+        return overrideH3ExtractJs;
+    }
+
+    public void setOverrideH3ExtractJs(boolean overrideH3ExtractJs) {
+        this.overrideH3ExtractJs = overrideH3ExtractJs;
     }
 
     public boolean isH3IgnoreCookies() {

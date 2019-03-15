@@ -89,6 +89,7 @@ public class Heritrix3Profile {
             // Map ignore robots
             String robotsPolicyNameValue = heritrix3ProfileOptions.isIgnoreRobotsTxt() ? "ignore" : "obey";
             modifyBeanIDPropertyNameAttributeValue("metadata", "robotsPolicyName", xmlDocument, robotsPolicyNameValue);
+            modifyBeanIDPropertyNameAttributeValue("extractorHtml", "extractJavascript", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isExtractJs()));
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument, Boolean.toString(heritrix3ProfileOptions.isIgnoreCookies()));
             modifyBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument, heritrix3ProfileOptions.getDefaultEncoding());
             modifyMatchesDecideRulePropertyNameList("REJECT", xmlDocument, heritrix3ProfileOptions.getBlockURLsAsList());
@@ -179,6 +180,7 @@ public class Heritrix3Profile {
             } else if (robotsPolicyName.equals("obey")) {
                 profileOptions.setIgnoreRobotsTxt(false);
             }
+            profileOptions.setExtractJs(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("extractorHtml", "extractJavascript", xmlDocument)));
             profileOptions.setIgnoreCookies(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument)));
             profileOptions.setDefaultEncoding(getBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument));
             profileOptions.setBlockURLsAsList(getMatchesDecideRulePropertyNameList("REJECT", xmlDocument));

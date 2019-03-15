@@ -157,6 +157,11 @@
   </tr>
 
   <tr>
+    <td class="subBoxTextHdr">Extract Javascript:</td>
+    <td class="subBoxText"><input type="checkbox" name="extractJs" ${command.extractJs ? 'CHECKED':''}></td>
+  </tr>
+
+  <tr>
     <td class="subBoxTextHdr">Default Encoding:</td>
     <td class="subBoxText"><input size="20" type="text" name="defaultEncoding" value="<c:out value="${command.defaultEncoding}"/>"></td>
   </tr>
