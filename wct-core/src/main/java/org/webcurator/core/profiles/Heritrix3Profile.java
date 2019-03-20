@@ -185,7 +185,7 @@ public class Heritrix3Profile {
                 profileOptions.setIgnoreRobotsTxt(false);
             }
             String extractJs = getBeanIDPropertyNameAttributeValue("extractorHtml", "extractJavascript", xmlDocument);
-            if (extractJs != null) { // Otherwise this value is set to false by default
+            if (extractJs != null) { // Otherwise this value is set to true by default
                 profileOptions.setExtractJs(Boolean.parseBoolean(extractJs));
             }
             profileOptions.setIgnoreCookies(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument)));
