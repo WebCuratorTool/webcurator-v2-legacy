@@ -33,6 +33,7 @@ public class Heritrix3Profile {
     private final static String SIMPLE_OVERRIDES_PROPERTIES_TEXT_XPATH = "/beans/bean[@id='simpleOverrides']/property[@name='properties']/value/text()";
     private final static String SIMPLE_OVERRIDES_PROPERTIES_XPATH = "/beans/bean[@id='simpleOverrides']/property[@name='properties']/value";
     private final static String BEAN_ID_PROPERTY_NAME_XPATH = "/beans/bean[@id=''{0}'']/property[@name=''{1}'']";
+    private final static String BEAN_ID_XPATH = "/beans/bean[@id=''{0}'']";
     private final static String SCOPE_RULES_BEAN_CLASS_PROPERTY_NAME_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''{0}'']/property[@name=''{1}'']";
     private final static String MATCHES_LIST_REGEX_DECIDE_RULE_XPATH = "/beans/bean[@id=''scope'']/property[@name=''rules'']/list/bean[@class=''org.archive.modules.deciderules.MatchesListRegexDecideRule'']/property[@name=''decision'' and @value=''{0}'']";
 
@@ -166,7 +167,9 @@ public class Heritrix3Profile {
         try {
             Document xmlDocument = loadXmlDocument(xml);
             profileOptions.setContactURL(findContactURL(xmlDocument));
-            profileOptions.setUserAgentTemplate(getBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument));
+            String userAgentTemplate = getBeanIDPropertyNameAttributeValue("metadata", "userAgentTemplate", xmlDocument);
+            if (userAgentTemplate == null) throw new IllegalArgumentException("userAgentTemplate property not found");
+            profileOptions.setUserAgentTemplate(userAgentTemplate);
             profileOptions.setDocumentLimit(Long.parseLong(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxDocumentsDownload", xmlDocument)));
             profileOptions.setDataLimitAsBytes(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxBytesDownload", xmlDocument)));
             profileOptions.setTimeLimitAsSeconds(new BigInteger(getBeanIDPropertyNameAttributeValue("crawlLimiter", "maxTimeSeconds", xmlDocument)));
@@ -175,19 +178,27 @@ public class Heritrix3Profile {
             profileOptions.setMaxTransitiveHops(Long.parseLong(getScopeRulesBeanClassPropertyNameAttributeValue("org.archive.modules.deciderules.TransclusionDecideRule", "maxTransHops", xmlDocument)));
             // Map ignore robots
             String robotsPolicyName = getBeanIDPropertyNameAttributeValue("metadata", "robotsPolicyName", xmlDocument);
+            if (robotsPolicyName == null) throw new IllegalArgumentException("robotsPolicyName property not found");
             if (robotsPolicyName.equals("ignore")) {
                 profileOptions.setIgnoreRobotsTxt(true);
             } else if (robotsPolicyName.equals("obey")) {
                 profileOptions.setIgnoreRobotsTxt(false);
             }
-            profileOptions.setExtractJs(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("extractorHtml", "extractJavascript", xmlDocument)));
+            String extractJs = getBeanIDPropertyNameAttributeValue("extractorHtml", "extractJavascript", xmlDocument);
+            if (extractJs != null) { // Otherwise this value is set to false by default
+                profileOptions.setExtractJs(Boolean.parseBoolean(extractJs));
+            }
             profileOptions.setIgnoreCookies(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("fetchHttp", "ignoreCookies", xmlDocument)));
-            profileOptions.setDefaultEncoding(getBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument));
+            String defaultEncoding = getBeanIDPropertyNameAttributeValue("fetchHttp", "defaultEncoding", xmlDocument);
+            if (defaultEncoding == null) throw new IllegalArgumentException("defaultEncoding property not found");
+            profileOptions.setDefaultEncoding(defaultEncoding);
             profileOptions.setBlockURLsAsList(getMatchesDecideRulePropertyNameList("REJECT", xmlDocument));
             profileOptions.setIncludeURLsAsList(getMatchesDecideRulePropertyNameList("ACCEPT", xmlDocument));
             profileOptions.setMaxFileSizeAsBytes(new BigInteger(getBeanIDPropertyNameAttributeValue("warcWriter", "maxFileSizeBytes", xmlDocument)));
             profileOptions.setCompress(Boolean.parseBoolean(getBeanIDPropertyNameAttributeValue("warcWriter", "compress", xmlDocument)));
-            profileOptions.setPrefix(getBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument));
+            String prefix = getBeanIDPropertyNameAttributeValue("warcWriter", "prefix", xmlDocument);
+            if (prefix == null) throw new IllegalArgumentException("prefix property not found");
+            profileOptions.setPrefix(prefix);
             // map xml politeness values
             double delayFactor = Double.parseDouble(getBeanIDPropertyNameAttributeValue("disposition", "delayFactor", xmlDocument));
             long minDelayMs = Long.parseLong(getBeanIDPropertyNameAttributeValue("disposition", "minDelayMs", xmlDocument));
@@ -202,9 +213,20 @@ public class Heritrix3Profile {
         return profileOptions;
     }
 
+    /**
+     * Modify bean property
+     *
+     * Adds the property if it doesn't exist
+     *
+     */
     private void modifyBeanIDPropertyNameAttributeValue(String beanID, String propertyName, Document xmlDocument, String newValue) throws Exception {
         String path = MessageFormat.format(BEAN_ID_PROPERTY_NAME_XPATH, beanID, propertyName);
-        modifyElement(path, xmlDocument, newValue);
+        Element propertyElement = xPathSearch(path, xmlDocument.getDocumentElement());
+        if (propertyElement == null) {
+            addProperty(beanID, propertyName, newValue, xmlDocument);
+        } else {
+            modifyElement(path, xmlDocument, newValue);
+        }
     }
 
     private void modifyScopeRulesBeanClassPropertyNameAttributeValue(String beanClass, String propertyName, Document xmlDocument, String newValue) throws Exception {
@@ -228,6 +250,23 @@ public class Heritrix3Profile {
             urlElement.appendChild(xmlDocument.createTextNode(url));
             listElement.appendChild(urlElement);
         }
+    }
+
+    /**
+     * Add new property to a bean element
+     *
+     */
+    private void addProperty(String beanClass, String propertyName, String propertyValue, Document xmlDocument)
+                                                                                            throws Exception {
+        String path = MessageFormat.format(BEAN_ID_XPATH, beanClass);
+        Element beanElement = xPathSearch(path, xmlDocument.getDocumentElement());
+
+        Element propertyElement = xmlDocument.createElement("property");
+        propertyElement.setAttribute("name", propertyName);
+        propertyElement.setAttribute("value", propertyValue);
+
+        beanElement.appendChild(propertyElement);
+
     }
 
     private void modifyElement(String path, Document xmlDocument, String newValue) throws Exception {
@@ -267,7 +306,11 @@ public class Heritrix3Profile {
 
     private String getBeanIDPropertyNameAttributeValue(String beanID, String propertyName, Document xmlDocument) throws Exception {
         String path = MessageFormat.format(BEAN_ID_PROPERTY_NAME_XPATH, beanID, propertyName);
-        return xPathSearch(path, xmlDocument.getDocumentElement()).getAttribute("value");
+        Element propertyElement = xPathSearch(path, xmlDocument.getDocumentElement());
+        if (propertyElement == null) {
+            return null;
+        }
+        return propertyElement.getAttribute("value");
     }
 
     private String getScopeRulesBeanClassPropertyNameAttributeValue(String beanClass, String propertyName, Document xmlDocument) throws Exception {
