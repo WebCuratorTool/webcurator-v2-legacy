@@ -24,7 +24,7 @@ public class Heritrix3ProfileOptions {
     private long maxHops;
     private long maxTransitiveHops;
     private boolean ignoreRobotsTxt;
-    private boolean extractJs;
+    private boolean extractJs = true;
     private boolean ignoreCookies;
     private String defaultEncoding;
     private List<String> blockURLsAsList = new ArrayList<String>();
