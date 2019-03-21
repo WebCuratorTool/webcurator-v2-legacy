@@ -269,6 +269,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(20L, profileOptions.getMaxHops());
         assertEquals(2L, profileOptions.getMaxTransitiveHops());
         assertFalse(profileOptions.isIgnoreRobotsTxt());
+        assertTrue(profileOptions.isExtractJs());
         assertFalse(profileOptions.isIgnoreCookies());
         assertEquals("UTF-8", profileOptions.getDefaultEncoding());
         List<String> blockUrls = profileOptions.getBlockURLsAsList();
@@ -333,6 +334,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         long modifiedMaxHops = 50;
         long modifiedMaxTransitiveHops = 5;
         boolean modifiedIgnoreRobots = true;
+        boolean modifiedExtractJs = false;
         boolean modifiedIgnoreCookies = true;
         String modifiedDefaultEncoding = "UTF-8";
         List<String> modifiedBlockUrls = new ArrayList<String>();
@@ -362,6 +364,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOptions.setMaxHops(modifiedMaxHops);
         profileOptions.setMaxTransitiveHops(modifiedMaxTransitiveHops);
         profileOptions.setIgnoreRobotsTxt(modifiedIgnoreRobots);
+        profileOptions.setExtractJs(modifiedExtractJs);
         profileOptions.setIgnoreCookies(modifiedIgnoreCookies);
         profileOptions.setDefaultEncoding(modifiedDefaultEncoding);
         profileOptions.setBlockURLsAsList(modifiedBlockUrls);
@@ -388,6 +391,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(modifiedMaxHops, modifiedProfileOptions.getMaxHops());
         assertEquals(modifiedMaxTransitiveHops, modifiedProfileOptions.getMaxTransitiveHops());
         assertTrue(modifiedProfileOptions.isIgnoreRobotsTxt());
+        assertFalse(modifiedProfileOptions.isExtractJs());
         assertTrue(modifiedProfileOptions.isIgnoreCookies());
         assertEquals(modifiedDefaultEncoding, modifiedProfileOptions.getDefaultEncoding());
         List<String> blockUrls = modifiedProfileOptions.getBlockURLsAsList();
@@ -427,6 +431,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         long modifiedMaxHops = 50;
         long modifiedMaxTransitiveHops = 5;
         boolean modifiedIgnoreRobots = true;
+        boolean modifiedExtractJs = false;
         boolean modifiedIgnoreCookies = true;
         List<String> modifiedBlockUrls = new LinkedList<String>();
         modifiedBlockUrls.add("*aaa*");
@@ -444,6 +449,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOverrides.setH3MaxHops(modifiedMaxHops);
         profileOverrides.setH3MaxTransitiveHops(modifiedMaxTransitiveHops);
         profileOverrides.setH3IgnoreRobots(modifiedIgnoreRobots);
+        profileOverrides.setH3ExtractJs(modifiedExtractJs);
         profileOverrides.setH3IgnoreCookies(modifiedIgnoreCookies);
         profileOverrides.setH3BlockedUrls(modifiedBlockUrls);
         profileOverrides.setH3IncludedUrls(modifiedIncludeUrls);
@@ -462,6 +468,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         profileOverrides.setOverrideH3MaxHops(true);
         profileOverrides.setOverrideH3MaxTransitiveHops(true);
         profileOverrides.setOverrideH3IgnoreRobots(true);
+        profileOverrides.setOverrideH3ExtractJs(true);
         profileOverrides.setOverrideH3IgnoreCookies(true);
         profileOverrides.setOverrideH3BlockedUrls(true);
         profileOverrides.setOverrideH3IncludedUrls(true);
@@ -482,6 +489,7 @@ public class Heritrix3ProfileTest extends BaseWCTTest<Heritrix3Profile> {
         assertEquals(50L, overriddenProfileOptions.getMaxHops());
         assertEquals(5L, overriddenProfileOptions.getMaxTransitiveHops());
         assertTrue(overriddenProfileOptions.isIgnoreRobotsTxt());
+        assertFalse(overriddenProfileOptions.isExtractJs());
         assertTrue(overriddenProfileOptions.isIgnoreCookies());
         assertEquals("UTF-8", overriddenProfileOptions.getDefaultEncoding());
         List<String> blockUrls = overriddenProfileOptions.getBlockURLsAsList();
