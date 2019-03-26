@@ -1,24 +1,167 @@
 {
-          type: "object",
-          title: "Heritrix 3 Profile Schema",
-          required: ["name", "contactUrl", "ignoreRobotsTxt"],
-          properties: {
-            name: {
-              type: "string",
+          "type": "object",
+          "title": "Heritrix 3 Profile Schema",
+          "required": ["name", "contactUrl", "ignoreRobotsTxt"],
+          "properties": {
+            "name": {
+              "type": "string"
             },
-            contactUrl: {
-              type: "string",
-	      format: "uri"
+
+            "description": {
+              "type": "string"
             },
-            description: {
-              type: "string"
+
+            "contactUrl": {
+              "type": "string",
+              "format": "uri",
+              "title": "Contact URL"
             },
-            documentLimit: {
-              type: "integer",
+
+            "userAgentPrefix": {
+              "type": "string",
+              "title": "User Agent Prefix"
             },
-            ignoreRobotsTxt: {
-              type: "boolean",
-	      default: false
-            }
+
+            "finalUserAgentString": {
+              "type": "string",
+              "template": "{{prefix}}{{url}})",
+              "watch": {
+                "url": "contactUrl",
+                "prefix": "userAgentPrefix"
+              },
+              "title": "User Agent used by Heritrix 3",
+              "readOnly": true
+            },
+
+            "documentLimit": {
+              "type": "integer",
+              "title": "Document Limit"
+            },
+
+            "dataLimit": {
+              "type": "integer",
+              "title": "Data Limit"
+            },
+
+            "dataLimitUnit": {
+              "type": "string",
+              "enum": ["B", "KB", "MB", "GB"],
+              "default": "MB"
+            },
+
+            "timeLimit": {
+              "type": "integer",
+              "title": "Time Limit"
+            },
+
+            "timeLimitUnit": {
+              "type": "string",
+              "enum": ["Second", "Minute", "Hour", "Day", "Week"],
+              "default": "Hour"
+            },
+
+            "maxPathDepth": {
+              "type": "integer",
+              "title": "Max Path Depth"
+            },
+
+            "maxHops": {
+              "type": "integer",
+              "title": "Max Hops"
+            },
+
+            "maxTransitiveHops": {
+              "type": "integer",
+              "title": "Max Transitive Hops"
+            },
+
+            "ignoreRobotsTxt": {
+              "type": "boolean",
+              "format": "checkbox",
+              "default": false,
+              "title": "Ignore Robots.txt"
+            },
+
+            "ignoreCookies": {
+              "type": "boolean",
+              "format": "checkbox",
+              "default": false,
+              "title": "Ignore Cookies"
+            },
+
+            "defaultEncoding": {
+              "type": "string",
+              "title": "Default Encoding",
+              "default": "UTF-8"
+            },
+
+            "blockURLs": {
+              "type": "string",
+              "title": "Block URLs",
+              "format": "textarea"
+            },
+
+            "includeURLs": {
+              "type": "string",
+              "title": "Include URLs",
+              "format": "textarea"
+            },
+
+            "maxFileSize": {
+              "type": "integer",
+              "title": "Max File Size"
+            },
+
+            "maxFileSizeUnit": {
+              "type": "string",
+              "enum": ["B", "KB", "MB", "GB"],
+              "default": "MB"
+            },
+
+            "compress": {
+              "type": "boolean",
+              "format": "checkbox",
+              "default": false,
+              "title": "Compress"
+            },
+
+            "prefix": {
+              "type": "string",
+              "title": "Prefix"
+            },
+
+              "politeness": {
+                "type": "object",
+                "title": "Politeness",
+                "description": "Example values are listed next to each field - (Polite|Medium|Aggressive)",
+                "properties": {
+                  "delayFactor": {
+                    "type": "integer",
+                    "title": "Delay Factor",
+                    "description": "(10|5|1)"
+                  },
+                  "minDelay": {
+                    "type": "integer",
+                    "title": "Min Delay (ms)",
+                    "description": "(9000|3000|1000)"
+                  },
+                  "maxDelay": {
+                    "type": "integer",
+                    "title": "Max Delay (ms)",
+                    "description": "(90000|30000|10000)"
+                  },
+                  "respectCrawlDelay": {
+                    "type": "integer",
+                    "title": "Respect Crawl Delay up to Seconds",
+                    "description": "(180|30|2)"
+                  },
+                  "maxPerHostBandwidth": {
+                    "type": "integer",
+                    "title": "Max Per Host Bandwidth Usage (kb/s)",
+                    "description": "(400|800|2000)"
+                  }
+                }
+              }
+
           }
 }

@@ -1,7 +1,35 @@
 {
-name: "Default Heritrix 3 Profile",
-contactUrl: "https://www.kb.nl/contact",
-description: "Default profile shipped with Web Curator Tool",
-documentLimit: 20,
-ignoreRobotsTxt: true
+  name: "Default Heritrix 3 Profile",
+  description: "Default profile shipped with Web Curator Tool",
+  contactUrl: "https://www.kb.nl/contact",
+  userAgentPrefix: "Mozilla/5.0 (compatible; heritrix/3.3.0 +",
+  finalUserAgentString: "",
+
+  documentLimit: 20,
+  dataLimit: 0,
+  dataLimitUnit: "KB",
+  timeLimit: 0,
+  timeLimitUnit: "Minute",
+
+  maxPathDepth: 25,
+  maxHops: 5,
+  maxTransitiveHops: 5,
+
+  ignoreRobotsTxt: true,
+  ignoreCookies: false,
+  defaultEncoding: "UTF-8",
+  blockURLs: ".*rss.*\n.*Rss.*\n.*RSS.*",
+  includeURLs: "\\.dia\\.\nwww\\.natlib\\..*",
+  maxFileSize: 100,
+  maxFileSizeUnit: "MB",
+  compress: false,
+  prefix: "NLNZ",
+
+  politeness: {
+    delayFactor: 5,
+    minDelay: 3000,
+    maxDelay: 30000,
+    respectCrawlDelay: 30,
+    maxPerHostBandwidth: 800
+  }
 }
