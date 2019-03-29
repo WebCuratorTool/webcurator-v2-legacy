@@ -20,7 +20,9 @@ Contents of this document
 Following this introduction, the Web Curator Tool Release Notes includes the
 following sections:
 
--   **Changes since 2.0.1** - Changes since the last official release *2.0.1*.
+-   **Changes since 2.0.2** - Changes since the last official release *2.0.2*.
+
+-   **2.0.2** - Release 2.0.2.
 
 -   **2.0.1** - Release 2.0.1.
 
@@ -41,12 +43,24 @@ following sections:
 -   **Previous versions** - Versions prior to release 1.5.
 
 
-Changes since 2.0.1
+Changes since 2.0.2
 ===================
 
--  The profile editor now allows users to turn off javascript extraction (the speculative 
-   derivation of URLs from javascript code in webpages). This toggle has also been added to
-   the various profile override screens.
+This is a placeholder for changes since the official *2.0.1* release. Please
+add notes here for changes and fixes as they are released into the master branch.
+
+
+2.0.2
+=====
+
+H3 Javascript Extractor Module
+-------------------------------
+
+-   An additional Heritrix 3 profile option has been added to the profile editor and the various
+    profile override screens, to turn off the javascript extractor module. This modifies the following
+    element::
+
+    <property name="extractJavascript" value="false" />
 
 
 2.0.1
