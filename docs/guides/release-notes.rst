@@ -44,8 +44,9 @@ following sections:
 Changes since 2.0.1
 ===================
 
-This is a placeholder for changes since the official *2.0.1* release. Please
-add notes here for changes and fixes as they are released into the master branch.
+-  The profile editor now allows users to turn off javascript extraction (the speculative 
+   derivation of URLs from javascript code in webpages). This toggle has also been added to
+   the various profile override screens.
 
 
 2.0.1

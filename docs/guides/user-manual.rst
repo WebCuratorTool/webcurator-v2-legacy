@@ -3397,6 +3397,9 @@ editing information about profiles.
     +-----------------------+-----------------------------------+
     | Ignore Cookies        | Disable cookie handling.          |
     +-----------------------+-----------------------------------+
+    | Extract Javascript    | Toggle the extraction of URLs     |
+    |                       | from javacript code.              |
+    +-----------------------+-----------------------------------+
     | Default Encoding      | The character encoding to use for |
     |                       | files that do not have one        |
     |                       | specified in the HTTP response    |

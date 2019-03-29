@@ -36,6 +36,7 @@ public class Heritrix3ProfileCommand {
 	private long maxHops;
 	private long maxTransitiveHops;
 	private boolean ignoreRobotsTxt;
+	private boolean extractJs;
 	private boolean ignoreCookies;
 	private String defaultEncoding;
 	private String blockUrls;
@@ -84,6 +85,7 @@ public class Heritrix3ProfileCommand {
 		command.setMaxHops(options.getMaxHops());
 		command.setMaxTransitiveHops(options.getMaxTransitiveHops());
 		command.setIgnoreRobotsTxt(options.isIgnoreRobotsTxt());
+		command.setExtractJs(options.isExtractJs());
 		command.setIgnoreCookies(options.isIgnoreCookies());
 		command.setDefaultEncoding(options.getDefaultEncoding());
 		command.setBlockUrls(options.getBlockURLs());
@@ -126,6 +128,7 @@ public class Heritrix3ProfileCommand {
 		options.setMaxHops(maxHops);
 		options.setMaxTransitiveHops(maxTransitiveHops);
 		options.setIgnoreRobotsTxt(ignoreRobotsTxt);
+		options.setExtractJs(extractJs);
 		options.setIgnoreCookies(ignoreCookies);
 		options.setDefaultEncoding(defaultEncoding);
 		options.setBlockURLs(blockUrls);
@@ -235,6 +238,14 @@ public class Heritrix3ProfileCommand {
 
 	public boolean isIgnoreCookies() {
 		return ignoreCookies;
+	}
+
+	public boolean isExtractJs() {
+		return extractJs;
+	}
+
+	public void setExtractJs(boolean extractJs) {
+		this.extractJs = extractJs;
 	}
 
 	public void setIgnoreCookies(boolean ignoreCookies) {

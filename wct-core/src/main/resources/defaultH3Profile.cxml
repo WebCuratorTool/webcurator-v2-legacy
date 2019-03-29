@@ -271,7 +271,7 @@ metadata.description=Basic crawl starting with useful defaults
  <bean id="extractorHttp" class="org.archive.modules.extractor.ExtractorHTTP">
  </bean>
  <bean id="extractorHtml" class="org.archive.modules.extractor.ExtractorHTML">
-  <!-- <property name="extractJavascript" value="true" /> -->
+    <property name="extractJavascript" value="true" />
   <!-- <property name="extractValueAttributes" value="true" /> -->
   <!-- <property name="ignoreFormActionUrls" value="false" /> -->
   <!-- <property name="extractOnlyFormGets" value="true" /> -->

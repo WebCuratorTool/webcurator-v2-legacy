@@ -24,6 +24,7 @@ public class Heritrix3ProfileOptions {
     private long maxHops;
     private long maxTransitiveHops;
     private boolean ignoreRobotsTxt;
+    private boolean extractJs = true;
     private boolean ignoreCookies;
     private String defaultEncoding;
     private List<String> blockURLsAsList = new ArrayList<String>();
@@ -285,6 +286,14 @@ public class Heritrix3ProfileOptions {
         this.ignoreRobotsTxt = ignoreRobotsTxt;
     }
 
+    public boolean isExtractJs() {
+        return extractJs;
+    }
+
+    public void setExtractJs(boolean extractJs) {
+        this.extractJs = extractJs;
+    }
+
     public boolean isIgnoreCookies() {
         return ignoreCookies;
     }
@@ -416,6 +425,7 @@ public class Heritrix3ProfileOptions {
                 ", maxHops=" + maxHops +
                 ", maxTransitiveHops=" + maxTransitiveHops +
                 ", ignoreRobotsTxt=" + ignoreRobotsTxt +
+                ", extractJs=" + extractJs +
                 ", ignoreCookies=" + ignoreCookies +
                 ", defaultEncoding='" + defaultEncoding + '\'' +
                 ", blockURLsAsList=" + blockURLsAsList +
