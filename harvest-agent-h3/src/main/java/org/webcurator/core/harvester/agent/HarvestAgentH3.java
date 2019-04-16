@@ -278,15 +278,17 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         return toFileArray(getFileList(baseDir, filters));
     }
 
+    // Returns empty list of no files were found
     private List<File> getFileList(File baseDir, FileFilter... filters) {
         List<File> l = new LinkedList<File>();
         File[] files = baseDir.listFiles();
-        //TODO - What if no warcs are generated? This throws null pointer otherwise
-        for (File f : files) {
-            for (FileFilter filter : filters) {
-                if (filter.accepts(f)) {
-                    l.add(f);
-                    break;
+        if (files != null) {
+            for (File f : files) {
+                for (FileFilter filter : filters) {
+                    if (filter.accepts(f)) {
+                        l.add(f);
+                        break;
+                    }
                 }
             }
         }
@@ -355,24 +357,24 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         // Send the ARC files to the DAS.
         if (aFailureStep <= FAILED_ON_SEND_ARCS) {
             log.info("Getting digital assets to send to store for job " + aJob);
-
             try {
-                // BE AWARE - if a harvest is stopped before any warcs are written then a null pointer exception can be thrown
-                // when getting the file list of the warc dir, because the warc dir may not exist -causing an infinite loop.
                 File[] fileList = getFileArray(das, new NegateFilter(new ExtensionFileFilter(Constants.EXTN_OPEN_ARC)));
                 int numberOfFiles = fileList.length;
 
-                for (int i = 0; i < numberOfFiles; i++) {
-                    log.debug("Sending ARC " + (i + 1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
-                    digitalAssetStore.save(aJob, fileList[i]);
-                    log.debug("Finished sending ARC " + (i + 1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
+                // Don't retry in this situation, just log and continue
+                if (numberOfFiles == 0) {
+                    log.error("Failed to find harvest path for job " + aJob);
+                } else {
+                    for (int i = 0; i < numberOfFiles; i++) {
+                        log.debug("Sending ARC " + (i + 1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
+                        digitalAssetStore.save(aJob, fileList[i]);
+                        log.debug("Finished sending ARC " + (i + 1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
+                    }
                 }
 
             } catch (Exception e) {
                 if (dirsExist(das)) {
                     log.error("Failed to send harvest result to digital asset store for job " + aJob + ": " + e.getMessage(), e);
-                } else {
-                    log.error("Failed to find harvest path for job " + aJob + ": " + e.getMessage(), e);
                 }
 
                 return FAILED_ON_SEND_ARCS;
@@ -381,11 +383,18 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         // Send the log files to the DAS.
         if (aFailureStep <= FAILED_ON_SEND_LOGS) {
+            log.info("Sending harvest logs to digital asset store for job " + aJob);
             try {
                 File[] fileList = getFileArray(harvester.getHarvestLogDir(), NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_LOGS)));
-                log.info("Sending harvest logs to digital asset store for job " + aJob);
-                for (int i = 0; i < fileList.length; i++) {
-                    digitalAssetStore.save(aJob, Constants.DIR_LOGS, fileList[i]);
+                int numberOfFiles = fileList.length;
+
+                // Don't retry in this situation, just log and continue
+                if (numberOfFiles == 0) {
+                    log.error("Failed to find logs path for job " + aJob);
+                } else {
+                    for (int i = 0; i < fileList.length; i++) {
+                        digitalAssetStore.save(aJob, Constants.DIR_LOGS, fileList[i]);
+                    }
                 }
             } catch (Exception e) {
                 if (log.isErrorEnabled()) {
@@ -397,13 +406,20 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         // Send the reports to the DAS.
         if (aFailureStep <= FAILED_ON_SEND_RPTS) {
+            log.info("Sending harvest reports to digital asset store for job " + aJob);
             try {
                 String harvestLogsDir = harvester.getHarvestLogDir().getParent();
                 File reportsDir = new File(harvestLogsDir + File.separator + "reports");
                 File[] fileList = getFileArray(reportsDir, NotEmptyFileFilter.notEmpty(new ExtensionFileFilter(Constants.EXTN_REPORTS)), NotEmptyFileFilter.notEmpty(new ExactNameFilter(PROFILE_NAME)));
-                log.info("Sending harvest reports to digital asset store for job " + aJob);
-                for (int i = 0; i < fileList.length; i++) {
-                    digitalAssetStore.save(aJob, Constants.DIR_REPORTS, fileList[i]);
+                int numberOfFiles = fileList.length;
+
+                // Don't retry in this situation, just log and continue
+                if (numberOfFiles == 0) {
+                    log.error("Failed to find reports path for job " + aJob);
+                } else {
+                    for (int i = 0; i < fileList.length; i++) {
+                        digitalAssetStore.save(aJob, Constants.DIR_REPORTS, fileList[i]);
+                    }
                 }
             } catch (Exception e) {
                 if (log.isErrorEnabled()) {
@@ -415,8 +431,8 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
         // Send the result to the server.
         if (aFailureStep <= FAILED_ON_SEND_RESULT) {
+            log.info("Sending harvest result to WCT for job " + aJob);
             try {
-                log.info("Sending harvest result to WCT for job " + aJob);
                 ahr = new ArcHarvestResultDTO();
                 ahr.setCreationDate(new Date());
                 ahr.setTargetInstanceOid(new Long(aJob));
