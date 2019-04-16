@@ -390,7 +390,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
                 // Don't retry in this situation, just log and continue
                 if (numberOfFiles == 0) {
-                    log.error(String.format("Failed to find logs for job %s (path: %s) ", aJob, harvester.getHarvestLogDir()));
+                    log.error(String.format("Failed to find logs for job %s (path: %s) ", aJob, harvester.getHarvestLogDir().getAbsolutePath()));
                 } else {
                     for (int i = 0; i < fileList.length; i++) {
                         digitalAssetStore.save(aJob, Constants.DIR_LOGS, fileList[i]);
