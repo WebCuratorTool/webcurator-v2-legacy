@@ -390,7 +390,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
                 // Don't retry in this situation, just log and continue
                 if (numberOfFiles == 0) {
-                    log.error("Failed to find logs path for job " + aJob);
+                    log.error(String.format("Failed to find logs for job %s (path: %s) ", aJob, harvester.getHarvestLogDir()));
                 } else {
                     for (int i = 0; i < fileList.length; i++) {
                         digitalAssetStore.save(aJob, Constants.DIR_LOGS, fileList[i]);
@@ -415,7 +415,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
                 // Don't retry in this situation, just log and continue
                 if (numberOfFiles == 0) {
-                    log.error("Failed to find reports path for job " + aJob);
+                    log.error(String.format("Failed to find reports path for job %s (path: %s)", aJob, reportsDir.getAbsolutePath()));
                 } else {
                     for (int i = 0; i < fileList.length; i++) {
                         digitalAssetStore.save(aJob, Constants.DIR_REPORTS, fileList[i]);
