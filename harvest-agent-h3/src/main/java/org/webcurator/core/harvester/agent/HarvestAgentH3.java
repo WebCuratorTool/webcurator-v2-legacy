@@ -363,7 +363,7 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
 
                 // Don't retry in this situation, just log and continue
                 if (numberOfFiles == 0) {
-                    log.error("Failed to find harvest path for job " + aJob);
+                    log.error("Failed to find WARC files for job " + aJob);
                 } else {
                     for (int i = 0; i < numberOfFiles; i++) {
                         log.debug("Sending ARC " + (i + 1) + " of " + numberOfFiles + " to digital asset store for job " + aJob);
