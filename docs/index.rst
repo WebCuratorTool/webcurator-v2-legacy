@@ -39,6 +39,7 @@ Web Curator Tool Documentation
 
    guides/troubleshooting
    guides/faq
+   guides/tutorials
 
 
 
