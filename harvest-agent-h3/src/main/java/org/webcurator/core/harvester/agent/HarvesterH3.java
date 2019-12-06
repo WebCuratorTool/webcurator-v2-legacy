@@ -625,7 +625,7 @@ public class HarvesterH3 implements Harvester {
             if (jobStatus.statusDescription.equals("Ready")) {
                 log.info("Launching H3 job " + aJobName + ".....");
                 heritrix.launchJob(aJobName);
-                jobStatus = heritrix.waitForJobState(aJobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 5, 1000).job;
+                jobStatus = heritrix.waitForJobState(aJobName, Heritrix3Wrapper.CrawlControllerState.PAUSED, 50, 1000).job;
             } else {
                 log.error("Failed to start harvester " + name + ": Could not launch H3 job.");
                 throw new HarvesterException("Failed to start harvester " + name + ": Could not launch H3 job.");
