@@ -278,15 +278,20 @@ public class HarvestAgentH3 extends AbstractHarvestAgent implements LogProvider 
         return toFileArray(getFileList(baseDir, filters));
     }
 
+    /**
+     * Returns empty list if the input directory does not exist (sometimes a crawl does not result in
+     * a WARC file, in which case the warcs subdirectory of the H3 job directory will not exist)
+     */
     private List<File> getFileList(File baseDir, FileFilter... filters) {
         List<File> l = new LinkedList<File>();
         File[] files = baseDir.listFiles();
-        //TODO - What if no warcs are generated? This throws null pointer otherwise
-        for (File f : files) {
-            for (FileFilter filter : filters) {
-                if (filter.accepts(f)) {
-                    l.add(f);
-                    break;
+        if (files != null) {
+            for (File f : files) {
+                for (FileFilter filter : filters) {
+                    if (filter.accepts(f)) {
+                        l.add(f);
+                        break;
+                    }
                 }
             }
         }
