@@ -46,8 +46,9 @@ following sections:
 Changes since 2.0.2
 ===================
 
-This is a placeholder for changes since the official *2.0.1* release. Please
-add notes here for changes and fixes as they are released into the master branch.
+-  Fixed: the check constraint definitions in wct-schema-mysql.sql contained errors that 
+   have become an issue in recent versions of MySQL/MariaDB, since they actually enforce check 
+   constraints.
 
 
 2.0.2

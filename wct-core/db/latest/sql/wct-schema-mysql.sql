@@ -132,8 +132,8 @@ alter table DB_WCT.ARC_HARVEST_FILE add index FK_AHR_ARC_HARVEST_RESULT_ID (AHF_
 alter table DB_WCT.ARC_HARVEST_RESOURCE add index FK6D84FEB12FF8F14B (AHRC_HARVEST_RESOURCE_OID), add constraint FK6D84FEB12FF8F14B foreign key (AHRC_HARVEST_RESOURCE_OID) references DB_WCT.HARVEST_RESOURCE (HRC_OID);
 alter table DB_WCT.ARC_HARVEST_RESULT add index FKE39C5380C88A38D9 (AHRS_HARVEST_RESULT_OID), add constraint FKE39C5380C88A38D9 foreign key (AHRS_HARVEST_RESULT_OID) references DB_WCT.HARVEST_RESULT (HR_OID);
 alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_DAY check (br_day IN ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'));
-alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_END_TIME check (br_end_time >= TO_DATE('1972-11-09 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND br_end_time <= TO_DATE('1972-11-09 23:59:59', 'YYYY-MM-DD HH24:MI:SS'));
-alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_START_TIME check (br_start_time >= TO_DATE('1972-11-09 00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND br_start_time <= TO_DATE('1972-11-09 23:59:59', 'YYYY-MM-DD HH24:MI:SS'));
+alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_END_TIME check (br_end_time >= STR_TO_DATE('1972-11-09 00:00:00', '%Y-%m-%d %H:%i:%s') AND br_end_time <= STR_TO_DATE('1972-11-09 23:59:59', '%Y-%m-%d %H:%i:%s'));
+alter table DB_WCT.BANDWIDTH_RESTRICTIONS add constraint CHK_START_TIME check (br_start_time >= STR_TO_DATE('1972-11-09 00:00:00', '%Y-%m-%d %H:%i:%s') AND br_start_time <= STR_TO_DATE('1972-11-09 23:59:59', '%Y-%m-%d %H:%i:%s'));
 alter table DB_WCT.GROUP_MEMBER add index FK_GM_PARENT_ID (GM_PARENT_ID), add constraint FK_GM_PARENT_ID foreign key (GM_PARENT_ID) references DB_WCT.TARGET_GROUP (TG_AT_OID);
 alter table DB_WCT.GROUP_MEMBER add index FK_GM_CHILD_ID (GM_CHILD_ID), add constraint FK_GM_CHILD_ID foreign key (GM_CHILD_ID) references DB_WCT.ABSTRACT_TARGET (AT_OID);
 alter table DB_WCT.HARVEST_RESOURCE add index FK5BA2B04431A1C148 (HRC_HARVEST_RESULT_OID), add constraint FK5BA2B04431A1C148 foreign key (HRC_HARVEST_RESULT_OID) references DB_WCT.HARVEST_RESULT (HR_OID);
