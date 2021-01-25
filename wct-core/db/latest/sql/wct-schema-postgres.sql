@@ -88,7 +88,7 @@ create table DB_WCT.SCHEDULE (S_OID int8 not null, S_CRON varchar(255) not null,
 create table DB_WCT.SEED (S_OID int8 not null, S_SEED varchar(1024), S_TARGET_ID int8, S_PRIMARY bool, primary key (S_OID));
 create table DB_WCT.SEED_HISTORY (SH_OID bigint not null, SH_TI_OID bigint, SH_SEED character varying(1024) not null, SH_PRIMARY boolean not null, primary key (SH_OID));
 create table DB_WCT.SEED_PERMISSION (SP_SEED_ID int8 not null, SP_PERMISSION_ID int8 not null, primary key (SP_SEED_ID, SP_PERMISSION_ID));
-create table DB_WCT.SIP_PART_ELEMENT (SPE_TARGET_INSTANCE_OID int8 not null, SPE_VALUE text, SPE_KEY varchar(255) not null, primary key (SPE_TARGET_INSTANCE_OID, SPE_KEY));
+create table DB_WCT.SIP_PART_ELEMENT (SPE_TARGET_INSTANCE_OID int8 not null, SPE_VALUE mediumtext, SPE_KEY varchar(255) not null, primary key (SPE_TARGET_INSTANCE_OID, SPE_KEY));
 create table DB_WCT.SITE (ST_OID int8 not null, ST_TITLE varchar(255) not null unique, ST_DESC varchar(4000), ST_LIBRARY_ORDER_NO varchar(32), ST_NOTES text, ST_PUBLISHED bool not null, ST_ACTIVE bool not null, ST_OWNING_AGENCY_ID int8, ST_CREATION_DATE timestamp, primary key (ST_OID));
 create table DB_WCT.SITE_AUTH_AGENCY (SA_SITE_ID int8 not null, SA_AGENT_ID int8 not null, primary key (SA_SITE_ID, SA_AGENT_ID));
 create table DB_WCT.TARGET (T_AT_OID int8 not null, T_RUN_ON_APPROVAL bool, T_EVALUATION_NOTE varchar(1000), T_SELECTION_DATE TIMESTAMP, T_SELECTION_NOTE varchar(1000), T_SELECTION_TYPE varchar(255), T_HARVEST_TYPE varchar(255), T_USE_AQA bool default false not null, T_ALLOW_OPTIMIZE boolean default false not null, primary key (T_AT_OID));
